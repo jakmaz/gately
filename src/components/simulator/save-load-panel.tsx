@@ -13,7 +13,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Save, Upload, Download, MessageSquareReply, MessageSquareShare } from "lucide-react";
+import { Save, Upload, Download, MessageSquareReply, MessageSquareShare, ExternalLink } from "lucide-react";
 import { toast } from "sonner";
 import { Edge, Node } from "reactflow";
 import { GateNodeProps } from "@/lib/types";
@@ -101,7 +101,7 @@ export function SaveLoadPanel({ nodes, edges, setNodes, setEdges }: SaveLoadPane
     <div className="flex items-center space-x-2">
       <Button variant="outline" size="sm" asChild>
         <div>
-          <MessageSquareShare className="h-4 w-4" />
+          <ExternalLink className="h-4 w-4" />
           <a href="https://www.roadwiseapp.com/app/gately" target="_blank" rel="noopener noreferrer">Feedback</a>
         </div>
       </Button>
