@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Hand, Orbit, X, FileDown, ToggleLeft, ExternalLink, RotateCcw, CircuitBoard } from "lucide-react";
+import { ThemeToggle } from "./theme-toggle";
 
 export function Toolbar() {
   const onDragStart = (event: React.DragEvent<HTMLDivElement>, nodeType: string) => {
@@ -187,7 +188,7 @@ export function Toolbar() {
       <Separator className="my-4" />
 
       <div className="mt-auto flex justify-between">
-        {/* <ModeToggle /> */}
+        <ThemeToggle />
         <Button variant="outline" size="sm">
           Help
         </Button>
