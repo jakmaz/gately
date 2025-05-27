@@ -7,7 +7,7 @@ import ReactFlow, {
   Controls,
   MiniMap,
   addEdge,
-  Panel,
+  // Panel,
   useNodesState,
   useEdgesState,
   Connection,

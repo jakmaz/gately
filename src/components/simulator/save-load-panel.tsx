@@ -13,7 +13,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Save, Upload, Download } from "lucide-react";
+import { Save, Upload, Download, MessageSquareReply, MessageSquareShare } from "lucide-react";
 import { toast } from "sonner";
 import { Edge, Node } from "reactflow";
 import { GateNodeProps } from "@/lib/types";
@@ -99,6 +99,12 @@ export function SaveLoadPanel({ nodes, edges, setNodes, setEdges }: SaveLoadPane
 
   return (
     <div className="flex items-center space-x-2">
+      <Button variant="outline" size="sm" asChild>
+        <div>
+          <MessageSquareShare className="h-4 w-4" />
+          <a href="https://www.roadwiseapp.com/app/gately" target="_blank" rel="noopener noreferrer">Feedback</a>
+        </div>
+      </Button>
       <Dialog open={saveDialogOpen} onOpenChange={setSaveDialogOpen}>
         <DialogTrigger asChild>
           <Button variant="outline" size="sm" className="flex items-center gap-2">
@@ -110,7 +116,7 @@ export function SaveLoadPanel({ nodes, edges, setNodes, setEdges }: SaveLoadPane
           <DialogHeader>
             <DialogTitle>Save Circuit</DialogTitle>
             <DialogDescription>
-              Enter a name for your circuit to save it to your browser's local storage.
+              Enter a name for your circuit to save it to your browser&apos;s local storage.
             </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
