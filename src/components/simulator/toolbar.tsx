@@ -24,7 +24,7 @@ function Gate({ nodeType, Icon, label, iconClassName = "" }: GateProps) {
       draggable
       onDragStart={onDragStart}
     >
-      <Icon className={`h-8 w-8 mb-1 ${iconClassName}`} />
+      <Icon className={`text-h-8 w-8 mb-1 ${iconClassName}`} />
       <span className="text-xs">{label}</span>
     </div>
   );
@@ -54,7 +54,7 @@ export function Toolbar() {
   ];
 
   return (
-    <div className="w-64 border-r bg-card p-4 flex flex-col h-full">
+    <div className="w-64 border-r bg-card bg- p-4 flex flex-col h-full">
       <div className="mb-4">
         <h2 className="text-xl font-semibold mb-2">Gates</h2>
         <p className="text-sm text-muted-foreground mb-2">

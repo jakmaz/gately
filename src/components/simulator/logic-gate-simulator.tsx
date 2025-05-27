@@ -27,17 +27,22 @@ import { ORGateNode } from "../nodes/or";
 import { SaveLoadPanel } from "./save-load-panel";
 import { Toolbar } from "./toolbar";
 import { Workflow } from "lucide-react";
+import { NOTGateNode } from "../nodes/not";
+import { NANDGateNode } from "../nodes/nand";
+import { NORGateNode } from "../nodes/nor";
+import { XORGateNode } from "../nodes/xor";
+import { XNORGateNode } from "../nodes/xnor";
 
 const nodeTypes: NodeTypes = {
   inputNode: InputNode,
   outputNode: OutputNode,
   andGate: ANDGateNode,
   orGate: ORGateNode,
-  // notGate: NOTGateNode,
-  // nandGate: NANDGateNode,
-  // norGate: NORGateNode,
-  // xorGate: XORGateNode,
-  // xnorGate: XNORGateNode,
+  notGate: NOTGateNode,
+  nandGate: NANDGateNode,
+  norGate: NORGateNode,
+  xorGate: XORGateNode,
+  xnorGate: XNORGateNode,
 };
 
 export function LogicGateSimulator() {
@@ -133,10 +138,10 @@ export function LogicGateSimulator() {
     <div className="h-screen w-full flex flex-col">
       <div className="p-4 border-b flex justify-between items-center bg-card">
         <div className="flex flex-row gap-2">
-          <div className="bg-blue-500 p-1 rounded-md">
-            <Workflow className="text-background h-7 w-7" />
+          <div className="bg-blue-500 p-0.5 rounded-md">
+            <Workflow className="text-white h-7 w-7" />
           </div>
-          <h1 className="text-2xl font-bold text-primary">Gately - Logic Gate Simulator</h1>
+          <h1 className="text-2xl font-bold text-primary">Gately</h1>
         </div>
         <SaveLoadPanel nodes={nodes} edges={edges} setNodes={setNodes} setEdges={setEdges} />
       </div>
