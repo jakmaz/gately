@@ -26,7 +26,6 @@ import { ANDGateNode } from "../nodes/and";
 import { ORGateNode } from "../nodes/or";
 import { SaveLoadPanel } from "./save-load-panel";
 import { Toolbar } from "./toolbar";
-import { TruthTable } from "./truth-table";
 import { Workflow } from "lucide-react";
 
 const nodeTypes: NodeTypes = {
@@ -148,6 +147,7 @@ export function LogicGateSimulator() {
         <div className="flex-1 h-full" ref={reactFlowWrapper}>
           <ReactFlowProvider>
             <ReactFlow
+              className="bg-b"
               nodes={nodes}
               edges={edges}
               onNodesChange={onNodesChange}
@@ -160,7 +160,7 @@ export function LogicGateSimulator() {
               onNodeClick={(_, node) => handleNodeClick(node)}
               fitView
             >
-              <Controls />
+              <Controls className="bg-blue-500" />
               <MiniMap />
               <Background gap={12} size={1} />
 
