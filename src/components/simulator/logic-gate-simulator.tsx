@@ -164,9 +164,9 @@ export function LogicGateSimulator() {
               <MiniMap />
               <Background gap={12} size={1} />
 
-              <Panel position="bottom-center" className="bg-card rounded-t-lg shadow-lg">
-                <TruthTable nodes={nodes} edges={edges} />
-              </Panel>
+              {/* <Panel position="bottom-center" className="bg-card rounded-t-lg shadow-lg"> */}
+              {/*   <TruthTable nodes={nodes} edges={edges} /> */}
+              {/* </Panel> */}
             </ReactFlow>
           </ReactFlowProvider>
         </div>
