@@ -1,5 +1,3 @@
-"use client";
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -13,7 +11,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Save, Upload, Download, MessageSquareReply, MessageSquareShare, ExternalLink } from "lucide-react";
+import { Save, Upload, Download, ExternalLink } from "lucide-react";
 import { toast } from "sonner";
 import { Edge, Node } from "reactflow";
 import { GateNodeProps } from "@/lib/types";

@@ -4,7 +4,7 @@ import { memo } from "react";
 import { Handle, Position } from "reactflow";
 import { LogicGateProps } from "@/lib/types";
 
-export const OutputNode = memo(({ id, data, isConnectable }: LogicGateProps) => {
+export const OutputNode = memo(({ data, isConnectable }: LogicGateProps) => {
   const stateColor = data.state ? "green-500" : "primary";
 
   return (

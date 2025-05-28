@@ -11,7 +11,6 @@ interface BaseGateNodeProps extends LogicGateProps {
 }
 
 export function BaseGateNode({
-  id,
   data,
   isConnectable,
   label,
