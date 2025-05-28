@@ -1,8 +1,9 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { ArrowRight, Check, Copy, Circle, Eye, Palette } from "lucide-react";
+import { ArrowRight, Check, } from "lucide-react";
 import Link from "next/link";
+import { MiniPreview } from "./mini-preview";
 
 export function Hero() {
   return (
@@ -64,7 +65,7 @@ export function Hero() {
 
           {/* Right Column - Preview Card */}
           <div className="relative hidden lg:block">
-            <Card className="border-border/40 from-background to-background/95 relative overflow-hidden rounded-2xl bg-gradient-to-b shadow-xl backdrop-blur">
+            <Card className="p-0 border-border/40 from-background to-background/95 relative overflow-hidden rounded-2xl bg-gradient-to-b shadow-xl backdrop-blur">
               <CardContent className="p-0">
                 <div className="flex items-center justify-between border-b p-4">
                   <div className="flex items-center gap-3">
@@ -77,37 +78,7 @@ export function Hero() {
                 </div>
 
                 <div className="space-y-6 p-6">
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between">
-                      <div className="text-sm font-medium">Gate Preview</div>
-                      <Eye className="text-muted-foreground size-4" />
-                    </div>
-                    <div className="space-y-3">
-                      <div className="flex gap-2">
-                        <Button className="w-full shadow-sm transition-none" variant="secondary">
-                          <Copy className="mr-2 size-4" />
-                          Copy Circuit
-                        </Button>
-                        <Button className="w-full shadow-sm transition-none" variant="outline">
-                          <Circle className="mr-2 size-4" />
-                          AND, OR, NOT, XOR
-                        </Button>
-                      </div>
-                      <Card className="w-full">
-                        <CardContent className="p-4">
-                          <div className="flex items-center gap-3">
-                            <div className="bg-primary/10 flex size-8 items-center justify-center rounded-full">
-                              <span className="text-primary text-xs">A ⊕ B</span>
-                            </div>
-                            <div className="flex-1">
-                              <div className="bg-foreground/90 mb-2 h-2 w-24 rounded"></div>
-                              <div className="bg-muted-foreground/60 h-2 w-16 rounded"></div>
-                            </div>
-                          </div>
-                        </CardContent>
-                      </Card>
-                    </div>
-                  </div>
+                  <MiniPreview />
                 </div>
               </CardContent>
             </Card>
