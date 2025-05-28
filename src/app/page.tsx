@@ -1,9 +1,48 @@
-import { LogicGateSimulator } from "@/components/simulator/logic-gate-simulator";
+"use client";
+
+import { useEffect, useState } from "react";
+import { Header } from "@/components/home/header";
+import { Hero } from "@/components/home/hero";
+import { Features } from "@/components/home/features";
+import { HowItWorks } from "@/components/home/how-it-works";
+import { Roadmap } from "@/components/home/roadmap";
+import { FAQ } from "@/components/home/faq";
+import { CTA } from "@/components/home/cta";
+import { Footer } from "@/components/home/footer";
 
 export default function Home() {
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 10) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
-    <main className="min-h-screen bg-background">
-      <LogicGateSimulator />
-    </main>
+    <div className="flex min-h-[100dvh] justify-items-center items-center flex-col bg-background text-foreground">
+      <Header
+        isScrolled={isScrolled}
+        mobileMenuOpen={mobileMenuOpen}
+        setMobileMenuOpen={setMobileMenuOpen}
+      />
+      <main className="flex-1 w-full">
+        <Hero />
+        <Features />
+        <HowItWorks />
+        <Roadmap />
+        <FAQ />
+        <CTA />
+      </main>
+      <Footer />
+    </div>
   );
 }
