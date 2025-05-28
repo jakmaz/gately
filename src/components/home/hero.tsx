@@ -22,7 +22,7 @@ export function Hero() {
             </div>
             <h1 className="from-foreground via-foreground/90 to-foreground/70 mb-6 bg-gradient-to-r bg-clip-text text-4xl font-bold tracking-tight text-transparent md:text-5xl lg:text-6xl">
               Design Logic <span className="font-serif font-light italic">Visually</span>{" "}
-              with <span className="text-primary">Gately</span>
+              with <span className="text-primary">gately</span>
             </h1>
             <p className="text-muted-foreground mb-8 text-lg leading-relaxed md:text-xl">
               Build logic circuits with a drag-and-drop interface. Real-time feedback. No signup required.

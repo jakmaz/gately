@@ -1,8 +1,4 @@
 import Link from "next/link";
-// import Logo from "@/assets/logo.svg";
-// import GitHubIcon from "@/assets/github.svg";
-// import TwitterIcon from "@/assets/twitter.svg";
-// import DiscordIcon from "@/assets/discord.svg";
 
 export function Footer() {
   return (
@@ -11,36 +7,11 @@ export function Footer() {
         <div className="grid gap-8 sm:grid-cols-2 md:grid-cols-4">
           <div className="space-y-4 col-span-2 max-w-md">
             <Link href="/" className="flex items-center gap-2 font-bold">
-              {/* <Logo className="size-6" /> */}
-              <span>tweakcn</span>
+              <span>Gately</span>
             </Link>
             <p className="text-sm text-muted-foreground">
-              A powerful visual theme editor for shadcn/ui components with
-              Tailwind CSS support. Make your components stand out.
+              A visual logic editor for building, simulating, and sharing digital circuits with ease. Drag, drop, and explore logic.
             </p>
-            <div className="flex gap-4">
-              <a
-                href="https://github.com/jnsahaj/tweakcn"
-                className="text-muted-foreground hover:text-foreground transition-colors"
-              >
-                {/* <GitHubIcon className="size-5" /> */}
-                <span className="sr-only">GitHub</span>
-              </a>
-              <a
-                href="https://discord.gg/Phs4u2NM3n"
-                className="text-muted-foreground hover:text-foreground transition-colors"
-              >
-                {/* <DiscordIcon className="size-5" /> */}
-                <span className="sr-only">Discord</span>
-              </a>
-              <a
-                href="https://x.com/iamsahaj_xyz"
-                className="text-muted-foreground hover:text-foreground transition-colors"
-              >
-                {/* <TwitterIcon className="size-5" /> */}
-                <span className="sr-only">Twitter</span>
-              </a>
-            </div>
           </div>
           <div className="space-y-4">
             <h4 className="text-sm font-bold">Product</h4>
@@ -76,23 +47,7 @@ export function Footer() {
             <ul className="space-y-2 text-sm">
               <li>
                 <a
-                  href="https://github.com/jnsahaj/tweakcn"
-                  className="text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  GitHub
-                </a>
-              </li>
-              <li>
-                <a
-                  href="https://discord.gg/Phs4u2NM3n"
-                  className="text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  Discord
-                </a>
-              </li>
-              <li>
-                <a
-                  href="https://x.com/messages/compose?recipient_id=1426676644152889345"
+                  href="/contact"
                   className="text-muted-foreground hover:text-foreground transition-colors"
                 >
                   Contact
@@ -104,7 +59,7 @@ export function Footer() {
 
         <div className="flex flex-col gap-4 sm:flex-row justify-between items-center border-t border-border/40 pt-8">
           <p className="text-xs text-muted-foreground">
-            &copy; {new Date().getFullYear()} tweakcn. All rights reserved.
+            &copy; {new Date().getFullYear()} gately. All rights reserved.
           </p>
           <p className="text-xs text-muted-foreground">
             <Link href="/privacy-policy">Privacy Policy</Link>
