@@ -1,18 +1,15 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
-import { Hand, Orbit, X, FileDown, ToggleLeft, ExternalLink, RotateCcw, CircuitBoard } from "lucide-react";
 import { ThemeToggle } from "./theme-toggle";
 
 type GateProps = {
   nodeType: string;
-  Icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
+  symbol: string;
   label: string;
-  iconClassName?: string;
 };
 
-function Gate({ nodeType, Icon, label, iconClassName = "" }: GateProps) {
+function Gate({ nodeType, symbol, label }: GateProps) {
   const onDragStart = (event: React.DragEvent<HTMLDivElement>) => {
     event.dataTransfer.setData("application/reactflow", nodeType);
     event.dataTransfer.effectAllowed = "move";
@@ -24,7 +21,7 @@ function Gate({ nodeType, Icon, label, iconClassName = "" }: GateProps) {
       draggable
       onDragStart={onDragStart}
     >
-      <Icon className={`text-h-8 w-8 mb-1 ${iconClassName}`} />
+      <div className="text-lg font-mono mb-1">{symbol}</div>
       <span className="text-xs">{label}</span>
     </div>
   );
@@ -35,26 +32,26 @@ export function Toolbar() {
     {
       title: "Input & Output",
       gates: [
-        { nodeType: "inputNode", Icon: ToggleLeft, label: "Input" },
-        { nodeType: "outputNode", Icon: ExternalLink, label: "Output" },
+        { nodeType: "inputNode", symbol: "=1", label: "Input" },
+        { nodeType: "outputNode", symbol: "=>", label: "Output" },
       ],
     },
     {
       title: "Logic Gates",
       gates: [
-        { nodeType: "andGate", Icon: Hand, label: "AND" },
-        { nodeType: "orGate", Icon: Orbit, label: "OR" },
-        { nodeType: "notGate", Icon: X, label: "NOT" },
-        { nodeType: "nandGate", Icon: CircuitBoard, label: "NAND" },
-        { nodeType: "norGate", Icon: RotateCcw, label: "NOR" },
-        { nodeType: "xorGate", Icon: X, label: "XOR" },
-        { nodeType: "xnorGate", Icon: FileDown, label: "XNOR" },
+        { nodeType: "andGate", symbol: "&", label: "AND" },
+        { nodeType: "orGate", symbol: "|", label: "OR" },
+        { nodeType: "notGate", symbol: "~", label: "NOT" },
+        { nodeType: "nandGate", symbol: "!&", label: "NAND" },
+        { nodeType: "norGate", symbol: "!|", label: "NOR" },
+        { nodeType: "xorGate", symbol: "^", label: "XOR" },
+        { nodeType: "xnorGate", symbol: "!^", label: "XNOR" },
       ],
     },
   ];
 
   return (
-    <div className="w-64 border-r bg-card bg- p-4 flex flex-col h-full">
+    <div className="w-64 border-r bg-card p-4 flex flex-col h-full">
       <div className="mb-4">
         <h2 className="text-xl font-semibold mb-2">Gates</h2>
         <p className="text-sm text-muted-foreground mb-2">
@@ -66,13 +63,12 @@ export function Toolbar() {
         <section key={title} className="mb-6">
           <h3 className="text-md font-medium mb-4">{title}</h3>
           <div className="grid grid-cols-2 gap-2">
-            {gates.map(({ nodeType, Icon, label }) => (
-              <Gate key={nodeType} nodeType={nodeType} Icon={Icon} label={label} />
+            {gates.map(({ nodeType, symbol, label }) => (
+              <Gate key={nodeType} nodeType={nodeType} symbol={symbol} label={label} />
             ))}
           </div>
         </section>
       ))}
-
 
       <div className="mt-auto flex justify-between">
         <ThemeToggle />
