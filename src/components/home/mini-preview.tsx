@@ -20,6 +20,7 @@ import { calculateNodeStates } from "@/lib/simulator";
 import { InputNode } from "../nodes/input";
 import { OutputNode } from "../nodes/output";
 import { ANDGateNode } from "../nodes/and";
+import confetti from 'canvas-confetti';
 
 const nodeTypes: NodeTypes = {
   inputNode: InputNode,
@@ -140,6 +141,15 @@ export function MiniPreview() {
       setTimeout(() => {
         const updatedNodes = calculateNodeStates(nodes, [...edges, edge as Edge]);
         setNodes(updatedNodes);
+
+        const outputNode = updatedNodes.find(n => n.type === 'outputNode');
+        if (outputNode?.data?.state === true) {
+          confetti({
+            particleCount: 100,
+            spread: 70,
+            origin: { x: 0.75, y: 0.4 }
+          });
+        }
       }, 100);
     },
     [setEdges, nodes, edges, setNodes]
@@ -167,6 +177,15 @@ export function MiniPreview() {
       setTimeout(() => {
         const calculatedNodes = calculateNodeStates(updatedNodes, edges);
         setNodes(calculatedNodes);
+
+        const outputNode = calculatedNodes.find(n => n.type === 'outputNode');
+        if (outputNode?.data?.state === true) {
+          confetti({
+            particleCount: 100,
+            spread: 70,
+            origin: { x: 0.75, y: 0.4 }
+          });
+        }
       }, 100);
     }
   };
