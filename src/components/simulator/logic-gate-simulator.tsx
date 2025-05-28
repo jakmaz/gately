@@ -32,6 +32,7 @@ import { NORGateNode } from "../nodes/nor";
 import { XORGateNode } from "../nodes/xor";
 import { XNORGateNode } from "../nodes/xnor";
 import AndGate from "../icons/and-gate";
+import Link from "next/link";
 
 const nodeTypes: NodeTypes = {
   inputNode: InputNode,
@@ -137,12 +138,14 @@ export function LogicGateSimulator() {
   return (
     <div className="h-screen w-full flex flex-col">
       <div className="p-4 border-b flex justify-between items-center bg-card">
-        <div className="flex flex-row gap-2">
-          <div className="bg-primary p-0.5 rounded-md">
-            <AndGate className="text-white h-7 w-7" />
+        <Link href="/">
+          <div className="flex flex-row gap-2">
+            <div className="bg-primary p-0.5 rounded-md">
+              <AndGate className="text-white h-7 w-7" />
+            </div>
+            <h1 className="text-2xl font-bold">gately</h1>
           </div>
-          <h1 className="text-2xl font-bold">gately</h1>
-        </div>
+        </Link>
         <SaveLoadPanel nodes={nodes} edges={edges} setNodes={setNodes} setEdges={setEdges} />
       </div>
 
