@@ -4,19 +4,20 @@ import { motion } from "motion/react";
 const steps = [
   {
     step: "01",
-    title: "Select Theme Preset",
-    description: "Choose the theme you want to customize from our growing library.",
+    title: "Add Logic Gates",
+    description: "Pick from a toolbox of gates like AND, OR, NOT, and more to start building your circuit.",
   },
   {
     step: "02",
-    title: "Customize Visually",
+    title: "Connect and Customize",
     description:
-      "Use our intuitive interface to adjust colors, dimensions, typography, and other properties.",
+      "Drag to connect gates, adjust layout, and label inputs/outputs using a smooth, intuitive interface.",
   },
   {
     step: "03",
-    title: "Copy Code",
-    description: "Copy the generated Tailwind CSS code directly into your project.",
+    title: "Share or Export",
+    description:
+      "Instantly share your finished circuit with a link or export it for presentations, teaching, or collaboration.",
   },
 ];
 

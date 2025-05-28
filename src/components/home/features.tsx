@@ -2,50 +2,50 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { motion } from "motion/react";
 import {
-  Code,
-  FileCode,
-  Layers,
-  Paintbrush,
-  PaintBucket,
-  Contrast,
+  Share2,
+  Table,
+  Zap,
+  Settings,
+  LayoutTemplate,
+  Cpu,
 } from "lucide-react";
 
 const features = [
   {
-    title: "Color Control",
+    title: "Modern & Smooth Interface",
     description:
-      "Customize background, text, and border colors with an intuitive color picker interface.",
-    icon: <Paintbrush className="size-5" />,
+      "Built with performance and polish in mind—Gately offers a sleek and intuitive experience on all devices.",
+    icon: <Zap className="size-5" />,
   },
   {
-    title: "Typography Settings",
+    title: "Drag-and-Drop Editor",
     description:
-      "Fine-tune font size, weight, and text transform to create the perfect look.",
-    icon: <FileCode className="size-5" />,
+      "Design circuits with a user-friendly drag-and-drop canvas. Connect gates and build logic visually and efficiently.",
+    icon: <LayoutTemplate className="size-5" />,
   },
   {
-    title: "Tailwind v4 & v3 Support",
+    title: "Logic Gate Toolbox",
     description:
-      "Seamlessly switch between Tailwind v4 and v3, with support for multiple color formats including OKLCH & HSL.",
-    icon: <Code className="size-5" />,
+      "Access a full set of gates including AND, OR, NOT, XOR, NAND, NOR and more. Everything you need to build powerful logic flows.",
+    icon: <Cpu className="size-5" />,
   },
   {
-    title: "Tailwind properties",
+    title: "Circuit Sharing",
     description:
-      "Fine-tune every aspect of your components with precise control over radius, spacing, shadows, and other Tailwind properties.",
-    icon: <Layers className="size-5" />,
+      "Easily share your logic circuits with a link—perfect for collaboration, teaching, or showcasing your designs.",
+    icon: <Share2 className="size-5" />,
   },
   {
-    title: "Beautiful Theme Presets",
+    title: "Truth Table Generation",
     description:
-      "Choose from stunning pre-designed themes and customize both light and dark mode colors effortlessly.",
-    icon: <PaintBucket className="size-5" />,
+      "Automatically generate comprehensive truth tables for any logical circuit or boolean expression.",
+    icon: <Table className="size-5" />,
   },
   {
-    title: "Contrast Checker",
+    title: "Customizable Settings",
     description:
-      "Ensure your designs meet accessibility standards with built-in contrast ratio checking between text and background colors.",
-    icon: <Contrast className="size-5" />,
+      "Tweak grid snapping, labels, themes, and more to personalize your logic editor environment.",
+    icon: <Settings className="size-5" />,
   },
 ];
 

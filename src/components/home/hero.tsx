@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ArrowRight, Check, Copy, Circle, Eye, Palette } from "lucide-react";
 import Link from "next/link";
-// import ShadcnLogo from "@/assets/shadcn.svg";
 
 export function Hero() {
   return (
@@ -17,30 +16,23 @@ export function Hero() {
                 className="mb-4 rounded-full px-4 py-1.5 text-sm font-medium shadow-sm transition-none"
                 variant="secondary"
               >
-                <span className="text-primary mr-1">✦</span> Visual Theme Editor
+                <span className="text-primary mr-1">✦</span> Visual Logic Editor
               </Badge>
             </div>
             <h1 className="from-foreground via-foreground/90 to-foreground/70 mb-6 bg-gradient-to-r bg-clip-text text-4xl font-bold tracking-tight text-transparent md:text-5xl lg:text-6xl">
-              Design Your <span className="font-serif font-light italic">Perfect</span>{" "}
-              <span className="text-primary inline-flex items-baseline gap-1">
-                <div className="bg-primary/10 flex items-center justify-center rounded-full p-1 md:p-2">
-                  {/* <ShadcnLogo className="size-6 md:size-8" /> */}
-                </div>
-                <span>shadcn/ui</span>
-              </span>{" "}
-              Theme
+              Design Logic <span className="font-serif font-light italic">Visually</span>{" "}
+              with <span className="text-primary">Gately</span>
             </h1>
             <p className="text-muted-foreground mb-8 text-lg leading-relaxed md:text-xl">
-              Customize colors, typography, and layouts with a real-time preview. No signup
-              required.
+              Build logic circuits with a drag-and-drop interface. Real-time feedback. No signup required.
             </p>
             <div className="flex flex-col gap-4 sm:flex-row">
-              <Link href="/editor/theme">
+              <Link href="/editor">
                 <Button
                   size="lg"
                   className="h-12 cursor-pointer rounded-full px-8 text-base shadow-md transition-transform duration-300 hover:translate-y-[-2px] hover:shadow-lg"
                 >
-                  Start Customizing
+                  Open Editor
                   <ArrowRight className="ml-2 size-4" />
                 </Button>
               </Link>
@@ -57,15 +49,15 @@ export function Hero() {
             <div className="mt-8 flex flex-wrap items-center gap-6">
               <div className="text-muted-foreground flex items-center gap-2 text-sm">
                 <Check className="text-primary size-5" />
-                <span>Real-time Preview</span>
+                <span>Drag & Drop Interface</span>
               </div>
               <div className="text-muted-foreground flex items-center gap-2 text-sm">
                 <Check className="text-primary size-5" />
-                <span>Export to Tailwind</span>
+                <span>Live Simulation</span>
               </div>
               <div className="text-muted-foreground flex items-center gap-2 text-sm">
                 <Check className="text-primary size-5" />
-                <span>Beautiful Presets</span>
+                <span>Truth Table Generation</span>
               </div>
             </div>
           </div>
@@ -74,7 +66,6 @@ export function Hero() {
           <div className="relative hidden lg:block">
             <Card className="border-border/40 from-background to-background/95 relative overflow-hidden rounded-2xl bg-gradient-to-b shadow-xl backdrop-blur">
               <CardContent className="p-0">
-                {/* Header */}
                 <div className="flex items-center justify-between border-b p-4">
                   <div className="flex items-center gap-3">
                     <div className="flex gap-2">
@@ -85,48 +76,28 @@ export function Hero() {
                   </div>
                 </div>
 
-                {/* Content */}
                 <div className="space-y-6 p-6">
-                  {/* Color Palette */}
                   <div className="space-y-4">
                     <div className="flex items-center justify-between">
-                      <div className="text-sm font-medium">Color Palette</div>
-                      <Palette className="text-muted-foreground size-4" />
-                    </div>
-                    <div className="space-y-2 text-center">
-                      <div className="from-primary via-secondary via-accent via-muted to-background h-24 w-full rounded-xl bg-gradient-to-r"></div>
-                      <div className="text-muted-foreground grid grid-cols-5 gap-2 text-xs">
-                        <div>Primary</div>
-                        <div>Secondary</div>
-                        <div>Accent</div>
-                        <div>Muted</div>
-                        <div>Background</div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Preview */}
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between">
-                      <div className="text-sm font-medium">Preview</div>
+                      <div className="text-sm font-medium">Gate Preview</div>
                       <Eye className="text-muted-foreground size-4" />
                     </div>
                     <div className="space-y-3">
                       <div className="flex gap-2">
                         <Button className="w-full shadow-sm transition-none" variant="secondary">
                           <Copy className="mr-2 size-4" />
-                          Copy Code
+                          Copy Circuit
                         </Button>
                         <Button className="w-full shadow-sm transition-none" variant="outline">
                           <Circle className="mr-2 size-4" />
-                          oklch, hsl, rgb, hex
+                          AND, OR, NOT, XOR
                         </Button>
                       </div>
                       <Card className="w-full">
                         <CardContent className="p-4">
                           <div className="flex items-center gap-3">
                             <div className="bg-primary/10 flex size-8 items-center justify-center rounded-full">
-                              <span className="text-primary text-xs">UI</span>
+                              <span className="text-primary text-xs">A ⊕ B</span>
                             </div>
                             <div className="flex-1">
                               <div className="bg-foreground/90 mb-2 h-2 w-24 rounded"></div>

@@ -27,7 +27,7 @@ export function CTA() {
             transition={{ duration: 0.5 }}
             className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight"
           >
-            Ready to Make Your Components Stand Out?
+            Ready to Build Smarter Circuits?
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -36,8 +36,7 @@ export function CTA() {
             transition={{ duration: 0.5, delay: 0.1 }}
             className="mx-auto max-w-[700px] text-primary-foreground/80 md:text-xl"
           >
-            Start customizing your shadcn/ui components today and create a unique
-            look for your application.
+            Start designing logic circuits visually with Gately - fast, intuitive, and perfect for learning or prototyping.
           </motion.p>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -46,7 +45,7 @@ export function CTA() {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="flex flex-col sm:flex-row gap-4 mt-4"
           >
-            <Link href="/editor/theme">
+            <Link href="/editor">
               <Button
                 size="lg"
                 variant="secondary"
@@ -56,7 +55,7 @@ export function CTA() {
                 <ArrowRight className="ml-2 size-4" />
               </Button>
             </Link>
-            <Link href="https://github.com/jnsahaj/tweakcn">
+            <a href="https://github.com/jakmaz/gately" target="_blank" rel="noopener noreferrer">
               <Button
                 size="lg"
                 variant="outline"
@@ -64,7 +63,7 @@ export function CTA() {
               >
                 View on GitHub
               </Button>
-            </Link>
+            </a>
           </motion.div>
           <motion.p
             initial={{ opacity: 0 }}
@@ -73,7 +72,7 @@ export function CTA() {
             transition={{ duration: 0.5, delay: 0.3 }}
             className="text-sm text-primary-foreground/80 mt-4"
           >
-            No login required. Free to use. Open source.
+            No login. No limits. Free and open source.
           </motion.p>
         </motion.div>
       </div>

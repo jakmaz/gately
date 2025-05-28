@@ -1,45 +1,49 @@
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { motion } from "motion/react";
-import { Folder, Grid, Layers, Palette, Repeat, Users } from "lucide-react";
+
+import { Folder, Grid, Layers, Share2, Brain, Users } from "lucide-react";
 
 const roadmapItems = [
   {
-    title: "Global Theme Editor",
-    description: "Create and manage complete themes with presets for your entire application.",
-    status: "Done",
-    icon: <Palette className="size-5" />,
-  },
-  {
-    title: "Theme Import/Export",
-    description: "Save and share your custom themes with others.",
-    status: "Done",
-    icon: <Repeat className="size-5" />,
-  },
-  {
-    title: "AI Theme Generation",
+    title: "Reusable Circuit Library",
     description:
-      "Generate and customize themes with AI assistance, making theme creation faster and more intuitive",
-    status: "In Progress",
-    icon: <Layers className="size-5" />,
+      "Save and reuse commonly used logic modules across projects for faster circuit design.",
+    status: "Done",
+    icon: <Folder className="size-5" />,
   },
   {
-    title: "Community Themes",
-    description: "Allow users to submit themes, vote on the best designs",
+    title: "One-Click Sharing",
+    description:
+      "Instantly generate shareable links to collaborate or demonstrate your circuits.",
+    status: "Done",
+    icon: <Share2 className="size-5" />,
+  },
+  {
+    title: "AI Gate Layout",
+    description:
+      "Automatically organize your logic gates for a cleaner and more readable circuit layout using AI.",
+    status: "In Progress",
+    icon: <Brain className="size-5" />,
+  },
+  {
+    title: "Community Circuits",
+    description:
+      "Browse, submit, and rate circuits created by the Gately community.",
     status: "Coming Soon",
     icon: <Users className="size-5" />,
   },
   {
-    title: "Multi-Project Management",
+    title: "Multi-Project Dashboard",
     description:
-      "Save and manage multiple theme projects, making it easy to switch between designs.",
+      "Organize and switch between multiple circuit projects from a unified dashboard.",
     status: "Planned",
-    icon: <Folder className="size-5" />,
+    icon: <Layers className="size-5" />,
   },
   {
-    title: "Smart Theme Generator",
+    title: "Smart Circuit Suggestions",
     description:
-      "Generate beautiful themes from a single color, color pair, or even an image. Expand your customization options with AI-powered theme generation.",
+      "Get circuit recommendations based on your current design using AI-powered logic analysis.",
     status: "Planned",
     icon: <Grid className="size-5" />,
   },

@@ -9,39 +9,39 @@ import { motion } from "motion/react";
 
 const faqs = [
   {
-    question: "What is tweakcn?",
+    question: "What is Gately?",
     answer:
-      "tweakcn is a visual theme editor for shadcn/ui components with Tailwind CSS support. It comes with a set of pre-built themes that you can use to customize your project.",
+      "Gately is a modern, visual editor for designing logic circuits. It allows you to build, customize, and share logic gate diagrams with a smooth and intuitive interface.",
   },
   {
-    question: "Is tweakcn free to use?",
+    question: "Is Gately free to use?",
     answer:
-      "Yes, tweakcn is completely free to use. We may introduce premium features in the future, but the core functionality will always remain free.",
+      "Yes, Gately is completely free to use. We may add optional premium features in the future, but all core functionality will remain free.",
   },
   {
-    question: "How do I customise a shadcn/ui theme?",
+    question: "Do I need to know digital logic to use Gately?",
     answer:
-      "You can customise a shadcn/ui theme by selecting the a preset theme you want to use from the dropdown menu and then adjusting the colors to you liking. Once you are happy with the theme, you can export the code by either copying it or running the command to apply the theme to your project automatically.",
+      "No prior experience is required! Gately is designed to be beginner-friendly, with visual tools that let anyone experiment with logic gates. That said, some knowledge of digital logic can help you build more complex circuits.",
   },
   {
-    question: "Does tweakcn support Tailwind CSS v4?",
+    question: "Can I share my circuits with others?",
     answer:
-      "Yes, tweakcn supports Tailwind CSS v4 (and v3). You can choose the version of Tailwind CSS you want to use from the dropdown menu in the Code section. It also supports multiple color formats to best suit your project.",
+      "Absolutely. Every circuit can be shared with a unique link, making it easy to collaborate, teach, or showcase your designs.",
   },
   {
-    question: "Do I need to know Tailwind CSS to use tweakcn?",
+    question: "Does Gately support custom logic blocks?",
     answer:
-      "No, you don't need to know Tailwind CSS to use tweakcn. Our visual editor makes it easy to customize components without writing any code. However, having some knowledge of Tailwind CSS will help you understand the generated code better.",
+      "Support for reusable/custom logic blocks is on our roadmap. In the meantime, you can manually recreate frequently used patterns.",
   },
   {
-    question: "Can I use tweakcn with my existing shadcn/ui project?",
+    question: "Can I use Gately for teaching or presentations?",
     answer:
-      "Yes, tweakcn is designed to work with existing shadcn/ui projects. You can export the generated code by either copying it or running the command to apply the theme to your project automatically.",
+      "Yes! Gately is perfect for education and demos. You can build circuits, walk through logic visually, and export or share them with ease.",
   },
   {
-    question: "Is tweakcn open source?",
+    question: "Is Gately open source?",
     answer:
-      "Yes :) tweakcn is open source. You can find the source code on GitHub and contribute to the project if you'd like to help improve it. You can also join the discord server to get help from the community.",
+      "Yes :) Gately is open source. You can explore the code on GitHub, contribute to development, or join the community on Discord for help and feedback.",
   },
 ];
 

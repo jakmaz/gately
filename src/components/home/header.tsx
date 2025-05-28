@@ -3,13 +3,13 @@
 import { Button } from "@/components/ui/button";
 import { motion } from "motion/react";
 import Link from "next/link";
-import { Menu, Moon, Sun, X, ChevronRight } from "lucide-react";
+import { Menu, X, ChevronRight, Github } from "lucide-react";
 // import Logo from "@/assets/logo.svg";
 // import GitHubIcon from "@/assets/github.svg";
-// import { useGithubStars } from "@/hooks/use-github-stars";
+import { useGithubStars } from "@/hooks/use-github-stars";
 import { cn } from "@/lib/utils";
 import { ThemeToggle } from "../simulator/theme-toggle";
-// import { formatCompactNumber } from "@/utils/format";
+import { formatCompactNumber } from "@/utils/format";
 // import { useTheme } from "next-themes";
 
 interface HeaderProps {
@@ -23,13 +23,7 @@ export function Header({
   mobileMenuOpen,
   setMobileMenuOpen,
 }: HeaderProps) {
-  // const { setTheme, theme } = useTheme();
-  // const { stargazersCount } = useGithubStars("jnsahaj", "tweakcn");
-  //
-  // const handleThemeToggle = (event: React.MouseEvent<HTMLButtonElement>) => {
-  //   const { clientX: x, clientY: y } = event;
-  //   toggleTheme({ x, y });
-  // };
+  const { stargazersCount } = useGithubStars("jamkaz", "gately");
 
   const handleScrollToSection = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
@@ -89,8 +83,9 @@ export function Header({
                 rel="noopener noreferrer"
                 className="font-semibold"
               >
+                <Github />
                 {/* <GitHubIcon className="size-5" /> */}
-                {/* {stargazersCount > 0 && formatCompactNumber(stargazersCount)} */}
+                {stargazersCount > 0 && formatCompactNumber(stargazersCount)}
               </a>
             </Button>
           </motion.div>
