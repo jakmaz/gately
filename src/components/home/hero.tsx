@@ -25,7 +25,7 @@ export function Hero() {
               with <span className="text-primary">gately</span>
             </h1>
             <p className="text-muted-foreground mb-8 text-lg leading-relaxed md:text-xl">
-              Build logic circuits with a drag-and-drop interface. Real-time feedback. No signup required.
+              Build logic circuits with a drag-and-drop interface. Real-time feedback. <br /> No signup required.
             </p>
             <div className="flex flex-col gap-4 sm:flex-row">
               <Link href="/editor">
