@@ -1,36 +1,79 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+<div align="center">
+  ![opengraph-image](./src/app/opengraph-image.png)
+</div>
+
+**[gately.jakmaz.com](https://gately.jakmaz.com)** is a visual logic editor for building, simulating, and sharing digital circuits with
+ease.  
+Design logic circuits with drag-and-drop, get real-time simulation, and generate truth tables — no signup required.
+
+---
+
+## Features
+
+- Drag-and-Drop Editor to build circuits visually
+- Toolbox with AND, OR, NOT, XOR, NAND, NOR gates and more
+- Live simulation with real-time feedback
+- Automatic truth table generation
+- Easy circuit sharing via link
+- Customizable grid, labels, and themes
+- Modern, responsive interface
+
+---
+
+## How It Works
+
+1. Add logic gates from the toolbox
+2. Connect gates by dragging wires and customize labels
+3. Share or export your circuit easily
+
+---
+
+## Roadmap
+
+| Feature                   | Status      | Description                                 |
+| ------------------------- | ----------- | ------------------------------------------- |
+| Reusable Circuit Library  | Done        | Save and reuse logic modules                |
+| One-Click Sharing         | Done        | Generate shareable links                    |
+| AI Gate Layout            | In Progress | Auto-arrange gates for clean layouts        |
+| Community Circuits        | Coming Soon | Share and browse community-created circuits |
+| Multi-Project Dashboard   | Planned     | Manage multiple projects from one place     |
+| Smart Circuit Suggestions | Planned     | AI-based recommendations for circuit design |
+
+---
+
+## FAQ
+
+**What is Gately?**  
+A visual editor to create and simulate digital logic circuits.
+
+**Is Gately free?**  
+Yes, free and open source with no login required.
+
+**Do I need prior knowledge?**  
+No, suitable for beginners and experts alike.
+
+**Can I share my circuits?**  
+Yes, easily share circuits via a link.
+
+**Is it good for teaching?**  
+Yes, ideal for education and presentations.
+
+---
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 18+
+- npm, yarn, or pnpm
+
+### Installation
 
 ```bash
+git clone https://github.com/yourusername/gately.git
+cd gately
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
