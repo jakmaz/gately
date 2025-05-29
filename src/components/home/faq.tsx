@@ -66,7 +66,7 @@ export function FAQ() {
             Frequently Asked Questions
           </h2>
           <p className="max-w-[800px] text-muted-foreground md:text-lg">
-            Find answers to common questions about tweakcn.
+            Find answers to common questions about Gately.
           </p>
         </motion.div>
 

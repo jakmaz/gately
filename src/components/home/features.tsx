@@ -86,8 +86,7 @@ export function Features() {
             Powerful Customization Tools
           </h2>
           <p className="max-w-[800px] text-muted-foreground md:text-lg">
-            tweakcn provides all the tools you need to customize your shadcn/ui
-            components and make them unique.
+            Gately provides all the tools you need to build and customize your logic circuits.
           </p>
         </motion.div>
 

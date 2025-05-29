@@ -78,7 +78,7 @@ export function Header({
           >
             <Button variant="ghost" asChild>
               <a
-                href="https://github.com/jnsahaj/tweakcn"
+                href="https://github.com/jamkaz/gately"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="font-semibold"

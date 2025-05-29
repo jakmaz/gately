@@ -75,7 +75,7 @@ export function Roadmap() {
             What&apos;s Coming Next
           </h2>
           <p className="text-muted-foreground max-w-[800px] md:text-lg">
-            We&apos;re constantly working to improve tweakcn and add new features. Here&apos;s
+            We&apos;re constantly working to improve Gately and add new features. Here&apos;s
             what&apos;s on our roadmap.
           </p>
         </motion.div>
