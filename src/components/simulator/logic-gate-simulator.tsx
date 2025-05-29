@@ -90,16 +90,45 @@ export function LogicGateSimulator() {
     [reactFlowInstance, nodes, setNodes]
   );
 
-  const onConnect = useCallback(
-    (params: Connection | Edge) => {
-      // Create edges with animated, colored lines
-      const edge = {
-        ...params,
-        animated: true,
-        style: { stroke: '#10b981', strokeWidth: 2 },
+  // Function to update edge colors and animation based on source node states
+  const updateEdgeStyles = useCallback((currentNodes: Node<GateNodeProps>[], currentEdges: Edge[]) => {
+    const nodeStates = new Map<string, boolean>();
+    
+    // Create a map of node IDs to their states
+    currentNodes.forEach(node => {
+      nodeStates.set(node.id, node.data.state);
+    });
+    
+    // Update edge colors and animation based on source node state
+    const updatedEdges = currentEdges.map(edge => {
+      const sourceState = nodeStates.get(edge.source) || false;
+      return {
+        ...edge,
+        animated: sourceState, // Only animate when state is high (true)
+        style: { 
+          stroke: sourceState ? '#10b981' : '#3b82f6', // Green for high state, blue for low state
+          strokeWidth: 2 
+        },
         markerEnd: {
           type: MarkerType.ArrowClosed,
-          color: '#10b981',
+          color: sourceState ? '#10b981' : '#3b82f6',
+        },
+      };
+    });
+    
+    setEdges(updatedEdges);
+  }, [setEdges]);
+
+  const onConnect = useCallback(
+    (params: Connection | Edge) => {
+      // Create edges with default blue color and no animation (low state)
+      const edge = {
+        ...params,
+        animated: false, // Default to not animated for low state
+        style: { stroke: '#3b82f6', strokeWidth: 2 }, // Default to blue (low state)
+        markerEnd: {
+          type: MarkerType.ArrowClosed,
+          color: '#3b82f6',
         },
       };
 
@@ -109,9 +138,12 @@ export function LogicGateSimulator() {
       setTimeout(() => {
         const updatedNodes = calculateNodeStates(nodes, [...edges, edge as Edge]);
         setNodes(updatedNodes);
+        
+        // Update edge styles after node states are calculated
+        updateEdgeStyles(updatedNodes, [...edges, edge as Edge]);
       }, 100);
     },
-    [setEdges, nodes, edges, setNodes]
+    [setEdges, nodes, edges, setNodes, updateEdgeStyles]
   );
 
   // Toggle input node state
@@ -136,6 +168,9 @@ export function LogicGateSimulator() {
       setTimeout(() => {
         const calculatedNodes = calculateNodeStates(updatedNodes, edges);
         setNodes(calculatedNodes);
+        
+        // Update edge styles after node states are calculated
+        updateEdgeStyles(calculatedNodes, edges);
       }, 100);
     }
   };
