@@ -62,26 +62,26 @@ const initialEdges = [
     source: "input-1",
     target: "and-1",
     targetHandle: "input-0",
-    animated: true,
-    style: { stroke: '#10b981', strokeWidth: 2 },
-    markerEnd: { type: MarkerType.ArrowClosed, color: '#10b981' },
+    animated: false,
+    style: { stroke: '#3b82f6', strokeWidth: 2 },
+    markerEnd: { type: MarkerType.ArrowClosed, color: '#3b82f6' },
   },
   {
     id: "input-2-and-1",
     source: "input-2",
     target: "and-1",
     targetHandle: "input-1",
-    animated: true,
-    style: { stroke: '#10b981', strokeWidth: 2 },
-    markerEnd: { type: MarkerType.ArrowClosed, color: '#10b981' },
+    animated: false,
+    style: { stroke: '#3b82f6', strokeWidth: 2 },
+    markerEnd: { type: MarkerType.ArrowClosed, color: '#3b82f6' },
   },
   {
     id: "and-1-output-1",
     source: "and-1",
     target: "output-1",
-    animated: true,
-    style: { stroke: '#10b981', strokeWidth: 2 },
-    markerEnd: { type: MarkerType.ArrowClosed, color: '#10b981' },
+    animated: false,
+    style: { stroke: '#3b82f6', strokeWidth: 2 },
+    markerEnd: { type: MarkerType.ArrowClosed, color: '#3b82f6' },
   },
 ];
 
@@ -89,6 +89,35 @@ export function MiniPreview() {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   const [reactFlowInstance, setReactFlowInstance] = useState<ReactFlowInstance | null>(null);
+
+  // Function to update edge colors and animation based on source node states
+  const updateEdgeStyles = useCallback((currentNodes: Node<GateNodeProps>[], currentEdges: Edge[]) => {
+    const nodeStates = new Map<string, boolean>();
+
+    // Create a map of node IDs to their states
+    currentNodes.forEach(node => {
+      nodeStates.set(node.id, node.data.state);
+    });
+
+    // Update edge colors and animation based on source node state
+    const updatedEdges = currentEdges.map(edge => {
+      const sourceState = nodeStates.get(edge.source) || false;
+      return {
+        ...edge,
+        animated: sourceState, // Only animate when state is high (true)
+        style: {
+          stroke: sourceState ? '#10b981' : '#3b82f6', // Green for high state, blue for low state
+          strokeWidth: 2
+        },
+        markerEnd: {
+          type: MarkerType.ArrowClosed,
+          color: sourceState ? '#10b981' : '#3b82f6',
+        },
+      };
+    });
+
+    setEdges(updatedEdges);
+  }, [setEdges]);
 
   // Add a new node to the flow
   const onDragOver = useCallback((event: React.DragEvent<HTMLDivElement>) => {
@@ -129,14 +158,14 @@ export function MiniPreview() {
 
   const onConnect = useCallback(
     (params: Connection | Edge) => {
-      // Create edges with animated, colored lines
+      // Create edges with default blue color and no animation (low state)
       const edge = {
         ...params,
-        animated: true,
-        style: { stroke: '#10b981', strokeWidth: 2 },
+        animated: false, // Default to not animated for low state
+        style: { stroke: '#3b82f6', strokeWidth: 2 }, // Default to blue (low state)
         markerEnd: {
           type: MarkerType.ArrowClosed,
-          color: '#10b981',
+          color: '#3b82f6',
         },
       };
 
@@ -146,6 +175,9 @@ export function MiniPreview() {
       setTimeout(() => {
         const updatedNodes = calculateNodeStates(nodes, [...edges, edge as Edge]);
         setNodes(updatedNodes);
+
+        // Update edge styles after node states are calculated
+        updateEdgeStyles(updatedNodes, [...edges, edge as Edge]);
 
         const outputNode = updatedNodes.find(n => n.type === 'outputNode');
         if (outputNode?.data?.state === true) {
@@ -157,7 +189,7 @@ export function MiniPreview() {
         }
       }, 100);
     },
-    [setEdges, nodes, edges, setNodes]
+    [setEdges, nodes, edges, setNodes, updateEdgeStyles]
   );
 
   // Toggle input node state
@@ -182,6 +214,9 @@ export function MiniPreview() {
       setTimeout(() => {
         const calculatedNodes = calculateNodeStates(updatedNodes, edges);
         setNodes(calculatedNodes);
+
+        // Update edge styles after node states are calculated
+        updateEdgeStyles(calculatedNodes, edges);
 
         const outputNode = calculatedNodes.find(n => n.type === 'outputNode');
         if (outputNode?.data?.state === true) {
@@ -213,9 +248,8 @@ export function MiniPreview() {
           fitView
         >
           <Background gap={12} size={1} />
-
         </ReactFlow>
       </ReactFlowProvider>
-    </div >
+    </div>
   );
 }
