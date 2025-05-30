@@ -85,7 +85,7 @@ export function LogicGateSimulator() {
       setEdges([]);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentFileId]); // 👈 include all dependencies
+  }, [currentFileId, ready]); // 👈 include all dependencies
 
 
 
