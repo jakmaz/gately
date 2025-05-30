@@ -4,7 +4,6 @@ import { useState, useCallback, useRef, useEffect } from "react";
 import ReactFlow, {
   ReactFlowProvider,
   Background,
-  Controls,
   MiniMap,
   addEdge,
   useNodesState,
@@ -35,6 +34,7 @@ import { EnhancedHeader } from "./enhanced-header";
 import { toast } from "sonner";
 import { useSettings } from "@/hooks/use-settings";
 import { useFileSystem } from "@/hooks/use-file-system";
+import { useHasMounted } from "@/hooks/use-has-mounted";
 
 const nodeTypes: NodeTypes = {
   inputNode: InputNode,
@@ -54,6 +54,7 @@ export function LogicGateSimulator() {
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const [reactFlowInstance, setReactFlowInstance] = useState<ReactFlowInstance | null>(null);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(true);
+  const hasMounted = useHasMounted(); // Used for displaying loading message
   const { settings } = useSettings();
   const { currentFileId, getCurrentFile, updateFileContent, switchToFile, ready } = useFileSystem();
 
@@ -62,7 +63,7 @@ export function LogicGateSimulator() {
   useEffect(() => {
     if (currentFileId && (nodes.length > 0 || edges.length > 0)) {
       const saveTimeout = setTimeout(() => {
-        console.log("Saving file", currentFileId);
+        console.debug("Saving file", currentFileId);
         updateFileContent(currentFileId, { nodes, edges });
       }, 1000); // Auto-save after 1 second of inactivity
 
@@ -73,9 +74,9 @@ export function LogicGateSimulator() {
 
 
   useEffect(() => {
-    if (!ready) return; // ✅ wait until ready
+    if (!ready) return;
     const currentFile = getCurrentFile();
-    console.log("Loading file", currentFileId);
+    console.debug("Loading file", currentFileId);
 
     if (currentFile?.data) {
       setNodes(currentFile.data.nodes)
@@ -86,7 +87,6 @@ export function LogicGateSimulator() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentFileId, ready]); // 👈 include all dependencies
-
 
 
   const currentFileName = getCurrentFile()?.name || "Untitled Circuit";
@@ -221,6 +221,7 @@ export function LogicGateSimulator() {
     toast.success(`Example "${name}" imported successfully`);
   }, [setNodes, setEdges, updateEdgeStyles, updateFileContent, currentFileId]);
 
+
   return (
     <div className="h-screen w-full flex flex-col">
       <EnhancedHeader
@@ -243,27 +244,31 @@ export function LogicGateSimulator() {
 
         <div className="flex-1 h-full" ref={reactFlowWrapper}>
           <ReactFlowProvider>
-            <ReactFlow
-              className="bg-background"
-              nodes={nodes}
-              edges={edges}
-              onNodesChange={onNodesChange}
-              onEdgesChange={onEdgesChange}
-              onConnect={onConnect}
-              onInit={setReactFlowInstance}
-              onDrop={onDrop}
-              onDragOver={onDragOver}
-              snapToGrid={settings.snapToGrid}
-              snapGrid={[20, 20]}
-              nodeTypes={nodeTypes}
-              onNodeClick={(_, node) => handleNodeClick(node)}
-              // connectionLineType={settings.connectionType}
-              fitView
-            >
-              <Controls className="bg-card" />
-              {settings.showMinimap && <MiniMap className="bg-card" />}
-              {settings.showGrid && <Background gap={12} size={1} />}
-            </ReactFlow>
+            {hasMounted ? (
+              <ReactFlow
+                className="bg-background"
+                nodes={nodes}
+                edges={edges}
+                onNodesChange={onNodesChange}
+                onEdgesChange={onEdgesChange}
+                onConnect={onConnect}
+                onInit={setReactFlowInstance}
+                onDrop={onDrop}
+                onDragOver={onDragOver}
+                snapToGrid={settings.snapToGrid}
+                snapGrid={[20, 20]}
+                nodeTypes={nodeTypes}
+                onNodeClick={(_, node) => handleNodeClick(node)}
+                fitView
+              >
+                {settings.showMinimap && <MiniMap className="bg-card" />}
+                {settings.showGrid && <Background gap={12} size={1} />}
+              </ReactFlow>
+            ) : (
+              <div className="flex items-center justify-center h-full text-xl text-muted-foreground">
+                Loading simulator...
+              </div>
+            )}
           </ReactFlowProvider>
         </div>
       </div>

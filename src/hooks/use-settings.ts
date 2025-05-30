@@ -19,28 +19,37 @@ const defaultSettings: Settings = {
 };
 
 export function useSettings() {
-  const [settings, setSettings] = useState<Settings>(defaultSettings);
+  const [settings, setSettings] = useState<Settings | null>(null); // null until loaded
 
+  // Load from localStorage on mount
   useEffect(() => {
     try {
       const stored = localStorage.getItem("settings");
-      if (stored) {
-        setSettings(JSON.parse(stored));
-      }
+      setSettings(stored ? JSON.parse(stored) : defaultSettings);
     } catch {
-      // Ignore localStorage errors
+      setSettings(defaultSettings);
     }
   }, []);
 
+  // Save to localStorage when settings change
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      localStorage.setItem("settings", JSON.stringify(settings));
+    if (settings) {
+      try {
+        localStorage.setItem("settings", JSON.stringify(settings));
+      } catch {
+        // Ignore localStorage errors
+      }
     }
   }, [settings]);
 
   const updateSetting = <K extends keyof Settings>(key: K, value: Settings[K]) => {
-    setSettings((prev) => ({ ...prev, [key]: value }));
+    if (!settings) return;
+    setSettings((prev) => ({ ...prev!, [key]: value }));
   };
 
-  return { settings, updateSetting };
+  return {
+    settings: settings ?? defaultSettings, // fallback while loading
+    updateSetting,
+    isReady: settings !== null,
+  };
 }

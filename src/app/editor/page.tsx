@@ -1,3 +1,5 @@
+"use client"
+
 import { LogicGateSimulator } from "@/components/simulator/logic-gate-simulator";
 
 export default function Page() {
