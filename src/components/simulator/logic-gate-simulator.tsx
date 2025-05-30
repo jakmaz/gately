@@ -68,32 +68,23 @@ export function LogicGateSimulator() {
 
       return () => clearTimeout(saveTimeout);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [nodes, edges]);
 
 
   useEffect(() => {
     if (!ready) return; // ✅ wait until ready
-    console.log("Loading file", currentFileId);
     const currentFile = getCurrentFile();
+    console.log("Loading file", currentFileId);
 
     if (currentFile?.data) {
-      setNodes((prevNodes) => {
-        if (prevNodes.length === 0) {
-          return currentFile.data.nodes;
-        }
-        return prevNodes;
-      });
-
-      setEdges((prevEdges) => {
-        if (prevEdges.length === 0) {
-          return currentFile.data.edges;
-        }
-        return prevEdges;
-      });
+      setNodes(currentFile.data.nodes)
+      setEdges(currentFile.data.edges)
     } else {
       setNodes([]);
       setEdges([]);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentFileId]); // 👈 include all dependencies
 
 

@@ -29,7 +29,7 @@ const defaultTree: FileNode[] = [
         },
       },
       {
-        id: "2",
+        id: "basic",
         name: "Basic Gates",
         type: "file",
         data: {
@@ -54,17 +54,6 @@ export function useFileSystem() {
       }
     } catch {}
     setReady(true);
-  }, []);
-
-  useEffect(() => {
-    try {
-      const stored = localStorage.getItem("file-tree");
-      if (stored) {
-        setFileTree(JSON.parse(stored));
-      }
-    } catch {
-      // Ignore localStorage errors
-    }
   }, []);
 
   useEffect(() => {
