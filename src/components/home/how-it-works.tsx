@@ -41,7 +41,7 @@ export function HowItWorks() {
             className="rounded-full px-4 py-1.5 text-sm font-medium shadow-sm"
             variant="secondary"
           >
-            <span className="mr-1 text-primary">✦</span> How It Works
+            <span className="mr-1 text-3xltext-primary">✦</span> How It Works
           </Badge>
           <h2 className="text-3xl md:text-4xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-foreground to-foreground/80">
             Simple Process, Beautiful Results

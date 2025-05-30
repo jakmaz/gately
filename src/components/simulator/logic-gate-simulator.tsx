@@ -32,6 +32,7 @@ import { XORGateNode } from "../nodes/xor";
 import { XNORGateNode } from "../nodes/xnor";
 import { FileExplorer } from "./file-explorer";
 import { EnhancedHeader } from "./enhanced-header";
+import { toast } from "sonner";
 
 const nodeTypes: NodeTypes = {
   inputNode: InputNode,
@@ -164,6 +165,22 @@ export function LogicGateSimulator() {
     }
   };
 
+  // Handle importing example circuits
+  const handleImportExample = useCallback((exampleNodes: Node<GateNodeProps>[], exampleEdges: Edge[], name: string) => {
+    setNodes(exampleNodes);
+    setEdges(exampleEdges);
+    setCurrentFileName(`${name}.json`);
+    
+    // Recalculate node states after importing
+    setTimeout(() => {
+      const calculatedNodes = calculateNodeStates(exampleNodes, exampleEdges);
+      setNodes(calculatedNodes);
+      updateEdgeStyles(calculatedNodes, exampleEdges);
+    }, 100);
+    
+    toast.success(`Example "${name}" imported successfully`);
+  }, [setNodes, setEdges, updateEdgeStyles]);
+
   return (
     <div className="h-screen w-full flex flex-col">
       <EnhancedHeader 
@@ -171,10 +188,16 @@ export function LogicGateSimulator() {
         edges={edges} 
         onToggleSidebar={() => setSidebarCollapsed(!sidebarCollapsed)}
         currentFileName={currentFileName}
+        onImportExample={handleImportExample}
       />
 
       <div className="flex flex-1 overflow-hidden">
-        <FileExplorer isCollapsed={sidebarCollapsed} />
+        <FileExplorer 
+          isCollapsed={sidebarCollapsed} 
+          nodes={nodes}
+          edges={edges}
+          currentFileName={currentFileName}
+        />
         
         <Toolbar />
 
