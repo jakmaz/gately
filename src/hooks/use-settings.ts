@@ -19,17 +19,23 @@ const defaultSettings: Settings = {
 };
 
 export function useSettings() {
-  const [settings, setSettings] = useState<Settings>(() => {
-    try {
-      const stored = localStorage.getItem("settings");
-      return stored ? JSON.parse(stored) : defaultSettings;
-    } catch {
-      return defaultSettings;
-    }
-  });
+  const [settings, setSettings] = useState<Settings>(defaultSettings);
 
   useEffect(() => {
-    localStorage.setItem("settings", JSON.stringify(settings));
+    try {
+      const stored = localStorage.getItem("settings");
+      if (stored) {
+        setSettings(JSON.parse(stored));
+      }
+    } catch {
+      // Ignore localStorage errors
+    }
+  }, []);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      localStorage.setItem("settings", JSON.stringify(settings));
+    }
   }, [settings]);
 
   const updateSetting = <K extends keyof Settings>(key: K, value: Settings[K]) => {

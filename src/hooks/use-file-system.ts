@@ -26,13 +26,23 @@ const defaultTree: FileNode[] = [
 ];
 
 export function useFileSystem() {
-  const [fileTree, setFileTree] = useState<FileNode[]>(() => {
-    const stored = localStorage.getItem("file-tree");
-    return stored ? JSON.parse(stored) : defaultTree;
-  });
+  const [fileTree, setFileTree] = useState<FileNode[]>(defaultTree);
 
   useEffect(() => {
-    localStorage.setItem("file-tree", JSON.stringify(fileTree));
+    try {
+      const stored = localStorage.getItem("file-tree");
+      if (stored) {
+        setFileTree(JSON.parse(stored));
+      }
+    } catch {
+      // Ignore localStorage errors
+    }
+  }, []);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem("file-tree", JSON.stringify(fileTree));
+    }
   }, [fileTree]);
 
   const createItem = (parentId: string | null, item: FileNode) => {
