@@ -26,14 +26,12 @@ import { Edge, Node } from "reactflow";
 import { GateNodeProps } from "@/lib/types";
 
 interface EnhancedHeaderProps {
-  nodes: Node<GateNodeProps>[];
-  edges: Edge[];
   onToggleSidebar: () => void;
   currentFileName: string;
   onImportExample: (nodes: Node<GateNodeProps>[], edges: Edge[], name: string) => void;
 }
 
-export function EnhancedHeader({ nodes, edges, onToggleSidebar, currentFileName, onImportExample }: EnhancedHeaderProps) {
+export function EnhancedHeader({ onToggleSidebar, currentFileName, onImportExample }: EnhancedHeaderProps) {
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [examplesOpen, setExamplesOpen] = useState(false);
   const [shareDialogOpen, setShareDialogOpen] = useState(false);

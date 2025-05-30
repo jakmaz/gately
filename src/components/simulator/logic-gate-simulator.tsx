@@ -186,8 +186,6 @@ export function LogicGateSimulator() {
   return (
     <div className="h-screen w-full flex flex-col">
       <EnhancedHeader
-        nodes={nodes}
-        edges={edges}
         onToggleSidebar={() => setSidebarCollapsed(!sidebarCollapsed)}
         currentFileName={currentFileName}
         onImportExample={handleImportExample}

@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
@@ -11,9 +10,9 @@ import {
 } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Palette, Zap, Grid, Settings } from "lucide-react";
+import { Palette, Zap, Grid, SettingsIcon } from "lucide-react";
 import { ThemeToggle } from "./theme-toggle";
-import { useSettings } from "@/hooks/use-settings";
+import { Settings, useSettings } from "@/hooks/use-settings";
 
 
 
@@ -35,7 +34,7 @@ export function SettingsDialog({ open, onOpenChange }: SettingsDialogProps) {
       <DialogContent className="max-w-2xl max-h-[80vh] overflow-hidden">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <Settings className="h-5 w-5" />
+            <SettingsIcon className="h-5 w-5" />
             Settings
           </DialogTitle>
           <DialogDescription>
@@ -103,7 +102,7 @@ export function SettingsDialog({ open, onOpenChange }: SettingsDialogProps) {
                           key={type}
                           variant={settings.connectionType === type ? 'default' : 'outline'}
                           size="sm"
-                          onClick={() => updateSetting('connectionType', type)}
+                          onClick={() => updateSetting('connectionType', type as Settings["connectionType"])}
                           className="capitalize"
                         >
                           {type}
