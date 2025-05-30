@@ -66,7 +66,7 @@ const item = {
 
 export function Features() {
   return (
-    <section id="features" className="w-full py-20 md:py-32 relative isolate">
+    <section id="features" className="w-full py-14 md:py-32 relative isolate">
       <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_center,rgba(from_var(--primary)_r_g_b_/_0.03),transparent_70%)]"></div>
       <div className="container mx-auto px-4 md:px-6">
         <motion.div
@@ -104,7 +104,7 @@ export function Features() {
               whileHover={{ y: -5, transition: { duration: 0.2 } }}
             >
               <Card className="h-full overflow-hidden border-border/40 bg-gradient-to-b from-card to-card/50 backdrop-blur transition-all hover:shadow-lg hover:border-primary/20 group">
-                <CardContent className="p-6 flex flex-col h-full">
+                <CardContent>
                   <div className="size-12 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-4 group-hover:bg-primary/20 transition-colors duration-300">
                     {feature.icon}
                   </div>

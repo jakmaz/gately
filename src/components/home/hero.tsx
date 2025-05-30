@@ -7,12 +7,12 @@ import { MiniPreview } from "./mini-preview";
 
 export function Hero() {
   return (
-    <section className="relative isolate container mx-auto w-full py-20 md:py-32 lg:py-40">
+    <section className="relative isolate container mx-auto w-full py-14 lg:py-40">
       <div className="relative z-10 px-4 md:px-6">
-        <div className="grid items-center gap-12 lg:grid-cols-2">
+        <div className="grid items-center gap-8 lg:grid-cols-2">
           {/* Left Column - Text Content */}
-          <div className="mx-auto max-w-2xl text-left lg:mx-0">
-            <div>
+          <div className="mx-auto sm:text-left text-center">
+            <div className="flex justify-center sm:justify-start">
               <Badge
                 className="mb-4 rounded-full px-4 py-1.5 text-sm font-medium shadow-sm transition-none"
                 variant="secondary"
@@ -21,17 +21,16 @@ export function Hero() {
               </Badge>
             </div>
             <h1 className="from-foreground via-foreground/90 to-foreground/70 mb-6 bg-gradient-to-r bg-clip-text text-4xl font-bold tracking-tight text-transparent md:text-5xl lg:text-6xl">
-              Design Logic <span className="font-serif font-light italic">Visually</span>{" "}
-              with <span className="text-primary">gately</span>
+              Design Logic<br /><span className="-ml-2 font-serif text-muted-foreground italic">Visually</span> with <span className="text-primary">gately</span>
             </h1>
             <p className="text-muted-foreground mb-8 text-lg leading-relaxed md:text-xl">
-              Build logic circuits with a drag-and-drop interface. Real-time feedback. <br /> No signup required.
+              Build logic circuits with a drag-and-drop interface. Real-time feedback.
             </p>
             <div className="flex flex-col gap-4 sm:flex-row">
               <Link href="/editor">
                 <Button
                   size="lg"
-                  className="h-12 cursor-pointer rounded-full px-8 text-base shadow-md transition-transform duration-300 hover:translate-y-[-2px] hover:shadow-lg"
+                  className="h-12 w-full cursor-pointer rounded-full text-base shadow-md transition-transform duration-300 hover:translate-y-[-2px] hover:shadow-lg"
                 >
                   Open Editor
                   <ArrowRight className="ml-2 size-4" />
@@ -41,14 +40,14 @@ export function Hero() {
                 <Button
                   size="lg"
                   variant="outline"
-                  className="border-primary/20 hover:border-primary/50 h-12 cursor-pointer rounded-full px-8 text-base transition-transform duration-300 hover:translate-y-[-2px]"
+                  className="border-primary/20 w-full hover:border-primary/50 h-12 cursor-pointer rounded-full px-8 text-base transition-transform duration-300 hover:translate-y-[-2px]"
                 >
                   View Examples
                 </Button>
               </a>
             </div>
-            <div className="mt-8 flex flex-wrap items-center gap-6">
-              <div className="text-muted-foreground flex items-center gap-2 text-sm">
+            <div className="mt-8 flex flex-wrap sm:justify-start justify-center items-center gap-6">
+              <div className="hidden sm:flex text-muted-foreground items-center gap-2 text-sm">
                 <Check className="text-primary size-5" />
                 <span>Drag & Drop Interface</span>
               </div>
@@ -58,13 +57,13 @@ export function Hero() {
               </div>
               <div className="text-muted-foreground flex items-center gap-2 text-sm">
                 <Check className="text-primary size-5" />
-                <span>Truth Table Generation</span>
+                <span>No signup required</span>
               </div>
             </div>
           </div>
 
           {/* Right Column - Preview Card */}
-          <div className="relative hidden lg:block">
+          <div className="relative">
             <Card className="p-0 border-border/40 from-background to-background/95 relative overflow-hidden rounded-2xl bg-gradient-to-b shadow-xl backdrop-blur">
               <CardContent className="p-0">
                 <div className="flex items-center justify-between border-b p-4">
@@ -77,7 +76,7 @@ export function Hero() {
                   </div>
                 </div>
 
-                <div className="space-y-6 p-6">
+                <div className="space-y-6 p-2 md:p-6">
                   <MiniPreview />
                 </div>
               </CardContent>

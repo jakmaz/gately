@@ -6,32 +6,11 @@ import { Folder, Grid, Layers, Share2, Brain, Users } from "lucide-react";
 
 const roadmapItems = [
   {
-    title: "Reusable Circuit Library",
-    description:
-      "Save and reuse commonly used logic modules across projects for faster circuit design.",
-    status: "Done",
-    icon: <Folder className="size-5" />,
-  },
-  {
     title: "One-Click Sharing",
     description:
       "Instantly generate shareable links to collaborate or demonstrate your circuits.",
-    status: "Done",
-    icon: <Share2 className="size-5" />,
-  },
-  {
-    title: "AI Gate Layout",
-    description:
-      "Automatically organize your logic gates for a cleaner and more readable circuit layout using AI.",
     status: "In Progress",
-    icon: <Brain className="size-5" />,
-  },
-  {
-    title: "Community Circuits",
-    description:
-      "Browse, submit, and rate circuits created by the Gately community.",
-    status: "Coming Soon",
-    icon: <Users className="size-5" />,
+    icon: <Share2 className="size-5" />,
   },
   {
     title: "Multi-Project Dashboard",
@@ -47,13 +26,34 @@ const roadmapItems = [
     status: "Planned",
     icon: <Grid className="size-5" />,
   },
+  {
+    title: "Reusable Circuit Library",
+    description:
+      "Save and reuse commonly used logic modules across projects for faster circuit design.",
+    status: "Coming Soon",
+    icon: <Folder className="size-5" />,
+  },
+  {
+    title: "AI Gate Layout",
+    description:
+      "Automatically organize your logic gates for a cleaner and more readable circuit layout using AI.",
+    status: "Coming Soon",
+    icon: <Brain className="size-5" />,
+  },
+  {
+    title: "Community Circuits",
+    description:
+      "Browse, submit, and rate circuits created by the Gately community.",
+    status: "Coming Soon",
+    icon: <Users className="size-5" />,
+  },
 ];
 
 export function Roadmap() {
   return (
     <section
       id="roadmap"
-      className="from-muted/30 relative isolate w-full overflow-hidden bg-linear-180 from-50% to-transparent py-20 md:py-32"
+      className="from-muted/30 relative isolate w-full overflow-hidden bg-linear-180 from-50% to-transparent py-14 md:py-32"
     >
       <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top,rgba(from_var(--secondary)_r_g_b_/0.05),transparent_50%)]"></div>
 
@@ -91,7 +91,7 @@ export function Roadmap() {
               whileHover={{ y: -5, transition: { duration: 0.2 } }}
             >
               <Card className="border-border/40 from-card to-card/50 hover:border-primary/20 h-full overflow-hidden bg-gradient-to-b backdrop-blur transition-all hover:shadow-lg">
-                <CardContent className="flex h-full flex-col p-6">
+                <CardContent>
                   <div className="bg-primary/10 text-primary mb-4 flex size-12 items-center justify-center rounded-full">
                     {item.icon}
                   </div>

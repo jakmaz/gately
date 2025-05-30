@@ -231,7 +231,7 @@ export function MiniPreview() {
   };
 
   return (
-    <div className="h-82 w-full">
+    <div className="h-40 sm:h-82 w-full">
       <ReactFlowProvider>
         <ReactFlow
           className="bg-b"
