@@ -47,20 +47,21 @@ export function useFileSystem() {
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    try {
-      const stored = localStorage.getItem("file-tree");
-      if (stored) {
+    const stored = localStorage.getItem("file-tree");
+    if (stored) {
+      try {
         setFileTree(JSON.parse(stored));
+      } catch (e) {
+        console.error("Failed to parse stored file tree", e);
       }
-    } catch {}
+    }
     setReady(true);
   }, []);
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      localStorage.setItem("file-tree", JSON.stringify(fileTree));
-    }
-  }, [fileTree]);
+    if (!ready) return; // Prevent saving until the initial load is complete
+    localStorage.setItem("file-tree", JSON.stringify(fileTree));
+  }, [fileTree, ready]);
 
   const createItem = (parentId: string | null, item: FileNode) => {
     const newTree = addItemToTree(fileTree, parentId, item);
