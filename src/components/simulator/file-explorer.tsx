@@ -24,6 +24,7 @@ import {
 import { toast } from "sonner";
 import { Edge, Node } from "reactflow";
 import { GateNodeProps } from "@/lib/types";
+import { useFileSystem } from "@/hooks/use-file-system";
 
 interface FileItem {
   id: string;
@@ -41,18 +42,7 @@ interface FileExplorerProps {
 }
 
 export function FileExplorer({ isCollapsed, nodes, edges, currentFileName }: FileExplorerProps) {
-  const [files, setFiles] = useState<FileItem[]>([
-    {
-      id: '1',
-      name: 'My Circuits',
-      type: 'directory',
-      isOpen: true,
-      children: [
-        { id: '2', name: 'Basic Gates', type: 'file' },
-        { id: '3', name: 'Adder Circuit', type: 'file' },
-      ],
-    },
-  ]);
+  const { fileTree, createItem, updateFileTree } = useFileSystem();
 
   const [selectedFile, setSelectedFile] = useState<string>('2');
   const [newItemDialog, setNewItemDialog] = useState(false);
@@ -86,24 +76,19 @@ export function FileExplorer({ isCollapsed, nodes, edges, currentFileName }: Fil
   };
 
   const toggleDirectory = (id: string) => {
-    setFiles(prev => updateFileTree(prev, id, (item) => ({
-      ...item,
-      isOpen: !item.isOpen
-    })));
-  };
-
-  const updateFileTree = (items: FileItem[], id: string, updater: (item: FileItem) => FileItem): FileItem[] => {
-    return items.map(item => {
-      if (item.id === id) {
-        return updater(item);
-      }
-      if (item.children) {
-        return {
-          ...item,
-          children: updateFileTree(item.children, id, updater)
-        };
-      }
-      return item;
+    updateFileTree(tree => {
+      const toggleOpen = (items: FileItem[]): FileItem[] => {
+        return items.map(item => {
+          if (item.id === id) {
+            return { ...item, isOpen: !item.isOpen };
+          }
+          if (item.children) {
+            return { ...item, children: toggleOpen(item.children) };
+          }
+          return item;
+        });
+      };
+      return toggleOpen(tree);
     });
   };
 
@@ -115,13 +100,14 @@ export function FileExplorer({ isCollapsed, nodes, edges, currentFileName }: Fil
 
     const newItem: FileItem = {
       id: Date.now().toString(),
-      name: newItemName + (newItemType === 'file' ? '' : ''),
+      name: newItemName,
       type: newItemType,
       children: newItemType === 'directory' ? [] : undefined,
       isOpen: newItemType === 'directory' ? false : undefined,
     };
 
-    setFiles(prev => [...prev, newItem]);
+    createItem(null, newItem);  // Add to root for now
+
     setNewItemDialog(false);
     setNewItemName('');
     toast.success(`${newItemType === 'file' ? 'File' : 'Directory'} created successfully`);
@@ -239,7 +225,7 @@ export function FileExplorer({ isCollapsed, nodes, edges, currentFileName }: Fil
       </div>
 
       <div className="flex-1 overflow-auto p-2">
-        {files.map(item => renderFileItem(item))}
+        {fileTree.map(item => renderFileItem(item))}
       </div>
     </div>
   );
