@@ -1,5 +1,3 @@
-"use client";
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -39,12 +37,20 @@ interface FileExplorerProps {
   nodes: Node<GateNodeProps>[];
   edges: Edge[];
   currentFileName: string;
+  onFileSelect: (fileId: string) => void;
+  currentFileId: string;
 }
 
-export function FileExplorer({ isCollapsed, nodes, edges, currentFileName }: FileExplorerProps) {
+export function FileExplorer({
+  isCollapsed,
+  nodes,
+  edges,
+  currentFileName,
+  onFileSelect,
+  currentFileId
+}: FileExplorerProps) {
   const { fileTree, createItem, updateFileTree } = useFileSystem();
 
-  const [selectedFile, setSelectedFile] = useState<string>('2');
   const [newItemDialog, setNewItemDialog] = useState(false);
   const [newItemName, setNewItemName] = useState('');
   const [newItemType, setNewItemType] = useState<'file' | 'directory'>('file');
@@ -114,7 +120,7 @@ export function FileExplorer({ isCollapsed, nodes, edges, currentFileName }: Fil
   };
 
   const renderFileItem = (item: FileItem, depth = 0) => {
-    const isSelected = selectedFile === item.id;
+    const isSelected = currentFileId === item.id;
 
     return (
       <div key={item.id}>
@@ -126,7 +132,7 @@ export function FileExplorer({ isCollapsed, nodes, edges, currentFileName }: Fil
             if (item.type === 'directory') {
               toggleDirectory(item.id);
             } else {
-              setSelectedFile(item.id);
+              onFileSelect(item.id);
             }
           }}
         >

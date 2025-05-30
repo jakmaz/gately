@@ -1,5 +1,5 @@
 import { GateNodeProps } from "@/lib/types";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Edge, Node } from "reactflow";
 
 interface FileNode {
@@ -19,14 +19,42 @@ const defaultTree: FileNode[] = [
     name: "My Circuits",
     type: "directory",
     children: [
-      { id: "2", name: "Basic Gates", type: "file" },
-      { id: "3", name: "Adder Circuit", type: "file" },
+      {
+        id: "untitled",
+        name: "Untitled Circuit",
+        type: "file",
+        data: {
+          nodes: [],
+          edges: [],
+        },
+      },
+      {
+        id: "2",
+        name: "Basic Gates",
+        type: "file",
+        data: {
+          nodes: [],
+          edges: [],
+        },
+      },
     ],
   },
 ];
 
 export function useFileSystem() {
   const [fileTree, setFileTree] = useState<FileNode[]>(defaultTree);
+  const [currentFileId, setCurrentFileId] = useState<string>("untitled");
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem("file-tree");
+      if (stored) {
+        setFileTree(JSON.parse(stored));
+      }
+    } catch {}
+    setReady(true);
+  }, []);
 
   useEffect(() => {
     try {
@@ -40,7 +68,7 @@ export function useFileSystem() {
   }, []);
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       localStorage.setItem("file-tree", JSON.stringify(fileTree));
     }
   }, [fileTree]);
@@ -63,7 +91,25 @@ export function useFileSystem() {
     setFileTree((prev) => updater(prev));
   };
 
-  return { fileTree, createItem, updateFileContent, getFileContent, updateFileTree };
+  const switchToFile = (fileId: string) => {
+    setCurrentFileId(fileId);
+  };
+
+  const getCurrentFile = useCallback(() => {
+    return findFileById(fileTree, currentFileId);
+  }, [fileTree, currentFileId]);
+
+  return {
+    fileTree,
+    createItem,
+    updateFileContent,
+    getFileContent,
+    updateFileTree,
+    currentFileId,
+    switchToFile,
+    getCurrentFile,
+    ready,
+  };
 }
 
 function addItemToTree(tree: FileNode[], parentId: string | null, newItem: FileNode): FileNode[] {

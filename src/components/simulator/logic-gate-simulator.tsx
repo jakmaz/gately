@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useRef } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 import ReactFlow, {
   ReactFlowProvider,
   Background,
@@ -34,6 +34,7 @@ import { FileExplorer } from "./file-explorer";
 import { EnhancedHeader } from "./enhanced-header";
 import { toast } from "sonner";
 import { useSettings } from "@/hooks/use-settings";
+import { useFileSystem } from "@/hooks/use-file-system";
 
 const nodeTypes: NodeTypes = {
   inputNode: InputNode,
@@ -53,8 +54,51 @@ export function LogicGateSimulator() {
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const [reactFlowInstance, setReactFlowInstance] = useState<ReactFlowInstance | null>(null);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(true);
-  const [currentFileName, setCurrentFileName] = useState("Untitled Circuit");
   const { settings } = useSettings();
+  const { currentFileId, getCurrentFile, updateFileContent, switchToFile, ready } = useFileSystem();
+
+
+  // Auto-save current circuit when nodes or edges change
+  useEffect(() => {
+    if (currentFileId && (nodes.length > 0 || edges.length > 0)) {
+      const saveTimeout = setTimeout(() => {
+        console.log("Saving file", currentFileId);
+        updateFileContent(currentFileId, { nodes, edges });
+      }, 1000); // Auto-save after 1 second of inactivity
+
+      return () => clearTimeout(saveTimeout);
+    }
+  }, [nodes, edges]);
+
+
+  useEffect(() => {
+    if (!ready) return; // ✅ wait until ready
+    console.log("Loading file", currentFileId);
+    const currentFile = getCurrentFile();
+
+    if (currentFile?.data) {
+      setNodes((prevNodes) => {
+        if (prevNodes.length === 0) {
+          return currentFile.data.nodes;
+        }
+        return prevNodes;
+      });
+
+      setEdges((prevEdges) => {
+        if (prevEdges.length === 0) {
+          return currentFile.data.edges;
+        }
+        return prevEdges;
+      });
+    } else {
+      setNodes([]);
+      setEdges([]);
+    }
+  }, [currentFileId]); // 👈 include all dependencies
+
+
+
+  const currentFileName = getCurrentFile()?.name || "Untitled Circuit";
 
   // Add a new node to the flow
   const onDragOver = useCallback((event: React.DragEvent<HTMLDivElement>) => {
@@ -172,7 +216,9 @@ export function LogicGateSimulator() {
   const handleImportExample = useCallback((exampleNodes: Node<GateNodeProps>[], exampleEdges: Edge[], name: string) => {
     setNodes(exampleNodes);
     setEdges(exampleEdges);
-    setCurrentFileName(`${name}.json`);
+
+    // Save the imported example to current file
+    updateFileContent(currentFileId, { nodes: exampleNodes, edges: exampleEdges });
 
     // Recalculate node states after importing
     setTimeout(() => {
@@ -182,7 +228,7 @@ export function LogicGateSimulator() {
     }, 100);
 
     toast.success(`Example "${name}" imported successfully`);
-  }, [setNodes, setEdges, updateEdgeStyles]);
+  }, [setNodes, setEdges, updateEdgeStyles, updateFileContent, currentFileId]);
 
   return (
     <div className="h-screen w-full flex flex-col">
@@ -198,6 +244,8 @@ export function LogicGateSimulator() {
           nodes={nodes}
           edges={edges}
           currentFileName={currentFileName}
+          onFileSelect={switchToFile}
+          currentFileId={currentFileId}
         />
 
         <Toolbar />
