@@ -52,7 +52,7 @@ export function LogicGateSimulator() {
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const [reactFlowInstance, setReactFlowInstance] = useState<ReactFlowInstance | null>(null);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-  const [currentFileName, setCurrentFileName] = useState("Untitled Circuit.json");
+  const [currentFileName, setCurrentFileName] = useState("Untitled Circuit");
 
   // Add a new node to the flow
   const onDragOver = useCallback((event: React.DragEvent<HTMLDivElement>) => {
@@ -93,19 +93,19 @@ export function LogicGateSimulator() {
 
   const updateEdgeStyles = useCallback((currentNodes: Node<GateNodeProps>[], currentEdges: Edge[]) => {
     const nodeStates = new Map<string, boolean>();
-    
+
     currentNodes.forEach(node => {
       nodeStates.set(node.id, node.data.state);
     });
-    
+
     const updatedEdges = currentEdges.map(edge => {
       const sourceState = nodeStates.get(edge.source) || false;
       return {
         ...edge,
         animated: sourceState,
-        style: { 
+        style: {
           stroke: sourceState ? '#10b981' : '#3b82f6',
-          strokeWidth: 2 
+          strokeWidth: 2
         },
         markerEnd: {
           type: MarkerType.ArrowClosed,
@@ -113,7 +113,7 @@ export function LogicGateSimulator() {
         },
       };
     });
-    
+
     setEdges(updatedEdges);
   }, [setEdges]);
 
@@ -170,35 +170,35 @@ export function LogicGateSimulator() {
     setNodes(exampleNodes);
     setEdges(exampleEdges);
     setCurrentFileName(`${name}.json`);
-    
+
     // Recalculate node states after importing
     setTimeout(() => {
       const calculatedNodes = calculateNodeStates(exampleNodes, exampleEdges);
       setNodes(calculatedNodes);
       updateEdgeStyles(calculatedNodes, exampleEdges);
     }, 100);
-    
+
     toast.success(`Example "${name}" imported successfully`);
   }, [setNodes, setEdges, updateEdgeStyles]);
 
   return (
     <div className="h-screen w-full flex flex-col">
-      <EnhancedHeader 
-        nodes={nodes} 
-        edges={edges} 
+      <EnhancedHeader
+        nodes={nodes}
+        edges={edges}
         onToggleSidebar={() => setSidebarCollapsed(!sidebarCollapsed)}
         currentFileName={currentFileName}
         onImportExample={handleImportExample}
       />
 
       <div className="flex flex-1 overflow-hidden">
-        <FileExplorer 
-          isCollapsed={sidebarCollapsed} 
+        <FileExplorer
+          isCollapsed={sidebarCollapsed}
           nodes={nodes}
           edges={edges}
           currentFileName={currentFileName}
         />
-        
+
         <Toolbar />
 
         <div className="flex-1 h-full" ref={reactFlowWrapper}>

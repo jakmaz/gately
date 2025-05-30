@@ -1,6 +1,4 @@
-"use client";
-
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
@@ -10,12 +8,14 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Settings, Palette, Zap, Grid, Eye } from "lucide-react";
+import { Palette, Zap, Grid, Settings as SettingsIcon } from "lucide-react";
 import { ThemeToggle } from "./theme-toggle";
+import { loadSettings, saveSettings, Settings } from "@/lib/settings";
+
+
 
 interface SettingsDialogProps {
   open: boolean;
@@ -23,18 +23,32 @@ interface SettingsDialogProps {
 }
 
 export function SettingsDialog({ open, onOpenChange }: SettingsDialogProps) {
-  const [settings, setSettings] = useState({
-    theme: 'system',
+
+  const defaultSettings: Settings = {
     connectionType: 'curved',
     showGrid: true,
     showMinimap: true,
     animateConnections: true,
     snapToGrid: false,
-    autoSave: true,
     showNodeLabels: true,
-  });
+  };
 
-  const updateSetting = (key: string, value: any) => {
+  const [settings, setSettings] = useState<Settings>(defaultSettings);
+
+  // Load settings on mount
+  useEffect(() => {
+    const loaded = loadSettings();
+    if (loaded) {
+      setSettings(loaded);
+    }
+  }, []);
+
+  // Save settings to localStorage on change
+  useEffect(() => {
+    saveSettings(settings);
+  }, [settings]);
+
+  const updateSetting = <K extends keyof Settings>(key: K, value: Settings[K]) => {
     setSettings(prev => ({ ...prev, [key]: value }));
   };
 
@@ -43,22 +57,21 @@ export function SettingsDialog({ open, onOpenChange }: SettingsDialogProps) {
       <DialogContent className="max-w-2xl max-h-[80vh] overflow-hidden">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <Settings className="h-5 w-5" />
+            <SettingsIcon className="h-5 w-5" />
             Settings
           </DialogTitle>
           <DialogDescription>
             Customize your simulator experience
           </DialogDescription>
         </DialogHeader>
-        
+
         <Tabs defaultValue="appearance" className="w-full">
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="grid w-full grid-cols-3">
             <TabsTrigger value="appearance">Appearance</TabsTrigger>
             <TabsTrigger value="connections">Connections</TabsTrigger>
             <TabsTrigger value="canvas">Canvas</TabsTrigger>
-            <TabsTrigger value="general">General</TabsTrigger>
           </TabsList>
-          
+
           <div className="max-h-[400px] overflow-y-auto mt-4">
             <TabsContent value="appearance" className="space-y-4">
               <Card>
@@ -76,7 +89,7 @@ export function SettingsDialog({ open, onOpenChange }: SettingsDialogProps) {
                     <Label htmlFor="theme-toggle">Theme</Label>
                     <ThemeToggle />
                   </div>
-                  
+
                   <div className="flex items-center justify-between">
                     <div>
                       <Label htmlFor="node-labels">Show Node Labels</Label>
@@ -91,7 +104,7 @@ export function SettingsDialog({ open, onOpenChange }: SettingsDialogProps) {
                 </CardContent>
               </Card>
             </TabsContent>
-            
+
             <TabsContent value="connections" className="space-y-4">
               <Card>
                 <CardHeader>
@@ -120,7 +133,7 @@ export function SettingsDialog({ open, onOpenChange }: SettingsDialogProps) {
                       ))}
                     </div>
                   </div>
-                  
+
                   <div className="flex items-center justify-between">
                     <div>
                       <Label htmlFor="animate-connections">Animate Connections</Label>
@@ -135,7 +148,7 @@ export function SettingsDialog({ open, onOpenChange }: SettingsDialogProps) {
                 </CardContent>
               </Card>
             </TabsContent>
-            
+
             <TabsContent value="canvas" className="space-y-4">
               <Card>
                 <CardHeader>
@@ -159,7 +172,7 @@ export function SettingsDialog({ open, onOpenChange }: SettingsDialogProps) {
                       onCheckedChange={(checked) => updateSetting('showGrid', checked)}
                     />
                   </div>
-                  
+
                   <div className="flex items-center justify-between">
                     <div>
                       <Label htmlFor="show-minimap">Show Minimap</Label>
@@ -171,7 +184,7 @@ export function SettingsDialog({ open, onOpenChange }: SettingsDialogProps) {
                       onCheckedChange={(checked) => updateSetting('showMinimap', checked)}
                     />
                   </div>
-                  
+
                   <div className="flex items-center justify-between">
                     <div>
                       <Label htmlFor="snap-to-grid">Snap to Grid</Label>
@@ -181,30 +194,6 @@ export function SettingsDialog({ open, onOpenChange }: SettingsDialogProps) {
                       id="snap-to-grid"
                       checked={settings.snapToGrid}
                       onCheckedChange={(checked) => updateSetting('snapToGrid', checked)}
-                    />
-                  </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
-            
-            <TabsContent value="general" className="space-y-4">
-              <Card>
-                <CardHeader>
-                  <CardTitle>General Settings</CardTitle>
-                  <CardDescription>
-                    General application preferences
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <Label htmlFor="auto-save">Auto Save</Label>
-                      <p className="text-sm text-muted-foreground">Automatically save changes</p>
-                    </div>
-                    <Switch
-                      id="auto-save"
-                      checked={settings.autoSave}
-                      onCheckedChange={(checked) => updateSetting('autoSave', checked)}
                     />
                   </div>
                 </CardContent>

@@ -1,5 +1,3 @@
-"use client";
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -9,7 +7,6 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -17,10 +14,8 @@ import {
   Share,
   Settings,
   Menu,
-  FileText,
   Copy,
-  Save,
-  Download,
+  FileText,
 } from "lucide-react";
 import { toast } from "sonner";
 import Link from "next/link";
@@ -52,13 +47,6 @@ export function EnhancedHeader({ nodes, edges, onToggleSidebar, currentFileName,
     setShareDialogOpen(true);
   };
 
-  const handleSave = () => {
-
-  }
-
-  const handleExport = () => {
-
-  }
   const copyShareUrl = () => {
     navigator.clipboard.writeText(shareUrl);
     toast.success('Share URL copied to clipboard');
@@ -85,7 +73,6 @@ export function EnhancedHeader({ nodes, edges, onToggleSidebar, currentFileName,
           </Link>
 
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <FileText className="h-4 w-4" />
             <span>{currentFileName}</span>
           </div>
         </div>
@@ -95,12 +82,12 @@ export function EnhancedHeader({ nodes, edges, onToggleSidebar, currentFileName,
             <FileText className="h-4 w-4 mr-2" />
             Examples
           </Button>
-          
+
           <Button variant="ghost" size="sm" onClick={handleShare}>
             <Share className="h-4 w-4 mr-2" />
             Share
           </Button>
-          
+
           <Button
             variant="ghost"
             size="sm"
@@ -109,25 +96,16 @@ export function EnhancedHeader({ nodes, edges, onToggleSidebar, currentFileName,
             <Settings className="h-4 w-4 mr-2" />
             Settings
           </Button>
-
-          <a
-            href="https://github.com/jamkaz/gately"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-          >
-            Leave Feedback
-          </a>
         </div>
       </div>
 
       <SettingsDialog open={settingsOpen} onOpenChange={setSettingsOpen} />
-      <ExamplesDialog 
-        open={examplesOpen} 
-        onOpenChange={setExamplesOpen} 
+      <ExamplesDialog
+        open={examplesOpen}
+        onOpenChange={setExamplesOpen}
         onImportExample={onImportExample}
       />
-      
+
       <Dialog open={shareDialogOpen} onOpenChange={setShareDialogOpen}>
         <DialogContent>
           <DialogHeader>

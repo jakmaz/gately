@@ -48,22 +48,12 @@ export function FileExplorer({ isCollapsed, nodes, edges, currentFileName }: Fil
       type: 'directory',
       isOpen: true,
       children: [
-        { id: '2', name: 'Basic Gates.json', type: 'file' },
-        { id: '3', name: 'Adder Circuit.json', type: 'file' },
-      ],
-    },
-    {
-      id: '4',
-      name: 'Shared',
-      type: 'directory',
-      isOpen: false,
-      children: [
-        { id: '5', name: 'Counter.json', type: 'file' },
-        { id: '6', name: 'Multiplexer.json', type: 'file' },
+        { id: '2', name: 'Basic Gates', type: 'file' },
+        { id: '3', name: 'Adder Circuit', type: 'file' },
       ],
     },
   ]);
-  
+
   const [selectedFile, setSelectedFile] = useState<string>('2');
   const [newItemDialog, setNewItemDialog] = useState(false);
   const [newItemName, setNewItemName] = useState('');
@@ -83,15 +73,15 @@ export function FileExplorer({ isCollapsed, nodes, edges, currentFileName }: Fil
     const dataStr = JSON.stringify(circuitData, null, 2);
     const dataBlob = new Blob([dataStr], { type: 'application/json' });
     const url = URL.createObjectURL(dataBlob);
-    
+
     const link = document.createElement('a');
     link.href = url;
-    link.download = `${currentFileName.replace('.json', '')}.json`;
+    link.download = `${currentFileName.replace('', '')}.json`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
-    
+
     toast.success('Circuit exported successfully');
   };
 
@@ -125,7 +115,7 @@ export function FileExplorer({ isCollapsed, nodes, edges, currentFileName }: Fil
 
     const newItem: FileItem = {
       id: Date.now().toString(),
-      name: newItemName + (newItemType === 'file' ? '.json' : ''),
+      name: newItemName + (newItemType === 'file' ? '' : ''),
       type: newItemType,
       children: newItemType === 'directory' ? [] : undefined,
       isOpen: newItemType === 'directory' ? false : undefined,
@@ -139,13 +129,12 @@ export function FileExplorer({ isCollapsed, nodes, edges, currentFileName }: Fil
 
   const renderFileItem = (item: FileItem, depth = 0) => {
     const isSelected = selectedFile === item.id;
-    
+
     return (
       <div key={item.id}>
         <div
-          className={`flex items-center gap-2 px-2 py-1 rounded cursor-pointer hover:bg-accent transition-colors ${
-            isSelected ? 'bg-accent' : ''
-          }`}
+          className={`flex items-center gap-2 px-2 py-1 rounded cursor-pointer hover:bg-accent transition-colors ${isSelected ? 'bg-accent' : ''
+            }`}
           style={{ paddingLeft: `${8 + depth * 16}px` }}
           onClick={() => {
             if (item.type === 'directory') {
@@ -176,7 +165,7 @@ export function FileExplorer({ isCollapsed, nodes, edges, currentFileName }: Fil
           )}
           <span className="text-sm truncate flex-1">{item.name}</span>
         </div>
-        
+
         {item.type === 'directory' && item.isOpen && item.children && (
           <div>
             {item.children.map(child => renderFileItem(child, depth + 1))}
@@ -194,7 +183,7 @@ export function FileExplorer({ isCollapsed, nodes, edges, currentFileName }: Fil
   return (
     <div className="w-64 border-r bg-card flex flex-col h-full">
       <div className="p-3 border-b">
-        <div className="flex items-center justify-between mb-2">
+        <div className="flex items-center justify-between">
           <h3 className="font-semibold text-sm">Files</h3>
           <div className="flex gap-1">
             <Button variant="ghost" size="sm" className="p-1" onClick={handleExport}>
@@ -248,7 +237,7 @@ export function FileExplorer({ isCollapsed, nodes, edges, currentFileName }: Fil
           </div>
         </div>
       </div>
-      
+
       <div className="flex-1 overflow-auto p-2">
         {files.map(item => renderFileItem(item))}
       </div>
