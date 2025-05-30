@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useRef } from "react";
 import ReactFlow, {
   ReactFlowProvider,
   Background,
@@ -89,6 +89,23 @@ export function MiniPreview() {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   const [reactFlowInstance, setReactFlowInstance] = useState<ReactFlowInstance | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // Helper function to get confetti origin relative to container center
+  const getConfettiOrigin = useCallback(() => {
+    if (!containerRef.current) {
+      return { x: 0.5, y: 0.5 }; // fallback to center
+    }
+
+    const rect = containerRef.current.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+
+    return {
+      x: centerX / window.innerWidth,
+      y: centerY / window.innerHeight
+    };
+  }, []);
 
   // Function to update edge colors and animation based on source node states
   const updateEdgeStyles = useCallback((currentNodes: Node<GateNodeProps>[], currentEdges: Edge[]) => {
@@ -184,12 +201,12 @@ export function MiniPreview() {
           confetti({
             particleCount: 100,
             spread: 70,
-            origin: { x: 0.75, y: 0.4 }
+            origin: getConfettiOrigin()
           });
         }
       }, 100);
     },
-    [setEdges, nodes, edges, setNodes, updateEdgeStyles]
+    [setEdges, nodes, edges, setNodes, updateEdgeStyles, getConfettiOrigin]
   );
 
   // Toggle input node state
@@ -223,7 +240,7 @@ export function MiniPreview() {
           confetti({
             particleCount: 100,
             spread: 70,
-            origin: { x: 0.75, y: 0.4 }
+            origin: getConfettiOrigin()
           });
         }
       }, 100);
@@ -231,7 +248,7 @@ export function MiniPreview() {
   };
 
   return (
-    <div className="h-40 sm:h-82 w-full">
+    <div ref={containerRef} className="h-40 sm:h-82 w-full">
       <ReactFlowProvider>
         <ReactFlow
           className="bg-b"
