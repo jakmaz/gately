@@ -33,6 +33,7 @@ import { XNORGateNode } from "../nodes/xnor";
 import { FileExplorer } from "./file-explorer";
 import { EnhancedHeader } from "./enhanced-header";
 import { toast } from "sonner";
+import { useSettings } from "@/hooks/use-settings";
 
 const nodeTypes: NodeTypes = {
   inputNode: InputNode,
@@ -53,6 +54,7 @@ export function LogicGateSimulator() {
   const [reactFlowInstance, setReactFlowInstance] = useState<ReactFlowInstance | null>(null);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [currentFileName, setCurrentFileName] = useState("Untitled Circuit");
+  const { settings } = useSettings();
 
   // Add a new node to the flow
   const onDragOver = useCallback((event: React.DragEvent<HTMLDivElement>) => {
@@ -213,13 +215,16 @@ export function LogicGateSimulator() {
               onInit={setReactFlowInstance}
               onDrop={onDrop}
               onDragOver={onDragOver}
+              snapToGrid={settings.snapToGrid}
+              snapGrid={[20, 20]}
               nodeTypes={nodeTypes}
               onNodeClick={(_, node) => handleNodeClick(node)}
+              // connectionLineType={settings.connectionType}
               fitView
             >
               <Controls className="bg-card" />
-              <MiniMap className="bg-card" />
-              <Background gap={12} size={1} />
+              {settings.showMinimap && <MiniMap className="bg-card" />}
+              {settings.showGrid && <Background gap={12} size={1} />}
             </ReactFlow>
           </ReactFlowProvider>
         </div>

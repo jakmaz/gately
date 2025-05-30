@@ -11,9 +11,9 @@ import {
 } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Palette, Zap, Grid, Settings as SettingsIcon } from "lucide-react";
+import { Palette, Zap, Grid, Settings } from "lucide-react";
 import { ThemeToggle } from "./theme-toggle";
-import { loadSettings, saveSettings, Settings } from "@/lib/settings";
+import { useSettings } from "@/hooks/use-settings";
 
 
 
@@ -22,42 +22,20 @@ interface SettingsDialogProps {
   onOpenChange: (open: boolean) => void;
 }
 
+interface SettingsDialogProps {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+}
+
 export function SettingsDialog({ open, onOpenChange }: SettingsDialogProps) {
-
-  const defaultSettings: Settings = {
-    connectionType: 'curved',
-    showGrid: true,
-    showMinimap: true,
-    animateConnections: true,
-    snapToGrid: false,
-    showNodeLabels: true,
-  };
-
-  const [settings, setSettings] = useState<Settings>(defaultSettings);
-
-  // Load settings on mount
-  useEffect(() => {
-    const loaded = loadSettings();
-    if (loaded) {
-      setSettings(loaded);
-    }
-  }, []);
-
-  // Save settings to localStorage on change
-  useEffect(() => {
-    saveSettings(settings);
-  }, [settings]);
-
-  const updateSetting = <K extends keyof Settings>(key: K, value: Settings[K]) => {
-    setSettings(prev => ({ ...prev, [key]: value }));
-  };
+  const { settings, updateSetting } = useSettings();
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-2xl max-h-[80vh] overflow-hidden">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <SettingsIcon className="h-5 w-5" />
+            <Settings className="h-5 w-5" />
             Settings
           </DialogTitle>
           <DialogDescription>
