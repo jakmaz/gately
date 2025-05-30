@@ -123,6 +123,7 @@ export function LogicGateSimulator() {
     (params: Connection | Edge) => {
       const edge = {
         ...params,
+        id: `${params.source}-${params.target}-${Date.now()}`,
         animated: false,
         style: { stroke: '#3b82f6', strokeWidth: 2 },
         markerEnd: {
