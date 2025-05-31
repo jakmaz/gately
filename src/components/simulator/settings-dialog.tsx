@@ -1,6 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Dialog,
   DialogContent,
@@ -8,12 +7,13 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Palette, Zap, Grid, SettingsIcon } from "lucide-react";
-import { ThemeToggle } from "./theme-toggle";
 import { Settings, useSettings } from "@/hooks/use-settings";
 import { DialogTrigger } from "@radix-ui/react-dialog";
+import { Grid, Palette, SettingsIcon, Zap } from "lucide-react";
+import { ThemeToggle } from "./theme-toggle";
 
 
 export function SettingsDialog() {
@@ -21,7 +21,7 @@ export function SettingsDialog() {
 
   return (
     <Dialog>
-      <DialogTrigger>
+      <DialogTrigger asChild>
         <Button
           variant="ghost"
           size="sm"
