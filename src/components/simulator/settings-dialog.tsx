@@ -13,24 +13,22 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Palette, Zap, Grid, SettingsIcon } from "lucide-react";
 import { ThemeToggle } from "./theme-toggle";
 import { Settings, useSettings } from "@/hooks/use-settings";
+import { DialogTrigger } from "@radix-ui/react-dialog";
 
 
-
-interface SettingsDialogProps {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-}
-
-interface SettingsDialogProps {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-}
-
-export function SettingsDialog({ open, onOpenChange }: SettingsDialogProps) {
+export function SettingsDialog() {
   const { settings, updateSetting } = useSettings();
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog>
+      <DialogTrigger>
+        <Button
+          variant="ghost"
+          size="sm"
+        >
+          <SettingsIcon className="h-4 w-4 mr-2" />
+          Settings
+        </Button></DialogTrigger>
       <DialogContent className="max-w-2xl max-h-[80vh] overflow-hidden">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
