@@ -39,8 +39,8 @@ export function Header({ onToggleSidebar, currentFileName }: EnhancedHeaderProps
       </div>
 
       <div className="flex items-center gap-2">
-        <SettingsDialog />
         <ShareDialog />
+        <SettingsDialog />
       </div>
     </div>
   );
