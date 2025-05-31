@@ -1,6 +1,7 @@
 import { GateNodeProps } from "@/lib/types";
 import { useCallback, useEffect, useState } from "react";
 import { Edge, Node } from "reactflow";
+import { nanoid } from "nanoid";
 
 interface FileNode {
   id: string;
@@ -15,12 +16,12 @@ interface FileNode {
 
 const defaultTree: FileNode[] = [
   {
-    id: "1",
+    id: nanoid(),
     name: "My Circuits",
     type: "directory",
     children: [
       {
-        id: "untitled",
+        id: nanoid(),
         name: "Untitled Circuit",
         type: "file",
         data: {
@@ -29,7 +30,7 @@ const defaultTree: FileNode[] = [
         },
       },
       {
-        id: "basic",
+        id: nanoid(),
         name: "Basic Gates",
         type: "file",
         data: {
@@ -68,7 +69,10 @@ export function useFileSystem() {
     setFileTree(newTree);
   };
 
-  const updateFileContent = (fileId: string, data: { nodes: Node<GateNodeProps>[]; edges: Edge[] }) => {
+  const updateFileContent = (
+    fileId: string,
+    data: { nodes: Node<GateNodeProps>[]; edges: Edge[] },
+  ) => {
     const updatedTree = updateFileData(fileTree, fileId, data);
     setFileTree(updatedTree);
   };
@@ -102,7 +106,11 @@ export function useFileSystem() {
   };
 }
 
-function addItemToTree(tree: FileNode[], parentId: string | null, newItem: FileNode): FileNode[] {
+function addItemToTree(
+  tree: FileNode[],
+  parentId: string | null,
+  newItem: FileNode,
+): FileNode[] {
   if (!parentId) return [...tree, newItem];
   return tree.map((node) => {
     if (node.id === parentId && node.type === "directory") {
@@ -112,13 +120,20 @@ function addItemToTree(tree: FileNode[], parentId: string | null, newItem: FileN
       };
     }
     if (node.children) {
-      return { ...node, children: addItemToTree(node.children, parentId, newItem) };
+      return {
+        ...node,
+        children: addItemToTree(node.children, parentId, newItem),
+      };
     }
     return node;
   });
 }
 
-function updateFileData(tree: FileNode[], fileId: string, data: { nodes: Node<GateNodeProps>[]; edges: Edge[] }): FileNode[] {
+function updateFileData(
+  tree: FileNode[],
+  fileId: string,
+  data: { nodes: Node<GateNodeProps>[]; edges: Edge[] },
+): FileNode[] {
   return tree.map((node) => {
     if (node.id === fileId && node.type === "file") {
       return { ...node, data };

@@ -1,4 +1,5 @@
 import { calculateNodeStates } from "@/lib/simulator";
+import { nanoid } from "nanoid";
 import { GateNodeProps } from "@/lib/types";
 import { useCallback } from "react";
 import {
@@ -47,7 +48,7 @@ export function useSimulatorLogic() {
 
       const edge = {
         ...params,
-        id: `${params.source}-${params.target}-${Date.now()}`,
+        id: nanoid(),
         animated: false,
         style: { stroke: "#3b82f6", strokeWidth: 2 },
         markerEnd: {
@@ -110,7 +111,7 @@ export function useSimulatorLogic() {
       });
 
       const newNode = {
-        id: `${type}-${getNodes.length + 1}`,
+        id: nanoid(), // instead of `${type}-${getNodes.length + 1}`
         type,
         position,
         data: { label: type, state: false },
@@ -118,7 +119,7 @@ export function useSimulatorLogic() {
 
       setNodes((nds) => nds.concat(newNode));
     },
-    [getNodes.length, screenToFlowPosition, setNodes],
+    [screenToFlowPosition, setNodes],
   );
 
   return {
