@@ -1,11 +1,12 @@
 "use client";
 
-import { ReactFlowProvider } from "reactflow";
 import { useFileSystem } from "@/hooks/use-file-system";
-import { useCallback, useState } from "react";
+import { useState } from "react";
+import { ReactFlowProvider } from "reactflow";
 import "reactflow/dist/style.css";
 import { Header } from "./header";
-import { SimulatorContent } from "./simulator-content";
+import { FileExplorer } from "./file-explorer";
+import { SimulatorCanvas } from "./simulator-canvas";
 
 export function LogicGateSimulator() {
   const { currentFileId, getCurrentFile, updateFileContent, switchToFile, ready } = useFileSystem();
@@ -21,14 +22,13 @@ export function LogicGateSimulator() {
           currentFileName={currentFileName}
         />
         <div className="flex flex-1 overflow-hidden">
-          <SimulatorContent
-            sidebarCollapsed={sidebarCollapsed}
+          <FileExplorer
+            isCollapsed={sidebarCollapsed}
             currentFileName={currentFileName}
+            onFileSelect={switchToFile}
             currentFileId={currentFileId}
-            switchToFile={switchToFile}
-            updateFileContent={updateFileContent}
-            ready={ready}
           />
+          <SimulatorCanvas />
         </div>
       </ReactFlowProvider>
     </div>

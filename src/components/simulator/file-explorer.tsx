@@ -20,8 +20,6 @@ import {
   Download,
 } from "lucide-react";
 import { toast } from "sonner";
-import { Edge, Node } from "reactflow";
-import { GateNodeProps } from "@/lib/types";
 import { useFileSystem } from "@/hooks/use-file-system";
 import { ThemeToggle } from "./theme-toggle";
 
@@ -35,8 +33,6 @@ interface FileItem {
 
 interface FileExplorerProps {
   isCollapsed: boolean;
-  nodes: Node<GateNodeProps>[];
-  edges: Edge[];
   currentFileName: string;
   onFileSelect: (fileId: string) => void;
   currentFileId: string;
@@ -44,9 +40,7 @@ interface FileExplorerProps {
 
 export function FileExplorer({
   isCollapsed,
-  nodes,
-  edges,
-  currentFileName,
+  // currentFileName,
   onFileSelect,
   currentFileId
 }: FileExplorerProps) {
@@ -56,31 +50,31 @@ export function FileExplorer({
   const [newItemName, setNewItemName] = useState('');
   const [newItemType, setNewItemType] = useState<'file' | 'directory'>('file');
 
-  const handleExport = () => {
-    const circuitData = {
-      nodes,
-      edges,
-      metadata: {
-        name: currentFileName,
-        created: new Date().toISOString(),
-        version: '1.0'
-      }
-    };
+  // const handleExport = () => {
+  //   const circuitData = {
+  //     nodes,
+  //     edges,
+  //     metadata: {
+  //       name: currentFileName,
+  //       created: new Date().toISOString(),
+  //       version: '1.0'
+  //     }
+  //   };
 
-    const dataStr = JSON.stringify(circuitData, null, 2);
-    const dataBlob = new Blob([dataStr], { type: 'application/json' });
-    const url = URL.createObjectURL(dataBlob);
-
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `${currentFileName.replace('', '')}.json`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
-
-    toast.success('Circuit exported successfully');
-  };
+  //   const dataStr = JSON.stringify(circuitData, null, 2);
+  //   const dataBlob = new Blob([dataStr], { type: 'application/json' });
+  //   const url = URL.createObjectURL(dataBlob);
+  //
+  //   const link = document.createElement('a');
+  //   link.href = url;
+  //   link.download = `${currentFileName.replace('', '')}.json`;
+  //   document.body.appendChild(link);
+  //   link.click();
+  //   document.body.removeChild(link);
+  //   URL.revokeObjectURL(url);
+  //
+  //   toast.success('Circuit exported successfully');
+  // };
 
   const toggleDirectory = (id: string) => {
     updateFileTree(tree => {
@@ -179,7 +173,7 @@ export function FileExplorer({
         <div className="flex items-center justify-between">
           <h3 className="font-semibold text-sm">Files</h3>
           <div className="flex gap-1">
-            <Button variant="ghost" size="sm" className="p-1" onClick={handleExport}>
+            <Button variant="ghost" size="sm" className="p-1">
               <Download className="h-4 w-4" />
             </Button>
             <Dialog open={newItemDialog} onOpenChange={setNewItemDialog}>

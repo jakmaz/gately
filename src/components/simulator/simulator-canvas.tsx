@@ -3,26 +3,57 @@ import { useSettings } from "@/hooks/use-settings";
 import { useSimulatorLogic } from "@/hooks/use-simulator-logic";
 import { nodeTypes } from "@/lib/types";
 import { LoaderCircle } from "lucide-react";
-import { useCallback, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import ReactFlow, {
   Background,
   MiniMap,
   Panel,
-  useEdges,
-  useNodes,
+  useEdgesState,
+  useNodesState,
   useReactFlow,
 } from "reactflow";
 import { Toolbar } from "./toolbar";
+import { useFileSystem } from "@/hooks/use-file-system";
 
 export function SimulatorCanvas() {
   const hasMounted = useHasMounted();
   const { settings } = useSettings();
+  const { currentFileId, updateFileContent, ready, getCurrentFile } = useFileSystem();
   const reactFlowWrapper = useRef(null);
 
-  const nodes = useNodes();
-  const edges = useEdges();
+  const [nodes, setNodes, onNodesChange] = useNodesState([]);
+  const [edges, setEdges, onEdgesChange] = useEdgesState([]);
+
   const reactFlowInstance = useReactFlow()
-  const { onNodesChange, onEdgesChange, onConnectEdge, onNodeClick } = useSimulatorLogic();
+  const { onConnectEdge, onNodeClick } = useSimulatorLogic();
+
+  // Auto-save current circuit when nodes or edges change
+  useEffect(() => {
+    if (currentFileId && (nodes.length > 0 || edges.length > 0)) {
+      const saveTimeout = setTimeout(() => {
+        console.debug("Saving file", currentFileId);
+        updateFileContent(currentFileId, { nodes, edges });
+      }, 1000); // Auto-save after 1 second of inactivity
+
+      return () => clearTimeout(saveTimeout);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [nodes, edges]);
+
+  useEffect(() => {
+    if (!ready) return;
+    const currentFile = getCurrentFile();
+    console.debug("Loading file", currentFileId);
+
+    if (currentFile?.data) {
+      setNodes(currentFile.data.nodes);
+      setEdges(currentFile.data.edges);
+    } else {
+      setNodes([]);
+      setEdges([]);
+    }
+
+  }, [currentFileId, ready]);
 
   const onDragOver = useCallback((event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();

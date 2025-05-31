@@ -4,8 +4,6 @@ import { GateNodeProps } from "@/lib/types";
 import { useCallback } from "react";
 import {
   addEdge,
-  applyEdgeChanges,
-  applyNodeChanges,
   Connection,
   Edge,
   MarkerType,
@@ -96,18 +94,7 @@ export function useSimulatorLogic() {
     [setNodes, updateEdgeStyles, getNodes, getEdges],
   );
 
-  const onNodesChange = useCallback(
-    (changes) => setNodes((nds) => applyNodeChanges(changes, nds)),
-    [setNodes],
-  );
-  const onEdgesChange = useCallback(
-    (changes) => setEdges((eds) => applyEdgeChanges(changes, eds)),
-    [setEdges],
-  );
-
   return {
-    onNodesChange,
-    onEdgesChange,
     onConnectEdge,
     onNodeClick,
   };
