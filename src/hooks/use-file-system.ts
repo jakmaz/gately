@@ -1,17 +1,34 @@
-import { GateNodeProps } from "@/lib/types";
-import { useCallback, useEffect, useState } from "react";
-import { Edge, Node } from "reactflow";
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
 import { nanoid } from "nanoid";
+import { Node, Edge } from "reactflow";
+import { GateNodeProps } from "@/lib/types";
 
-interface FileNode {
+export interface FileNode {
   id: string;
   name: string;
   type: "file" | "directory";
   children?: FileNode[];
+  isOpen?: boolean;
   data?: {
     nodes: Node<GateNodeProps>[];
     edges: Edge[];
   };
+}
+
+interface FileSystemState {
+  fileTree: FileNode[];
+  currentFileId: string | null;
+  ready: boolean;
+  createItem: (parentId: string | null, item: FileNode) => void;
+  updateFileContent: (
+    fileId: string,
+    data: { nodes: Node<GateNodeProps>[]; edges: Edge[] },
+  ) => void;
+  getFileContent: (fileId: string) => FileNode["data"] | undefined;
+  switchToFile: (fileId: string) => void;
+  getCurrentFile: () => FileNode | undefined;
+  updateFileTree: (updater: (tree: FileNode[]) => FileNode[]) => void;
 }
 
 const defaultTree: FileNode[] = [
@@ -19,6 +36,7 @@ const defaultTree: FileNode[] = [
     id: nanoid(),
     name: "My Circuits",
     type: "directory",
+    isOpen: true,
     children: [
       {
         id: nanoid(),
@@ -42,83 +60,59 @@ const defaultTree: FileNode[] = [
   },
 ];
 
-export function useFileSystem() {
-  const [fileTree, setFileTree] = useState<FileNode[]>(defaultTree);
-  const [currentFileId, setCurrentFileId] = useState<string | null>(null);
-  const [ready, setReady] = useState(false);
+export const useFileSystem = create<FileSystemState>()(
+  persist(
+    (set, get) => ({
+      fileTree: defaultTree,
+      currentFileId: null,
+      ready: false,
 
-  useEffect(() => {
-    const storedTree = localStorage.getItem("file-tree");
-    const storedFileId = localStorage.getItem("current-file-id");
+      createItem: (parentId, item) => {
+        const newTree = addItemToTree(get().fileTree, parentId, item);
+        set({ fileTree: newTree });
+      },
 
-    if (storedTree) {
-      try {
-        setFileTree(JSON.parse(storedTree));
-      } catch (e) {
-        console.error("Failed to parse stored file tree", e);
-      }
-    }
+      updateFileContent: (fileId, data) => {
+        const updatedTree = updateFileData(get().fileTree, fileId, data);
+        set({ fileTree: updatedTree });
+      },
 
-    if (storedFileId) {
-      setCurrentFileId(storedFileId);
-    }
+      getFileContent: (fileId) => {
+        return findFileById(get().fileTree, fileId)?.data;
+      },
 
-    setReady(true);
-  }, []);
+      switchToFile: (fileId) => {
+        set({ currentFileId: fileId });
+      },
 
-  useEffect(() => {
-    if (!ready) return;
-    localStorage.setItem("file-tree", JSON.stringify(fileTree));
-  }, [fileTree, ready]);
+      getCurrentFile: () => {
+        const { fileTree, currentFileId } = get();
+        if (!currentFileId) return undefined;
+        return findFileById(fileTree, currentFileId);
+      },
 
-  useEffect(() => {
-    if (!ready || !currentFileId) return;
-    localStorage.setItem("current-file-id", currentFileId);
-  }, [currentFileId, ready]);
+      updateFileTree: (updater) => {
+        set((state) => ({
+          fileTree: updater(state.fileTree),
+        }));
+      },
+    }),
+    {
+      name: "file-system-store", // localStorage key
+      partialize: (state) => ({
+        fileTree: state.fileTree,
+        currentFileId: state.currentFileId,
+      }),
+      onRehydrateStorage: () => (state) => {
+        if (state) {
+          state.ready = true;
+        }
+      },
+    },
+  ),
+);
 
-  const createItem = (parentId: string | null, item: FileNode) => {
-    const newTree = addItemToTree(fileTree, parentId, item);
-    setFileTree(newTree);
-  };
-
-  const updateFileContent = (
-    fileId: string,
-    data: { nodes: Node<GateNodeProps>[]; edges: Edge[] },
-  ) => {
-    const updatedTree = updateFileData(fileTree, fileId, data);
-    setFileTree(updatedTree);
-  };
-
-  const getFileContent = (fileId: string) => {
-    return findFileById(fileTree, fileId)?.data;
-  };
-
-  const updateFileTree = (updater: (tree: FileNode[]) => FileNode[]) => {
-    setFileTree((prev) => updater(prev));
-  };
-
-  const switchToFile = (fileId: string) => {
-    setCurrentFileId(fileId);
-  };
-
-  const getCurrentFile = useCallback(() => {
-    if (!currentFileId) return undefined;
-    return findFileById(fileTree, currentFileId);
-  }, [fileTree, currentFileId]);
-
-  return {
-    fileTree,
-    createItem,
-    updateFileContent,
-    getFileContent,
-    updateFileTree,
-    currentFileId,
-    switchToFile,
-    getCurrentFile,
-    ready,
-  };
-}
-
+// Utility functions (unchanged)
 function addItemToTree(
   tree: FileNode[],
   parentId: string | null,

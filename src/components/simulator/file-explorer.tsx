@@ -20,16 +20,8 @@ import {
   Download,
 } from "lucide-react";
 import { toast } from "sonner";
-import { useFileSystem } from "@/hooks/use-file-system";
+import { useFileSystem, FileNode } from "@/hooks/use-file-system";
 import { ThemeToggle } from "./theme-toggle";
-
-interface FileItem {
-  id: string;
-  name: string;
-  type: 'file' | 'directory';
-  children?: FileItem[];
-  isOpen?: boolean;
-}
 
 interface FileExplorerProps {
   isCollapsed: boolean;
@@ -40,7 +32,6 @@ interface FileExplorerProps {
 
 export function FileExplorer({
   isCollapsed,
-  // currentFileName,
   onFileSelect,
   currentFileId
 }: FileExplorerProps) {
@@ -50,35 +41,9 @@ export function FileExplorer({
   const [newItemName, setNewItemName] = useState('');
   const [newItemType, setNewItemType] = useState<'file' | 'directory'>('file');
 
-  // const handleExport = () => {
-  //   const circuitData = {
-  //     nodes,
-  //     edges,
-  //     metadata: {
-  //       name: currentFileName,
-  //       created: new Date().toISOString(),
-  //       version: '1.0'
-  //     }
-  //   };
-
-  //   const dataStr = JSON.stringify(circuitData, null, 2);
-  //   const dataBlob = new Blob([dataStr], { type: 'application/json' });
-  //   const url = URL.createObjectURL(dataBlob);
-  //
-  //   const link = document.createElement('a');
-  //   link.href = url;
-  //   link.download = `${currentFileName.replace('', '')}.json`;
-  //   document.body.appendChild(link);
-  //   link.click();
-  //   document.body.removeChild(link);
-  //   URL.revokeObjectURL(url);
-  //
-  //   toast.success('Circuit exported successfully');
-  // };
-
   const toggleDirectory = (id: string) => {
     updateFileTree(tree => {
-      const toggleOpen = (items: FileItem[]): FileItem[] => {
+      const toggleOpen = (items: FileNode[]): FileNode[] => {
         return items.map(item => {
           if (item.id === id) {
             return { ...item, isOpen: !item.isOpen };
@@ -99,7 +64,7 @@ export function FileExplorer({
       return;
     }
 
-    const newItem: FileItem = {
+    const newItem: FileNode = {
       id: Date.now().toString(),
       name: newItemName,
       type: newItemType,
@@ -114,7 +79,7 @@ export function FileExplorer({
     toast.success(`${newItemType === 'file' ? 'File' : 'Directory'} created successfully`);
   };
 
-  const renderFileItem = (item: FileItem, depth = 0) => {
+  const renderFileItem = (item: FileNode, depth = 0) => {
     const isSelected = currentFileId === item.id;
 
     return (
