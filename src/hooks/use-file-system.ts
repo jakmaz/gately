@@ -44,25 +44,37 @@ const defaultTree: FileNode[] = [
 
 export function useFileSystem() {
   const [fileTree, setFileTree] = useState<FileNode[]>(defaultTree);
-  const [currentFileId, setCurrentFileId] = useState<string>("untitled");
+  const [currentFileId, setCurrentFileId] = useState<string | null>(null);
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    const stored = localStorage.getItem("file-tree");
-    if (stored) {
+    const storedTree = localStorage.getItem("file-tree");
+    const storedFileId = localStorage.getItem("current-file-id");
+
+    if (storedTree) {
       try {
-        setFileTree(JSON.parse(stored));
+        setFileTree(JSON.parse(storedTree));
       } catch (e) {
         console.error("Failed to parse stored file tree", e);
       }
     }
+
+    if (storedFileId) {
+      setCurrentFileId(storedFileId);
+    }
+
     setReady(true);
   }, []);
 
   useEffect(() => {
-    if (!ready) return; // Prevent saving until the initial load is complete
+    if (!ready) return;
     localStorage.setItem("file-tree", JSON.stringify(fileTree));
   }, [fileTree, ready]);
+
+  useEffect(() => {
+    if (!ready || !currentFileId) return;
+    localStorage.setItem("current-file-id", currentFileId);
+  }, [currentFileId, ready]);
 
   const createItem = (parentId: string | null, item: FileNode) => {
     const newTree = addItemToTree(fileTree, parentId, item);
@@ -90,6 +102,7 @@ export function useFileSystem() {
   };
 
   const getCurrentFile = useCallback(() => {
+    if (!currentFileId) return undefined;
     return findFileById(fileTree, currentFileId);
   }, [fileTree, currentFileId]);
 
