@@ -28,7 +28,7 @@ export const InputNode = memo(({ id, data, isConnectable }: LogicGateProps) => {
         type="source"
         position={Position.Right}
         id="output"
-        className={`!bg-${stateColor}`}
+        className={`!w-3 !h-3 !bg-${stateColor}`}
         isConnectable={isConnectable}
       />
     </div>

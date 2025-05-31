@@ -56,9 +56,9 @@ export function BaseGateNode({
           type="target"
           position={Position.Left}
           id={`input-${index}`}
-          style={{ top: `${getInputPosition(index, inputHandles) * 100}%` }}
+          style={{ top: `${getInputPosition(index, inputHandles) * 100}%`, left: -8 }}
           isConnectable={isConnectable}
-          className="w-3 h-3 bg-blue-500"
+          className="!w-3 !h-3 "
         />
       ))}
 
@@ -69,9 +69,9 @@ export function BaseGateNode({
           type="source"
           position={Position.Right}
           id={`output-${index}`}
-          style={{ top: `${getOutputPosition(index, outputHandles) * 100}%` }}
+          style={{ top: `${getOutputPosition(index, outputHandles) * 100}%`, right: -8 }}
           isConnectable={isConnectable}
-          className={`w-3 h-3 ${stateColor}`}
+          className="!w-3 !h-3 "
         />
       ))}
     </div>
