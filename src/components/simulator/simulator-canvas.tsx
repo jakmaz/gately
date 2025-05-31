@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useFileSystem } from "@/hooks/use-file-system";
 import { useHasMounted } from "@/hooks/use-has-mounted";
-import { useSettings } from "@/hooks/use-settings";
+import { useSettingsStore } from "@/hooks/use-settings-store";
 import { useSimulatorLogic } from "@/hooks/use-simulator-logic";
 import { nodeTypes } from "@/lib/types";
 import { LoaderCircle } from "lucide-react";
@@ -17,7 +17,7 @@ import { Toolbar } from "./toolbar";
 
 export function SimulatorCanvas() {
   const hasMounted = useHasMounted();
-  const { settings } = useSettings();
+  const { settings } = useSettingsStore();
   const { currentFileId, updateFileContent, ready, getCurrentFile } = useFileSystem();
 
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
@@ -34,7 +34,6 @@ export function SimulatorCanvas() {
 
       return () => clearTimeout(saveTimeout);
     }
-
   }, [nodes, edges]);
 
   useEffect(() => {
@@ -49,7 +48,6 @@ export function SimulatorCanvas() {
       setNodes([]);
       setEdges([]);
     }
-
   }, [currentFileId, ready]);
 
   if (!hasMounted) {

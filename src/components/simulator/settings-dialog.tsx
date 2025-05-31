@@ -10,14 +10,13 @@ import {
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Settings, useSettings } from "@/hooks/use-settings";
+import { Settings, useSettingsStore } from "@/hooks/use-settings-store";
 import { DialogTrigger } from "@radix-ui/react-dialog";
 import { Grid, Palette, SettingsIcon, Zap } from "lucide-react";
 import { ThemeToggle } from "./theme-toggle";
 
-
 export function SettingsDialog() {
-  const { settings, updateSetting } = useSettings();
+  const { settings, updateSetting } = useSettingsStore();
 
   return (
     <Dialog>
