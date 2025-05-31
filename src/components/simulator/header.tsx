@@ -15,25 +15,22 @@ import {
   Settings,
   Menu,
   Copy,
-  FileText,
+  // FileText,
 } from "lucide-react";
 import { toast } from "sonner";
 import Link from "next/link";
 import AndGate from "../icons/and-gate";
 import { SettingsDialog } from "./settings-dialog";
-import { ExamplesDialog } from "./examples-dialog";
-import { Edge, Node } from "reactflow";
-import { GateNodeProps } from "@/lib/types";
 
 interface EnhancedHeaderProps {
   onToggleSidebar: () => void;
   currentFileName: string;
-  onImportExample: (nodes: Node<GateNodeProps>[], edges: Edge[], name: string) => void;
+  // onImportExample: (nodes: Node<GateNodeProps>[], edges: Edge[], name: string) => void;
 }
 
-export function EnhancedHeader({ onToggleSidebar, currentFileName, onImportExample }: EnhancedHeaderProps) {
+export function Header({ onToggleSidebar, currentFileName }: EnhancedHeaderProps) {
   const [settingsOpen, setSettingsOpen] = useState(false);
-  const [examplesOpen, setExamplesOpen] = useState(false);
+  // const [examplesOpen, setExamplesOpen] = useState(false);
   const [shareDialogOpen, setShareDialogOpen] = useState(false);
   const [shareUrl, setShareUrl] = useState('');
 
@@ -76,10 +73,10 @@ export function EnhancedHeader({ onToggleSidebar, currentFileName, onImportExamp
         </div>
 
         <div className="flex items-center gap-2">
-          <Button variant="ghost" size="sm" onClick={() => setExamplesOpen(true)}>
-            <FileText className="h-4 w-4 mr-2" />
-            Examples
-          </Button>
+          {/* <Button variant="ghost" size="sm" onClick={() => setExamplesOpen(true)}> */}
+          {/*   <FileText className="h-4 w-4 mr-2" /> */}
+          {/*   Examples */}
+          {/* </Button> */}
 
           <Button variant="ghost" size="sm" onClick={handleShare}>
             <Share className="h-4 w-4 mr-2" />
@@ -98,11 +95,11 @@ export function EnhancedHeader({ onToggleSidebar, currentFileName, onImportExamp
       </div>
 
       <SettingsDialog open={settingsOpen} onOpenChange={setSettingsOpen} />
-      <ExamplesDialog
-        open={examplesOpen}
-        onOpenChange={setExamplesOpen}
-        onImportExample={onImportExample}
-      />
+      {/* <ExamplesDialog */}
+      {/*   open={examplesOpen} */}
+      {/*   onOpenChange={setExamplesOpen} */}
+      {/*   onImportExample={onImportExample} */}
+      {/* /> */}
 
       <Dialog open={shareDialogOpen} onOpenChange={setShareDialogOpen}>
         <DialogContent>

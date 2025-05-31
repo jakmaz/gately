@@ -1,8 +1,5 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { ThemeToggle } from "./theme-toggle";
-
 type GateProps = {
   nodeType: string;
   symbol: string;
@@ -51,7 +48,7 @@ export function Toolbar() {
   ];
 
   return (
-    <div className="w-64 border-r bg-card p-4 flex flex-col h-full">
+    <div className="w-64 bg-card p-4 rounded-xl flex flex-col h-full">
       <div className="mb-4">
         <h2 className="text-xl font-semibold mb-2">Gates</h2>
         <p className="text-sm text-muted-foreground mb-2">
@@ -60,22 +57,16 @@ export function Toolbar() {
       </div>
 
       {sections.map(({ title, gates }) => (
-        <section key={title} className="mb-6">
-          <h3 className="text-md font-medium mb-4">{title}</h3>
+        <section key={title}>
+          <h3 className="text-md font-medium mb-2">{title}</h3>
           <div className="grid grid-cols-2 gap-2">
             {gates.map(({ nodeType, symbol, label }) => (
               <Gate key={nodeType} nodeType={nodeType} symbol={symbol} label={label} />
             ))}
           </div>
-        </section>
-      ))}
-
-      <div className="mt-auto flex justify-between">
-        <ThemeToggle />
-        <Button variant="outline" size="sm">
-          Help
-        </Button>
-      </div>
-    </div>
+        </section >
+      ))
+      }
+    </div >
   );
 }

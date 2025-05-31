@@ -23,6 +23,7 @@ import { toast } from "sonner";
 import { Edge, Node } from "reactflow";
 import { GateNodeProps } from "@/lib/types";
 import { useFileSystem } from "@/hooks/use-file-system";
+import { ThemeToggle } from "./theme-toggle";
 
 interface FileItem {
   id: string;
@@ -232,6 +233,13 @@ export function FileExplorer({
 
       <div className="flex-1 overflow-auto p-2">
         {fileTree.map(item => renderFileItem(item))}
+      </div>
+
+      <div className="p-2 mt-auto flex justify-between">
+        <ThemeToggle />
+        <Button variant="outline" size="sm">
+          Help
+        </Button>
       </div>
     </div>
   );
