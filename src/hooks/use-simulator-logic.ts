@@ -1,15 +1,17 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { calculateNodeStates } from "@/lib/simulator";
+import { GateNodeProps } from "@/lib/types";
 import { useCallback } from "react";
 import {
   addEdge,
-  MarkerType,
-  Edge,
-  Node,
+  applyEdgeChanges,
+  applyNodeChanges,
   Connection,
+  Edge,
+  MarkerType,
+  Node,
   useReactFlow,
 } from "reactflow";
-import { GateNodeProps } from "@/lib/types";
-import { calculateNodeStates } from "@/lib/simulator";
 
 export function useSimulatorLogic() {
   const { setNodes, setEdges, getNodes, getEdges } = useReactFlow();
@@ -95,23 +97,11 @@ export function useSimulatorLogic() {
   );
 
   const onNodesChange = useCallback(
-    (changes: any) => {
-      setNodes((nds) => applyNodeChanges(changes, nds));
-    },
+    (changes) => setNodes((nds) => applyNodeChanges(changes, nds)),
     [setNodes],
   );
-
   const onEdgesChange = useCallback(
-    (changes: any) => {
-      setEdges((eds) => {
-        return changes.reduce((acc: Edge[], change: any) => {
-          if (change.type === "remove") {
-            return acc.filter((edge) => edge.id !== change.id);
-          }
-          return acc;
-        }, eds);
-      });
-    },
+    (changes) => setEdges((eds) => applyEdgeChanges(changes, eds)),
     [setEdges],
   );
 

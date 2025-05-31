@@ -1,39 +1,18 @@
 import { useHasMounted } from "@/hooks/use-has-mounted";
 import { useSettings } from "@/hooks/use-settings";
+import { useSimulatorLogic } from "@/hooks/use-simulator-logic";
+import { nodeTypes } from "@/lib/types";
 import { LoaderCircle } from "lucide-react";
 import { useCallback, useRef } from "react";
 import ReactFlow, {
   Background,
   MiniMap,
-  NodeTypes,
   Panel,
-  useNodes,
   useEdges,
+  useNodes,
   useReactFlow,
 } from "reactflow";
-import { ANDGateNode } from "../nodes/and";
-import { InputNode } from "../nodes/input";
-import { NANDGateNode } from "../nodes/nand";
-import { NORGateNode } from "../nodes/nor";
-import { NOTGateNode } from "../nodes/not";
-import { ORGateNode } from "../nodes/or";
-import { OutputNode } from "../nodes/output";
-import { XNORGateNode } from "../nodes/xnor";
-import { XORGateNode } from "../nodes/xor";
 import { Toolbar } from "./toolbar";
-import { useSimulatorLogic } from "@/hooks/use-simulator-logic";
-
-const nodeTypes: NodeTypes = {
-  inputNode: InputNode,
-  outputNode: OutputNode,
-  andGate: ANDGateNode,
-  orGate: ORGateNode,
-  notGate: NOTGateNode,
-  nandGate: NANDGateNode,
-  norGate: NORGateNode,
-  xorGate: XORGateNode,
-  xnorGate: XNORGateNode,
-};
 
 export function SimulatorCanvas() {
   const hasMounted = useHasMounted();
