@@ -23,6 +23,7 @@ import { XORGateNode } from "../nodes/xor";
 import { XNORGateNode } from "../nodes/xnor";
 import { Toolbar } from "./toolbar";
 import { GateNodeProps } from "@/lib/types";
+import { LoaderCircle } from "lucide-react";
 
 const nodeTypes: NodeTypes = {
   inputNode: InputNode,
@@ -91,8 +92,8 @@ export function SimulatorCanvas({
 
   if (!hasMounted) {
     return (
-      <div className="flex items-center justify-center h-full text-xl text-muted-foreground">
-        Loading simulator...
+      <div className="flex items-center justify-center w-full h-full text-xl text-muted-foreground">
+        <LoaderCircle className="animate-spin" />
       </div>
     );
   }
