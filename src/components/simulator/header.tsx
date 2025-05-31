@@ -9,6 +9,7 @@ import { Controls } from "./controls";
 import { SettingsDialog } from "./settings-dialog";
 import { ShareDialog } from "./share-dialog";
 import { useFileSystem } from "@/hooks/use-file-system";
+import { useHasMounted } from "@/hooks/use-has-mounted";
 
 interface HeaderProps {
   onToggleSidebar: () => void;
@@ -17,7 +18,9 @@ interface HeaderProps {
 export function Header({
   onToggleSidebar,
 }: HeaderProps) {
-  const { currentFileId } = useFileSystem();
+  const { getCurrentFile } = useFileSystem();
+  const hasMounted = useHasMounted();
+  const currentFile = getCurrentFile();
 
   return (
     <div className="h-14 border-b bg-card flex items-center justify-between px-4">
@@ -39,7 +42,7 @@ export function Header({
         </Link>
 
         <div className="text-muted-foreground">
-          <span>{currentFileId}</span>
+          <span>{hasMounted ? (currentFile?.name || 'No file selected') : ''}</span>
         </div>
         <Separator orientation="vertical" />
         {/* Canvas Controls */}
