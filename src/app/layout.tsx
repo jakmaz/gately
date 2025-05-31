@@ -14,8 +14,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Gately - Logic Gate Simulator",
-  description: "Simple and modern web-based logic gate simulator. Design, test, and visualize digital circuits interactively right in your browser",
+  title: "Gately - Online Logic Gate Simulator",
+  description: "Simple and modern web-based logic gate simulator. Design, test, and visualize digital circuits interactively for free and without a signup",
+  keywords: ["logic gate simulator", "digital circuits", "online simulator", "free simulator", "no signup"]
 };
 
 export default function RootLayout({
