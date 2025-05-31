@@ -77,22 +77,24 @@ export function Toolbar() {
         </p>
       </div>
 
-      {sections.map(({ title, gates }) => (
-        <section key={title}>
-          <h3 className="text-md font-medium mb-2">{title}</h3>
-          <div className="grid grid-cols-2 gap-2">
-            {gates.map(({ nodeType, symbol, label }) => (
-              <Gate
-                key={nodeType}
-                nodeType={nodeType}
-                symbol={symbol}
-                label={label}
-                onClick={() => handleAddNode(nodeType)}
-              />
-            ))}
-          </div>
-        </section>
-      ))}
+      <div className="flex flex-col gap-4">
+        {sections.map(({ title, gates }) => (
+          <section key={title}>
+            <h3 className="text-md font-medium mb-4">{title}</h3>
+            <div className="grid grid-cols-2 gap-2">
+              {gates.map(({ nodeType, symbol, label }) => (
+                <Gate
+                  key={nodeType}
+                  nodeType={nodeType}
+                  symbol={symbol}
+                  label={label}
+                  onClick={() => handleAddNode(nodeType)}
+                />
+              ))}
+            </div>
+          </section>
+        ))}
+      </div>
     </div>
   );
 }
