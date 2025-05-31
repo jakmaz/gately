@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import "reactflow/dist/style.css";
-import { Header } from "./header";
 import { useFileSystem } from "@/hooks/use-file-system";
-import { SimulatorCanvas } from "./simulator-canvas";
 import { useSimulatorState } from "@/hooks/use-simulator-state";
+import { useCallback, useEffect, useState } from "react";
+import { ReactFlowInstance } from "reactflow";
+import "reactflow/dist/style.css";
 import { FileExplorer } from "./file-explorer";
+import { Header } from "./header";
+import { SimulatorCanvas } from "./simulator-canvas";
 
 export function LogicGateSimulator() {
   const {
@@ -20,8 +21,32 @@ export function LogicGateSimulator() {
     onNodeClick,
   } = useSimulatorState();
   const { currentFileId, getCurrentFile, updateFileContent, switchToFile, ready } = useFileSystem();
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [reactFlowInstance, setReactFlowInstance] = useState<ReactFlowInstance | null>(null);
+  const [isLocked, setIsLocked] = useState(false);
 
+  // Canvas control functions
+  const handleCenterCanvas = useCallback(() => {
+    if (reactFlowInstance) {
+      reactFlowInstance.fitView({ padding: 0.1, duration: 800 });
+    }
+  }, [reactFlowInstance]);
+
+  const handleZoomIn = useCallback(() => {
+    if (reactFlowInstance) {
+      reactFlowInstance.zoomIn({ duration: 300 });
+    }
+  }, [reactFlowInstance]);
+
+  const handleZoomOut = useCallback(() => {
+    if (reactFlowInstance) {
+      reactFlowInstance.zoomOut({ duration: 300 });
+    }
+  }, [reactFlowInstance]);
+
+  const handleToggleLock = useCallback(() => {
+    setIsLocked(!isLocked);
+  }, [isLocked]);
 
   // Auto-save current circuit when nodes or edges change
   useEffect(() => {
@@ -36,22 +61,20 @@ export function LogicGateSimulator() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [nodes, edges]);
 
-
   useEffect(() => {
     if (!ready) return;
     const currentFile = getCurrentFile();
     console.debug("Loading file", currentFileId);
 
     if (currentFile?.data) {
-      setNodes(currentFile.data.nodes)
-      setEdges(currentFile.data.edges)
+      setNodes(currentFile.data.nodes);
+      setEdges(currentFile.data.edges);
     } else {
       setNodes([]);
       setEdges([]);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentFileId, ready]); // 👈 include all dependencies
-
+  }, [currentFileId, ready]);
 
   const currentFileName = getCurrentFile()?.name || "Untitled Circuit";
 
@@ -60,7 +83,12 @@ export function LogicGateSimulator() {
       <Header
         onToggleSidebar={() => setSidebarCollapsed(!sidebarCollapsed)}
         currentFileName={currentFileName}
-      // onImportExample={handleImportExample}
+        onCenterCanvas={handleCenterCanvas}
+        onZoomIn={handleZoomIn}
+        onZoomOut={handleZoomOut}
+        onToggleLock={handleToggleLock}
+        isLocked={isLocked}
+        canvasControlsEnabled={!!reactFlowInstance}
       />
       <div className="flex flex-1 overflow-hidden">
         <FileExplorer
@@ -80,6 +108,8 @@ export function LogicGateSimulator() {
           onEdgesChange={onEdgesChange}
           onConnectEdge={onConnectEdge}
           onNodeClick={onNodeClick}
+          onReactFlowInit={setReactFlowInstance}
+          nodesDraggable={isLocked}
         />
       </div>
     </div>

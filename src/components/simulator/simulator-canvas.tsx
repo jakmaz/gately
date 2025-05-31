@@ -1,4 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { useHasMounted } from "@/hooks/use-has-mounted";
+import { useSettings } from "@/hooks/use-settings";
+import { GateNodeProps } from "@/lib/types";
+import { LoaderCircle } from "lucide-react";
 import { useCallback, useRef, useState } from "react";
 import ReactFlow, {
   Background,
@@ -10,20 +14,16 @@ import ReactFlow, {
   Panel,
   ReactFlowInstance,
 } from "reactflow";
-import { useSettings } from "@/hooks/use-settings";
-import { useHasMounted } from "@/hooks/use-has-mounted";
-import { InputNode } from "../nodes/input";
-import { OutputNode } from "../nodes/output";
 import { ANDGateNode } from "../nodes/and";
-import { ORGateNode } from "../nodes/or";
-import { NOTGateNode } from "../nodes/not";
+import { InputNode } from "../nodes/input";
 import { NANDGateNode } from "../nodes/nand";
 import { NORGateNode } from "../nodes/nor";
-import { XORGateNode } from "../nodes/xor";
+import { NOTGateNode } from "../nodes/not";
+import { ORGateNode } from "../nodes/or";
+import { OutputNode } from "../nodes/output";
 import { XNORGateNode } from "../nodes/xnor";
+import { XORGateNode } from "../nodes/xor";
 import { Toolbar } from "./toolbar";
-import { GateNodeProps } from "@/lib/types";
-import { LoaderCircle } from "lucide-react";
 
 const nodeTypes: NodeTypes = {
   inputNode: InputNode,
@@ -46,6 +46,8 @@ type Props = {
   onEdgesChange: (changes: any) => void;
   onConnectEdge: (connection: Connection) => void;
   onNodeClick: (node: Node<GateNodeProps>) => void;
+  onReactFlowInit?: (instance: ReactFlowInstance) => void;
+  nodesDraggable: boolean
 };
 
 export function SimulatorCanvas({
@@ -56,11 +58,21 @@ export function SimulatorCanvas({
   onEdgesChange,
   onConnectEdge,
   onNodeClick,
+  onReactFlowInit,
+  nodesDraggable
 }: Props) {
   const hasMounted = useHasMounted();
   const { settings } = useSettings();
   const reactFlowWrapper = useRef(null);
   const [reactFlowInstance, setReactFlowInstance] = useState<ReactFlowInstance | null>(null);
+
+  const onInit = useCallback(
+    (instance: ReactFlowInstance) => {
+      setReactFlowInstance(instance);
+      onReactFlowInit?.(instance);
+    },
+    [onReactFlowInit]
+  );
 
   const onDragOver = useCallback((event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
@@ -107,12 +119,13 @@ export function SimulatorCanvas({
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         onConnect={onConnectEdge}
-        onInit={setReactFlowInstance}
+        onInit={onInit}
         onDrop={onDrop}
         onDragOver={onDragOver}
         snapToGrid={settings.snapToGrid}
         snapGrid={[20, 20]}
         nodeTypes={nodeTypes}
+        nodesDraggable={nodesDraggable}
         onNodeClick={(_, node) => onNodeClick(node)}
         fitView
       >
