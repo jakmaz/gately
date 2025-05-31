@@ -9,7 +9,7 @@ import { FileExplorer } from "./file-explorer";
 import { SimulatorCanvas } from "./simulator-canvas";
 
 export function LogicGateSimulator() {
-  const { currentFileId, getCurrentFile, updateFileContent, switchToFile, ready } = useFileSystem();
+  const { currentFileId, getCurrentFile, switchToFile } = useFileSystem();
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   const currentFileName = getCurrentFile()?.name || "Untitled Circuit";

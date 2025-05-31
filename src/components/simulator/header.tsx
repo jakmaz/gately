@@ -1,40 +1,23 @@
 import { Button } from "@/components/ui/button";
 import {
-  Lock,
-  Maximize2,
-  Menu,
-  Unlock,
-  ZoomIn,
-  ZoomOut,
+  Menu
 } from "lucide-react";
 import Link from "next/link";
 import AndGate from "../icons/and-gate";
-import { SettingsDialog } from "./settings-dialog";
-import { ShareDialog } from "./share-dialog";
 import { Separator } from "../ui/separator";
 import { Controls } from "./controls";
+import { SettingsDialog } from "./settings-dialog";
+import { ShareDialog } from "./share-dialog";
 
-interface EnhancedHeaderProps {
+interface HeaderProps {
   onToggleSidebar: () => void;
   currentFileName: string;
-  onCenterCanvas?: () => void;
-  onZoomIn?: () => void;
-  onZoomOut?: () => void;
-  onToggleLock?: () => void;
-  isLocked?: boolean;
-  canvasControlsEnabled?: boolean;
 }
 
 export function Header({
   onToggleSidebar,
   currentFileName,
-  onCenterCanvas,
-  onZoomIn,
-  onZoomOut,
-  onToggleLock,
-  isLocked = false,
-  canvasControlsEnabled = false,
-}: EnhancedHeaderProps) {
+}: HeaderProps) {
   return (
     <div className="h-14 border-b bg-card flex items-center justify-between px-4">
       <div className="flex items-center gap-4">

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { calculateNodeStates } from "@/lib/simulator";
 import { GateNodeProps } from "@/lib/types";
 import { useCallback } from "react";
@@ -12,7 +11,8 @@ import {
 } from "reactflow";
 
 export function useSimulatorLogic() {
-  const { setNodes, setEdges, getNodes, getEdges } = useReactFlow();
+  const { setNodes, setEdges, getNodes, getEdges, screenToFlowPosition } =
+    useReactFlow();
 
   const updateEdgeStyles = useCallback(
     (currentNodes: Node<GateNodeProps>[], currentEdges: Edge[]) => {
@@ -94,8 +94,37 @@ export function useSimulatorLogic() {
     [setNodes, updateEdgeStyles, getNodes, getEdges],
   );
 
+  const onDragOver = useCallback((event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    event.dataTransfer.dropEffect = "move";
+  }, []);
+
+  const onDrop = useCallback(
+    (event: React.DragEvent<HTMLDivElement>) => {
+      event.preventDefault();
+      const type = event.dataTransfer.getData("application/reactflow");
+
+      const position = screenToFlowPosition({
+        x: event.clientX,
+        y: event.clientY,
+      });
+
+      const newNode = {
+        id: `${type}-${getNodes.length + 1}`,
+        type,
+        position,
+        data: { label: type, state: false },
+      };
+
+      setNodes((nds) => nds.concat(newNode));
+    },
+    [getNodes.length, screenToFlowPosition, setNodes],
+  );
+
   return {
     onConnectEdge,
     onNodeClick,
+    onDragOver,
+    onDrop,
   };
 }

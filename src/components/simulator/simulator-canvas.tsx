@@ -1,31 +1,28 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useFileSystem } from "@/hooks/use-file-system";
 import { useHasMounted } from "@/hooks/use-has-mounted";
 import { useSettings } from "@/hooks/use-settings";
 import { useSimulatorLogic } from "@/hooks/use-simulator-logic";
 import { nodeTypes } from "@/lib/types";
 import { LoaderCircle } from "lucide-react";
-import { useCallback, useEffect, useRef } from "react";
+import { useEffect } from "react";
 import ReactFlow, {
   Background,
   MiniMap,
   Panel,
   useEdgesState,
-  useNodesState,
-  useReactFlow,
+  useNodesState
 } from "reactflow";
 import { Toolbar } from "./toolbar";
-import { useFileSystem } from "@/hooks/use-file-system";
 
 export function SimulatorCanvas() {
   const hasMounted = useHasMounted();
   const { settings } = useSettings();
   const { currentFileId, updateFileContent, ready, getCurrentFile } = useFileSystem();
-  const reactFlowWrapper = useRef(null);
 
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
-
-  const reactFlowInstance = useReactFlow()
-  const { onConnectEdge, onNodeClick } = useSimulatorLogic();
+  const { onConnectEdge, onNodeClick, onDrop, onDragOver } = useSimulatorLogic();
 
   // Auto-save current circuit when nodes or edges change
   useEffect(() => {
@@ -37,7 +34,7 @@ export function SimulatorCanvas() {
 
       return () => clearTimeout(saveTimeout);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+
   }, [nodes, edges]);
 
   useEffect(() => {
@@ -55,32 +52,6 @@ export function SimulatorCanvas() {
 
   }, [currentFileId, ready]);
 
-  const onDragOver = useCallback((event: React.DragEvent<HTMLDivElement>) => {
-    event.preventDefault();
-    event.dataTransfer.dropEffect = "move";
-  }, []);
-
-  const onDrop = useCallback(
-    (event: React.DragEvent<HTMLDivElement>) => {
-      event.preventDefault();
-      const type = event.dataTransfer.getData("application/reactflow");
-
-      const position = reactFlowInstance.screenToFlowPosition({
-        x: event.clientX,
-        y: event.clientY,
-      });
-
-      const newNode = {
-        id: `${type}-${nodes.length + 1}`,
-        type,
-        position,
-        data: { label: type, state: false },
-      };
-
-      reactFlowInstance.setNodes((nds) => nds.concat(newNode));
-    },
-    [nodes, reactFlowInstance]
-  );
   if (!hasMounted) {
     return (
       <div className="flex items-center justify-center w-full h-full text-xl text-muted-foreground">
@@ -90,7 +61,7 @@ export function SimulatorCanvas() {
   }
 
   return (
-    <div className="flex-1 h-full" ref={reactFlowWrapper}>
+    <div className="flex-1 h-full">
       <ReactFlow
         className="bg-background"
         nodes={nodes}
