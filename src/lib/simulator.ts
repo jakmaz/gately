@@ -2,7 +2,10 @@ import { Node, Edge } from "reactflow";
 import { GateNodeProps } from "./types";
 
 // Evaluate the state of all nodes in the circuit
-export function calculateNodeStates(nodes: Node<GateNodeProps>[], edges: Edge[]): Node<GateNodeProps>[] {
+export function calculateNodeStates(
+  nodes: Node<GateNodeProps>[],
+  edges: Edge[],
+): Node<GateNodeProps>[] {
   // Create a copy of the nodes to work with
   const updatedNodes = [...nodes];
 
@@ -22,7 +25,10 @@ export function calculateNodeStates(nodes: Node<GateNodeProps>[], edges: Edge[])
   });
 
   // Function to evaluate a node's state based on its inputs
-  const evaluateNode = (nodeId: string, visited = new Set<string>()): boolean => {
+  const evaluateNode = (
+    nodeId: string,
+    visited = new Set<string>(),
+  ): boolean => {
     // Prevent infinite loops in case of cyclic connections
     if (visited.has(nodeId)) {
       return false;
@@ -50,7 +56,9 @@ export function calculateNodeStates(nodes: Node<GateNodeProps>[], edges: Edge[])
     }
 
     // Evaluate all inputs
-    const inputStates = incomingEdgeSourceIds.map((sourceId) => evaluateNode(sourceId, new Set(visited)));
+    const inputStates = incomingEdgeSourceIds.map((sourceId) =>
+      evaluateNode(sourceId, new Set(visited)),
+    );
 
     // Store input states on the node
     updatedNodes[nodeIndex] = {
@@ -110,7 +118,15 @@ export function calculateNodeStates(nodes: Node<GateNodeProps>[], edges: Edge[])
     .filter(
       (node) =>
         node.type === "outputNode" ||
-        ["andGate", "orGate", "notGate", "nandGate", "norGate", "xorGate", "xnorGate"].includes(node.type || ""),
+        [
+          "andGate",
+          "orGate",
+          "notGate",
+          "nandGate",
+          "norGate",
+          "xorGate",
+          "xnorGate",
+        ].includes(node.type || ""),
     )
     .forEach((node) => {
       evaluateNode(node.id);

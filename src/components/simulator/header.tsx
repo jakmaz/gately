@@ -8,16 +8,17 @@ import { Separator } from "../ui/separator";
 import { Controls } from "./controls";
 import { SettingsDialog } from "./settings-dialog";
 import { ShareDialog } from "./share-dialog";
+import { useFileSystem } from "@/hooks/use-file-system";
 
 interface HeaderProps {
   onToggleSidebar: () => void;
-  currentFileName: string;
 }
 
 export function Header({
   onToggleSidebar,
-  currentFileName,
 }: HeaderProps) {
+  const { currentFileId } = useFileSystem();
+
   return (
     <div className="h-14 border-b bg-card flex items-center justify-between px-4">
       <div className="flex items-center gap-4">
@@ -38,7 +39,7 @@ export function Header({
         </Link>
 
         <div className="text-muted-foreground">
-          <span>{currentFileName}</span>
+          <span>{currentFileId}</span>
         </div>
         <Separator orientation="vertical" />
         {/* Canvas Controls */}

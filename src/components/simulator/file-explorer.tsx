@@ -25,17 +25,12 @@ import { ThemeToggle } from "./theme-toggle";
 
 interface FileExplorerProps {
   isCollapsed: boolean;
-  currentFileName: string;
-  onFileSelect: (fileId: string) => void;
-  currentFileId: string;
 }
 
 export function FileExplorer({
   isCollapsed,
-  onFileSelect,
-  currentFileId
 }: FileExplorerProps) {
-  const { fileTree, createItem, updateFileTree } = useFileSystem();
+  const { fileTree, createItem, updateFileTree, currentFileId, switchToFile } = useFileSystem();
 
   const [newItemDialog, setNewItemDialog] = useState(false);
   const [newItemName, setNewItemName] = useState('');
@@ -92,7 +87,7 @@ export function FileExplorer({
             if (item.type === 'directory') {
               toggleDirectory(item.id);
             } else {
-              onFileSelect(item.id);
+              switchToFile(item.id);
             }
           }}
         >
