@@ -12,6 +12,7 @@ import AndGate from "../icons/and-gate";
 import { SettingsDialog } from "./settings-dialog";
 import { ShareDialog } from "./share-dialog";
 import { Separator } from "../ui/separator";
+import { Controls } from "./controls";
 
 interface EnhancedHeaderProps {
   onToggleSidebar: () => void;
@@ -58,51 +59,7 @@ export function Header({
         </div>
         <Separator orientation="vertical" />
         {/* Canvas Controls */}
-        <div className="flex items-center gap-1">
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={onCenterCanvas}
-            disabled={!canvasControlsEnabled}
-            title="Center Canvas"
-            className="p-2"
-          >
-            <Maximize2 className="h-4 w-4" />
-          </Button>
-
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={onZoomIn}
-            disabled={!canvasControlsEnabled}
-            title="Zoom In"
-            className="p-2"
-          >
-            <ZoomIn className="h-4 w-4" />
-          </Button>
-
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={onZoomOut}
-            disabled={!canvasControlsEnabled}
-            title="Zoom Out"
-            className="p-2"
-          >
-            <ZoomOut className="h-4 w-4" />
-          </Button>
-
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={onToggleLock}
-            disabled={!canvasControlsEnabled}
-            title={isLocked ? "Unlock Canvas" : "Lock Canvas"}
-            className="p-2"
-          >
-            {isLocked ? <Unlock className="h-4 w-4" /> : <Lock className="h-4 w-4" />}
-          </Button>
-        </div>
+        <Controls />
       </div>
 
       <div>

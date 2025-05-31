@@ -1,11 +1,18 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useCallback } from "react";
-import { useNodesState, useEdgesState, addEdge, MarkerType, Edge, Node, Connection } from "reactflow";
+import {
+  addEdge,
+  MarkerType,
+  Edge,
+  Node,
+  Connection,
+  useReactFlow,
+} from "reactflow";
 import { GateNodeProps } from "@/lib/types";
 import { calculateNodeStates } from "@/lib/simulator";
 
-export function useSimulatorState() {
-  const [nodes, setNodes, onNodesChange] = useNodesState([]);
-  const [edges, setEdges, onEdgesChange] = useEdgesState([]);
+export function useSimulatorLogic() {
+  const { setNodes, setEdges, getNodes, getEdges } = useReactFlow();
 
   const updateEdgeStyles = useCallback(
     (currentNodes: Node<GateNodeProps>[], currentEdges: Edge[]) => {
@@ -35,6 +42,9 @@ export function useSimulatorState() {
 
   const onConnectEdge = useCallback(
     (params: Connection | Edge) => {
+      const nodes = getNodes();
+      const edges = getEdges();
+
       const edge = {
         ...params,
         id: `${params.source}-${params.target}-${Date.now()}`,
@@ -49,19 +59,29 @@ export function useSimulatorState() {
       setEdges((eds) => addEdge(edge, eds));
 
       setTimeout(() => {
-        const updatedNodes = calculateNodeStates(nodes, [...edges, edge as Edge]);
+        const updatedNodes = calculateNodeStates(nodes, [
+          ...edges,
+          edge as Edge,
+        ]);
         setNodes(updatedNodes);
         updateEdgeStyles(updatedNodes, [...edges, edge as Edge]);
       }, 100);
     },
-    [edges, nodes, setEdges, setNodes, updateEdgeStyles],
+    [setEdges, setNodes, updateEdgeStyles, getNodes, getEdges],
   );
 
   const onNodeClick = useCallback(
     (node: Node<GateNodeProps>) => {
       if (node.type !== "inputNode") return;
 
-      const updatedNodes = nodes.map((n) => (n.id === node.id ? { ...n, data: { ...n.data, state: !n.data.state } } : n));
+      const nodes = getNodes();
+      const edges = getEdges();
+
+      const updatedNodes = nodes.map((n) =>
+        n.id === node.id
+          ? { ...n, data: { ...n.data, state: !n.data.state } }
+          : n,
+      );
 
       setNodes(updatedNodes);
 
@@ -71,14 +91,31 @@ export function useSimulatorState() {
         updateEdgeStyles(calculatedNodes, edges);
       }, 100);
     },
-    [nodes, edges, setNodes, updateEdgeStyles],
+    [setNodes, updateEdgeStyles, getNodes, getEdges],
+  );
+
+  const onNodesChange = useCallback(
+    (changes: any) => {
+      setNodes((nds) => applyNodeChanges(changes, nds));
+    },
+    [setNodes],
+  );
+
+  const onEdgesChange = useCallback(
+    (changes: any) => {
+      setEdges((eds) => {
+        return changes.reduce((acc: Edge[], change: any) => {
+          if (change.type === "remove") {
+            return acc.filter((edge) => edge.id !== change.id);
+          }
+          return acc;
+        }, eds);
+      });
+    },
+    [setEdges],
   );
 
   return {
-    nodes,
-    setNodes,
-    edges,
-    setEdges,
     onNodesChange,
     onEdgesChange,
     onConnectEdge,
