@@ -8,7 +8,7 @@ import { FileExplorer } from "./file-explorer";
 import { SimulatorCanvas } from "./simulator-canvas";
 
 export function LogicGateSimulator() {
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(true);
 
 
   return (
