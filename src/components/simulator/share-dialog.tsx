@@ -26,7 +26,7 @@ export function ShareDialog() {
 
   return (
     <Dialog open={shareDialogOpen} onOpenChange={setShareDialogOpen}>
-      <Button variant="ghost" size="sm" onClick={handleShare}>
+      <Button disabled variant="ghost" size="sm" onClick={handleShare}>
         <Share className="h-4 w-4 mr-2" />
         Share
       </Button>
