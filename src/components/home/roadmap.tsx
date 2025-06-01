@@ -20,9 +20,9 @@ const roadmapItems = [
     icon: <Layers className="size-5" />,
   },
   {
-    title: "Smart Circuit Suggestions",
+    title: "Circuit Validation Tools",
     description:
-      "Get circuit recommendations based on your current design using AI-powered logic analysis.",
+      "Run automated checks to identify errors and optimize your circuit designs.",
     status: "Planned",
     icon: <Grid className="size-5" />,
   },
@@ -34,9 +34,9 @@ const roadmapItems = [
     icon: <Folder className="size-5" />,
   },
   {
-    title: "AI Gate Layout",
+    title: "Automatic Gate Alignment",
     description:
-      "Automatically organize your logic gates for a cleaner and more readable circuit layout using AI.",
+      "Automatically arrange your logic gates for a cleaner and more readable circuit layout.",
     status: "Coming Soon",
     icon: <Brain className="size-5" />,
   },

@@ -1,14 +1,14 @@
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
-import { motion } from "motion/react";
 import {
-  Share2,
-  Table,
-  Zap,
-  Settings,
-  LayoutTemplate,
   Cpu,
+  FolderTree,
+  LayoutTemplate,
+  Settings,
+  Share2,
+  Zap
 } from "lucide-react";
+import { motion } from "motion/react";
 
 const features = [
   {
@@ -36,10 +36,10 @@ const features = [
     icon: <Share2 className="size-5" />,
   },
   {
-    title: "Truth Table Generation",
+    title: "Multiple Files & Local Sync",
     description:
-      "Automatically generate comprehensive truth tables for any logical circuit or boolean expression.",
-    icon: <Table className="size-5" />,
+      "Manage multiple circuit files seamlessly with all your work automatically synced to local storage on your device.",
+    icon: <FolderTree className="size-5" />,
   },
   {
     title: "Customizable Settings",

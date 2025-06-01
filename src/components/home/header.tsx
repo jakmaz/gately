@@ -53,7 +53,7 @@ export function Header({
           </div>
         </Link>
         <nav className="hidden md:flex gap-4 lg:gap-8 items-center">
-          {["Examples", "Features", "How It Works", "Roadmap", "FAQ"].map(
+          {["Features", "How It Works", "Roadmap", "FAQ"].map(
             (item, i) => (
               <motion.a
                 key={item}
@@ -135,7 +135,7 @@ export function Header({
           className="md:hidden absolute top-16 inset-x-0 bg-background/95 backdrop-blur-lg border-b"
         >
           <div className="container mx-auto py-4 flex flex-col gap-4 px-4">
-            {["Examples", "Features", "How It Works", "Roadmap", "FAQ"].map(
+            {["Features", "How It Works", "Roadmap", "FAQ"].map(
               (item, i) => (
                 <motion.a
                   key={item}
