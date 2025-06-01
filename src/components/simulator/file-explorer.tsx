@@ -19,6 +19,8 @@ import {
   ChevronDown,
   Download,
   MoreVertical,
+  Trash2,
+  Edit,
 } from "lucide-react";
 import { toast } from "sonner";
 import { useFileSystem, FileNode } from "@/hooks/use-file-system";
@@ -28,6 +30,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 
 interface FileExplorerProps {
@@ -37,13 +40,15 @@ interface FileExplorerProps {
 export function FileExplorer({
   isCollapsed,
 }: FileExplorerProps) {
-  const { fileTree, createItem, updateFileTree, currentFileId, switchToFile, renameItem, moveItem } = useFileSystem();
+  const { fileTree, createItem, updateFileTree, currentFileId, switchToFile, renameItem, moveItem, deleteItem } = useFileSystem();
 
   const [newItemDialog, setNewItemDialog] = useState(false);
   const [newItemName, setNewItemName] = useState('');
   const [newItemType, setNewItemType] = useState<'file' | 'directory'>('file');
   const [editingItemId, setEditingItemId] = useState<string | null>(null);
   const [editingName, setEditingName] = useState('');
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [itemToDelete, setItemToDelete] = useState<FileNode | null>(null);
 
   const toggleDirectory = (id: string) => {
     updateFileTree(tree => {
@@ -116,9 +121,23 @@ export function FileExplorer({
       if (data.id === targetId) return; // Don't move to self
       moveItem(data.id, targetId);
       toast.success('Item moved successfully');
-    } catch (error) {
+    } catch (e) {
+      console.error(e);
       toast.error('Failed to move item');
     }
+  };
+
+  const handleDelete = (item: FileNode) => {
+    setItemToDelete(item);
+    setDeleteDialogOpen(true);
+  };
+
+  const confirmDelete = () => {
+    if (!itemToDelete) return;
+    deleteItem(itemToDelete.id);
+    setDeleteDialogOpen(false);
+    setItemToDelete(null);
+    toast.success(`${itemToDelete.type === 'file' ? 'File' : 'Directory'} deleted successfully`);
   };
 
   const renderFileItem = (item: FileNode, depth = 0) => {
@@ -128,7 +147,7 @@ export function FileExplorer({
     return (
       <div key={item.id}>
         <div
-          className={`flex items-center gap-2 px-2 py-1 rounded cursor-pointer hover:bg-accent transition-colors ${isSelected ? 'bg-accent' : ''}`}
+          className={`flex items-center gap-2 px-2 py-1 rounded cursor-pointer transition-colors ${isSelected ? 'bg-accent' : ' hover:bg-accent/20 '}`}
           style={{ paddingLeft: `${8 + depth * 16}px` }}
           onClick={() => {
             if (item.type === 'directory') {
@@ -161,7 +180,7 @@ export function FileExplorer({
               <File className="h-4 w-4 text-gray-500" />
             </>
           )}
-          
+
           {isEditing ? (
             <Input
               value={editingName}
@@ -180,13 +199,22 @@ export function FileExplorer({
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
-              <Button variant="ghost" size="sm" className="h-6 w-6 p-0">
-                <MoreVertical className="h-4 w-4" />
+              <Button variant="ghost" size="sm" className="h-6 w-6 p-0 cursor-pointer ">
+                <MoreVertical className="h-4 w-4 text-muted-foreground" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
               <DropdownMenuItem onClick={() => handleRename(item)}>
+                <Edit className="h-4 w-4 mr-2" />
                 Rename
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                onClick={() => handleDelete(item)}
+                className="text-destructive focus:text-destructive"
+              >
+                <Trash2 className="h-4 w-4 mr-2" />
+                Delete
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -274,6 +302,25 @@ export function FileExplorer({
           Help
         </Button>
       </div>
+
+      <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Delete {itemToDelete?.type === 'file' ? 'File' : 'Directory'}</DialogTitle>
+            <DialogDescription>
+              Are you sure you want to delete {itemToDelete?.name}? This action cannot be undone.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setDeleteDialogOpen(false)}>
+              Cancel
+            </Button>
+            <Button variant="destructive" onClick={confirmDelete}>
+              Delete
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

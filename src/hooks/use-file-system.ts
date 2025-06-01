@@ -31,6 +31,7 @@ interface FileSystemState {
   updateFileTree: (updater: (tree: FileNode[]) => FileNode[]) => void;
   renameItem: (itemId: string, newName: string) => void;
   moveItem: (itemId: string, newParentId: string | null) => void;
+  deleteItem: (itemId: string) => void;
 }
 
 const defaultTree: FileNode[] = [
@@ -114,6 +115,16 @@ export const useFileSystem = create<FileSystemState>()(
         // Add item to new location
         const newTree = addItemToTree(treeWithoutItem, newParentId, itemToMove);
         set({ fileTree: newTree });
+      },
+
+      deleteItem: (itemId) => {
+        const { fileTree, currentFileId } = get();
+        const updatedTree = removeItemFromTree(fileTree, itemId);
+        set({ 
+          fileTree: updatedTree,
+          // If we deleted the current file, clear the current file selection
+          currentFileId: currentFileId === itemId ? null : currentFileId 
+        });
       },
     }),
     {
