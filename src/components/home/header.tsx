@@ -1,5 +1,3 @@
-"use client";
-
 import { Button } from "@/components/ui/button";
 import { motion } from "motion/react";
 import Link from "next/link";
@@ -10,7 +8,6 @@ import { useGithubStars } from "@/hooks/use-github-stars";
 import { cn } from "@/lib/utils";
 import { ThemeToggle } from "../simulator/theme-toggle";
 import { formatCompactNumber } from "@/utils/format";
-// import { useTheme } from "next-themes";
 
 interface HeaderProps {
   isScrolled: boolean;
@@ -23,7 +20,7 @@ export function Header({
   mobileMenuOpen,
   setMobileMenuOpen,
 }: HeaderProps) {
-  const { stargazersCount } = useGithubStars("jamkaz", "gately");
+  const { stargazersCount } = useGithubStars("jakmaz", "gately");
 
   const handleScrollToSection = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
@@ -78,7 +75,7 @@ export function Header({
           >
             <Button variant="ghost" asChild>
               <a
-                href="https://github.com/jamkaz/gately"
+                href="https://github.com/jakmaz/gately"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="font-semibold"
