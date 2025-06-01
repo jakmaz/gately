@@ -147,7 +147,7 @@ export function FileExplorer({
     return (
       <div key={item.id}>
         <div
-          className={`flex items-center gap-2 px-2 py-1 rounded cursor-pointer transition-colors ${isSelected ? 'bg-accent' : ' hover:bg-accent/20 '}`}
+          className={`flex items-center gap-2 px-2 py-1 rounded cursor-pointer transition-colors ${isSelected ? 'bg-primary/30' : ' hover:bg-primary/10 '}`}
           style={{ paddingLeft: `${8 + depth * 16}px` }}
           onClick={() => {
             if (item.type === 'directory') {
@@ -169,15 +169,15 @@ export function FileExplorer({
                 <ChevronRight className="h-4 w-4" />
               )}
               {item.isOpen ? (
-                <FolderOpen className="h-4 w-4 text-blue-500" />
+                <FolderOpen className="h-4 w-4" />
               ) : (
-                <Folder className="h-4 w-4 text-blue-500" />
+                <Folder className="h-4 w-4" />
               )}
             </>
           ) : (
             <>
               <div className="w-4" /> {/* Spacer for alignment */}
-              <File className="h-4 w-4 text-gray-500" />
+              <File className="h-4 w-4" />
             </>
           )}
 
@@ -199,21 +199,20 @@ export function FileExplorer({
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
-              <Button variant="ghost" size="sm" className="h-6 w-6 p-0 cursor-pointer ">
+              <Button variant="ghost" size="sm" className="h-6 w-6 p-0 cursor-pointer">
                 <MoreVertical className="h-4 w-4 text-muted-foreground" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-              <DropdownMenuItem onClick={() => handleRename(item)}>
+              <DropdownMenuItem onClick={() => handleRename(item)} className="focus:bg-white/10 ">
                 <Edit className="h-4 w-4 mr-2" />
                 Rename
               </DropdownMenuItem>
-              <DropdownMenuSeparator />
               <DropdownMenuItem
                 onClick={() => handleDelete(item)}
-                className="text-destructive focus:text-destructive"
+                className="focus:text-destructive focus:bg-white/10 text-destructive"
               >
-                <Trash2 className="h-4 w-4 mr-2" />
+                <Trash2 className="h-4 text-destructive w-4 mr-2" />
                 Delete
               </DropdownMenuItem>
             </DropdownMenuContent>
