@@ -59,14 +59,9 @@ export function useSimulatorLogic() {
 
       setEdges((eds) => addEdge(edge, eds));
 
-      setTimeout(() => {
-        const updatedNodes = calculateNodeStates(nodes, [
-          ...edges,
-          edge as Edge,
-        ]);
-        setNodes(updatedNodes);
-        updateEdgeStyles(updatedNodes, [...edges, edge as Edge]);
-      }, 100);
+      const updatedNodes = calculateNodeStates(nodes, [...edges, edge as Edge]);
+      setNodes(updatedNodes);
+      updateEdgeStyles(updatedNodes, [...edges, edge as Edge]);
     },
     [setEdges, setNodes, updateEdgeStyles, getNodes, getEdges],
   );
@@ -86,11 +81,9 @@ export function useSimulatorLogic() {
 
       setNodes(updatedNodes);
 
-      setTimeout(() => {
-        const calculatedNodes = calculateNodeStates(updatedNodes, edges);
-        setNodes(calculatedNodes);
-        updateEdgeStyles(calculatedNodes, edges);
-      }, 100);
+      const calculatedNodes = calculateNodeStates(updatedNodes, edges);
+      setNodes(calculatedNodes);
+      updateEdgeStyles(calculatedNodes, edges);
     },
     [setNodes, updateEdgeStyles, getNodes, getEdges],
   );
