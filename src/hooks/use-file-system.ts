@@ -29,6 +29,8 @@ interface FileSystemState {
   switchToFile: (fileId: string) => void;
   getCurrentFile: () => FileNode | undefined;
   updateFileTree: (updater: (tree: FileNode[]) => FileNode[]) => void;
+  renameItem: (itemId: string, newName: string) => void;
+  moveItem: (itemId: string, newParentId: string | null) => void;
 }
 
 const defaultTree: FileNode[] = [
@@ -96,6 +98,23 @@ export const useFileSystem = create<FileSystemState>()(
           fileTree: updater(state.fileTree),
         }));
       },
+
+      renameItem: (itemId, newName) => {
+        const updatedTree = renameItemInTree(get().fileTree, itemId, newName);
+        set({ fileTree: updatedTree });
+      },
+
+      moveItem: (itemId, newParentId) => {
+        const { fileTree } = get();
+        const itemToMove = findFileById(fileTree, itemId);
+        if (!itemToMove) return;
+
+        // Remove item from its current location
+        const treeWithoutItem = removeItemFromTree(fileTree, itemId);
+        // Add item to new location
+        const newTree = addItemToTree(treeWithoutItem, newParentId, itemToMove);
+        set({ fileTree: newTree });
+      },
     }),
     {
       name: "file-system-store", // localStorage key
@@ -161,4 +180,28 @@ function findFileById(tree: FileNode[], fileId: string): FileNode | undefined {
     }
   }
   return undefined;
+}
+
+function renameItemInTree(tree: FileNode[], itemId: string, newName: string): FileNode[] {
+  return tree.map((node) => {
+    if (node.id === itemId) {
+      return { ...node, name: newName };
+    }
+    if (node.children) {
+      return { ...node, children: renameItemInTree(node.children, itemId, newName) };
+    }
+    return node;
+  });
+}
+
+function removeItemFromTree(tree: FileNode[], itemId: string): FileNode[] {
+  return tree.filter((node) => {
+    if (node.id === itemId) {
+      return false;
+    }
+    if (node.children) {
+      node.children = removeItemFromTree(node.children, itemId);
+    }
+    return true;
+  });
 }

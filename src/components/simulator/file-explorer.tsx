@@ -18,10 +18,17 @@ import {
   ChevronRight,
   ChevronDown,
   Download,
+  MoreVertical,
 } from "lucide-react";
 import { toast } from "sonner";
 import { useFileSystem, FileNode } from "@/hooks/use-file-system";
 import { ThemeToggle } from "./theme-toggle";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 interface FileExplorerProps {
   isCollapsed: boolean;
@@ -30,11 +37,13 @@ interface FileExplorerProps {
 export function FileExplorer({
   isCollapsed,
 }: FileExplorerProps) {
-  const { fileTree, createItem, updateFileTree, currentFileId, switchToFile } = useFileSystem();
+  const { fileTree, createItem, updateFileTree, currentFileId, switchToFile, renameItem, moveItem } = useFileSystem();
 
   const [newItemDialog, setNewItemDialog] = useState(false);
   const [newItemName, setNewItemName] = useState('');
   const [newItemType, setNewItemType] = useState<'file' | 'directory'>('file');
+  const [editingItemId, setEditingItemId] = useState<string | null>(null);
+  const [editingName, setEditingName] = useState('');
 
   const toggleDirectory = (id: string) => {
     updateFileTree(tree => {
@@ -74,14 +83,52 @@ export function FileExplorer({
     toast.success(`${newItemType === 'file' ? 'File' : 'Directory'} created successfully`);
   };
 
+  const handleRename = (item: FileNode) => {
+    setEditingItemId(item.id);
+    setEditingName(item.name);
+  };
+
+  const saveRename = () => {
+    if (!editingItemId || !editingName.trim()) {
+      toast.error('Please enter a valid name');
+      return;
+    }
+    renameItem(editingItemId, editingName.trim());
+    setEditingItemId(null);
+    setEditingName('');
+    toast.success('Item renamed successfully');
+  };
+
+  const handleDragStart = (e: React.DragEvent<HTMLDivElement>, item: FileNode) => {
+    e.dataTransfer.setData('application/json', JSON.stringify({ id: item.id }));
+    e.dataTransfer.effectAllowed = 'move';
+  };
+
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+  };
+
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>, targetId: string | null) => {
+    e.preventDefault();
+    try {
+      const data = JSON.parse(e.dataTransfer.getData('application/json'));
+      if (data.id === targetId) return; // Don't move to self
+      moveItem(data.id, targetId);
+      toast.success('Item moved successfully');
+    } catch (error) {
+      toast.error('Failed to move item');
+    }
+  };
+
   const renderFileItem = (item: FileNode, depth = 0) => {
     const isSelected = currentFileId === item.id;
+    const isEditing = editingItemId === item.id;
 
     return (
       <div key={item.id}>
         <div
-          className={`flex items-center gap-2 px-2 py-1 rounded cursor-pointer hover:bg-accent transition-colors ${isSelected ? 'bg-accent' : ''
-            }`}
+          className={`flex items-center gap-2 px-2 py-1 rounded cursor-pointer hover:bg-accent transition-colors ${isSelected ? 'bg-accent' : ''}`}
           style={{ paddingLeft: `${8 + depth * 16}px` }}
           onClick={() => {
             if (item.type === 'directory') {
@@ -90,6 +137,10 @@ export function FileExplorer({
               switchToFile(item.id);
             }
           }}
+          draggable
+          onDragStart={(e) => handleDragStart(e, item)}
+          onDragOver={handleDragOver}
+          onDrop={(e) => handleDrop(e, item.type === 'directory' ? item.id : null)}
         >
           {item.type === 'directory' ? (
             <>
@@ -110,7 +161,35 @@ export function FileExplorer({
               <File className="h-4 w-4 text-gray-500" />
             </>
           )}
-          <span className="text-sm truncate flex-1">{item.name}</span>
+          
+          {isEditing ? (
+            <Input
+              value={editingName}
+              onChange={(e) => setEditingName(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') saveRename();
+                if (e.key === 'Escape') setEditingItemId(null);
+              }}
+              onClick={(e) => e.stopPropagation()}
+              className="h-6 text-sm"
+              autoFocus
+            />
+          ) : (
+            <span className="text-sm truncate flex-1">{item.name}</span>
+          )}
+
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
+              <Button variant="ghost" size="sm" className="h-6 w-6 p-0">
+                <MoreVertical className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuItem onClick={() => handleRename(item)}>
+                Rename
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
 
         {item.type === 'directory' && item.isOpen && item.children && (

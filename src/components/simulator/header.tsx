@@ -10,6 +10,7 @@ import { SettingsDialog } from "./settings-dialog";
 import { ShareDialog } from "./share-dialog";
 import { useFileSystem } from "@/hooks/use-file-system";
 import { useHasMounted } from "@/hooks/use-has-mounted";
+import { Input } from "../ui/input";
 
 interface HeaderProps {
   onToggleSidebar: () => void;
@@ -42,7 +43,7 @@ export function Header({
         </Link>
 
         <div className="text-muted-foreground">
-          <span>{hasMounted ? (currentFile?.name || 'No file selected') : ''}</span>
+          <Input disabled value={hasMounted ? (currentFile?.name || 'No file selected') : ''} />
         </div>
         <Separator orientation="vertical" />
         {/* Canvas Controls */}
