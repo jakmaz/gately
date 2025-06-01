@@ -6,22 +6,22 @@ Design logic circuits with drag-and-drop, get real-time simulation, and generate
 
 ## Technologies
 
--  Next.js 15
--  React 19
--  tailwindcss
--  shadcn/ui
--  ReactFlow
--  Framer Motion
+- Next.js 15
+- React 19
+- tailwindcss
+- shadcn/ui
+- ReactFlow
+- Framer Motion
 
 ## Features
 
--  Drag-and-Drop Editor to build circuits visually
--  Toolbox with AND, OR, NOT, XOR, NAND, NOR gates and more
--  Live simulation with real-time feedback
--  Automatic truth table generation
--  Easy circuit sharing via link
--  Customizable grid, labels, and themes
--  Modern, responsive interface
+- Drag-and-Drop Editor to build circuits visually
+- Toolbox with AND, OR, NOT, XOR, NAND, NOR gates and more
+- Live simulation with real-time feedback
+- Automatic truth table generation
+- Easy circuit sharing via link
+- Customizable grid, labels, and themes
+- Modern, responsive interface
 
 ## How It Works
 
@@ -50,16 +50,16 @@ Yes, ideal for education and presentations.
 
 ### Prerequisites
 
--  Node.js 18+
--  npm, yarn, or pnpm
+- Node.js 18+
+- npm, yarn, or pnpm
 
 ### Installation
 
 ```bash
 git clone https://github.com/yourusername/gately.git
 cd gately
-npm install
-npm run dev
+bun install
+bun run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) in your browser.
