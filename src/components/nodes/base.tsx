@@ -18,7 +18,7 @@ export function BaseGateNode({
   inputHandles = 2,
   outputHandles = 1
 }: BaseGateNodeProps) {
-  const stateColor = data.state ? "bg-green-500" : "bg-primary";
+  const stateColor = data.state ? "green-500" : "primary";
 
   const inputArray = Array.from({ length: inputHandles }, (_, i) => i);
   const outputArray = Array.from({ length: outputHandles }, (_, i) => i);
@@ -36,7 +36,7 @@ export function BaseGateNode({
 
   return (
     <div className={`
-      relative px-4 py-2 rounded-md border-2 shadow-md transition-all duration-300
+      relative px-4 py-2 rounded-md border-2 shadow-md 
       ${data.state ? 'border-green-500 shadow-green-200 dark:shadow-green-900' : 'border-primary shadow-primary'}
       bg-card
     `}>
@@ -58,7 +58,7 @@ export function BaseGateNode({
           id={`input-${index}`}
           style={{ top: `${getInputPosition(index, inputHandles) * 100}%`, left: -8 }}
           isConnectable={isConnectable}
-          className="!w-3 !h-3 "
+          className={`!w-3 !h-3 !border-${stateColor}`}
         />
       ))}
 
@@ -71,7 +71,7 @@ export function BaseGateNode({
           id={`output-${index}`}
           style={{ top: `${getOutputPosition(index, outputHandles) * 100}%`, right: -8 }}
           isConnectable={isConnectable}
-          className="!w-3 !h-3 "
+          className={`!w-3 !h-3 !border-${stateColor}`}
         />
       ))}
     </div>

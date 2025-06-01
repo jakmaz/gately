@@ -9,7 +9,7 @@ export const OutputNode = memo(({ data, isConnectable }: LogicGateProps) => {
 
   return (
     <div
-      className={`bg-card p-3 rounded-md border-2 shadow-md flex flex-col items-center min-w-[100px] transition-all duration-300 border-${stateColor}`}
+      className={`bg-card p-3 rounded-md border-2 shadow-md flex flex-col items-center min-w-[100px] border-${stateColor}`}
     >
       <div className="text-lg font-bold mb-2">Output</div>
 
@@ -27,7 +27,7 @@ export const OutputNode = memo(({ data, isConnectable }: LogicGateProps) => {
         type="target"
         position={Position.Left}
         id="input"
-        className={`!w-3 !h-3 !bg-${stateColor}`}
+        className={`!w-3 !h-3 !border-${stateColor}`}
         isConnectable={isConnectable}
       />
     </div>
