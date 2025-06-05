@@ -21,6 +21,7 @@ import {
   MoreVertical,
   Trash2,
   Edit,
+  ExternalLink,
 } from "lucide-react";
 import { toast } from "sonner";
 import { useFileSystem, FileNode } from "@/hooks/use-file-system";
@@ -31,6 +32,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { HelpDialog } from "./help-dialog";
 
 interface FileExplorerProps {
   isCollapsed: boolean;
@@ -294,11 +296,9 @@ export function FileExplorer({
         {fileTree.map(item => renderFileItem(item))}
       </div>
 
-      <div className="p-2 mt-auto flex justify-between">
+      <div className="py-2 px-4 mt-auto flex justify-between">
         <ThemeToggle />
-        <Button variant="outline" size="sm">
-          Help
-        </Button>
+        <HelpDialog />
       </div>
 
       <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
