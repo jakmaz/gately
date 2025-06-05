@@ -199,7 +199,7 @@ export function FileExplorer({
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
-              <Button variant="ghost" size="sm" className="h-6 w-6 p-0 cursor-pointer">
+              <Button variant="link" size="sm" className="h-6 w-6 p-0 cursor-pointer">
                 <MoreVertical className="h-4 w-4 text-muted-foreground" />
               </Button>
             </DropdownMenuTrigger>
