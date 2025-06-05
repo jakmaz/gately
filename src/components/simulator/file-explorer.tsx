@@ -21,7 +21,6 @@ import {
   MoreVertical,
   Trash2,
   Edit,
-  ExternalLink,
 } from "lucide-react";
 import { toast } from "sonner";
 import { useFileSystem, FileNode } from "@/hooks/use-file-system";
