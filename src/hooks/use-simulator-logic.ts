@@ -1,7 +1,8 @@
 import { calculateNodeStates } from "@/lib/simulator";
 import { nanoid } from "nanoid";
 import { GateNodeProps } from "@/lib/types";
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
+import { useSettingsStore } from "@/hooks/use-settings-store";
 import {
   addEdge,
   Connection,
@@ -15,6 +16,8 @@ export function useSimulatorLogic() {
   const { setNodes, setEdges, getNodes, getEdges, screenToFlowPosition } =
     useReactFlow();
 
+  const { settings } = useSettingsStore();
+
   const updateEdgeStyles = useCallback(
     (currentNodes: Node<GateNodeProps>[], currentEdges: Edge[]) => {
       const nodeStates = new Map<string, boolean>();
@@ -24,7 +27,8 @@ export function useSimulatorLogic() {
         const sourceState = nodeStates.get(edge.source) || false;
         return {
           ...edge,
-          animated: sourceState,
+          animated: sourceState && settings.animateConnections,
+          type: settings.connectionType, // Apply the selected connection type
           style: {
             stroke: sourceState ? "#10b981" : "#3b82f6",
             strokeWidth: 2,
@@ -38,8 +42,14 @@ export function useSimulatorLogic() {
 
       setEdges(updatedEdges);
     },
-    [setEdges],
+    [setEdges, settings.animateConnections, settings.connectionType],
   );
+
+  useEffect(() => {
+    const nodes = getNodes();
+    const edges = getEdges();
+    updateEdgeStyles(nodes, edges);
+  }, [settings.connectionType, getNodes, getEdges, updateEdgeStyles]);
 
   const onConnectEdge = useCallback(
     (params: Connection | Edge) => {
@@ -50,6 +60,7 @@ export function useSimulatorLogic() {
         ...params,
         id: nanoid(),
         animated: false,
+        type: settings.connectionType, // Set initial type from settings
         style: { stroke: "#3b82f6", strokeWidth: 2 },
         markerEnd: {
           type: MarkerType.ArrowClosed,
@@ -63,7 +74,7 @@ export function useSimulatorLogic() {
       setNodes(updatedNodes);
       updateEdgeStyles(updatedNodes, [...edges, edge as Edge]);
     },
-    [setEdges, setNodes, updateEdgeStyles, getNodes, getEdges],
+    [setEdges, setNodes, updateEdgeStyles, getNodes, getEdges, settings.connectionType],
   );
 
   const onNodeClick = useCallback(
