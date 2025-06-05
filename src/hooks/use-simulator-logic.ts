@@ -27,7 +27,7 @@ export function useSimulatorLogic() {
         const sourceState = nodeStates.get(edge.source) || false;
         return {
           ...edge,
-          animated: sourceState && settings.animateConnections,
+          animated: sourceState && settings.animateConnections, // Apply animation toggle
           type: settings.connectionType, // Apply the selected connection type
           style: {
             stroke: sourceState ? "#10b981" : "#3b82f6",
@@ -49,7 +49,7 @@ export function useSimulatorLogic() {
     const nodes = getNodes();
     const edges = getEdges();
     updateEdgeStyles(nodes, edges);
-  }, [settings.connectionType, getNodes, getEdges, updateEdgeStyles]);
+  }, [settings.connectionType, settings.animateConnections, getNodes, getEdges, updateEdgeStyles]);
 
   const onConnectEdge = useCallback(
     (params: Connection | Edge) => {
