@@ -31,7 +31,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { HelpDialog } from "./help-dialog";
+import { InfoDialog } from "./info-dialog";
 
 interface FileExplorerProps {
   isCollapsed: boolean;
@@ -297,7 +297,7 @@ export function FileExplorer({
 
       <div className="py-2 px-4 mt-auto flex justify-between">
         <ThemeToggle />
-        <HelpDialog />
+        <InfoDialog />
       </div>
 
       <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
