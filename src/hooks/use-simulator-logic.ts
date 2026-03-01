@@ -3,18 +3,10 @@ import { nanoid } from "nanoid";
 import { GateNodeProps } from "@/lib/types";
 import { useCallback, useEffect } from "react";
 import { useSettingsStore } from "@/hooks/use-settings-store";
-import {
-  addEdge,
-  Connection,
-  Edge,
-  MarkerType,
-  Node,
-  useReactFlow,
-} from "reactflow";
+import { addEdge, Connection, Edge, MarkerType, Node, useReactFlow } from "reactflow";
 
 export function useSimulatorLogic() {
-  const { setNodes, setEdges, getNodes, getEdges, screenToFlowPosition } =
-    useReactFlow();
+  const { setNodes, setEdges, getNodes, getEdges, screenToFlowPosition } = useReactFlow();
 
   const { settings } = useSettingsStore();
 
@@ -85,9 +77,7 @@ export function useSimulatorLogic() {
       const edges = getEdges();
 
       const updatedNodes = nodes.map((n) =>
-        n.id === node.id
-          ? { ...n, data: { ...n.data, state: !n.data.state } }
-          : n,
+        n.id === node.id ? { ...n, data: { ...n.data, state: !n.data.state } } : n,
       );
 
       setNodes(updatedNodes);

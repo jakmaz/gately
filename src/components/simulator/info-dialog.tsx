@@ -1,7 +1,7 @@
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
-import { Button } from "@/components/ui/button"
-import { Info } from "lucide-react"
-import { version } from "../../../package.json"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Info } from "lucide-react";
+import { version } from "../../../package.json";
 
 export function InfoDialog() {
   return (
@@ -23,8 +23,10 @@ export function InfoDialog() {
           <div className="space-y-2">
             <h3 className="text-lg font-medium">About</h3>
             <p>
-              Gately is an interactive tool designed for creating, simulating, and sharing digital logic circuits. It allows users to experiment with logic gates, build intricate circuits, and visualize their functionality in real-time.
-              Gately is perfect for students, educators, and engineers looking to learn, teach, or prototype digital logic at any complexity.
+              Gately is an interactive tool designed for creating, simulating, and sharing digital logic circuits. It
+              allows users to experiment with logic gates, build intricate circuits, and visualize their functionality
+              in real-time. Gately is perfect for students, educators, and engineers looking to learn, teach, or
+              prototype digital logic at any complexity.
             </p>
           </div>
 
@@ -34,23 +36,21 @@ export function InfoDialog() {
               <li>Open the simulator and start adding logic gates and components</li>
               <li>Connect gates by dragging and dropping wires between nodes</li>
               <li>Click on inputs to toggle their state</li>
-              <li>Hold the <kbd>Shift</kbd> key to select multiple elements at once</li>
+              <li>
+                Hold the <kbd>Shift</kbd> key to select multiple elements at once
+              </li>
             </ol>
           </div>
         </div>
 
         <div className="mt-4 flex justify-center">
           <Button variant="outline" asChild className="w-full">
-            <a
-              href="https://roadwiseapp.com/app/gately"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
+            <a href="https://roadwiseapp.com/app/gately" target="_blank" rel="noopener noreferrer">
               Suggest features and provide feedback here!
             </a>
           </Button>
         </div>
       </DialogContent>
     </Dialog>
-  )
+  );
 }

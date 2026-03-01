@@ -21,7 +21,7 @@ import { calculateNodeStates } from "@/lib/simulator";
 import { InputNode } from "../nodes/input";
 import { OutputNode } from "../nodes/output";
 import { ANDGateNode } from "../nodes/and";
-import confetti from 'canvas-confetti';
+import confetti from "canvas-confetti";
 
 const nodeTypes: NodeTypes = {
   inputNode: InputNode,
@@ -63,8 +63,8 @@ const initialEdges = [
     target: "and-1",
     targetHandle: "input-0",
     animated: false,
-    style: { stroke: '#3b82f6', strokeWidth: 2 },
-    markerEnd: { type: MarkerType.ArrowClosed, color: '#3b82f6' },
+    style: { stroke: "#3b82f6", strokeWidth: 2 },
+    markerEnd: { type: MarkerType.ArrowClosed, color: "#3b82f6" },
   },
   {
     id: "input-2-and-1",
@@ -72,16 +72,16 @@ const initialEdges = [
     target: "and-1",
     targetHandle: "input-1",
     animated: false,
-    style: { stroke: '#3b82f6', strokeWidth: 2 },
-    markerEnd: { type: MarkerType.ArrowClosed, color: '#3b82f6' },
+    style: { stroke: "#3b82f6", strokeWidth: 2 },
+    markerEnd: { type: MarkerType.ArrowClosed, color: "#3b82f6" },
   },
   {
     id: "and-1-output-1",
     source: "and-1",
     target: "output-1",
     animated: false,
-    style: { stroke: '#3b82f6', strokeWidth: 2 },
-    markerEnd: { type: MarkerType.ArrowClosed, color: '#3b82f6' },
+    style: { stroke: "#3b82f6", strokeWidth: 2 },
+    markerEnd: { type: MarkerType.ArrowClosed, color: "#3b82f6" },
   },
 ];
 
@@ -103,38 +103,41 @@ export function MiniPreview() {
 
     return {
       x: centerX / window.innerWidth,
-      y: centerY / window.innerHeight
+      y: centerY / window.innerHeight,
     };
   }, []);
 
   // Function to update edge colors and animation based on source node states
-  const updateEdgeStyles = useCallback((currentNodes: Node<GateNodeProps>[], currentEdges: Edge[]) => {
-    const nodeStates = new Map<string, boolean>();
+  const updateEdgeStyles = useCallback(
+    (currentNodes: Node<GateNodeProps>[], currentEdges: Edge[]) => {
+      const nodeStates = new Map<string, boolean>();
 
-    // Create a map of node IDs to their states
-    currentNodes.forEach(node => {
-      nodeStates.set(node.id, node.data.state);
-    });
+      // Create a map of node IDs to their states
+      currentNodes.forEach((node) => {
+        nodeStates.set(node.id, node.data.state);
+      });
 
-    // Update edge colors and animation based on source node state
-    const updatedEdges = currentEdges.map(edge => {
-      const sourceState = nodeStates.get(edge.source) || false;
-      return {
-        ...edge,
-        animated: sourceState, // Only animate when state is high (true)
-        style: {
-          stroke: sourceState ? '#10b981' : '#3b82f6', // Green for high state, blue for low state
-          strokeWidth: 2
-        },
-        markerEnd: {
-          type: MarkerType.ArrowClosed,
-          color: sourceState ? '#10b981' : '#3b82f6',
-        },
-      };
-    });
+      // Update edge colors and animation based on source node state
+      const updatedEdges = currentEdges.map((edge) => {
+        const sourceState = nodeStates.get(edge.source) || false;
+        return {
+          ...edge,
+          animated: sourceState, // Only animate when state is high (true)
+          style: {
+            stroke: sourceState ? "#10b981" : "#3b82f6", // Green for high state, blue for low state
+            strokeWidth: 2,
+          },
+          markerEnd: {
+            type: MarkerType.ArrowClosed,
+            color: sourceState ? "#10b981" : "#3b82f6",
+          },
+        };
+      });
 
-    setEdges(updatedEdges);
-  }, [setEdges]);
+      setEdges(updatedEdges);
+    },
+    [setEdges],
+  );
 
   // Add a new node to the flow
   const onDragOver = useCallback((event: React.DragEvent<HTMLDivElement>) => {
@@ -170,7 +173,7 @@ export function MiniPreview() {
 
       setNodes((nds) => nds.concat(newNode));
     },
-    [reactFlowInstance, nodes, setNodes]
+    [reactFlowInstance, nodes, setNodes],
   );
 
   const onConnect = useCallback(
@@ -179,10 +182,10 @@ export function MiniPreview() {
       const edge = {
         ...params,
         animated: false, // Default to not animated for low state
-        style: { stroke: '#3b82f6', strokeWidth: 2 }, // Default to blue (low state)
+        style: { stroke: "#3b82f6", strokeWidth: 2 }, // Default to blue (low state)
         markerEnd: {
           type: MarkerType.ArrowClosed,
-          color: '#3b82f6',
+          color: "#3b82f6",
         },
       };
 
@@ -196,22 +199,22 @@ export function MiniPreview() {
         // Update edge styles after node states are calculated
         updateEdgeStyles(updatedNodes, [...edges, edge as Edge]);
 
-        const outputNode = updatedNodes.find(n => n.type === 'outputNode');
+        const outputNode = updatedNodes.find((n) => n.type === "outputNode");
         if (outputNode?.data?.state === true) {
           confetti({
             particleCount: 100,
             spread: 70,
-            origin: getConfettiOrigin()
+            origin: getConfettiOrigin(),
           });
         }
       }, 100);
     },
-    [setEdges, nodes, edges, setNodes, updateEdgeStyles, getConfettiOrigin]
+    [setEdges, nodes, edges, setNodes, updateEdgeStyles, getConfettiOrigin],
   );
 
   // Toggle input node state
   const handleNodeClick = (node: Node<GateNodeProps>) => {
-    if (node.type === 'inputNode') {
+    if (node.type === "inputNode") {
       const updatedNodes = nodes.map((n) => {
         if (n.id === node.id) {
           return {
@@ -235,12 +238,12 @@ export function MiniPreview() {
         // Update edge styles after node states are calculated
         updateEdgeStyles(calculatedNodes, edges);
 
-        const outputNode = calculatedNodes.find(n => n.type === 'outputNode');
+        const outputNode = calculatedNodes.find((n) => n.type === "outputNode");
         if (outputNode?.data?.state === true) {
           confetti({
             particleCount: 100,
             spread: 70,
-            origin: getConfettiOrigin()
+            origin: getConfettiOrigin(),
           });
         }
       }, 100);

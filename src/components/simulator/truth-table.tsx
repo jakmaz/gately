@@ -95,24 +95,19 @@ export function TruthTable({ nodes, edges }: TruthTableProps) {
       <Tabs defaultValue={showTable ? "table" : "generate"}>
         <TabsList className="grid grid-cols-2">
           <TabsTrigger value="generate">Generate</TabsTrigger>
-          <TabsTrigger value="table" disabled={!showTable}>Truth Table</TabsTrigger>
+          <TabsTrigger value="table" disabled={!showTable}>
+            Truth Table
+          </TabsTrigger>
         </TabsList>
 
         <TabsContent value="generate" className="py-2">
           <div className="flex flex-col items-center gap-2">
-            <p className="text-sm text-muted-foreground">
-              Generate a truth table for your circuit
-            </p>
-            <Button
-              onClick={generateTruthTable}
-              disabled={inputNodes.length === 0 || outputNodes.length === 0}
-            >
+            <p className="text-sm text-muted-foreground">Generate a truth table for your circuit</p>
+            <Button onClick={generateTruthTable} disabled={inputNodes.length === 0 || outputNodes.length === 0}>
               Generate Truth Table
             </Button>
             {(inputNodes.length === 0 || outputNodes.length === 0) && (
-              <p className="text-xs text-destructive mt-2">
-                You need at least one input and one output node
-              </p>
+              <p className="text-xs text-destructive mt-2">You need at least one input and one output node</p>
             )}
           </div>
         </TabsContent>
@@ -124,12 +119,12 @@ export function TruthTable({ nodes, edges }: TruthTableProps) {
                 <TableRow>
                   {inputNodes.map((node) => (
                     <TableHead key={`header_input_${node.id}`} className="text-center">
-                      Input {node.id.split('-')[1]}
+                      Input {node.id.split("-")[1]}
                     </TableHead>
                   ))}
                   {outputNodes.map((node) => (
                     <TableHead key={`header_output_${node.id}`} className="text-center">
-                      Output {node.id.split('-')[1]}
+                      Output {node.id.split("-")[1]}
                     </TableHead>
                   ))}
                 </TableRow>
@@ -140,17 +135,17 @@ export function TruthTable({ nodes, edges }: TruthTableProps) {
                     {inputNodes.map((node) => (
                       <TableCell
                         key={`cell_input_${node.id}_${rowIndex}`}
-                        className={`text-center ${row[`input_${node.id}`] ? 'bg-green-100 dark:bg-green-900/30' : 'bg-red-100 dark:bg-red-900/30'}`}
+                        className={`text-center ${row[`input_${node.id}`] ? "bg-green-100 dark:bg-green-900/30" : "bg-red-100 dark:bg-red-900/30"}`}
                       >
-                        {row[`input_${node.id}`] ? '1' : '0'}
+                        {row[`input_${node.id}`] ? "1" : "0"}
                       </TableCell>
                     ))}
                     {outputNodes.map((node) => (
                       <TableCell
                         key={`cell_output_${node.id}_${rowIndex}`}
-                        className={`text-center font-bold ${row[`output_${node.id}`] ? 'bg-green-200 dark:bg-green-900/50' : 'bg-red-200 dark:bg-red-900/50'}`}
+                        className={`text-center font-bold ${row[`output_${node.id}`] ? "bg-green-200 dark:bg-green-900/50" : "bg-red-200 dark:bg-red-900/50"}`}
                       >
-                        {row[`output_${node.id}`] ? '1' : '0'}
+                        {row[`output_${node.id}`] ? "1" : "0"}
                       </TableCell>
                     ))}
                   </TableRow>

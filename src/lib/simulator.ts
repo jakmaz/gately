@@ -1,10 +1,7 @@
 import { Node, Edge } from "reactflow";
 import { GateNodeProps } from "./types";
 
-export function calculateNodeStates(
-  nodes: Node<GateNodeProps>[],
-  edges: Edge[],
-): Node<GateNodeProps>[] {
+export function calculateNodeStates(nodes: Node<GateNodeProps>[], edges: Edge[]): Node<GateNodeProps>[] {
   const updatedNodes = [...nodes];
 
   const nodeMap = new Map<string, number>();
@@ -12,7 +9,11 @@ export function calculateNodeStates(
 
   const incomingEdges = new Map<
     string,
-    { sourceId: string; sourceHandle: string | null; targetHandle: string | null }[]
+    {
+      sourceId: string;
+      sourceHandle: string | null;
+      targetHandle: string | null;
+    }[]
   >();
   edges.forEach((edge) => {
     if (!incomingEdges.has(edge.target)) incomingEdges.set(edge.target, []);
@@ -23,11 +24,7 @@ export function calculateNodeStates(
     });
   });
 
-  const evaluateNode = (
-    nodeId: string,
-    sourceHandle: string | null = null,
-    visited = new Set<string>(),
-  ): boolean => {
+  const evaluateNode = (nodeId: string, sourceHandle: string | null = null, visited = new Set<string>()): boolean => {
     const visitKey = `${nodeId}:${sourceHandle ?? ""}`;
     if (visited.has(visitKey)) return false;
     visited.add(visitKey);
@@ -103,7 +100,7 @@ export function calculateNodeStates(
 
       case "dmuxGate": {
         const dataIn = getByHandle("input-0");
-        const sel    = getByHandle("input-1");
+        const sel = getByHandle("input-1");
         const Y0 = dataIn && !sel;
         const Y1 = dataIn && sel;
 
@@ -117,7 +114,7 @@ export function calculateNodeStates(
         };
 
         if (sourceHandle === "output-1") return Y1;
-        return Y0; 
+        return Y0;
       }
 
       case "outputNode":
@@ -136,9 +133,7 @@ export function calculateNodeStates(
     return result;
   };
 
-  updatedNodes
-    .filter((n) => n.type !== "inputNode")
-    .forEach((n) => evaluateNode(n.id));
+  updatedNodes.filter((n) => n.type !== "inputNode").forEach((n) => evaluateNode(n.id));
 
   return updatedNodes;
 }

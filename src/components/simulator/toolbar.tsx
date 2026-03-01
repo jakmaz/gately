@@ -55,7 +55,6 @@ const sections = [
   },
 ];
 export function Toolbar() {
-
   const { addNodes } = useReactFlow();
 
   const handleAddNode = useCallback(
@@ -63,21 +62,19 @@ export function Toolbar() {
       const newNode = {
         id: `${nodeType}-${Date.now()}`,
         type: nodeType,
-        position: { x: 100, y: 100 }, 
+        position: { x: 100, y: 100 },
         data: {},
       };
       addNodes(newNode);
     },
-    [addNodes]
+    [addNodes],
   );
 
   return (
     <div className="w-64 bg-card p-4 rounded-xl flex flex-col h-full">
       <div className="mb-4">
         <h2 className="text-xl font-semibold mb-2">Gates</h2>
-        <p className="text-sm text-muted-foreground mb-2">
-          Drag and drop gates to the canvas or click to add
-        </p>
+        <p className="text-sm text-muted-foreground mb-2">Drag and drop gates to the canvas or click to add</p>
       </div>
 
       <div className="flex flex-col gap-4">

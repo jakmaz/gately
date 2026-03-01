@@ -24,9 +24,9 @@ export const nodeTypes: NodeTypes = {
   xorGate: XORGateNode,
   xnorGate: XNORGateNode,
   muxGate: MUXGateNode,
-  xnor3Gate: XNOR3GateNode, 
-  dmuxGate: DMUXGateNode,   
-  buffGate: BUFFGateNode,   
+  xnor3Gate: XNOR3GateNode,
+  dmuxGate: DMUXGateNode,
+  buffGate: BUFFGateNode,
 };
 
 export interface GateNodeProps {

@@ -3,10 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint ."
+    "lint": "biome check",
+    "format": "biome format --write"
   },
   "dependencies": {
     "@radix-ui/react-accordion": "^1.2.12",
@@ -37,6 +38,7 @@
     "zustand": "^5.0.11"
   },
   "devDependencies": {
+    "@biomejs/biome": "^2.4.4",
     "@tailwindcss/postcss": "^4.2.1",
     "@types/node": "^20.19.35",
     "@types/react": "19.2.14",

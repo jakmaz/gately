@@ -10,8 +10,7 @@ const steps = [
   {
     step: "02",
     title: "Connect and Customize",
-    description:
-      "Drag to connect gates, adjust layout, and label inputs/outputs using a smooth, intuitive interface.",
+    description: "Drag to connect gates, adjust layout, and label inputs/outputs using a smooth, intuitive interface.",
   },
   {
     step: "03",
@@ -23,10 +22,7 @@ const steps = [
 
 export function HowItWorks() {
   return (
-    <section
-      id="how-it-works"
-      className="w-full py-14 md:py-32 bg-muted/30 relative overflow-hidden isolate"
-    >
+    <section id="how-it-works" className="w-full py-14 md:py-32 bg-muted/30 relative overflow-hidden isolate">
       <div className="absolute inset-0 -z-10 bg-[linear-gradient(to_right,rgba(from_var(--muted-foreground)_r_g_b_/_0.05)_1px,transparent_1px),linear-gradient(to_bottom,rgba(from_var(--muted-foreground)_r_g_b_/_0.05)_1px,transparent_1px)] bg-[size:3rem_3rem]"></div>
 
       <div className="container mx-auto px-4 md:px-6 relative">
@@ -37,10 +33,7 @@ export function HowItWorks() {
           transition={{ duration: 0.5 }}
           className="flex flex-col items-center justify-center space-y-4 text-center mb-16"
         >
-          <Badge
-            className="rounded-full px-4 py-1.5 text-sm font-medium shadow-sm"
-            variant="secondary"
-          >
+          <Badge className="rounded-full px-4 py-1.5 text-sm font-medium shadow-sm" variant="secondary">
             <span className="mr-1 text-3xltext-primary">✦</span> How It Works
           </Badge>
           <h2 className="text-3xl md:text-4xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-foreground to-foreground/80">

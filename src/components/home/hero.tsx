@@ -1,7 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { ArrowRight, Check, } from "lucide-react";
+import { ArrowRight, Check } from "lucide-react";
 import Link from "next/link";
 import { MiniPreview } from "./mini-preview";
 
@@ -21,7 +21,10 @@ export function Hero() {
               </Badge>
             </div>
             <h1 className="from-foreground via-foreground/90 to-foreground/70 mb-6 bg-gradient-to-r bg-clip-text text-4xl font-bold tracking-tight text-transparent md:text-5xl lg:text-6xl">
-              Design Logic<br /><span className="-ml-2 font-serif text-muted-foreground italic">Visually</span> with <span className="text-primary">gately</span>
+              Design Logic
+              <br />
+              <span className="-ml-2 font-serif text-muted-foreground italic">Visually</span> with{" "}
+              <span className="text-primary">gately</span>
             </h1>
             <p className="text-muted-foreground mb-8 text-lg leading-relaxed md:text-xl">
               Build logic circuits with a drag-and-drop interface. Real-time feedback.

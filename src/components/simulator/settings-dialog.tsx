@@ -1,12 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -21,22 +15,18 @@ export function SettingsDialog() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button
-          variant="ghost"
-          size="sm"
-        >
+        <Button variant="ghost" size="sm">
           <SettingsIcon className="h-4 w-4 mr-2" />
           Settings
-        </Button></DialogTrigger>
+        </Button>
+      </DialogTrigger>
       <DialogContent className="max-w-2xl max-h-[80vh] overflow-hidden">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <SettingsIcon className="h-5 w-5" />
             Settings
           </DialogTitle>
-          <DialogDescription>
-            Customize your simulator experience
-          </DialogDescription>
+          <DialogDescription>Customize your simulator experience</DialogDescription>
         </DialogHeader>
 
         <Tabs defaultValue="appearance" className="w-full">
@@ -54,9 +44,7 @@ export function SettingsDialog() {
                     <Palette className="h-4 w-4" />
                     Theme
                   </CardTitle>
-                  <CardDescription>
-                    Choose your preferred color scheme
-                  </CardDescription>
+                  <CardDescription>Choose your preferred color scheme</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="flex items-center justify-between">
@@ -72,7 +60,7 @@ export function SettingsDialog() {
                     <Switch
                       id="node-labels"
                       checked={settings.showNodeLabels}
-                      onCheckedChange={(checked) => updateSetting('showNodeLabels', checked)}
+                      onCheckedChange={(checked) => updateSetting("showNodeLabels", checked)}
                     />
                   </div>
                 </CardContent>
@@ -86,20 +74,18 @@ export function SettingsDialog() {
                     <Zap className="h-4 w-4" />
                     Connection Settings
                   </CardTitle>
-                  <CardDescription>
-                    Customize how connections appear and behave
-                  </CardDescription>
+                  <CardDescription>Customize how connections appear and behave</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="space-y-3">
                     <Label>Connection Type</Label>
                     <div className="grid grid-cols-3 gap-2">
-                      {['straight', 'curved', 'step'].map((type) => (
+                      {["straight", "curved", "step"].map((type) => (
                         <Button
                           key={type}
-                          variant={settings.connectionType === type ? 'default' : 'outline'}
+                          variant={settings.connectionType === type ? "default" : "outline"}
                           size="sm"
-                          onClick={() => updateSetting('connectionType', type as Settings["connectionType"])}
+                          onClick={() => updateSetting("connectionType", type as Settings["connectionType"])}
                           className="capitalize"
                         >
                           {type}
@@ -116,7 +102,7 @@ export function SettingsDialog() {
                     <Switch
                       id="animate-connections"
                       checked={settings.animateConnections}
-                      onCheckedChange={(checked) => updateSetting('animateConnections', checked)}
+                      onCheckedChange={(checked) => updateSetting("animateConnections", checked)}
                     />
                   </div>
                 </CardContent>
@@ -130,9 +116,7 @@ export function SettingsDialog() {
                     <Grid className="h-4 w-4" />
                     Canvas Settings
                   </CardTitle>
-                  <CardDescription>
-                    Configure the workspace appearance
-                  </CardDescription>
+                  <CardDescription>Configure the workspace appearance</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="flex items-center justify-between">
@@ -143,7 +127,7 @@ export function SettingsDialog() {
                     <Switch
                       id="show-grid"
                       checked={settings.showGrid}
-                      onCheckedChange={(checked) => updateSetting('showGrid', checked)}
+                      onCheckedChange={(checked) => updateSetting("showGrid", checked)}
                     />
                   </div>
 
@@ -155,7 +139,7 @@ export function SettingsDialog() {
                     <Switch
                       id="show-minimap"
                       checked={settings.showMinimap}
-                      onCheckedChange={(checked) => updateSetting('showMinimap', checked)}
+                      onCheckedChange={(checked) => updateSetting("showMinimap", checked)}
                     />
                   </div>
 
@@ -167,7 +151,7 @@ export function SettingsDialog() {
                     <Switch
                       id="snap-to-grid"
                       checked={settings.snapToGrid}
-                      onCheckedChange={(checked) => updateSetting('snapToGrid', checked)}
+                      onCheckedChange={(checked) => updateSetting("snapToGrid", checked)}
                     />
                   </div>
                 </CardContent>

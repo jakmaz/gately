@@ -8,7 +8,7 @@ import { toast } from "sonner";
 
 export function ShareDialog() {
   const [shareDialogOpen, setShareDialogOpen] = useState(false);
-  const [shareUrl, setShareUrl] = useState('');
+  const [shareUrl, setShareUrl] = useState("");
 
   const handleShare = () => {
     // Generate a shareable URL (this would be implemented with actual backend)
@@ -20,8 +20,8 @@ export function ShareDialog() {
 
   const copyShareUrl = () => {
     navigator.clipboard.writeText(shareUrl);
-    toast.success('Share URL copied to clipboard');
-    setShareDialogOpen(false)
+    toast.success("Share URL copied to clipboard");
+    setShareDialogOpen(false);
   };
 
   return (
@@ -33,9 +33,7 @@ export function ShareDialog() {
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Share Circuit</DialogTitle>
-          <DialogDescription>
-            Share your circuit with others using this link
-          </DialogDescription>
+          <DialogDescription>Share your circuit with others using this link</DialogDescription>
         </DialogHeader>
         <div className="space-y-4">
           <div className="space-y-2">
@@ -58,5 +56,5 @@ export function ShareDialog() {
         </DialogFooter>
       </DialogContent>
     </Dialog>
-  )
+  );
 }

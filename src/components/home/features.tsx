@@ -1,13 +1,6 @@
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
-import {
-  Cpu,
-  FolderTree,
-  LayoutTemplate,
-  Settings,
-  Share2,
-  Zap
-} from "lucide-react";
+import { Cpu, FolderTree, LayoutTemplate, Settings, Share2, Zap } from "lucide-react";
 import { motion } from "motion/react";
 
 const features = [
@@ -43,8 +36,7 @@ const features = [
   },
   {
     title: "Customizable Settings",
-    description:
-      "Tweak grid snapping, labels, themes, and more to personalize your logic editor environment.",
+    description: "Tweak grid snapping, labels, themes, and more to personalize your logic editor environment.",
     icon: <Settings className="size-5" />,
   },
 ];
@@ -76,10 +68,7 @@ export function Features() {
           transition={{ duration: 0.5 }}
           className="flex flex-col items-center justify-center space-y-4 text-center mb-12"
         >
-          <Badge
-            className="rounded-full px-4 py-1.5 text-sm font-medium shadow-sm"
-            variant="secondary"
-          >
+          <Badge className="rounded-full px-4 py-1.5 text-sm font-medium shadow-sm" variant="secondary">
             <span className="mr-1 text-primary">✦</span> Features
           </Badge>
           <h2 className="text-3xl md:text-4xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-foreground to-foreground/80">
@@ -98,11 +87,7 @@ export function Features() {
           className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
         >
           {features.map((feature, i) => (
-            <motion.div
-              key={i}
-              variants={item}
-              whileHover={{ y: -5, transition: { duration: 0.2 } }}
-            >
+            <motion.div key={i} variants={item} whileHover={{ y: -5, transition: { duration: 0.2 } }}>
               <Card className="h-full overflow-hidden border-border/40 bg-gradient-to-b from-card to-card/50 backdrop-blur transition-all hover:shadow-lg hover:border-primary/20 group">
                 <CardContent>
                   <div className="size-12 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-4 group-hover:bg-primary/20 transition-colors duration-300">

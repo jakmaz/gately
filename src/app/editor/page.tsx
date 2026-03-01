@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { LogicGateSimulator } from "@/components/simulator/simulator";
 

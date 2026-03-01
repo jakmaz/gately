@@ -1,10 +1,5 @@
 import { Badge } from "@/components/ui/badge";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { motion } from "motion/react";
 
 const faqs = [
@@ -56,10 +51,7 @@ export function FAQ() {
           transition={{ duration: 0.5 }}
           className="flex flex-col items-center justify-center space-y-4 text-center mb-12"
         >
-          <Badge
-            className="rounded-full px-4 py-1.5 text-sm font-medium shadow-sm"
-            variant="secondary"
-          >
+          <Badge className="rounded-full px-4 py-1.5 text-sm font-medium shadow-sm" variant="secondary">
             <span className="mr-1 text-primary">✦</span> FAQ
           </Badge>
           <h2 className="text-3xl md:text-4xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-foreground to-foreground/80">
@@ -80,16 +72,11 @@ export function FAQ() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.3, delay: i * 0.05 }}
               >
-                <AccordionItem
-                  value={`item-${i}`}
-                  className="border-b border-border/40 py-2 group"
-                >
+                <AccordionItem value={`item-${i}`} className="border-b border-border/40 py-2 group">
                   <AccordionTrigger className="text-left font-medium hover:no-underline group-hover:text-primary transition-colors">
                     {faq.question}
                   </AccordionTrigger>
-                  <AccordionContent className="text-muted-foreground">
-                    {faq.answer}
-                  </AccordionContent>
+                  <AccordionContent className="text-muted-foreground">{faq.answer}</AccordionContent>
                 </AccordionItem>
               </motion.div>
             ))}

@@ -21,10 +21,7 @@ interface FileSystemState {
   currentFileId: string | null;
   ready: boolean;
   createItem: (parentId: string | null, item: FileNode) => void;
-  updateFileContent: (
-    fileId: string,
-    data: { nodes: Node<GateNodeProps>[]; edges: Edge[] },
-  ) => void;
+  updateFileContent: (fileId: string, data: { nodes: Node<GateNodeProps>[]; edges: Edge[] }) => void;
   getFileContent: (fileId: string) => FileNode["data"] | undefined;
   switchToFile: (fileId: string) => void;
   getCurrentFile: () => FileNode | undefined;
@@ -120,10 +117,10 @@ export const useFileSystem = create<FileSystemState>()(
       deleteItem: (itemId) => {
         const { fileTree, currentFileId } = get();
         const updatedTree = removeItemFromTree(fileTree, itemId);
-        set({ 
+        set({
           fileTree: updatedTree,
           // If we deleted the current file, clear the current file selection
-          currentFileId: currentFileId === itemId ? null : currentFileId 
+          currentFileId: currentFileId === itemId ? null : currentFileId,
         });
       },
     }),
@@ -143,11 +140,7 @@ export const useFileSystem = create<FileSystemState>()(
 );
 
 // Utility functions (unchanged)
-function addItemToTree(
-  tree: FileNode[],
-  parentId: string | null,
-  newItem: FileNode,
-): FileNode[] {
+function addItemToTree(tree: FileNode[], parentId: string | null, newItem: FileNode): FileNode[] {
   if (!parentId) return [...tree, newItem];
   return tree.map((node) => {
     if (node.id === parentId && node.type === "directory") {
@@ -199,7 +192,10 @@ function renameItemInTree(tree: FileNode[], itemId: string, newName: string): Fi
       return { ...node, name: newName };
     }
     if (node.children) {
-      return { ...node, children: renameItemInTree(node.children, itemId, newName) };
+      return {
+        ...node,
+        children: renameItemInTree(node.children, itemId, newName),
+      };
     }
     return node;
   });

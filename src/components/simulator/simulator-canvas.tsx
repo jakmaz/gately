@@ -6,13 +6,7 @@ import { useSimulatorLogic } from "@/hooks/use-simulator-logic";
 import { nodeTypes } from "@/lib/types";
 import { LoaderCircle } from "lucide-react";
 import { useEffect } from "react";
-import ReactFlow, {
-  Background,
-  MiniMap,
-  Panel,
-  useEdgesState,
-  useNodesState
-} from "reactflow";
+import ReactFlow, { Background, MiniMap, Panel, useEdgesState, useNodesState } from "reactflow";
 import { Toolbar } from "./toolbar";
 
 export function SimulatorCanvas() {

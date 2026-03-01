@@ -46,7 +46,6 @@ export function Controls() {
       {/* > */}
       {/*   {isLocked ? <Unlock className="h-4 w-4" /> : <Lock className="h-4 w-4" />} */}
       {/* </Button> */}
-    </div >
-
-  )
+    </div>
+  );
 }

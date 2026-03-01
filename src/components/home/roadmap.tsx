@@ -7,43 +7,37 @@ import { Folder, Grid, Layers, Share2, Brain, Users } from "lucide-react";
 const roadmapItems = [
   {
     title: "One-Click Sharing",
-    description:
-      "Instantly generate shareable links to collaborate or demonstrate your circuits.",
+    description: "Instantly generate shareable links to collaborate or demonstrate your circuits.",
     status: "In Progress",
     icon: <Share2 className="size-5" />,
   },
   {
     title: "Multi-Project Dashboard",
-    description:
-      "Organize and switch between multiple circuit projects from a unified dashboard.",
+    description: "Organize and switch between multiple circuit projects from a unified dashboard.",
     status: "Planned",
     icon: <Layers className="size-5" />,
   },
   {
     title: "Circuit Validation Tools",
-    description:
-      "Run automated checks to identify errors and optimize your circuit designs.",
+    description: "Run automated checks to identify errors and optimize your circuit designs.",
     status: "Planned",
     icon: <Grid className="size-5" />,
   },
   {
     title: "Reusable Circuit Library",
-    description:
-      "Save and reuse commonly used logic modules across projects for faster circuit design.",
+    description: "Save and reuse commonly used logic modules across projects for faster circuit design.",
     status: "Coming Soon",
     icon: <Folder className="size-5" />,
   },
   {
     title: "Automatic Gate Alignment",
-    description:
-      "Automatically arrange your logic gates for a cleaner and more readable circuit layout.",
+    description: "Automatically arrange your logic gates for a cleaner and more readable circuit layout.",
     status: "Coming Soon",
     icon: <Brain className="size-5" />,
   },
   {
     title: "Community Circuits",
-    description:
-      "Browse, submit, and rate circuits created by the Gately community.",
+    description: "Browse, submit, and rate circuits created by the Gately community.",
     status: "Coming Soon",
     icon: <Users className="size-5" />,
   },
@@ -65,18 +59,15 @@ export function Roadmap() {
           transition={{ duration: 0.5 }}
           className="mb-16 flex flex-col items-center justify-center space-y-4 text-center"
         >
-          <Badge
-            className="rounded-full px-4 py-1.5 text-sm font-medium shadow-sm"
-            variant="secondary"
-          >
+          <Badge className="rounded-full px-4 py-1.5 text-sm font-medium shadow-sm" variant="secondary">
             <span className="text-primary mr-1">✦</span> Roadmap
           </Badge>
           <h2 className="from-foreground to-foreground/80 bg-gradient-to-r bg-clip-text text-3xl font-bold tracking-tight text-transparent md:text-4xl">
             What&apos;s Coming Next
           </h2>
           <p className="text-muted-foreground max-w-[800px] md:text-lg">
-            We&apos;re constantly working to improve Gately and add new features. Here&apos;s
-            what&apos;s on our roadmap.
+            We&apos;re constantly working to improve Gately and add new features. Here&apos;s what&apos;s on our
+            roadmap.
           </p>
         </motion.div>
 

@@ -24,10 +24,7 @@ export const OutputNode = memo(({ data, isConnectable }: LogicGateProps) => {
         boxShadow: `0 0 8px ${activeColor}40`,
       }}
     >
-      <div
-        className="text-xs font-bold tracking-widest uppercase"
-        style={{ color: activeColor }}
-      >
+      <div className="text-xs font-bold tracking-widest uppercase" style={{ color: activeColor }}>
         OUT
       </div>
       <div

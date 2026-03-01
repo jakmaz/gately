@@ -16,8 +16,9 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Gately - Online Logic Gate Simulator",
-  description: "Simple and modern web-based logic gate simulator. Design, test, and visualize digital circuits interactively for free and without a signup",
-  keywords: ["logic gate simulator", "digital circuits", "online simulator", "free simulator", "no signup"]
+  description:
+    "Simple and modern web-based logic gate simulator. Design, test, and visualize digital circuits interactively for free and without a signup",
+  keywords: ["logic gate simulator", "digital circuits", "online simulator", "free simulator", "no signup"],
 };
 
 export default function RootLayout({
@@ -27,14 +28,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           {children}
           <Toaster />
         </ThemeProvider>

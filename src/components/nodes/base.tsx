@@ -9,18 +9,7 @@ interface BaseGateNodeProps extends LogicGateProps {
   symbol: string;
   inputHandles?: number;
   outputHandles?: number;
-  variant?:
-    | "default"
-    | "and"
-    | "or"
-    | "xor"
-    | "nand"
-    | "nor"
-    | "xnor"
-    | "not"
-    | "mux"
-    | "dmux"
-    | "buff";
+  variant?: "default" | "and" | "or" | "xor" | "nand" | "nor" | "xnor" | "not" | "mux" | "dmux" | "buff";
 }
 
 const W = 80;
@@ -118,16 +107,26 @@ function dmuxGeometry(): GateGeometry {
 
 function getGeometry(variant: BaseGateNodeProps["variant"]): GateGeometry {
   switch (variant) {
-    case "and":  return andGeometry(false);
-    case "nand": return andGeometry(true);
-    case "or":   return orGeometry(false);
-    case "nor":  return orGeometry(true);
-    case "xor":  return xorGeometry(false);
-    case "xnor": return xorGeometry(true);
-    case "not":  return notGeometry();
-    case "buff": return buffGeometry();
-    case "mux":  return muxGeometry();
-    case "dmux": return dmuxGeometry();
+    case "and":
+      return andGeometry(false);
+    case "nand":
+      return andGeometry(true);
+    case "or":
+      return orGeometry(false);
+    case "nor":
+      return orGeometry(true);
+    case "xor":
+      return xorGeometry(false);
+    case "xnor":
+      return xorGeometry(true);
+    case "not":
+      return notGeometry();
+    case "buff":
+      return buffGeometry();
+    case "mux":
+      return muxGeometry();
+    case "dmux":
+      return dmuxGeometry();
     default:
       return { bodyPath: "", outputX: W, outputY: H / 2, inputPinX: 0 };
   }
@@ -223,46 +222,48 @@ export function BaseGateNode({
             y !== null ? (
               <line
                 key={`wire-in-${i}`}
-                x1={0} y1={y} x2={geo.inputPinX} y2={y}
-                stroke={activeColor} strokeWidth="1.5" opacity="0.5"
+                x1={0}
+                y1={y}
+                x2={geo.inputPinX}
+                y2={y}
+                stroke={activeColor}
+                strokeWidth="1.5"
+                opacity="0.5"
               />
-            ) : null
+            ) : null,
           )}
 
           {/* Select pin stub */}
           {hasSelectPin && (
-            <line
-              x1={W / 2} y1={H + hs}
-              x2={W / 2} y2={H - 10}
-              stroke={activeColor} strokeWidth="1.5" opacity="0.5"
-            />
+            <line x1={W / 2} y1={H + hs} x2={W / 2} y2={H - 10} stroke={activeColor} strokeWidth="1.5" opacity="0.5" />
           )}
 
           {/* Output stub wires */}
           {outputYs.map((y, i) => (
             <line
               key={`wire-out-${i}`}
-              x1={geo.outputX} y1={y} x2={W} y2={y}
-              stroke={activeColor} strokeWidth="1.5" opacity="0.5"
+              x1={geo.outputX}
+              y1={y}
+              x2={W}
+              y2={y}
+              stroke={activeColor}
+              strokeWidth="1.5"
+              opacity="0.5"
             />
           ))}
 
-          <path
-            d={geo.bodyPath}
-            fill={bgColor}
-            stroke={activeColor}
-            strokeWidth="2"
-            strokeLinejoin="round"
-          />
+          <path d={geo.bodyPath} fill={bgColor} stroke={activeColor} strokeWidth="2" strokeLinejoin="round" />
 
-          {geo.extraPath && (
-            <path d={geo.extraPath} fill="none" stroke={activeColor} strokeWidth="2" />
-          )}
+          {geo.extraPath && <path d={geo.extraPath} fill="none" stroke={activeColor} strokeWidth="2" />}
 
           {geo.bubble && (
             <circle
-              cx={geo.bubble.cx} cy={geo.bubble.cy} r={geo.bubble.r}
-              fill={bgColor} stroke={activeColor} strokeWidth="2"
+              cx={geo.bubble.cx}
+              cy={geo.bubble.cy}
+              r={geo.bubble.r}
+              fill={bgColor}
+              stroke={activeColor}
+              strokeWidth="2"
             />
           )}
 
@@ -283,10 +284,17 @@ export function BaseGateNode({
       ) : (
         <div
           className="absolute inset-0 rounded-md border-2 bg-card flex flex-col items-center justify-center"
-          style={{ borderColor: activeColor, boxShadow: `0 0 8px ${activeColor}40` }}
+          style={{
+            borderColor: activeColor,
+            boxShadow: `0 0 8px ${activeColor}40`,
+          }}
         >
-          <div className="text-xs font-bold" style={{ color: activeColor }}>{label}</div>
-          <div className="text-base font-mono" style={{ color: activeColor }}>{symbol}</div>
+          <div className="text-xs font-bold" style={{ color: activeColor }}>
+            {label}
+          </div>
+          <div className="text-base font-mono" style={{ color: activeColor }}>
+            {symbol}
+          </div>
         </div>
       )}
 
@@ -310,7 +318,7 @@ export function BaseGateNode({
             }}
             isConnectable={isConnectable}
           />
-        ) : null
+        ) : null,
       )}
 
       {/* SELECT HANDLE */}

@@ -36,7 +36,8 @@ export function CTA() {
             transition={{ duration: 0.5, delay: 0.1 }}
             className="mx-auto max-w-[700px] text-primary-foreground/80 md:text-xl"
           >
-            Start designing logic circuits visually with Gately - fast, intuitive, and perfect for learning or prototyping.
+            Start designing logic circuits visually with Gately - fast, intuitive, and perfect for learning or
+            prototyping.
           </motion.p>
           <motion.div
             initial={{ opacity: 0, y: 20 }}

@@ -4,12 +4,7 @@ import { memo } from "react";
 import { Handle, Position } from "reactflow";
 import { Switch } from "@/components/ui/switch";
 import { LogicGateProps } from "@/lib/types";
-import {
-  ContextMenu,
-  ContextMenuContent,
-  ContextMenuItem,
-  ContextMenuTrigger,
-} from "../ui/context-menu";
+import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from "../ui/context-menu";
 
 const W = 80;
 const H = 60;
@@ -33,10 +28,7 @@ export const InputNode = memo(({ id, data, isConnectable }: LogicGateProps) => {
             boxShadow: `0 0 8px ${activeColor}40`,
           }}
         >
-          <div
-            className="text-xs font-bold tracking-widest uppercase"
-            style={{ color: activeColor }}
-          >
+          <div className="text-xs font-bold tracking-widest uppercase" style={{ color: activeColor }}>
             IN
           </div>
 
@@ -46,10 +38,7 @@ export const InputNode = memo(({ id, data, isConnectable }: LogicGateProps) => {
             className="scale-75 data-[state=checked]:bg-green-500 data-[state=unchecked]:bg-indigo-500"
           />
 
-          <div
-            className="text-xs font-mono font-bold"
-            style={{ color: activeColor }}
-          >
+          <div className="text-xs font-mono font-bold" style={{ color: activeColor }}>
             {data.state ? "1" : "0"}
           </div>
 
