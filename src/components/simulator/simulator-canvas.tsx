@@ -1,12 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+
+import { LoaderCircle } from "lucide-react";
+import { useEffect } from "react";
+import ReactFlow, { Background, MiniMap, Panel, useEdgesState, useNodesState } from "reactflow";
 import { useFileSystem } from "@/hooks/use-file-system";
 import { useHasMounted } from "@/hooks/use-has-mounted";
 import { useSettingsStore } from "@/hooks/use-settings-store";
 import { useSimulatorLogic } from "@/hooks/use-simulator-logic";
 import { nodeTypes } from "@/lib/types";
-import { LoaderCircle } from "lucide-react";
-import { useEffect } from "react";
-import ReactFlow, { Background, MiniMap, Panel, useEdgesState, useNodesState } from "reactflow";
 import { Toolbar } from "./toolbar";
 
 export function SimulatorCanvas() {
@@ -16,7 +17,10 @@ export function SimulatorCanvas() {
 
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
-  const { onConnectEdge, onNodeClick, onDrop, onDragOver } = useSimulatorLogic();
+  const { onConnectEdge, onNodeClick, onEdgesChangeWithSimulation, onDrop, onDragOver } = useSimulatorLogic(
+    setNodes,
+    setEdges,
+  );
 
   // Auto-save current circuit when nodes or edges change
   useEffect(() => {
@@ -59,7 +63,7 @@ export function SimulatorCanvas() {
         nodes={nodes}
         edges={edges}
         onNodesChange={onNodesChange}
-        onEdgesChange={onEdgesChange}
+        onEdgesChange={onEdgesChangeWithSimulation}
         onConnect={onConnectEdge}
         onDrop={onDrop}
         onDragOver={onDragOver}

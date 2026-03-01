@@ -37,7 +37,20 @@ export function calculateNodeStates(nodes: Node<GateNodeProps>[], edges: Edge[])
     if (node.type === "inputNode") return node.data.state;
 
     const incoming = incomingEdges.get(nodeId) || [];
-    if (incoming.length === 0) return false;
+    if (incoming.length === 0) {
+      if (node.type === "dmuxGate") {
+        updatedNodes[nodeIndex] = {
+          ...updatedNodes[nodeIndex],
+          data: { ...updatedNodes[nodeIndex].data, state: false, outputs: [false, false] },
+        };
+      } else {
+        updatedNodes[nodeIndex] = {
+          ...updatedNodes[nodeIndex],
+          data: { ...updatedNodes[nodeIndex].data, state: false },
+        };
+      }
+      return false;
+    }
 
     const evalSource = (e: { sourceId: string; sourceHandle: string | null }) =>
       evaluateNode(e.sourceId, e.sourceHandle, new Set(visited));
