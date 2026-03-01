@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Handle, Position } from "reactflow";
-import { LogicGateProps } from "@/lib/types";
+import type { LogicGateProps } from "@/lib/types";
 
 interface BaseGateNodeProps extends LogicGateProps {
   label: string;
@@ -142,7 +142,7 @@ export function BaseGateNode({
   variant = "default",
 }: BaseGateNodeProps) {
   const [hovered, setHovered] = useState(false);
-  const activeColor = data.state ? "#22c55e" : "#6366f1";
+  const activeColor = data.state ? "var(--color-success)" : "var(--color-primary)";
   const bgColor = "var(--card, #1a1a2e)";
   const geo = getGeometry(variant);
   const hasSelectPin = variant === "mux" || variant === "dmux";

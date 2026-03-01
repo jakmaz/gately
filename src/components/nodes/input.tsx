@@ -3,7 +3,7 @@
 import { memo } from "react";
 import { Handle, Position } from "reactflow";
 import { Switch } from "@/components/ui/switch";
-import { LogicGateProps } from "@/lib/types";
+import type { LogicGateProps } from "@/lib/types";
 import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from "../ui/context-menu";
 
 const W = 80;
@@ -12,7 +12,7 @@ const HANDLE_SIZE = 8;
 const hs = HANDLE_SIZE / 2;
 
 export const InputNode = memo(({ id, data, isConnectable }: LogicGateProps) => {
-  const activeColor = data.state ? "#22c55e" : "#6366f1";
+  const activeColor = data.state ? "var(--color-success)" : "var(--color-primary)";
   const bgColor = "var(--card, #1a1a2e)";
 
   return (
@@ -35,7 +35,7 @@ export const InputNode = memo(({ id, data, isConnectable }: LogicGateProps) => {
           <Switch
             checked={data.state}
             id={`input-switch-${id}`}
-            className="scale-75 data-[state=checked]:bg-green-500 data-[state=unchecked]:bg-indigo-500"
+            className="scale-75 data-[state=checked]:bg-success data-[state=unchecked]:bg-primary"
           />
 
           <div className="text-xs font-mono font-bold" style={{ color: activeColor }}>

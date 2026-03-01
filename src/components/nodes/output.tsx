@@ -2,7 +2,7 @@
 
 import { memo } from "react";
 import { Handle, Position } from "reactflow";
-import { LogicGateProps } from "@/lib/types";
+import type { LogicGateProps } from "@/lib/types";
 
 const W = 80;
 const H = 60;
@@ -10,7 +10,7 @@ const HANDLE_SIZE = 8;
 const hs = HANDLE_SIZE / 2;
 
 export const OutputNode = memo(({ data, isConnectable }: LogicGateProps) => {
-  const activeColor = data.state ? "#22c55e" : "#6366f1";
+  const activeColor = data.state ? "var(--color-success)" : "var(--color-primary)";
   const bgColor = "var(--card, #1a1a2e)";
 
   return (
@@ -32,7 +32,7 @@ export const OutputNode = memo(({ data, isConnectable }: LogicGateProps) => {
         style={{
           background: activeColor,
           color: bgColor,
-          boxShadow: data.state ? `0 0 8px #22c55e80` : "none",
+          boxShadow: data.state ? `0 0 8px var(--color-success)80` : "none",
         }}
       >
         {data.state ? "1" : "0"}
