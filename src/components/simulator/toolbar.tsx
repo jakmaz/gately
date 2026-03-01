@@ -47,6 +47,10 @@ const sections = [
       { nodeType: "norGate", symbol: "!|", label: "NOR" },
       { nodeType: "xorGate", symbol: "^", label: "XOR" },
       { nodeType: "xnorGate", symbol: "!^", label: "XNOR" },
+      { nodeType: "muxGate", symbol: "MUX", label: "MUX" },
+      { nodeType: "dmuxGate", symbol: "DMUX", label: "DMUX" },
+      { nodeType: "buffGate", symbol: "BUFF", label: "BUFFER" },
+      { nodeType: "xnor3Gate", symbol: "XNOR3", label: "XNOR3" },
     ],
   },
 ];
@@ -56,11 +60,10 @@ export function Toolbar() {
 
   const handleAddNode = useCallback(
     (nodeType: string) => {
-      // Add at a static position for now; you can improve it later
       const newNode = {
         id: `${nodeType}-${Date.now()}`,
         type: nodeType,
-        position: { x: 100, y: 100 }, // Set an appropriate position
+        position: { x: 100, y: 100 }, 
         data: {},
       };
       addNodes(newNode);

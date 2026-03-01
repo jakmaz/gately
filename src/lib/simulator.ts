@@ -1,136 +1,144 @@
 import { Node, Edge } from "reactflow";
 import { GateNodeProps } from "./types";
 
-// Evaluate the state of all nodes in the circuit
 export function calculateNodeStates(
   nodes: Node<GateNodeProps>[],
   edges: Edge[],
 ): Node<GateNodeProps>[] {
-  // Create a copy of the nodes to work with
   const updatedNodes = [...nodes];
 
-  // Create a map of node IDs to their indices in the array for quick lookups
   const nodeMap = new Map<string, number>();
-  updatedNodes.forEach((node, index) => {
-    nodeMap.set(node.id, index);
-  });
+  updatedNodes.forEach((node, index) => nodeMap.set(node.id, index));
 
-  // Create a dependency graph to track which nodes need to be updated when an input changes
-  const dependencies = new Map<string, string[]>();
+  const incomingEdges = new Map<
+    string,
+    { sourceId: string; sourceHandle: string | null; targetHandle: string | null }[]
+  >();
   edges.forEach((edge) => {
-    if (!dependencies.has(edge.target)) {
-      dependencies.set(edge.target, []);
-    }
-    dependencies.get(edge.target)?.push(edge.source);
+    if (!incomingEdges.has(edge.target)) incomingEdges.set(edge.target, []);
+    incomingEdges.get(edge.target)!.push({
+      sourceId: edge.source,
+      sourceHandle: edge.sourceHandle ?? null,
+      targetHandle: edge.targetHandle ?? null,
+    });
   });
 
-  // Function to evaluate a node's state based on its inputs
   const evaluateNode = (
     nodeId: string,
+    sourceHandle: string | null = null,
     visited = new Set<string>(),
   ): boolean => {
-    // Prevent infinite loops in case of cyclic connections
-    if (visited.has(nodeId)) {
-      return false;
-    }
-    visited.add(nodeId);
+    const visitKey = `${nodeId}:${sourceHandle ?? ""}`;
+    if (visited.has(visitKey)) return false;
+    visited.add(visitKey);
 
     const nodeIndex = nodeMap.get(nodeId);
-    if (nodeIndex === undefined) {
-      return false;
-    }
+    if (nodeIndex === undefined) return false;
 
     const node = updatedNodes[nodeIndex];
 
-    // Input nodes already have their state set
-    if (node.type === "inputNode") {
-      return node.data.state;
-    }
+    if (node.type === "inputNode") return node.data.state;
 
-    // Get incoming edges for this node
-    const incomingEdgeSourceIds = dependencies.get(nodeId) || [];
+    const incoming = incomingEdges.get(nodeId) || [];
+    if (incoming.length === 0) return false;
 
-    // No inputs yet, return false
-    if (incomingEdgeSourceIds.length === 0) {
-      return false;
-    }
+    const evalSource = (e: { sourceId: string; sourceHandle: string | null }) =>
+      evaluateNode(e.sourceId, e.sourceHandle, new Set(visited));
 
-    // Evaluate all inputs
-    const inputStates = incomingEdgeSourceIds.map((sourceId) =>
-      evaluateNode(sourceId, new Set(visited)),
-    );
-
-    // Store input states on the node
-    updatedNodes[nodeIndex] = {
-      ...node,
-      data: {
-        ...node.data,
-        inputs: inputStates,
-      },
+    const getByHandle = (handleId: string): boolean => {
+      const match = incoming.find((e) => e.targetHandle === handleId);
+      return match ? evalSource(match) : false;
     };
 
-    // Calculate the output based on gate type
+    const orderedInputs = [...incoming]
+      .sort((a, b) => {
+        const ai = parseInt(a.targetHandle?.replace("input-", "") ?? "0");
+        const bi = parseInt(b.targetHandle?.replace("input-", "") ?? "0");
+        return ai - bi;
+      })
+      .map(evalSource);
+
     let result = false;
 
     switch (node.type) {
       case "andGate":
-        result = inputStates.every((state) => state);
+        result = orderedInputs.every(Boolean);
         break;
+
       case "orGate":
-        result = inputStates.some((state) => state);
+        result = orderedInputs.some(Boolean);
         break;
+
       case "notGate":
-        result = !inputStates[0];
+        result = !orderedInputs[0];
         break;
+
+      case "buffGate":
+        result = orderedInputs[0] ?? false;
+        break;
+
       case "nandGate":
-        result = !inputStates.every((state) => state);
+        result = !orderedInputs.every(Boolean);
         break;
+
       case "norGate":
-        result = !inputStates.some((state) => state);
+        result = !orderedInputs.some(Boolean);
         break;
+
       case "xorGate":
-        result = inputStates.filter((state) => state).length % 2 === 1;
+        result = orderedInputs.filter(Boolean).length % 2 === 1;
         break;
+
       case "xnorGate":
-        result = inputStates.filter((state) => state).length % 2 === 0;
+      case "xnor3Gate":
+        result = orderedInputs.filter(Boolean).length % 2 === 0;
         break;
+      case "muxGate": {
+        const A = getByHandle("input-0");
+        const B = getByHandle("input-1");
+        const S = getByHandle("input-2");
+        result = S ? B : A;
+        break;
+      }
+
+      case "dmuxGate": {
+        const dataIn = getByHandle("input-0");
+        const sel    = getByHandle("input-1");
+        const Y0 = dataIn && !sel;
+        const Y1 = dataIn && sel;
+
+        updatedNodes[nodeIndex] = {
+          ...updatedNodes[nodeIndex],
+          data: {
+            ...updatedNodes[nodeIndex].data,
+            outputs: [Y0, Y1],
+            state: Y0 || Y1,
+          },
+        };
+
+        if (sourceHandle === "output-1") return Y1;
+        return Y0; 
+      }
+
       case "outputNode":
-        result = inputStates[0] || false;
+        result = orderedInputs[0] ?? false;
         break;
+
       default:
         result = false;
     }
 
-    // Update the node state
     updatedNodes[nodeIndex] = {
       ...updatedNodes[nodeIndex],
-      data: {
-        ...updatedNodes[nodeIndex].data,
-        state: result,
-      },
+      data: { ...updatedNodes[nodeIndex].data, state: result },
     };
 
     return result;
   };
 
-  // Evaluate all output nodes to trigger the evaluation of their dependencies
   updatedNodes
-    .filter(
-      (node) =>
-        node.type === "outputNode" ||
-        [
-          "andGate",
-          "orGate",
-          "notGate",
-          "nandGate",
-          "norGate",
-          "xorGate",
-          "xnorGate",
-        ].includes(node.type || ""),
-    )
-    .forEach((node) => {
-      evaluateNode(node.id);
-    });
+    .filter((n) => n.type !== "inputNode")
+    .forEach((n) => evaluateNode(n.id));
 
   return updatedNodes;
 }
