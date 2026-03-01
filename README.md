@@ -4,15 +4,6 @@
 ease.  
 Design logic circuits with drag-and-drop, get real-time simulation, and generate truth tables — no signup required.
 
-## Technologies
-
-- Next.js 16
-- React 19
-- tailwindcss
-- shadcn/ui
-- ReactFlow
-- Framer Motion
-
 ## Features
 
 - Drag-and-Drop Editor to build circuits visually
@@ -27,6 +18,9 @@ Design logic circuits with drag-and-drop, get real-time simulation, and generate
 
 1. Add logic gates from the toolbox
 2. Connect gates by dragging wires and customize labels
+
+![Demo](./docs/demo.png)
+
 <!-- 3. Share or export your circuit easily -->
 
 ## FAQ
