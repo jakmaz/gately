@@ -29,7 +29,7 @@ export const InputNode = memo(({ id, data, isConnectable }: LogicGateProps) => {
           }}
         >
           <div className="text-xs font-bold tracking-widest uppercase" style={{ color: activeColor }}>
-            IN
+            I1
           </div>
 
           <Switch
@@ -38,11 +38,8 @@ export const InputNode = memo(({ id, data, isConnectable }: LogicGateProps) => {
             className="scale-75 data-[state=checked]:bg-success data-[state=unchecked]:bg-primary"
           />
 
-          <div className="text-xs font-mono font-bold" style={{ color: activeColor }}>
-            {data.state ? "1" : "0"}
-          </div>
 
-          <Handle
+          {!data.preview && <Handle
             type="source"
             position={Position.Right}
             id="output"
@@ -57,7 +54,7 @@ export const InputNode = memo(({ id, data, isConnectable }: LogicGateProps) => {
               transform: "none",
             }}
             isConnectable={isConnectable}
-          />
+          />}
         </div>
       </ContextMenuTrigger>
       <ContextMenuContent>

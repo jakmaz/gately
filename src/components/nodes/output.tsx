@@ -25,20 +25,9 @@ export const OutputNode = memo(({ data, isConnectable }: LogicGateProps) => {
       }}
     >
       <div className="text-xs font-bold tracking-widest uppercase" style={{ color: activeColor }}>
-        OUT
+        Q1
       </div>
-      <div
-        className="w-6 h-6 rounded-full flex items-center justify-center font-bold text-xs"
-        style={{
-          background: activeColor,
-          color: bgColor,
-          boxShadow: data.state ? `0 0 8px var(--color-success)80` : "none",
-        }}
-      >
-        {data.state ? "1" : "0"}
-      </div>
-
-      <Handle
+      {!data.preview && <Handle
         type="target"
         position={Position.Left}
         id="input"
@@ -53,7 +42,7 @@ export const OutputNode = memo(({ data, isConnectable }: LogicGateProps) => {
           transform: "none",
         }}
         isConnectable={isConnectable}
-      />
+      />}
     </div>
   );
 });

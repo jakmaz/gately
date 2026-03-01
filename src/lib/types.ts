@@ -34,6 +34,7 @@ export interface GateNodeProps {
   state: boolean;
   inputs?: boolean[];
   outputs?: boolean[];
+  preview?: boolean;
 }
 
 export interface LogicGateProps {

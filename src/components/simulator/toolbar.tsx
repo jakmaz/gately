@@ -2,6 +2,7 @@
 
 import { useCallback } from "react";
 import { useReactFlow } from "reactflow";
+import { nodeTypes } from "@/lib/types";
 
 type GateProps = {
   nodeType: string;
@@ -10,21 +11,37 @@ type GateProps = {
   onClick?: () => void;
 };
 
-function Gate({ nodeType, symbol, label, onClick }: GateProps) {
+function Gate({ nodeType, label, onClick }: GateProps) {
   const onDragStart = (event: React.DragEvent<HTMLDivElement>) => {
     event.dataTransfer.setData("application/reactflow", nodeType);
     event.dataTransfer.effectAllowed = "move";
   };
 
+  const GateComponent = nodeTypes[nodeType];
+
   return (
     <div
-      className="p-2 border rounded-md flex flex-col items-center justify-center hover:bg-accent cursor-grab transition-colors"
+      className="p-1 border rounded-md flex flex-col items-center justify-center hover:bg-accent cursor-grab transition-colors h-24 overflow-hidden relative"
       draggable
       onDragStart={onDragStart}
       onClick={onClick}
     >
-      <div className="text-lg font-mono mb-1">{symbol}</div>
-      <span className="text-xs">{label}</span>
+      <div className="flex-1 w-full flex items-center justify-center pointer-events-none scale-75 origin-center">
+        {GateComponent && (
+          <GateComponent
+            id="preview"
+            data={{ label, state: false, preview: true }}
+            isConnectable={false}
+            selected={false}
+            type={nodeType}
+            zIndex={0}
+            xPos={0}
+            yPos={0}
+            dragging={false}
+          />
+        )}
+      </div>
+      <span className="text-sm mt-1 text-center">{label}</span>
     </div>
   );
 }

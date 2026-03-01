@@ -36,7 +36,7 @@ export function GateRenderer({
     <div
       className="relative"
       style={{ width: W, height: H }}
-      onMouseEnter={() => setHovered(true)}
+      onMouseEnter={() => !data.preview && setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
       {/* Hover tooltip */}
@@ -142,19 +142,6 @@ export function GateRenderer({
             />
           )}
 
-          <text
-            x={(geometry.inputPinX + (geometry.bubble ? geometry.bubble.cx - geometry.bubble.r : geometry.outputX)) / 2}
-            y={H / 2 + 1}
-            textAnchor="middle"
-            dominantBaseline="middle"
-            fontSize="11"
-            fontWeight="700"
-            fontFamily="monospace"
-            fill={activeColor}
-            style={{ userSelect: "none" }}
-          >
-            {symbol}
-          </text>
         </svg>
       ) : (
         <div
@@ -167,14 +154,11 @@ export function GateRenderer({
           <div className="text-xs font-bold" style={{ color: activeColor }}>
             {label}
           </div>
-          <div className="text-base font-mono" style={{ color: activeColor }}>
-            {symbol}
-          </div>
         </div>
       )}
 
       {/* INPUT HANDLES */}
-      {inputYs.map((y, index) =>
+      {!data.preview && inputYs.map((y, index) =>
         y !== null ? (
           <Handle
             key={`input-${index}`}
@@ -197,7 +181,7 @@ export function GateRenderer({
       )}
 
       {/* SELECT HANDLE */}
-      {hasSelectPin && selectPinIndex !== -1 && (
+      {!data.preview && hasSelectPin && selectPinIndex !== -1 && (
         <Handle
           type="target"
           position={Position.Bottom}
@@ -217,7 +201,7 @@ export function GateRenderer({
       )}
 
       {/* OUTPUT HANDLES */}
-      {outputYs.map((y, index) => (
+      {!data.preview && outputYs.map((y, index) => (
         <Handle
           key={`output-${index}`}
           type="source"
