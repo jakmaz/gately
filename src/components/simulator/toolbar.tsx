@@ -55,7 +55,6 @@ const sections = [
     gates: [
       { nodeType: "muxGate", symbol: "MUX", label: "MUX" },
       { nodeType: "dmuxGate", symbol: "DMUX", label: "DMUX" },
-      { nodeType: "bufferGate", symbol: "BUF", label: "BUF" },
     ],
   },
 ];
