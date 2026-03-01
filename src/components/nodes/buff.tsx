@@ -4,19 +4,19 @@ import { memo } from "react";
 import { LogicGateProps } from "@/lib/types";
 import { BaseGateNode } from "./base";
 
-export const NANDGateNode = memo(({ id, data, isConnectable }: LogicGateProps) => {
+export const BUFFGateNode = memo(({ id, data, isConnectable }: LogicGateProps) => {
   return (
     <BaseGateNode
       id={id}
       data={data}
       isConnectable={isConnectable}
-      label="NAND"
-      symbol="&̅"
-      inputHandles={2}
+      label="BUFF"
+      symbol="BUF(A)"
+      inputHandles={1}
       outputHandles={1}
-      variant="nand"
+      variant="buff"
     />
   );
 });
 
-NANDGateNode.displayName = "NANDGateNode";
+BUFFGateNode.displayName = "BUFFGateNode";
