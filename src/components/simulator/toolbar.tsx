@@ -38,19 +38,24 @@ const sections = [
     ],
   },
   {
-    title: "Logic Gates",
+    title: "Basic Logic Gates",
     gates: [
-      { nodeType: "andGate", symbol: "&", label: "AND" },
-      { nodeType: "orGate", symbol: "|", label: "OR" },
+      { nodeType: "buffGate", symbol: "-", label: "BUFFER" },
       { nodeType: "notGate", symbol: "~", label: "NOT" },
+      { nodeType: "andGate", symbol: "&", label: "AND" },
       { nodeType: "nandGate", symbol: "!&", label: "NAND" },
+      { nodeType: "orGate", symbol: "|", label: "OR" },
       { nodeType: "norGate", symbol: "!|", label: "NOR" },
       { nodeType: "xorGate", symbol: "^", label: "XOR" },
       { nodeType: "xnorGate", symbol: "!^", label: "XNOR" },
+    ],
+  },
+  {
+    title: "Multiplexers & Demultiplexers",
+    gates: [
       { nodeType: "muxGate", symbol: "MUX", label: "MUX" },
       { nodeType: "dmuxGate", symbol: "DMUX", label: "DMUX" },
-      { nodeType: "buffGate", symbol: "BUFF", label: "BUFFER" },
-      { nodeType: "xnor3Gate", symbol: "XNOR3", label: "XNOR3" },
+      { nodeType: "bufferGate", symbol: "BUF", label: "BUF" },
     ],
   },
 ];
