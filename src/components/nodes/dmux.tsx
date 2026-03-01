@@ -4,19 +4,19 @@ import { memo } from "react";
 import { LogicGateProps } from "@/lib/types";
 import { BaseGateNode } from "./base";
 
-export const NANDGateNode = memo(({ id, data, isConnectable }: LogicGateProps) => {
+export const DMUXGateNode = memo(({ id, data, isConnectable }: LogicGateProps) => {
   return (
     <BaseGateNode
       id={id}
       data={data}
       isConnectable={isConnectable}
-      label="NAND"
-      symbol="&̅"
+      label="DMUX"
+      symbol="1:2"
       inputHandles={2}
-      outputHandles={1}
-      variant="nand"
+      outputHandles={2}
+      variant="dmux"
     />
   );
 });
 
-NANDGateNode.displayName = "NANDGateNode";
+DMUXGateNode.displayName = "DMUXGateNode";

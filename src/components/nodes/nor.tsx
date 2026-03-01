@@ -14,6 +14,7 @@ export const NORGateNode = memo(({ id, data, isConnectable }: LogicGateProps) =>
       symbol="≥̅1"
       inputHandles={2}
       outputHandles={1}
+      variant="nor"
     />
   );
 });

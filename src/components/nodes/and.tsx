@@ -14,6 +14,7 @@ export const ANDGateNode = memo(({ id, data, isConnectable }: LogicGateProps) =>
       symbol="&"
       inputHandles={2}
       outputHandles={1}
+      variant="and"
     />
   );
 });

@@ -14,6 +14,7 @@ export const NOTGateNode = memo(({ id, data, isConnectable }: LogicGateProps) =>
       symbol="¬"
       inputHandles={1}
       outputHandles={1}
+      variant="not"
     />
   );
 });
