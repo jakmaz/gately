@@ -16,7 +16,7 @@ export function GateRenderer({
   outputHandles = 1,
 }: GateRendererProps) {
   const [hovered, setHovered] = useState(false);
-  const activeColor = data.state ? "var(--color-success)" : "var(--color-primary)";
+  const activeColor = data.preview ? "var(--color-foreground)" : data.state ? "var(--color-success)" : "var(--color-primary)";
   const bgColor = "var(--card, #1a1a2e)";
   const hasSelectPin = label === "MUX" || label === "DMUX";
 

@@ -12,7 +12,7 @@ const HANDLE_SIZE = 8;
 const hs = HANDLE_SIZE / 2;
 
 export const InputNode = memo(({ id, data, isConnectable }: LogicGateProps) => {
-  const activeColor = data.state ? "var(--color-success)" : "var(--color-primary)";
+  const activeColor = data.preview ? "var(--color-foreground)" : data.state ? "var(--color-success)" : "var(--color-primary)";
   const bgColor = "var(--card, #1a1a2e)";
 
   return (
