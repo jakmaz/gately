@@ -8,6 +8,10 @@ type GateProps = {
   label: string;
 };
 
+type ToolbarProps = {
+  children?: React.ReactNode;
+};
+
 function Gate({ nodeType, label }: GateProps) {
   const onDragStart = (event: React.DragEvent<HTMLDivElement>) => {
     event.dataTransfer.setData("application/@xyflow/react", nodeType);
@@ -79,7 +83,7 @@ const sections = [
   },
 ];
 
-export function Toolbar() {
+export function Toolbar({ children }: ToolbarProps) {
   return (
     <div className="w-80 bg-card rounded-2xl flex flex-col h-full border border-border/60 shadow-xl overflow-hidden">
       <div className="p-5 bg-linear-to-br from-primary/5 to-transparent">
@@ -102,6 +106,7 @@ export function Toolbar() {
           </section>
         ))}
       </div>
+        {children}
     </div>
   );
 }
