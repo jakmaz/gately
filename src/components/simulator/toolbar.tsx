@@ -11,6 +11,10 @@ type GateProps = {
   onClick?: () => void;
 };
 
+type ToolbarProps = {
+  children?: React.ReactNode;
+};
+
 function Gate({ nodeType, label, onClick }: GateProps) {
   const onDragStart = (event: React.DragEvent<HTMLDivElement>) => {
     event.dataTransfer.setData("application/reactflow", nodeType);
@@ -75,7 +79,7 @@ const sections = [
     ],
   },
 ];
-export function Toolbar() {
+export function Toolbar({ children }: ToolbarProps) {
   const { addNodes } = useReactFlow();
 
   const handleAddNode = useCallback(
@@ -116,6 +120,7 @@ export function Toolbar() {
           </section>
         ))}
       </div>
+        {children}
     </div>
   );
 }
