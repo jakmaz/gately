@@ -24,7 +24,7 @@ export function TruthTable({ nodes, edges }: TruthTableProps) {
     // Reset table when nodes or edges change
     setTableData([]);
     setShowTable(false);
-  }, [nodes, edges]);
+  }, []);
 
   const generateTruthTable = () => {
     if (inputNodes.length === 0 || outputNodes.length === 0) {
@@ -130,26 +130,30 @@ export function TruthTable({ nodes, edges }: TruthTableProps) {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {tableData.map((row, rowIndex) => (
-                  <TableRow key={`row_${rowIndex}`}>
-                    {inputNodes.map((node) => (
-                      <TableCell
-                        key={`cell_input_${node.id}_${rowIndex}`}
-                        className={`text-center ${row[`input_${node.id}`] ? "bg-green-100 dark:bg-green-900/30" : "bg-red-100 dark:bg-red-900/30"}`}
-                      >
-                        {row[`input_${node.id}`] ? "1" : "0"}
-                      </TableCell>
-                    ))}
-                    {outputNodes.map((node) => (
-                      <TableCell
-                        key={`cell_output_${node.id}_${rowIndex}`}
-                        className={`text-center font-bold ${row[`output_${node.id}`] ? "bg-green-200 dark:bg-green-900/50" : "bg-red-200 dark:bg-red-900/50"}`}
-                      >
-                        {row[`output_${node.id}`] ? "1" : "0"}
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                ))}
+                {tableData.map((row, rowIndex) => {
+                  // Create stable key from input values
+                  const inputKey = inputNodes.map((node) => (row[`input_${node.id}`] ? "1" : "0")).join("");
+                  return (
+                    <TableRow key={`row_${inputKey}`}>
+                      {inputNodes.map((node) => (
+                        <TableCell
+                          key={`cell_input_${node.id}_${rowIndex}`}
+                          className={`text-center ${row[`input_${node.id}`] ? "bg-green-100 dark:bg-green-900/30" : "bg-red-100 dark:bg-red-900/30"}`}
+                        >
+                          {row[`input_${node.id}`] ? "1" : "0"}
+                        </TableCell>
+                      ))}
+                      {outputNodes.map((node) => (
+                        <TableCell
+                          key={`cell_output_${node.id}_${rowIndex}`}
+                          className={`text-center font-bold ${row[`output_${node.id}`] ? "bg-green-200 dark:bg-green-900/50" : "bg-red-200 dark:bg-red-900/50"}`}
+                        >
+                          {row[`output_${node.id}`] ? "1" : "0"}
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  );
+                })}
               </TableBody>
             </Table>
           )}

@@ -73,7 +73,7 @@ export function Roadmap() {
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {roadmapItems.map((item, i) => (
             <motion.div
-              key={i}
+              key={item.title}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}

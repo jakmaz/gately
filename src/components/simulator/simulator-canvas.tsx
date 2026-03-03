@@ -25,7 +25,7 @@ export function SimulatorCanvas() {
   const { currentFileId, updateFileContent, ready, getCurrentFile } = useFileSystem();
 
   const [nodes, setNodes, onNodesChange] = useNodesState<Node<GateNodeProps>>([]);
-  const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]);
+  const [edges, setEdges, _onEdgesChange] = useEdgesState<Edge>([]);
   const { onConnectEdge, onNodeClick, onEdgesChangeWithSimulation, onDrop, onDragOver } = useSimulatorLogic(
     setNodes,
     setEdges,
@@ -41,7 +41,7 @@ export function SimulatorCanvas() {
 
       return () => clearTimeout(saveTimeout);
     }
-  }, [nodes, edges]);
+  }, [nodes, edges, currentFileId, updateFileContent]);
 
   useEffect(() => {
     if (!ready) return;
@@ -55,7 +55,7 @@ export function SimulatorCanvas() {
       setNodes([]);
       setEdges([]);
     }
-  }, [currentFileId, ready]);
+  }, [currentFileId, ready, getCurrentFile, setEdges, setNodes]);
 
   if (!hasMounted) {
     return (

@@ -86,8 +86,8 @@ export function Features() {
           viewport={{ once: true }}
           className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
         >
-          {features.map((feature, i) => (
-            <motion.div key={i} variants={item} whileHover={{ y: -5, transition: { duration: 0.2 } }}>
+          {features.map((feature) => (
+            <motion.div key={feature.title} variants={item} whileHover={{ y: -5, transition: { duration: 0.2 } }}>
               <Card className="h-full overflow-hidden border-border/40 bg-gradient-to-b from-card to-card/50 backdrop-blur transition-all hover:shadow-lg hover:border-primary/20 group">
                 <CardContent>
                   <div className="size-12 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-4 group-hover:bg-primary/20 transition-colors duration-300">
