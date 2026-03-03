@@ -1,13 +1,22 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 
+import {
+  Background,
+  type Edge,
+  MiniMap,
+  type Node,
+  Panel,
+  ReactFlow,
+  useEdgesState,
+  useNodesState,
+} from "@xyflow/react";
 import { LoaderCircle } from "lucide-react";
 import { useEffect } from "react";
-import ReactFlow, { Background, MiniMap, Panel, useEdgesState, useNodesState } from "reactflow";
 import { useFileSystem } from "@/hooks/use-file-system";
 import { useHasMounted } from "@/hooks/use-has-mounted";
 import { useSettingsStore } from "@/hooks/use-settings-store";
 import { useSimulatorLogic } from "@/hooks/use-simulator-logic";
-import { nodeTypes } from "@/lib/types";
+import { type GateNodeProps, nodeTypes } from "@/lib/types";
 import { Toolbar } from "./toolbar";
 
 export function SimulatorCanvas() {
@@ -15,8 +24,8 @@ export function SimulatorCanvas() {
   const { settings } = useSettingsStore();
   const { currentFileId, updateFileContent, ready, getCurrentFile } = useFileSystem();
 
-  const [nodes, setNodes, onNodesChange] = useNodesState([]);
-  const [edges, setEdges, onEdgesChange] = useEdgesState([]);
+  const [nodes, setNodes, onNodesChange] = useNodesState<Node<GateNodeProps>>([]);
+  const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]);
   const { onConnectEdge, onNodeClick, onEdgesChangeWithSimulation, onDrop, onDragOver } = useSimulatorLogic(
     setNodes,
     setEdges,
@@ -58,7 +67,7 @@ export function SimulatorCanvas() {
 
   return (
     <div className="flex-1 h-full">
-      <ReactFlow
+      <ReactFlow<Node<GateNodeProps>, Edge>
         className="bg-background"
         nodes={nodes}
         edges={edges}

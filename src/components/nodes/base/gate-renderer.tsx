@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Handle, Position } from "reactflow";
+import { Handle, Position } from "@xyflow/react";
 import { H, HANDLE_SIZE, hs, W } from "./constants";
 import type { GateRendererProps } from "./types";
 
@@ -16,7 +16,11 @@ export function GateRenderer({
   outputHandles = 1,
 }: GateRendererProps) {
   const [hovered, setHovered] = useState(false);
-  const activeColor = data.preview ? "var(--color-foreground)" : data.state ? "var(--color-success)" : "var(--color-primary)";
+  const activeColor = data.preview
+    ? "var(--color-foreground)"
+    : data.state
+      ? "var(--color-success)"
+      : "var(--color-primary)";
   const bgColor = "var(--card, #1a1a2e)";
   const hasSelectPin = label === "MUX" || label === "DMUX";
 
@@ -141,7 +145,6 @@ export function GateRenderer({
               strokeWidth="2"
             />
           )}
-
         </svg>
       ) : (
         <div
@@ -158,27 +161,28 @@ export function GateRenderer({
       )}
 
       {/* INPUT HANDLES */}
-      {!data.preview && inputYs.map((y, index) =>
-        y !== null ? (
-          <Handle
-            key={`input-${index}`}
-            type="target"
-            position={Position.Left}
-            id={`input-${index}`}
-            style={{
-              top: (y as number) - hs,
-              left: -hs,
-              width: HANDLE_SIZE,
-              height: HANDLE_SIZE,
-              background: activeColor,
-              border: `2px solid ${bgColor}`,
-              borderRadius: "50%",
-              transform: "none",
-            }}
-            isConnectable={isConnectable}
-          />
-        ) : null,
-      )}
+      {!data.preview &&
+        inputYs.map((y, index) =>
+          y !== null ? (
+            <Handle
+              key={`input-${index}`}
+              type="target"
+              position={Position.Left}
+              id={`input-${index}`}
+              style={{
+                top: (y as number) - hs,
+                left: -hs,
+                width: HANDLE_SIZE,
+                height: HANDLE_SIZE,
+                background: activeColor,
+                border: `2px solid ${bgColor}`,
+                borderRadius: "50%",
+                transform: "none",
+              }}
+              isConnectable={isConnectable}
+            />
+          ) : null,
+        )}
 
       {/* SELECT HANDLE */}
       {!data.preview && hasSelectPin && selectPinIndex !== -1 && (
@@ -201,25 +205,26 @@ export function GateRenderer({
       )}
 
       {/* OUTPUT HANDLES */}
-      {!data.preview && outputYs.map((y, index) => (
-        <Handle
-          key={`output-${index}`}
-          type="source"
-          position={Position.Right}
-          id={`output-${index}`}
-          style={{
-            top: y - hs,
-            left: geometry.outputX - hs,
-            width: HANDLE_SIZE,
-            height: HANDLE_SIZE,
-            background: activeColor,
-            border: `2px solid ${bgColor}`,
-            borderRadius: "50%",
-            transform: "none",
-          }}
-          isConnectable={isConnectable}
-        />
-      ))}
+      {!data.preview &&
+        outputYs.map((y, index) => (
+          <Handle
+            key={`output-${index}`}
+            type="source"
+            position={Position.Right}
+            id={`output-${index}`}
+            style={{
+              top: y - hs,
+              left: geometry.outputX - hs,
+              width: HANDLE_SIZE,
+              height: HANDLE_SIZE,
+              background: activeColor,
+              border: `2px solid ${bgColor}`,
+              borderRadius: "50%",
+              transform: "none",
+            }}
+            isConnectable={isConnectable}
+          />
+        ))}
     </div>
   );
 }

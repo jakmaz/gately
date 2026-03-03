@@ -1,27 +1,28 @@
 "use client";
 
-import { useState, useCallback, useRef } from "react";
-import ReactFlow, {
-  ReactFlowProvider,
-  Background,
+import {
   addEdge,
-  useNodesState,
-  useEdgesState,
-  Connection,
-  Edge,
+  Background,
+  type Connection,
+  type Edge,
   MarkerType,
-  Node,
-  NodeTypes,
-  ReactFlowInstance,
-} from "reactflow";
-import "reactflow/dist/style.css";
+  type Node,
+  type NodeTypes,
+  ReactFlow,
+  type ReactFlowInstance,
+  ReactFlowProvider,
+  useEdgesState,
+  useNodesState,
+} from "@xyflow/react";
+import { useCallback, useRef, useState } from "react";
+import "@xyflow/react/dist/style.css";
 
-import { GateNodeProps } from "@/lib/types";
+import confetti from "canvas-confetti";
 import { calculateNodeStates } from "@/lib/simulator";
+import type { GateNodeProps } from "@/lib/types";
+import { ANDGateNode } from "../nodes/and";
 import { InputNode } from "../nodes/input";
 import { OutputNode } from "../nodes/output";
-import { ANDGateNode } from "../nodes/and";
-import confetti from "canvas-confetti";
 
 const nodeTypes: NodeTypes = {
   inputNode: InputNode,
@@ -86,9 +87,9 @@ const initialEdges = [
 ];
 
 export function MiniPreview() {
-  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
-  const [reactFlowInstance, setReactFlowInstance] = useState<ReactFlowInstance | null>(null);
+  const [nodes, setNodes, onNodesChange] = useNodesState<Node<GateNodeProps>>(initialNodes);
+  const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>(initialEdges);
+  const [reactFlowInstance, setReactFlowInstance] = useState<ReactFlowInstance<Node<GateNodeProps>, Edge> | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Helper function to get confetti origin relative to container center
@@ -149,7 +150,7 @@ export function MiniPreview() {
     (event: React.DragEvent<HTMLDivElement>) => {
       event.preventDefault();
 
-      const type = event.dataTransfer.getData("application/reactflow");
+      const type = event.dataTransfer.getData("application/@xyflow/react");
 
       if (typeof type === "undefined" || !type) {
         return;
@@ -253,7 +254,7 @@ export function MiniPreview() {
   return (
     <div ref={containerRef} className="h-40 sm:h-82 w-full">
       <ReactFlowProvider>
-        <ReactFlow
+        <ReactFlow<Node<GateNodeProps>, Edge>
           className="bg-b"
           nodes={nodes}
           edges={edges}

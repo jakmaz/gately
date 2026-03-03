@@ -1,3 +1,4 @@
+import type { Edge, Node, NodeTypes } from "@xyflow/react";
 import { ANDGateNode } from "@/components/nodes/and";
 import { BUFFGateNode } from "@/components/nodes/buff";
 import { DMUXGateNode } from "@/components/nodes/dmux";
@@ -11,7 +12,6 @@ import { OutputNode } from "@/components/nodes/output";
 import { XNORGateNode } from "@/components/nodes/xnor";
 import { XNOR3GateNode } from "@/components/nodes/xnor3";
 import { XORGateNode } from "@/components/nodes/xor";
-import { Edge, Node, NodeTypes } from "reactflow";
 
 export const nodeTypes: NodeTypes = {
   inputNode: InputNode,
@@ -35,6 +35,7 @@ export interface GateNodeProps {
   inputs?: boolean[];
   outputs?: boolean[];
   preview?: boolean;
+  [key: string]: unknown;
 }
 
 export interface LogicGateProps {

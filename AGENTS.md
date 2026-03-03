@@ -54,7 +54,7 @@ src/
 ```typescript
 // Order: external, internal (@/), relative
 import { memo } from "react";
-import { Handle, Position } from "reactflow";
+import { Handle, Position } from "@xyflow/react";
 import { type GateGeometry, GateRenderer } from "./base/index";
 
 // Use type imports when importing only for types

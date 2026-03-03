@@ -1,5 +1,5 @@
-import { Node, Edge } from "reactflow";
-import { GateNodeProps } from "./types";
+import type { Edge, Node } from "@xyflow/react";
+import type { GateNodeProps } from "./types";
 
 export function calculateNodeStates(nodes: Node<GateNodeProps>[], edges: Edge[]): Node<GateNodeProps>[] {
   const updatedNodes = [...nodes];

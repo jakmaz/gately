@@ -1,5 +1,3 @@
-import { nanoid } from "nanoid";
-import { type Dispatch, type SetStateAction, useCallback, useEffect } from "react";
 import {
   addEdge,
   applyEdgeChanges,
@@ -9,14 +7,16 @@ import {
   MarkerType,
   type Node,
   useReactFlow,
-} from "reactflow";
+} from "@xyflow/react";
+import { nanoid } from "nanoid";
+import { type Dispatch, type SetStateAction, useCallback, useEffect } from "react";
 import { useSettingsStore } from "@/hooks/use-settings-store";
 import { calculateNodeStates } from "@/lib/simulator";
 import type { GateNodeProps } from "@/lib/types";
 
 export function useSimulatorLogic(
   setNodes: Dispatch<SetStateAction<Node<GateNodeProps>[]>>,
-  setEdges: Dispatch<SetStateAction<Edge[]>>
+  setEdges: Dispatch<SetStateAction<Edge[]>>,
 ) {
   const { getNodes, getEdges, screenToFlowPosition } = useReactFlow();
 
@@ -52,7 +52,7 @@ export function useSimulatorLogic(
   );
 
   useEffect(() => {
-    const nodes = getNodes();
+    const nodes = getNodes() as Node<GateNodeProps>[];
     const edges = getEdges();
     const styledEdges = updateEdgeStyles(nodes, edges);
     setEdges(styledEdges);
@@ -60,12 +60,15 @@ export function useSimulatorLogic(
 
   const onConnectEdge = useCallback(
     (params: Connection | Edge) => {
-      const nodes = getNodes();
+      const nodes = getNodes() as Node<GateNodeProps>[];
       const edges = getEdges();
 
-      const edge = {
-        ...params,
+      const edge: Edge = {
         id: nanoid(),
+        source: params.source,
+        target: params.target,
+        sourceHandle: params.sourceHandle,
+        targetHandle: params.targetHandle,
         animated: false,
         type: settings.connectionType, // Set initial type from settings
         style: { stroke: "#3b82f6", strokeWidth: 2 },
@@ -89,7 +92,7 @@ export function useSimulatorLogic(
     (node: Node<GateNodeProps>) => {
       if (node.type !== "inputNode") return;
 
-      const nodes = getNodes();
+      const nodes = getNodes() as Node<GateNodeProps>[];
       const edges = getEdges();
 
       const updatedNodes = nodes.map((n) =>
@@ -109,7 +112,7 @@ export function useSimulatorLogic(
   const onEdgesChangeWithSimulation = useCallback(
     (changes: EdgeChange[]) => {
       const currentEdges = getEdges();
-      const currentNodes = getNodes();
+      const currentNodes = getNodes() as Node<GateNodeProps>[];
 
       // Apply the edge changes first (add, remove, etc.)
       const updatedEdges = applyEdgeChanges(changes, currentEdges);
@@ -142,7 +145,7 @@ export function useSimulatorLogic(
   const onDrop = useCallback(
     (event: React.DragEvent<HTMLDivElement>) => {
       event.preventDefault();
-      const type = event.dataTransfer.getData("application/reactflow");
+      const type = event.dataTransfer.getData("application/@xyflow/react");
 
       const position = screenToFlowPosition({
         x: event.clientX,
