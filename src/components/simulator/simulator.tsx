@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { ReactFlowProvider } from "reactflow";
-import "reactflow/dist/style.css";
+import { ReactFlowProvider } from "@xyflow/react";
+import "@xyflow/react/dist/style.css";
 import { Header } from "./header";
 import { FileExplorer } from "./file-explorer";
 import { SimulatorCanvas } from "./simulator-canvas";

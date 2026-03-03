@@ -1,7 +1,7 @@
 "use client";
 
+import { useReactFlow } from "@xyflow/react";
 import { useCallback } from "react";
-import { useReactFlow } from "reactflow";
 import { nodeTypes } from "@/lib/types";
 
 type GateProps = {
@@ -13,7 +13,7 @@ type GateProps = {
 
 function Gate({ nodeType, label, onClick }: GateProps) {
   const onDragStart = (event: React.DragEvent<HTMLDivElement>) => {
-    event.dataTransfer.setData("application/reactflow", nodeType);
+    event.dataTransfer.setData("application/@xyflow/react", nodeType);
     event.dataTransfer.effectAllowed = "move";
   };
 
@@ -35,9 +35,12 @@ function Gate({ nodeType, label, onClick }: GateProps) {
             selected={false}
             type={nodeType}
             zIndex={0}
-            xPos={0}
-            yPos={0}
+            positionAbsoluteX={0}
+            positionAbsoluteY={0}
             dragging={false}
+            selectable={false}
+            deletable={false}
+            draggable={false}
           />
         )}
       </div>
