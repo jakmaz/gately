@@ -11,10 +11,6 @@ type GateProps = {
   onClick?: () => void;
 };
 
-type ToolbarProps = {
-  children?: React.ReactNode;
-};
-
 function Gate({ nodeType, label, onClick }: GateProps) {
   const onDragStart = (event: React.DragEvent<HTMLDivElement>) => {
     event.dataTransfer.setData("application/reactflow", nodeType);
@@ -78,8 +74,15 @@ const sections = [
       { nodeType: "dmuxGate", symbol: "DMUX", label: "DMUX" },
     ],
   },
+  {
+    title: "Adders",
+    gates: [
+      { nodeType: "halfAdder", symbol: "HA", label: "Half Adder" },
+      { nodeType: "fullAdder", symbol: "FA", label: "Full Adder" },
+    ],
+  },
 ];
-export function Toolbar({ children }: ToolbarProps) {
+export function Toolbar() {
   const { addNodes } = useReactFlow();
 
   const handleAddNode = useCallback(
@@ -120,7 +123,6 @@ export function Toolbar({ children }: ToolbarProps) {
           </section>
         ))}
       </div>
-        {children}
     </div>
   );
 }
