@@ -8,6 +8,7 @@ export interface Settings {
   animateConnections: boolean;
   snapToGrid: boolean;
   showNodeLabels: boolean;
+  debugMode: boolean;
 }
 
 const defaultSettings: Settings = {
@@ -17,6 +18,7 @@ const defaultSettings: Settings = {
   animateConnections: true,
   snapToGrid: false,
   showNodeLabels: true,
+  debugMode: false,
 };
 
 interface SettingsState {

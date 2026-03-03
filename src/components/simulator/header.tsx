@@ -6,8 +6,8 @@ import { useHasMounted } from "@/hooks/use-has-mounted";
 import AndGate from "../icons/and-gate";
 import { Skeleton } from "../ui/skeleton";
 import { Controls } from "./controls";
+import { ImportExportButtons } from "./import-export";
 import { SettingsDialog } from "./settings-dialog";
-import { ShareDialog } from "./share-dialog";
 
 interface HeaderProps {
   onToggleSidebar: () => void;
@@ -41,8 +41,9 @@ export function Header({ onToggleSidebar }: HeaderProps) {
         <Controls />
       </div>
 
-      <div>
-        <ShareDialog />
+      <div className="flex items-center gap-2">
+        <ImportExportButtons />
+        {/* <ShareDialog /> */}
         <SettingsDialog />
       </div>
     </div>
