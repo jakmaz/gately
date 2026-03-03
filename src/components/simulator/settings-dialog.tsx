@@ -1,5 +1,5 @@
 import { DialogTrigger } from "@radix-ui/react-dialog";
-import { Grid, Palette, SettingsIcon, Zap } from "lucide-react";
+import { Bug, Grid, Palette, SettingsIcon, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -30,10 +30,11 @@ export function SettingsDialog() {
         </DialogHeader>
 
         <Tabs defaultValue="appearance" className="w-full">
-          <TabsList className="grid w-full grid-cols-3">
+          <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="appearance">Appearance</TabsTrigger>
             <TabsTrigger value="connections">Connections</TabsTrigger>
             <TabsTrigger value="canvas">Canvas</TabsTrigger>
+            <TabsTrigger value="debug">Debug</TabsTrigger>
           </TabsList>
 
           <div className="max-h-[400px] overflow-y-auto mt-4">
@@ -152,6 +153,31 @@ export function SettingsDialog() {
                       id="snap-to-grid"
                       checked={settings.snapToGrid}
                       onCheckedChange={(checked) => updateSetting("snapToGrid", checked)}
+                    />
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            <TabsContent value="debug" className="space-y-4">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Bug className="h-4 w-4" />
+                    Debug Settings
+                  </CardTitle>
+                  <CardDescription>Configure debugging and development tools</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <Label htmlFor="debug-mode">Debug Mode</Label>
+                      <p className="text-sm text-muted-foreground">Show debug panel with simulation details</p>
+                    </div>
+                    <Switch
+                      id="debug-mode"
+                      checked={settings.debugMode}
+                      onCheckedChange={(checked) => updateSetting("debugMode", checked)}
                     />
                   </div>
                 </CardContent>

@@ -1,15 +1,5 @@
-import {
-  ChevronDown,
-  ChevronRight,
-  Download,
-  Edit,
-  File,
-  Folder,
-  FolderOpen,
-  MoreVertical,
-  Plus,
-  Trash2,
-} from "lucide-react";
+import { ChevronRight, Download, Edit, File, Folder, FolderOpen, MoreVertical, Plus, Trash2 } from "lucide-react";
+import { AnimatePresence, LayoutGroup, motion } from "motion/react";
 import { useState } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -162,8 +152,12 @@ export function FileExplorer({ isCollapsed }: FileExplorerProps) {
         >
           {item.type === "directory" ? (
             <>
-              {item.isOpen ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
-              {item.isOpen ? <FolderOpen className="h-4 w-4" /> : <Folder className="h-4 w-4" />}
+              <motion.div animate={{ rotate: item.isOpen ? 90 : 0 }} transition={{ duration: 0.15 }}>
+                <ChevronRight className="h-4 w-4" />
+              </motion.div>
+              <motion.div animate={{ scale: item.isOpen ? 1.1 : 1 }} transition={{ duration: 0.15 }}>
+                {item.isOpen ? <FolderOpen className="h-4 w-4" /> : <Folder className="h-4 w-4" />}
+              </motion.div>
             </>
           ) : (
             <>
@@ -211,20 +205,23 @@ export function FileExplorer({ isCollapsed }: FileExplorerProps) {
         </div>
 
         {item.type === "directory" && item.isOpen && item.children && (
-          <div>{item.children.map((child) => renderFileItem(child, depth + 1))}</div>
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.15 }}>
+            {item.children.map((child) => renderFileItem(child, depth + 1))}
+          </motion.div>
         )}
       </div>
     );
   };
 
-  // Completely hide when collapsed
-  if (isCollapsed) {
-    return null;
-  }
-
+  // Animate sidebar collapse/expand
   return (
-    <div className="w-64 border-r bg-card flex flex-col h-full">
-      <div className="p-3 border-b">
+    <motion.div
+      initial={false}
+      animate={{ width: isCollapsed ? 0 : 256 }}
+      transition={{ type: "spring", stiffness: 300, damping: 30 }}
+      className="border-r bg-card flex flex-col h-full overflow-hidden"
+    >
+      <div className="p-3 border-b w-64">
         <div className="flex items-center justify-between">
           <h3 className="font-semibold text-sm">Files</h3>
           <div className="flex gap-1">
@@ -278,9 +275,26 @@ export function FileExplorer({ isCollapsed }: FileExplorerProps) {
         </div>
       </div>
 
-      <div className="flex-1 overflow-auto p-2">{fileTree.map((item) => renderFileItem(item))}</div>
+      <div className="flex-1 overflow-auto p-2 w-64">
+        <LayoutGroup>
+          <AnimatePresence>
+            {fileTree.map((item) => (
+              <motion.div
+                key={item.id}
+                layout
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.2 }}
+              >
+                {renderFileItem(item)}
+              </motion.div>
+            ))}
+          </AnimatePresence>
+        </LayoutGroup>
+      </div>
 
-      <div className="py-2 px-4 mt-auto flex justify-between">
+      <div className="py-2 px-4 mt-auto flex justify-between w-64">
         <ThemeToggle />
         <InfoDialog />
       </div>
@@ -303,6 +317,6 @@ export function FileExplorer({ isCollapsed }: FileExplorerProps) {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-    </div>
+    </motion.div>
   );
 }
