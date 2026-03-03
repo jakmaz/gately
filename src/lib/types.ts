@@ -1,6 +1,7 @@
 import { ANDGateNode } from "@/components/nodes/and";
 import { BUFFGateNode } from "@/components/nodes/buff";
 import { DMUXGateNode } from "@/components/nodes/dmux";
+import { HalfAdderNode } from "@/components/nodes/halfAdder";
 import { InputNode } from "@/components/nodes/input";
 import { MUXGateNode } from "@/components/nodes/mux";
 import { NANDGateNode } from "@/components/nodes/nand";
@@ -27,6 +28,7 @@ export const nodeTypes: NodeTypes = {
   xnor3Gate: XNOR3GateNode,
   dmuxGate: DMUXGateNode,
   buffGate: BUFFGateNode,
+  halfAdder: HalfAdderNode,
 };
 
 export interface GateNodeProps {
