@@ -3,11 +3,22 @@
 
 import { Position } from "@xyflow/react";
 import { useState } from "react";
-import { H, hs, W } from "./constants";
+import { H, HANDLE_SIZE, hs, W } from "./constants";
 import { InputHandle, OutputHandle } from "./gate-handle";
 import type { GateRendererProps } from "./types";
 
-export function GateRenderer({ data, isConnectable, geometry, label, inputHandles, outputHandles }: GateRendererProps) {
+export function GateRenderer({
+  id,
+  data,
+  isConnectable,
+  geometry,
+  label,
+  symbol,
+  inputHandles = 2,
+  outputHandles = 1,
+  width: CW = W,
+  height: CH = H,
+}: GateRendererProps & { width?: number; height?: number }) {
   const [hovered, setHovered] = useState(false);
   const activeColor = data.preview
     ? "var(--color-foreground)"
@@ -19,20 +30,21 @@ export function GateRenderer({ data, isConnectable, geometry, label, inputHandle
 
   const inputYs: (number | null)[] = Array.from({ length: inputHandles }, (_, i) => {
     if (geometry.inputYOverrides && i < geometry.inputYOverrides.length) return geometry.inputYOverrides[i];
-    if (inputHandles === 1) return H / 2;
-    return H * 0.2 + ((H * 0.6) / (inputHandles - 1)) * i;
+    if (inputHandles === 1) return CH / 2;
+    return CH * 0.2 + ((CH * 0.6) / (inputHandles - 1)) * i;
   });
   const selectPinIndex = inputYs.indexOf(null);
 
   const outputYs = Array.from({ length: outputHandles }, (_, i) => {
+    if (geometry.outputYOverrides && i < geometry.outputYOverrides.length) return geometry.outputYOverrides[i]!;
     if (outputHandles === 1) return geometry.outputY;
-    return H * 0.25 + ((H * 0.5) / (outputHandles - 1)) * i;
+    return CH * 0.25 + ((CH * 0.5) / (outputHandles - 1)) * i;
   });
 
   return (
     <div
       className="relative"
-      style={{ width: W, height: H }}
+      style={{ width: CW, height: CH }}
       onMouseEnter={() => !data.preview && setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
@@ -40,7 +52,7 @@ export function GateRenderer({ data, isConnectable, geometry, label, inputHandle
       <div
         style={{
           position: "absolute",
-          bottom: H + 8,
+          bottom: CH + 8,
           left: "50%",
           transform: "translateX(-50%)",
           pointerEvents: "none",
@@ -67,7 +79,6 @@ export function GateRenderer({ data, isConnectable, geometry, label, inputHandle
         >
           {label}
         </div>
-        {/* arrow */}
         <div
           style={{
             width: 0,
@@ -83,9 +94,9 @@ export function GateRenderer({ data, isConnectable, geometry, label, inputHandle
       {/* Gate SVG or default rendering */}
       {geometry.bodyPath ? (
         <svg
-          width={W}
-          height={H}
-          viewBox={`0 0 ${W} ${H}`}
+          width={CW}
+          height={CH}
+          viewBox={`0 0 ${CW} ${CH}`}
           className="absolute top-0 left-0"
           style={{ overflow: "visible" }}
         >
@@ -107,7 +118,7 @@ export function GateRenderer({ data, isConnectable, geometry, label, inputHandle
 
           {/* Select pin stub */}
           {hasSelectPin && (
-            <line x1={W / 2} y1={H + hs} x2={W / 2} y2={H - 10} stroke={activeColor} strokeWidth="1.5" opacity="0.5" />
+            <line x1={CW / 2} y1={CH + hs} x2={CW / 2} y2={CH - 10} stroke={activeColor} strokeWidth="1.5" opacity="0.5" />
           )}
 
           {/* Output stub wires */}
@@ -116,7 +127,7 @@ export function GateRenderer({ data, isConnectable, geometry, label, inputHandle
               key={`wire-out-${i}`}
               x1={geometry.outputX}
               y1={y}
-              x2={W}
+              x2={CW}
               y2={y}
               stroke={activeColor}
               strokeWidth="1.5"
@@ -138,6 +149,9 @@ export function GateRenderer({ data, isConnectable, geometry, label, inputHandle
               strokeWidth="2"
             />
           )}
+
+          {/* Inline SVG label slots — rendered by child via geometry.svgContent */}
+          {geometry.svgContent}
         </svg>
       ) : (
         <div
@@ -176,8 +190,13 @@ export function GateRenderer({ data, isConnectable, geometry, label, inputHandle
           position={Position.Bottom}
           style={{
             bottom: -hs,
-            left: W / 2 - hs,
-            top: undefined,
+            left: CW / 2 - hs,
+            width: HANDLE_SIZE,
+            height: HANDLE_SIZE,
+            background: activeColor,
+            border: `2px solid ${bgColor}`,
+            borderRadius: "50%",
+            transform: "none",
           }}
           isConnectable={isConnectable}
         />
