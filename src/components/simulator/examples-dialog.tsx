@@ -1,12 +1,12 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Download, Zap, Calculator, Clock, Shuffle } from "lucide-react";
+import type { Edge, Node } from "@xyflow/react";
+import { Calculator, Clock, Download, Shuffle, Zap } from "lucide-react";
 import { toast } from "sonner";
-import { Edge, Node } from "@xyflow/react";
-import { GateNodeProps } from "@/lib/types";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import type { GateNodeProps } from "@/lib/types";
 
 interface ExamplesDialogProps {
   open: boolean;

@@ -1,10 +1,10 @@
 "use client";
 
-import { useState } from "react";
 import { ReactFlowProvider } from "@xyflow/react";
+import { useState } from "react";
 import "@xyflow/react/dist/style.css";
-import { Header } from "./header";
 import { FileExplorer } from "./file-explorer";
+import { Header } from "./header";
 import { SimulatorCanvas } from "./simulator-canvas";
 
 export function LogicGateSimulator() {

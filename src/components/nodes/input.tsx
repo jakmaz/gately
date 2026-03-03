@@ -1,7 +1,7 @@
 "use client";
 
-import { memo } from "react";
 import { Handle, Position } from "@xyflow/react";
+import { memo } from "react";
 import { Switch } from "@/components/ui/switch";
 import type { LogicGateProps } from "@/lib/types";
 import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from "../ui/context-menu";

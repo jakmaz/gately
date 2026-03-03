@@ -5,8 +5,9 @@ export function calculateNodeStates(nodes: Node<GateNodeProps>[], edges: Edge[])
   const updatedNodes = [...nodes];
 
   const nodeMap = new Map<string, number>();
-  updatedNodes.forEach((node, index) => nodeMap.set(node.id, index));
-
+  updatedNodes.forEach((node, index) => {
+    nodeMap.set(node.id, index);
+  });
   const incomingEdges = new Map<
     string,
     {
@@ -17,11 +18,14 @@ export function calculateNodeStates(nodes: Node<GateNodeProps>[], edges: Edge[])
   >();
   edges.forEach((edge) => {
     if (!incomingEdges.has(edge.target)) incomingEdges.set(edge.target, []);
-    incomingEdges.get(edge.target)!.push({
-      sourceId: edge.source,
-      sourceHandle: edge.sourceHandle ?? null,
-      targetHandle: edge.targetHandle ?? null,
-    });
+    const targetEdges = incomingEdges.get(edge.target);
+    if (targetEdges) {
+      targetEdges.push({
+        sourceId: edge.source,
+        sourceHandle: edge.sourceHandle ?? null,
+        targetHandle: edge.targetHandle ?? null,
+      });
+    }
   });
 
   const evaluateNode = (nodeId: string, sourceHandle: string | null = null, visited = new Set<string>()): boolean => {
@@ -62,8 +66,8 @@ export function calculateNodeStates(nodes: Node<GateNodeProps>[], edges: Edge[])
 
     const orderedInputs = [...incoming]
       .sort((a, b) => {
-        const ai = parseInt(a.targetHandle?.replace("input-", "") ?? "0");
-        const bi = parseInt(b.targetHandle?.replace("input-", "") ?? "0");
+        const ai = parseInt(a.targetHandle?.replace("input-", "") ?? "0", 10);
+        const bi = parseInt(b.targetHandle?.replace("input-", "") ?? "0", 10);
         return ai - bi;
       })
       .map(evalSource);
@@ -146,7 +150,11 @@ export function calculateNodeStates(nodes: Node<GateNodeProps>[], edges: Edge[])
     return result;
   };
 
-  updatedNodes.filter((n) => n.type !== "inputNode").forEach((n) => evaluateNode(n.id));
+  updatedNodes
+    .filter((n) => n.type !== "inputNode")
+    .forEach((n) => {
+      evaluateNode(n.id);
+    });
 
   return updatedNodes;
 }

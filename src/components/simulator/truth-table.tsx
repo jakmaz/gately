@@ -1,12 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { Edge, Node } from "@xyflow/react";
+import type { Edge, Node } from "@xyflow/react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { GateNodeProps } from "@/lib/types";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { calculateNodeStates } from "@/lib/simulator";
+import type { GateNodeProps } from "@/lib/types";
 
 interface TruthTableProps {
   nodes: Node<GateNodeProps>[];
@@ -75,7 +75,7 @@ export function TruthTable({ nodes, edges }: TruthTableProps) {
 
   // Generate all possible combinations of input values
   const generateInputCombinations = (count: number): boolean[][] => {
-    const totalCombinations = Math.pow(2, count);
+    const totalCombinations = 2 ** count;
     const combinations: boolean[][] = [];
 
     for (let i = 0; i < totalCombinations; i++) {

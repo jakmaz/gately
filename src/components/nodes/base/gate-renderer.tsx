@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
 import { Handle, Position } from "@xyflow/react";
+import { useState } from "react";
 import { H, HANDLE_SIZE, hs, W } from "./constants";
 import type { GateRendererProps } from "./types";
 

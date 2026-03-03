@@ -1,6 +1,18 @@
+import {
+  ChevronDown,
+  ChevronRight,
+  Download,
+  Edit,
+  File,
+  Folder,
+  FolderOpen,
+  MoreVertical,
+  Plus,
+  Trash2,
+} from "lucide-react";
 import { useState } from "react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import {
   Dialog,
   DialogContent,
@@ -11,27 +23,15 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import {
-  Folder,
-  FolderOpen,
-  File,
-  Plus,
-  ChevronRight,
-  ChevronDown,
-  Download,
-  MoreVertical,
-  Trash2,
-  Edit,
-} from "lucide-react";
-import { toast } from "sonner";
-import { useFileSystem, FileNode } from "@/hooks/use-file-system";
-import { ThemeToggle } from "./theme-toggle";
-import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Input } from "@/components/ui/input";
+import { type FileNode, useFileSystem } from "@/hooks/use-file-system";
 import { InfoDialog } from "./info-dialog";
+import { ThemeToggle } from "./theme-toggle";
 
 interface FileExplorerProps {
   isCollapsed: boolean;
