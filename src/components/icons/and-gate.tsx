@@ -1,5 +1,5 @@
-import * as React from "react";
-import { SVGProps } from "react";
+import type { SVGProps } from "react";
+
 const AndGate = (props: SVGProps<SVGSVGElement>) => (
   <svg xmlns="http://www.w3.org/2000/svg" width={800} height={800} viewBox="144 144 512 512" fill="white" {...props}>
     <path d="M226.81 384.25c-26.047 0-47.23-21.188-47.23-47.23 0-26.047 21.188-47.23 47.23-47.23 26.047 0 47.23 21.188 47.23 47.23.004 26.043-21.184 47.23-47.23 47.23zm0-62.977c-8.688 0-15.742 7.055-15.742 15.742s7.055 15.742 15.742 15.742 15.742-7.055 15.742-15.742c.004-8.684-7.055-15.742-15.742-15.742z" />

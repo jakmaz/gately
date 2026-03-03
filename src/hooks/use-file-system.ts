@@ -1,8 +1,8 @@
+import type { Edge, Node } from "@xyflow/react";
+import { nanoid } from "nanoid";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { nanoid } from "nanoid";
-import { Node, Edge } from "@xyflow/react";
-import { GateNodeProps } from "@/lib/types";
+import type { GateNodeProps } from "@/lib/types";
 
 export interface FileNode {
   id: string;

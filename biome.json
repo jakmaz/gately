@@ -25,7 +25,8 @@
     },
     "domains": {
       "next": "recommended",
-      "react": "recommended"
+      "react": "recommended",
+      "tailwind": "recommended"
     }
   },
   "assist": {
@@ -34,5 +35,6 @@
         "organizeImports": "on"
       }
     }
-  }
+  },
+  "css": { "parser": { "tailwindDirectives": true } }
 }

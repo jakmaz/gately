@@ -1,5 +1,5 @@
-import { Maximize2, ZoomIn, ZoomOut } from "lucide-react";
 import { useReactFlow } from "@xyflow/react";
+import { Maximize2, ZoomIn, ZoomOut } from "lucide-react";
 import { Button } from "../ui/button";
 
 export function Controls() {

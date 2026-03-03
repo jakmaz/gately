@@ -1,7 +1,7 @@
 "use client";
 
-import { memo } from "react";
 import { Handle, Position } from "@xyflow/react";
+import { memo } from "react";
 import type { LogicGateProps } from "@/lib/types";
 
 const W = 80;

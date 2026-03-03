@@ -1,12 +1,12 @@
+import { DialogTrigger } from "@radix-ui/react-dialog";
+import { Grid, Palette, SettingsIcon, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Settings, useSettingsStore } from "@/hooks/use-settings-store";
-import { DialogTrigger } from "@radix-ui/react-dialog";
-import { Grid, Palette, SettingsIcon, Zap } from "lucide-react";
+import { type Settings, useSettingsStore } from "@/hooks/use-settings-store";
 import { ThemeToggle } from "./theme-toggle";
 
 export function SettingsDialog() {

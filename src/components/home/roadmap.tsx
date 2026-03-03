@@ -1,8 +1,7 @@
+import { Brain, Folder, Grid, Layers, Share2, Users } from "lucide-react";
+import { motion } from "motion/react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
-import { motion } from "motion/react";
-
-import { Folder, Grid, Layers, Share2, Brain, Users } from "lucide-react";
 
 const roadmapItems = [
   {
