@@ -1,8 +1,8 @@
 "use client";
 
-import { Handle, Position } from "@xyflow/react";
 import { memo } from "react";
 import type { LogicGateProps } from "@/lib/types";
+import { InputHandle } from "./base/gate-handle";
 
 const W = 80;
 const H = 60;
@@ -32,22 +32,7 @@ export const OutputNode = memo(({ data, isConnectable }: LogicGateProps) => {
         Q1
       </div>
       {!data.preview && (
-        <Handle
-          type="target"
-          position={Position.Left}
-          id="input"
-          style={{
-            top: H / 2 - hs,
-            left: -hs,
-            width: HANDLE_SIZE,
-            height: HANDLE_SIZE,
-            background: activeColor,
-            border: `2px solid ${bgColor}`,
-            borderRadius: "50%",
-            transform: "none",
-          }}
-          isConnectable={isConnectable}
-        />
+        <InputHandle index={0} state={data.state} y={H / 2} customId="input" isConnectable={isConnectable} />
       )}
     </div>
   );
