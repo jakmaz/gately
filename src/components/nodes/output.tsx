@@ -6,8 +6,6 @@ import { InputHandle } from "./base/gate-handle";
 
 const W = 80;
 const H = 60;
-const HANDLE_SIZE = 8;
-const hs = HANDLE_SIZE / 2;
 
 export const OutputNode = memo(({ data, isConnectable }: LogicGateProps) => {
   const activeColor = data.preview
@@ -32,7 +30,13 @@ export const OutputNode = memo(({ data, isConnectable }: LogicGateProps) => {
         Q1
       </div>
       {!data.preview && (
-        <InputHandle index={0} state={data.state} y={H / 2} customId="input" isConnectable={isConnectable} />
+        <InputHandle
+          index={0}
+          state={data.inputs?.[0] ?? false}
+          y={H / 2}
+          customId="input"
+          isConnectable={isConnectable}
+        />
       )}
     </div>
   );

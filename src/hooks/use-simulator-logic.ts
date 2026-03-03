@@ -36,12 +36,12 @@ export function useSimulatorLogic(
           animated: sourceState && settings.animateConnections, // Apply animation toggle
           type: settings.connectionType, // Apply the selected connection type
           style: {
-            stroke: sourceState ? "#10b981" : "#3b82f6",
+            stroke: sourceState ? "var(--color-success)" : "var(--color-primary)",
             strokeWidth: 2,
           },
           markerEnd: {
             type: MarkerType.ArrowClosed,
-            color: sourceState ? "#10b981" : "#3b82f6",
+            color: sourceState ? "var(--color-success)" : "var(--color-primary)",
           },
         };
       });
