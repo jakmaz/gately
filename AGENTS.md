@@ -111,7 +111,7 @@ function ComponentName() {
 
 ### Naming Conventions
 - **Files**: kebab-case for regular files, PascalCase for components (`gate-renderer.tsx`, `GateNode.tsx`)
-- **Components**: PascalCase (`GateRenderer`, `InputNode`)
+- **Components**: PascalCase (`GateRenderer`, `ToggleNode`)
 - **Variables/functions**: camelCase (`activeColor`, `getGeometry`)
 - **Constants**: UPPER_SNAKE_CASE (`HANDLE_SIZE`, `DEFAULT_WIDTH`)
 - **Types/Interfaces**: PascalCase (`GateGeometry`, `LogicGateProps`)

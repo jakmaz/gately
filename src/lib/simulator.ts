@@ -38,7 +38,7 @@ export function calculateNodeStates(nodes: Node<GateNodeProps>[], edges: Edge[])
 
     const node = updatedNodes[nodeIndex];
 
-    if (node.type === "inputNode") return node.data.state;
+    if (node.type === "toggleNode") return node.data.state;
 
     const incoming = incomingEdges.get(nodeId) || [];
     if (incoming.length === 0) {
@@ -170,7 +170,7 @@ export function calculateNodeStates(nodes: Node<GateNodeProps>[], edges: Edge[])
   };
 
   updatedNodes
-    .filter((n) => n.type !== "inputNode")
+    .filter((n) => n.type !== "toggleNode")
     .forEach((n) => {
       evaluateNode(n.id);
     });

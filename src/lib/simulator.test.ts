@@ -3,9 +3,9 @@ import { describe, expect, it } from "vitest";
 import { calculateNodeStates } from "./simulator";
 import type { GateNodeProps } from "./types";
 
-const createInputNode = (id: string, state: boolean): Node<GateNodeProps> => ({
+const createToggleNode = (id: string, state: boolean): Node<GateNodeProps> => ({
   id,
-  type: "inputNode",
+  type: "toggleNode",
   position: { x: 0, y: 0 },
   data: { label: "Input", state },
 });
@@ -36,8 +36,8 @@ describe("calculateNodeStates", () => {
   describe("AND gate", () => {
     it("returns false when any input is false", () => {
       const nodes: Node<GateNodeProps>[] = [
-        createInputNode("in1", true),
-        createInputNode("in2", false),
+        createToggleNode("in1", true),
+        createToggleNode("in2", false),
         createGateNode("and", "andGate"),
       ];
       const edges: Edge[] = [
@@ -52,8 +52,8 @@ describe("calculateNodeStates", () => {
 
     it("returns true when all inputs are true", () => {
       const nodes: Node<GateNodeProps>[] = [
-        createInputNode("in1", true),
-        createInputNode("in2", true),
+        createToggleNode("in1", true),
+        createToggleNode("in2", true),
         createGateNode("and", "andGate"),
       ];
       const edges: Edge[] = [
@@ -70,8 +70,8 @@ describe("calculateNodeStates", () => {
   describe("OR gate", () => {
     it("returns false when all inputs are false", () => {
       const nodes: Node<GateNodeProps>[] = [
-        createInputNode("in1", false),
-        createInputNode("in2", false),
+        createToggleNode("in1", false),
+        createToggleNode("in2", false),
         createGateNode("or", "orGate"),
       ];
       const edges: Edge[] = [
@@ -86,8 +86,8 @@ describe("calculateNodeStates", () => {
 
     it("returns true when any input is true", () => {
       const nodes: Node<GateNodeProps>[] = [
-        createInputNode("in1", false),
-        createInputNode("in2", true),
+        createToggleNode("in1", false),
+        createToggleNode("in2", true),
         createGateNode("or", "orGate"),
       ];
       const edges: Edge[] = [
@@ -103,7 +103,7 @@ describe("calculateNodeStates", () => {
 
   describe("NOT gate", () => {
     it("returns true when input is false", () => {
-      const nodes: Node<GateNodeProps>[] = [createInputNode("in1", false), createGateNode("not", "notGate")];
+      const nodes: Node<GateNodeProps>[] = [createToggleNode("in1", false), createGateNode("not", "notGate")];
       const edges: Edge[] = [createEdge("in1", "not", undefined, "input-0")];
 
       const result = calculateNodeStates(nodes, edges);
@@ -112,7 +112,7 @@ describe("calculateNodeStates", () => {
     });
 
     it("returns false when input is true", () => {
-      const nodes: Node<GateNodeProps>[] = [createInputNode("in1", true), createGateNode("not", "notGate")];
+      const nodes: Node<GateNodeProps>[] = [createToggleNode("in1", true), createGateNode("not", "notGate")];
       const edges: Edge[] = [createEdge("in1", "not", undefined, "input-0")];
 
       const result = calculateNodeStates(nodes, edges);
@@ -124,8 +124,8 @@ describe("calculateNodeStates", () => {
   describe("NAND gate", () => {
     it("returns true when any input is false", () => {
       const nodes: Node<GateNodeProps>[] = [
-        createInputNode("in1", true),
-        createInputNode("in2", false),
+        createToggleNode("in1", true),
+        createToggleNode("in2", false),
         createGateNode("nand", "nandGate"),
       ];
       const edges: Edge[] = [
@@ -140,8 +140,8 @@ describe("calculateNodeStates", () => {
 
     it("returns false when all inputs are true", () => {
       const nodes: Node<GateNodeProps>[] = [
-        createInputNode("in1", true),
-        createInputNode("in2", true),
+        createToggleNode("in1", true),
+        createToggleNode("in2", true),
         createGateNode("nand", "nandGate"),
       ];
       const edges: Edge[] = [
@@ -158,8 +158,8 @@ describe("calculateNodeStates", () => {
   describe("NOR gate", () => {
     it("returns true when all inputs are false", () => {
       const nodes: Node<GateNodeProps>[] = [
-        createInputNode("in1", false),
-        createInputNode("in2", false),
+        createToggleNode("in1", false),
+        createToggleNode("in2", false),
         createGateNode("nor", "norGate"),
       ];
       const edges: Edge[] = [
@@ -174,8 +174,8 @@ describe("calculateNodeStates", () => {
 
     it("returns false when any input is true", () => {
       const nodes: Node<GateNodeProps>[] = [
-        createInputNode("in1", true),
-        createInputNode("in2", false),
+        createToggleNode("in1", true),
+        createToggleNode("in2", false),
         createGateNode("nor", "norGate"),
       ];
       const edges: Edge[] = [
@@ -192,8 +192,8 @@ describe("calculateNodeStates", () => {
   describe("XOR gate", () => {
     it("returns false when all inputs are false", () => {
       const nodes: Node<GateNodeProps>[] = [
-        createInputNode("in1", false),
-        createInputNode("in2", false),
+        createToggleNode("in1", false),
+        createToggleNode("in2", false),
         createGateNode("xor", "xorGate"),
       ];
       const edges: Edge[] = [
@@ -208,8 +208,8 @@ describe("calculateNodeStates", () => {
 
     it("returns true when exactly one input is true", () => {
       const nodes: Node<GateNodeProps>[] = [
-        createInputNode("in1", true),
-        createInputNode("in2", false),
+        createToggleNode("in1", true),
+        createToggleNode("in2", false),
         createGateNode("xor", "xorGate"),
       ];
       const edges: Edge[] = [
@@ -224,8 +224,8 @@ describe("calculateNodeStates", () => {
 
     it("returns false when both inputs are true", () => {
       const nodes: Node<GateNodeProps>[] = [
-        createInputNode("in1", true),
-        createInputNode("in2", true),
+        createToggleNode("in1", true),
+        createToggleNode("in2", true),
         createGateNode("xor", "xorGate"),
       ];
       const edges: Edge[] = [
@@ -242,8 +242,8 @@ describe("calculateNodeStates", () => {
   describe("XNOR gate", () => {
     it("returns true when all inputs have same parity", () => {
       const nodes: Node<GateNodeProps>[] = [
-        createInputNode("in1", true),
-        createInputNode("in2", true),
+        createToggleNode("in1", true),
+        createToggleNode("in2", true),
         createGateNode("xnor", "xnorGate"),
       ];
       const edges: Edge[] = [
@@ -258,8 +258,8 @@ describe("calculateNodeStates", () => {
 
     it("returns false when inputs have different parity", () => {
       const nodes: Node<GateNodeProps>[] = [
-        createInputNode("in1", true),
-        createInputNode("in2", false),
+        createToggleNode("in1", true),
+        createToggleNode("in2", false),
         createGateNode("xnor", "xnorGate"),
       ];
       const edges: Edge[] = [
@@ -276,9 +276,9 @@ describe("calculateNodeStates", () => {
   describe("MUX gate", () => {
     it("returns A when selector is false", () => {
       const nodes: Node<GateNodeProps>[] = [
-        createInputNode("inA", true),
-        createInputNode("inB", false),
-        createInputNode("sel", false),
+        createToggleNode("inA", true),
+        createToggleNode("inB", false),
+        createToggleNode("sel", false),
         createGateNode("mux", "muxGate"),
       ];
       const edges: Edge[] = [
@@ -294,9 +294,9 @@ describe("calculateNodeStates", () => {
 
     it("returns B when selector is true", () => {
       const nodes: Node<GateNodeProps>[] = [
-        createInputNode("inA", true),
-        createInputNode("inB", false),
-        createInputNode("sel", true),
+        createToggleNode("inA", true),
+        createToggleNode("inB", false),
+        createToggleNode("sel", true),
         createGateNode("mux", "muxGate"),
       ];
       const edges: Edge[] = [
@@ -314,8 +314,8 @@ describe("calculateNodeStates", () => {
   describe("DMUX gate", () => {
     it("outputs to Y0 when selector is false", () => {
       const nodes: Node<GateNodeProps>[] = [
-        createInputNode("data", true),
-        createInputNode("sel", false),
+        createToggleNode("data", true),
+        createToggleNode("sel", false),
         createGateNode("dmux", "dmuxGate"),
       ];
       const edges: Edge[] = [
@@ -331,8 +331,8 @@ describe("calculateNodeStates", () => {
 
     it("outputs to Y1 when selector is true", () => {
       const nodes: Node<GateNodeProps>[] = [
-        createInputNode("data", true),
-        createInputNode("sel", true),
+        createToggleNode("data", true),
+        createToggleNode("sel", true),
         createGateNode("dmux", "dmuxGate"),
       ];
       const edges: Edge[] = [
@@ -349,7 +349,7 @@ describe("calculateNodeStates", () => {
 
   describe("Buffer gate", () => {
     it("returns input value unchanged", () => {
-      const nodes: Node<GateNodeProps>[] = [createInputNode("in1", true), createGateNode("buff", "buffGate")];
+      const nodes: Node<GateNodeProps>[] = [createToggleNode("in1", true), createGateNode("buff", "buffGate")];
       const edges: Edge[] = [createEdge("in1", "buff", undefined, "input-0")];
 
       const result = calculateNodeStates(nodes, edges);
@@ -360,7 +360,7 @@ describe("calculateNodeStates", () => {
 
   describe("Output node", () => {
     it("propagates input value to output", () => {
-      const nodes: Node<GateNodeProps>[] = [createInputNode("in1", true), createOutputNode("out")];
+      const nodes: Node<GateNodeProps>[] = [createToggleNode("in1", true), createOutputNode("out")];
       const edges: Edge[] = [createEdge("in1", "out", undefined, "input-0")];
 
       const result = calculateNodeStates(nodes, edges);
@@ -372,8 +372,8 @@ describe("calculateNodeStates", () => {
   describe("chained gates", () => {
     it("propagates signal through multiple gates", () => {
       const nodes: Node<GateNodeProps>[] = [
-        createInputNode("in1", true),
-        createInputNode("in2", true),
+        createToggleNode("in1", true),
+        createToggleNode("in2", true),
         createGateNode("and", "andGate"),
         createOutputNode("out"),
       ];
@@ -391,7 +391,7 @@ describe("calculateNodeStates", () => {
 
   describe("unconnected inputs", () => {
     it("uses only connected inputs (other indices are undefined and treated as false by every())", () => {
-      const nodes: Node<GateNodeProps>[] = [createInputNode("in1", true), createGateNode("and", "andGate")];
+      const nodes: Node<GateNodeProps>[] = [createToggleNode("in1", true), createGateNode("and", "andGate")];
       const edges: Edge[] = [createEdge("in1", "and", undefined, "input-0")];
 
       const result = calculateNodeStates(nodes, edges);

@@ -90,7 +90,7 @@ export function PerformanceTab() {
             <div className="space-y-1">
               <div className="flex justify-between">
                 <span>Input Nodes:</span>
-                <span>{nodes.filter((n) => n.type === "inputNode").length}</span>
+                <span>{nodes.filter((n) => n.type === "toggleNode").length}</span>
               </div>
               <div className="flex justify-between">
                 <span>Output Nodes:</span>
@@ -98,7 +98,7 @@ export function PerformanceTab() {
               </div>
               <div className="flex justify-between">
                 <span>Logic Gates:</span>
-                <span>{nodes.filter((n) => !["inputNode", "outputNode"].includes(n.type || "")).length}</span>
+                <span>{nodes.filter((n) => !["toggleNode", "outputNode"].includes(n.type || "")).length}</span>
               </div>
             </div>
           </div>

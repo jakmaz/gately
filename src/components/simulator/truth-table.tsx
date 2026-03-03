@@ -17,7 +17,7 @@ export function TruthTable({ nodes, edges }: TruthTableProps) {
   const [tableData, setTableData] = useState<Array<Record<string, boolean>>>([]);
   const [showTable, setShowTable] = useState(false);
 
-  const inputNodes = nodes.filter((node) => node.type === "inputNode");
+  const toggleNodes = nodes.filter((node) => node.type === "toggleNode");
   const outputNodes = nodes.filter((node) => node.type === "outputNode");
 
   useEffect(() => {
@@ -27,19 +27,19 @@ export function TruthTable({ nodes, edges }: TruthTableProps) {
   }, []);
 
   const generateTruthTable = () => {
-    if (inputNodes.length === 0 || outputNodes.length === 0) {
+    if (toggleNodes.length === 0 || outputNodes.length === 0) {
       return;
     }
 
     // Generate all possible input combinations
-    const combinations = generateInputCombinations(inputNodes.length);
+    const combinations = generateInputCombinations(toggleNodes.length);
     const results: Array<Record<string, boolean>> = [];
 
     // For each combination, calculate the output
     combinations.forEach((combination) => {
       // Set input node states
       const testNodes = [...nodes];
-      inputNodes.forEach((node, index) => {
+      toggleNodes.forEach((node, index) => {
         const nodeIndex = testNodes.findIndex((n) => n.id === node.id);
         if (nodeIndex !== -1) {
           testNodes[nodeIndex] = {
@@ -56,7 +56,7 @@ export function TruthTable({ nodes, edges }: TruthTableProps) {
       const row: Record<string, boolean> = {};
 
       // Add inputs to the row
-      inputNodes.forEach((node, index) => {
+      toggleNodes.forEach((node, index) => {
         row[`input_${node.id}`] = combination[index];
       });
 
@@ -103,10 +103,10 @@ export function TruthTable({ nodes, edges }: TruthTableProps) {
         <TabsContent value="generate" className="py-2">
           <div className="flex flex-col items-center gap-2">
             <p className="text-sm text-muted-foreground">Generate a truth table for your circuit</p>
-            <Button onClick={generateTruthTable} disabled={inputNodes.length === 0 || outputNodes.length === 0}>
+            <Button onClick={generateTruthTable} disabled={toggleNodes.length === 0 || outputNodes.length === 0}>
               Generate Truth Table
             </Button>
-            {(inputNodes.length === 0 || outputNodes.length === 0) && (
+            {(toggleNodes.length === 0 || outputNodes.length === 0) && (
               <p className="text-xs text-destructive mt-2">You need at least one input and one output node</p>
             )}
           </div>
@@ -117,7 +117,7 @@ export function TruthTable({ nodes, edges }: TruthTableProps) {
             <Table>
               <TableHeader>
                 <TableRow>
-                  {inputNodes.map((node) => (
+                  {toggleNodes.map((node) => (
                     <TableHead key={`header_input_${node.id}`} className="text-center">
                       Input {node.id.split("-")[1]}
                     </TableHead>
@@ -132,10 +132,10 @@ export function TruthTable({ nodes, edges }: TruthTableProps) {
               <TableBody>
                 {tableData.map((row, rowIndex) => {
                   // Create stable key from input values
-                  const inputKey = inputNodes.map((node) => (row[`input_${node.id}`] ? "1" : "0")).join("");
+                  const inputKey = toggleNodes.map((node) => (row[`input_${node.id}`] ? "1" : "0")).join("");
                   return (
                     <TableRow key={`row_${inputKey}`}>
-                      {inputNodes.map((node) => (
+                      {toggleNodes.map((node) => (
                         <TableCell
                           key={`cell_input_${node.id}_${rowIndex}`}
                           className={`text-center ${row[`input_${node.id}`] ? "bg-green-100 dark:bg-green-900/30" : "bg-red-100 dark:bg-red-900/30"}`}

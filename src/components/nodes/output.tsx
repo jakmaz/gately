@@ -4,7 +4,7 @@ import { memo } from "react";
 import type { LogicGateProps } from "@/lib/types";
 import { InputHandle } from "./base/gate-handle";
 
-const W = 80;
+const W = 60;
 const H = 60;
 
 export const OutputNode = memo(({ data, isConnectable }: LogicGateProps) => {

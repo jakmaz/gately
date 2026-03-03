@@ -21,12 +21,12 @@ function Gate({ nodeType, label, onClick }: GateProps) {
 
   return (
     <div
-      className="p-1 border rounded-md flex flex-col items-center justify-center hover:bg-accent cursor-grab transition-colors h-24 overflow-hidden relative"
+      className="p-1  rounded-md flex flex-col items-center justify-center hover:bg-accent cursor-grab transition-colors h-24 overflow-hidden relative"
       draggable
       onDragStart={onDragStart}
       onClick={onClick}
     >
-      <div className="flex-1 w-full flex items-center justify-center pointer-events-none scale-75 origin-center">
+      <div className="flex-1 w-full flex items-center justify-center pointer-events-none scale-60 origin-center">
         {GateComponent && (
           <GateComponent
             id="preview"
@@ -53,7 +53,8 @@ const sections = [
   {
     title: "Input & Output",
     gates: [
-      { nodeType: "inputNode", symbol: "=1", label: "Input" },
+      { nodeType: "toggleNode", symbol: "=1", label: "Toggle Switch" },
+      { nodeType: "pushNode", symbol: "=1", label: "Push Button" },
       { nodeType: "outputNode", symbol: "=>", label: "Output" },
     ],
   },

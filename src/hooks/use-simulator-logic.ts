@@ -90,7 +90,7 @@ export function useSimulatorLogic(
 
   const onNodeClick = useCallback(
     (node: Node<GateNodeProps>) => {
-      if (node.type !== "inputNode") return;
+      if (node.type !== "toggleNode") return;
 
       const nodes = getNodes() as Node<GateNodeProps>[];
       const edges = getEdges();

@@ -35,13 +35,13 @@ export function ExamplesDialog({ open, onOpenChange, onImportExample }: Examples
       nodes: [
         {
           id: "input-1",
-          type: "inputNode",
+          type: "toggleNode",
           position: { x: 100, y: 100 },
           data: { label: "Input A", state: false },
         },
         {
           id: "input-2",
-          type: "inputNode",
+          type: "toggleNode",
           position: { x: 100, y: 200 },
           data: { label: "Input B", state: false },
         },
@@ -91,13 +91,13 @@ export function ExamplesDialog({ open, onOpenChange, onImportExample }: Examples
       nodes: [
         {
           id: "input-a",
-          type: "inputNode",
+          type: "toggleNode",
           position: { x: 100, y: 100 },
           data: { label: "A", state: false },
         },
         {
           id: "input-b",
-          type: "inputNode",
+          type: "toggleNode",
           position: { x: 100, y: 200 },
           data: { label: "B", state: false },
         },
@@ -180,13 +180,13 @@ export function ExamplesDialog({ open, onOpenChange, onImportExample }: Examples
       nodes: [
         {
           id: "input-s",
-          type: "inputNode",
+          type: "toggleNode",
           position: { x: 100, y: 100 },
           data: { label: "Set", state: false },
         },
         {
           id: "input-r",
-          type: "inputNode",
+          type: "toggleNode",
           position: { x: 100, y: 250 },
           data: { label: "Reset", state: false },
         },
@@ -269,19 +269,19 @@ export function ExamplesDialog({ open, onOpenChange, onImportExample }: Examples
       nodes: [
         {
           id: "input-a",
-          type: "inputNode",
+          type: "toggleNode",
           position: { x: 100, y: 100 },
           data: { label: "Input A", state: false },
         },
         {
           id: "input-b",
-          type: "inputNode",
+          type: "toggleNode",
           position: { x: 100, y: 200 },
           data: { label: "Input B", state: false },
         },
         {
           id: "input-sel",
-          type: "inputNode",
+          type: "toggleNode",
           position: { x: 100, y: 300 },
           data: { label: "Select", state: false },
         },

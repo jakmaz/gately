@@ -13,7 +13,7 @@ export interface PortableCircuit {
 
 export interface PortableNode {
   id: string;
-  type: string; // "andGate", "inputNode", etc.
+  type: string; // "andGate", "toggleNode", etc.
   position: { x: number; y: number };
   label: string;
 

@@ -6,10 +6,10 @@ import type { LogicGateProps } from "@/lib/types";
 import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from "../ui/context-menu";
 import { OutputHandle } from "./base/gate-handle";
 
-const W = 80;
+const W = 60;
 const H = 60;
 
-export const InputNode = memo(({ id, data, isConnectable }: LogicGateProps) => {
+export const ToggleNode = memo(({ id, data, isConnectable }: LogicGateProps) => {
   const activeColor = data.preview
     ? "var(--color-foreground)"
     : data.state
@@ -59,4 +59,4 @@ export const InputNode = memo(({ id, data, isConnectable }: LogicGateProps) => {
   );
 });
 
-InputNode.displayName = "InputNode";
+ToggleNode.displayName = "ToggleNode";

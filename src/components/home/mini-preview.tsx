@@ -21,11 +21,11 @@ import confetti from "canvas-confetti";
 import { calculateNodeStates } from "@/lib/simulator";
 import type { GateNodeProps } from "@/lib/types";
 import { ANDGateNode } from "../nodes/and";
-import { InputNode } from "../nodes/input";
 import { OutputNode } from "../nodes/output";
+import { ToggleNode } from "../nodes/toggle";
 
 const nodeTypes: NodeTypes = {
-  inputNode: InputNode,
+  toggleNode: ToggleNode,
   outputNode: OutputNode,
   andGate: ANDGateNode,
 };
@@ -33,13 +33,13 @@ const nodeTypes: NodeTypes = {
 const initialNodes = [
   {
     id: "input-1",
-    type: "inputNode",
+    type: "toggleNode",
     position: { x: 0, y: 0 },
     data: { label: "Input A", state: false },
   },
   {
     id: "input-2",
-    type: "inputNode",
+    type: "toggleNode",
     position: { x: 0, y: 120 },
     data: { label: "Input B", state: false },
   },
@@ -215,7 +215,7 @@ export function MiniPreview() {
 
   // Toggle input node state
   const handleNodeClick = (node: Node<GateNodeProps>) => {
-    if (node.type === "inputNode") {
+    if (node.type === "toggleNode") {
       const updatedNodes = nodes.map((n) => {
         if (n.id === node.id) {
           return {
