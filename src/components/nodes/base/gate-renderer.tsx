@@ -4,6 +4,7 @@
 import { Handle, Position } from "@xyflow/react";
 import { useState } from "react";
 import { H, HANDLE_SIZE, hs, W } from "./constants";
+import { InputHandle, OutputHandle } from "./gate-handle";
 import type { GateRendererProps } from "./types";
 
 export function GateRenderer({
@@ -163,21 +164,11 @@ export function GateRenderer({
       {!data.preview &&
         inputYs.map((y, index) =>
           y !== null ? (
-            <Handle
+            <InputHandle
               key={`input-${index}`}
-              type="target"
-              position={Position.Left}
-              id={`input-${index}`}
-              style={{
-                top: (y as number) - hs,
-                left: -hs,
-                width: HANDLE_SIZE,
-                height: HANDLE_SIZE,
-                background: activeColor,
-                border: `2px solid ${bgColor}`,
-                borderRadius: "50%",
-                transform: "none",
-              }}
+              index={index}
+              state={data.state}
+              y={y as number}
               isConnectable={isConnectable}
             />
           ) : null,
@@ -185,19 +176,15 @@ export function GateRenderer({
 
       {/* SELECT HANDLE */}
       {!data.preview && hasSelectPin && selectPinIndex !== -1 && (
-        <Handle
-          type="target"
+        <InputHandle
+          index={selectPinIndex}
+          state={data.state}
+          y={H - hs}
           position={Position.Bottom}
-          id={`input-${selectPinIndex}`}
           style={{
             bottom: -hs,
             left: W / 2 - hs,
-            width: HANDLE_SIZE,
-            height: HANDLE_SIZE,
-            background: activeColor,
-            border: `2px solid ${bgColor}`,
-            borderRadius: "50%",
-            transform: "none",
+            top: undefined,
           }}
           isConnectable={isConnectable}
         />
@@ -206,21 +193,12 @@ export function GateRenderer({
       {/* OUTPUT HANDLES */}
       {!data.preview &&
         outputYs.map((y, index) => (
-          <Handle
+          <OutputHandle
             key={`output-${index}`}
-            type="source"
-            position={Position.Right}
-            id={`output-${index}`}
-            style={{
-              top: y - hs,
-              left: geometry.outputX - hs,
-              width: HANDLE_SIZE,
-              height: HANDLE_SIZE,
-              background: activeColor,
-              border: `2px solid ${bgColor}`,
-              borderRadius: "50%",
-              transform: "none",
-            }}
+            index={index}
+            state={data.state}
+            y={y}
+            outputX={geometry.outputX}
             isConnectable={isConnectable}
           />
         ))}

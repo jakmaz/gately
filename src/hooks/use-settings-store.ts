@@ -13,7 +13,7 @@ export interface Settings {
 const defaultSettings: Settings = {
   connectionType: "curved",
   showGrid: true,
-  showMinimap: true,
+  showMinimap: false,
   animateConnections: true,
   snapToGrid: false,
   showNodeLabels: true,
