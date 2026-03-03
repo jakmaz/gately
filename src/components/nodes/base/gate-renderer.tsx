@@ -1,20 +1,13 @@
 /** biome-ignore-all lint/suspicious/noArrayIndexKey: handles are positional */
 "use client";
 
-import { Handle, Position } from "@xyflow/react";
+import { Position } from "@xyflow/react";
 import { useState } from "react";
-import { H, HANDLE_SIZE, hs, W } from "./constants";
+import { H, hs, W } from "./constants";
 import { InputHandle, OutputHandle } from "./gate-handle";
 import type { GateRendererProps } from "./types";
 
-export function GateRenderer({
-  data,
-  isConnectable,
-  geometry,
-  label,
-  inputHandles = 2,
-  outputHandles = 1,
-}: GateRendererProps) {
+export function GateRenderer({ data, isConnectable, geometry, label, inputHandles, outputHandles }: GateRendererProps) {
   const [hovered, setHovered] = useState(false);
   const activeColor = data.preview
     ? "var(--color-foreground)"
@@ -167,7 +160,7 @@ export function GateRenderer({
             <InputHandle
               key={`input-${index}`}
               index={index}
-              state={data.state}
+              state={data.inputs?.[index] ?? false}
               y={y as number}
               isConnectable={isConnectable}
             />
@@ -178,7 +171,7 @@ export function GateRenderer({
       {!data.preview && hasSelectPin && selectPinIndex !== -1 && (
         <InputHandle
           index={selectPinIndex}
-          state={data.state}
+          state={data.inputs?.[selectPinIndex] ?? false}
           y={H - hs}
           position={Position.Bottom}
           style={{

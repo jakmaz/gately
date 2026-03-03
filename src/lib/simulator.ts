@@ -45,12 +45,12 @@ export function calculateNodeStates(nodes: Node<GateNodeProps>[], edges: Edge[])
       if (node.type === "dmuxGate") {
         updatedNodes[nodeIndex] = {
           ...updatedNodes[nodeIndex],
-          data: { ...updatedNodes[nodeIndex].data, state: false, outputs: [false, false] },
+          data: { ...updatedNodes[nodeIndex].data, state: false, outputs: [false, false], inputs: [] },
         };
       } else {
         updatedNodes[nodeIndex] = {
           ...updatedNodes[nodeIndex],
-          data: { ...updatedNodes[nodeIndex].data, state: false },
+          data: { ...updatedNodes[nodeIndex].data, state: false, inputs: [] },
         };
       }
       return false;
@@ -59,65 +59,79 @@ export function calculateNodeStates(nodes: Node<GateNodeProps>[], edges: Edge[])
     const evalSource = (e: { sourceId: string; sourceHandle: string | null }) =>
       evaluateNode(e.sourceId, e.sourceHandle, new Set(visited));
 
-    const getByHandle = (handleId: string): boolean => {
-      const match = incoming.find((e) => e.targetHandle === handleId);
-      return match ? evalSource(match) : false;
+    // Unified input collection function
+    const collectInputs = (
+      incoming: { sourceId: string; sourceHandle: string | null; targetHandle: string | null }[],
+    ) => {
+      const inputs: boolean[] = [];
+
+      // Collect all inputs by handle index
+      incoming.forEach((edge) => {
+        let handleIndex = 0;
+
+        if (edge.targetHandle?.startsWith("input-")) {
+          // Standard format: "input-0", "input-1", etc.
+          handleIndex = parseInt(edge.targetHandle.replace("input-", ""), 10);
+        } else if (edge.targetHandle === "input") {
+          // Custom format: just "input" (for output nodes)
+          handleIndex = 0;
+        }
+
+        inputs[handleIndex] = evalSource(edge);
+      });
+
+      // Fill missing slots with false (unconnected inputs)
+      return inputs.map((input) => input ?? false);
     };
 
-    const orderedInputs = [...incoming]
-      .sort((a, b) => {
-        const ai = parseInt(a.targetHandle?.replace("input-", "") ?? "0", 10);
-        const bi = parseInt(b.targetHandle?.replace("input-", "") ?? "0", 10);
-        return ai - bi;
-      })
-      .map(evalSource);
+    const inputs = collectInputs(incoming);
 
     let result = false;
 
     switch (node.type) {
       case "andGate":
-        result = orderedInputs.every(Boolean);
+        result = inputs.every(Boolean);
         break;
 
       case "orGate":
-        result = orderedInputs.some(Boolean);
+        result = inputs.some(Boolean);
         break;
 
       case "notGate":
-        result = !orderedInputs[0];
+        result = !inputs[0];
         break;
 
       case "buffGate":
-        result = orderedInputs[0] ?? false;
+        result = inputs[0] ?? false;
         break;
 
       case "nandGate":
-        result = !orderedInputs.every(Boolean);
+        result = !inputs.every(Boolean);
         break;
 
       case "norGate":
-        result = !orderedInputs.some(Boolean);
+        result = !inputs.some(Boolean);
         break;
 
       case "xorGate":
-        result = orderedInputs.filter(Boolean).length % 2 === 1;
+        result = inputs.filter(Boolean).length % 2 === 1;
         break;
 
       case "xnorGate":
       case "xnor3Gate":
-        result = orderedInputs.filter(Boolean).length % 2 === 0;
+        result = inputs.filter(Boolean).length % 2 === 0;
         break;
       case "muxGate": {
-        const A = getByHandle("input-0");
-        const B = getByHandle("input-1");
-        const S = getByHandle("input-2");
+        const A = inputs[0];
+        const B = inputs[1];
+        const S = inputs[2];
         result = S ? B : A;
         break;
       }
 
       case "dmuxGate": {
-        const dataIn = getByHandle("input-0");
-        const sel = getByHandle("input-1");
+        const dataIn = inputs[0];
+        const sel = inputs[1];
         const Y0 = dataIn && !sel;
         const Y1 = dataIn && sel;
 
@@ -127,6 +141,7 @@ export function calculateNodeStates(nodes: Node<GateNodeProps>[], edges: Edge[])
             ...updatedNodes[nodeIndex].data,
             outputs: [Y0, Y1],
             state: Y0 || Y1,
+            inputs: inputs,
           },
         };
 
@@ -135,7 +150,7 @@ export function calculateNodeStates(nodes: Node<GateNodeProps>[], edges: Edge[])
       }
 
       case "outputNode":
-        result = orderedInputs[0] ?? false;
+        result = inputs[0] ?? false;
         break;
 
       default:
@@ -144,7 +159,11 @@ export function calculateNodeStates(nodes: Node<GateNodeProps>[], edges: Edge[])
 
     updatedNodes[nodeIndex] = {
       ...updatedNodes[nodeIndex],
-      data: { ...updatedNodes[nodeIndex].data, state: result },
+      data: {
+        ...updatedNodes[nodeIndex].data,
+        state: result,
+        inputs: inputs,
+      },
     };
 
     return result;

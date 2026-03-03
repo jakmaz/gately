@@ -8,8 +8,6 @@ import { OutputHandle } from "./base/gate-handle";
 
 const W = 80;
 const H = 60;
-const HANDLE_SIZE = 8;
-const hs = HANDLE_SIZE / 2;
 
 export const InputNode = memo(({ id, data, isConnectable }: LogicGateProps) => {
   const activeColor = data.preview
