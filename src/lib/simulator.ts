@@ -128,7 +128,6 @@ export function calculateNodeStates(nodes: Node<GateNodeProps>[], edges: Edge[])
         result = S ? B : A;
         break;
       }
-
       case "dmuxGate": {
         const dataIn = inputs[0];
         const sel = inputs[1];
@@ -148,7 +147,48 @@ export function calculateNodeStates(nodes: Node<GateNodeProps>[], edges: Edge[])
         if (sourceHandle === "output-1") return Y1;
         return Y0;
       }
+    case "halfAdder": {
+        const A = getByHandle("input-0");
+        const B = getByHandle("input-1");
+        const S  = A !== B;        
+        const C  = A && B;          
 
+        updatedNodes[nodeIndex] = {
+          ...updatedNodes[nodeIndex],
+          data: {
+            ...updatedNodes[nodeIndex].data,
+            outputs: [S, C],
+            state: S || C,
+          },
+        };
+
+        if (sourceHandle === "output-1") return C;
+        return S; 
+      }
+
+      // input-0 = A, input-1 = B, input-2 = Cin
+      // output-0 = Sum, output-1 = Cout
+      case "fullAdder": {
+        const A   = getByHandle("input-0");
+        const B   = getByHandle("input-1");
+        const Cin = getByHandle("input-2");
+
+        const sum3  = [A, B, Cin].filter(Boolean).length;
+        const S     = sum3 % 2 === 1;    
+        const Co    = sum3 >= 2;         
+
+        updatedNodes[nodeIndex] = {
+          ...updatedNodes[nodeIndex],
+          data: {
+            ...updatedNodes[nodeIndex].data,
+            outputs: [S, Co],
+            state: S || Co,
+          },
+        };
+
+        if (sourceHandle === "output-1") return Co;
+        return S;
+      }
       case "outputNode":
         result = inputs[0] ?? false;
         break;
