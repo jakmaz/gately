@@ -14,7 +14,9 @@ export function GateRenderer({
   symbol,
   inputHandles = 2,
   outputHandles = 1,
-}: GateRendererProps) {
+  width: CW = W,
+  height: CH = H,
+}: GateRendererProps & { width?: number; height?: number }) {
   const [hovered, setHovered] = useState(false);
   const activeColor = data.preview ? "var(--color-foreground)" : data.state ? "var(--color-success)" : "var(--color-primary)";
   const bgColor = "var(--card, #1a1a2e)";
@@ -22,20 +24,21 @@ export function GateRenderer({
 
   const inputYs: (number | null)[] = Array.from({ length: inputHandles }, (_, i) => {
     if (geometry.inputYOverrides && i < geometry.inputYOverrides.length) return geometry.inputYOverrides[i];
-    if (inputHandles === 1) return H / 2;
-    return H * 0.2 + ((H * 0.6) / (inputHandles - 1)) * i;
+    if (inputHandles === 1) return CH / 2;
+    return CH * 0.2 + ((CH * 0.6) / (inputHandles - 1)) * i;
   });
   const selectPinIndex = inputYs.findIndex((y) => y === null);
 
   const outputYs = Array.from({ length: outputHandles }, (_, i) => {
+    if (geometry.outputYOverrides && i < geometry.outputYOverrides.length) return geometry.outputYOverrides[i]!;
     if (outputHandles === 1) return geometry.outputY;
-    return H * 0.25 + ((H * 0.5) / (outputHandles - 1)) * i;
+    return CH * 0.25 + ((CH * 0.5) / (outputHandles - 1)) * i;
   });
 
   return (
     <div
       className="relative"
-      style={{ width: W, height: H }}
+      style={{ width: CW, height: CH }}
       onMouseEnter={() => !data.preview && setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
@@ -43,7 +46,7 @@ export function GateRenderer({
       <div
         style={{
           position: "absolute",
-          bottom: H + 8,
+          bottom: CH + 8,
           left: "50%",
           transform: "translateX(-50%)",
           pointerEvents: "none",
@@ -70,7 +73,6 @@ export function GateRenderer({
         >
           {label}
         </div>
-        {/* arrow */}
         <div
           style={{
             width: 0,
@@ -86,9 +88,9 @@ export function GateRenderer({
       {/* Gate SVG or default rendering */}
       {geometry.bodyPath ? (
         <svg
-          width={W}
-          height={H}
-          viewBox={`0 0 ${W} ${H}`}
+          width={CW}
+          height={CH}
+          viewBox={`0 0 ${CW} ${CH}`}
           className="absolute top-0 left-0"
           style={{ overflow: "visible" }}
         >
@@ -110,7 +112,7 @@ export function GateRenderer({
 
           {/* Select pin stub */}
           {hasSelectPin && (
-            <line x1={W / 2} y1={H + hs} x2={W / 2} y2={H - 10} stroke={activeColor} strokeWidth="1.5" opacity="0.5" />
+            <line x1={CW / 2} y1={CH + hs} x2={CW / 2} y2={CH - 10} stroke={activeColor} strokeWidth="1.5" opacity="0.5" />
           )}
 
           {/* Output stub wires */}
@@ -119,7 +121,7 @@ export function GateRenderer({
               key={`wire-out-${i}`}
               x1={geometry.outputX}
               y1={y}
-              x2={W}
+              x2={CW}
               y2={y}
               stroke={activeColor}
               strokeWidth="1.5"
@@ -142,6 +144,8 @@ export function GateRenderer({
             />
           )}
 
+          {/* Inline SVG label slots — rendered by child via geometry.svgContent */}
+          {geometry.svgContent}
         </svg>
       ) : (
         <div
@@ -188,7 +192,7 @@ export function GateRenderer({
           id={`input-${selectPinIndex}`}
           style={{
             bottom: -hs,
-            left: W / 2 - hs,
+            left: CW / 2 - hs,
             width: HANDLE_SIZE,
             height: HANDLE_SIZE,
             background: activeColor,

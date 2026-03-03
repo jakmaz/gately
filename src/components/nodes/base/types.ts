@@ -8,6 +8,8 @@ export interface GateGeometry {
   outputY: number;
   inputPinX: number;
   inputYOverrides?: (number | null)[];
+  outputYOverrides?: (number | null)[];
+  svgContent?: React.ReactNode;
 }
 
 export interface GateRendererProps {
