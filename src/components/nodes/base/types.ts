@@ -12,7 +12,7 @@ export interface GateGeometry {
 
 export interface GateRendererProps {
   id?: string;
-  data: any;
+  data: LogicGateProps["data"];
   isConnectable: boolean;
   geometry: GateGeometry;
   label: string;

@@ -66,7 +66,7 @@ export function FAQ() {
           <Accordion type="single" collapsible className="w-full">
             {faqs.map((faq, i) => (
               <motion.div
-                key={i}
+                key={faq.question}
                 initial={{ opacity: 0, y: 10 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}

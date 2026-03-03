@@ -1,3 +1,4 @@
+/** biome-ignore-all lint/suspicious/noArrayIndexKey: handles are positional */
 "use client";
 
 import { Handle, Position } from "@xyflow/react";
@@ -6,12 +7,10 @@ import { H, HANDLE_SIZE, hs, W } from "./constants";
 import type { GateRendererProps } from "./types";
 
 export function GateRenderer({
-  id,
   data,
   isConnectable,
   geometry,
   label,
-  symbol,
   inputHandles = 2,
   outputHandles = 1,
 }: GateRendererProps) {
@@ -29,7 +28,7 @@ export function GateRenderer({
     if (inputHandles === 1) return H / 2;
     return H * 0.2 + ((H * 0.6) / (inputHandles - 1)) * i;
   });
-  const selectPinIndex = inputYs.findIndex((y) => y === null);
+  const selectPinIndex = inputYs.indexOf(null);
 
   const outputYs = Array.from({ length: outputHandles }, (_, i) => {
     if (outputHandles === 1) return geometry.outputY;
