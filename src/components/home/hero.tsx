@@ -20,7 +20,7 @@ export function Hero() {
                 <span className="text-primary mr-1">✦</span> Visual Logic Editor
               </Badge>
             </div>
-            <h1 className="from-foreground via-foreground/90 to-foreground/70 mb-6 bg-gradient-to-r bg-clip-text text-4xl font-bold tracking-tight text-transparent md:text-5xl lg:text-6xl">
+            <h1 className="from-foreground via-foreground/90 to-foreground/70 mb-6 bg-linear-to-r bg-clip-text text-4xl font-bold tracking-tight text-transparent md:text-5xl lg:text-6xl">
               Design Logic
               <br />
               <span className="-ml-2 font-serif text-muted-foreground italic">Visually</span> with{" "}
@@ -33,7 +33,7 @@ export function Hero() {
               <Link href="/editor">
                 <Button
                   size="lg"
-                  className="h-12 w-full cursor-pointer rounded-full text-base shadow-md transition-transform duration-300 hover:translate-y-[-2px] hover:shadow-lg"
+                  className="h-12 w-full cursor-pointer rounded-full text-base shadow-md transition-transform duration-300 hover:-translate-y-0.5 hover:shadow-lg"
                 >
                   Open Editor
                   <ArrowRight className="ml-2 size-4" />
@@ -58,7 +58,7 @@ export function Hero() {
 
           {/* Right Column - Preview Card */}
           <div className="relative">
-            <Card className="p-0 border-border/40 from-background to-background/95 relative overflow-hidden rounded-2xl bg-gradient-to-b shadow-xl backdrop-blur">
+            <Card className="p-0 border-border/40 from-background to-background/95 relative overflow-hidden rounded-2xl bg-linear-to-b shadow-xl backdrop-blur">
               <CardContent className="p-0">
                 <div className="flex items-center justify-between border-b p-4">
                   <div className="flex items-center gap-3">

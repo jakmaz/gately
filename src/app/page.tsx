@@ -28,7 +28,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="flex min-h-[100dvh] justify-items-center items-center flex-col bg-background text-foreground">
+    <div className="flex min-h-dvh justify-items-center items-center flex-col bg-background text-foreground">
       <Header isScrolled={isScrolled} mobileMenuOpen={mobileMenuOpen} setMobileMenuOpen={setMobileMenuOpen} />
       <main className="flex-1 w-full">
         <Hero />

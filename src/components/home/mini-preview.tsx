@@ -46,13 +46,13 @@ const initialNodes = [
   {
     id: "and-1",
     type: "andGate",
-    position: { x: 190, y: 60 },
+    position: { x: 200, y: 60 },
     data: { label: "AND", state: false },
   },
   {
     id: "output-1",
     type: "outputNode",
-    position: { x: 400, y: 47 },
+    position: { x: 400, y: 60 },
     data: { label: "Output", state: false },
   },
 ];
