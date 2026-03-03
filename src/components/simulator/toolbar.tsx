@@ -21,12 +21,13 @@ function Gate({ nodeType, label, onClick }: GateProps) {
 
   return (
     <div
-      className="p-1  rounded-md flex flex-col items-center justify-center hover:bg-accent cursor-grab transition-colors h-24 overflow-hidden relative"
+      className="group relative p-2.5 rounded-xl flex flex-col items-center justify-center cursor-grab active:cursor-grabbing transition-all duration-300 h-26 overflow-hidden bg-muted/30 border border-border hover:border-primary/50 hover:bg-muted/50"
       draggable
       onDragStart={onDragStart}
       onClick={onClick}
     >
-      <div className="flex-1 w-full flex items-center justify-center pointer-events-none scale-60 origin-center">
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl" />
+      <div className="flex-1 w-full flex items-center justify-center pointer-events-none scale-45 origin-center">
         {GateComponent && (
           <GateComponent
             id="preview"
@@ -44,7 +45,9 @@ function Gate({ nodeType, label, onClick }: GateProps) {
           />
         )}
       </div>
-      <span className="text-sm mt-1 text-center">{label}</span>
+      <span className="text-xs font-medium mt-1 text-center text-muted-foreground group-hover:text-foreground transition-colors">
+        {label}
+      </span>
     </div>
   );
 }
@@ -72,13 +75,14 @@ const sections = [
     ],
   },
   {
-    title: "Multiplexers & Demultiplexers",
+    title: "Multiplexers",
     gates: [
       { nodeType: "muxGate", symbol: "MUX", label: "MUX" },
       { nodeType: "dmuxGate", symbol: "DMUX", label: "DMUX" },
     ],
   },
 ];
+
 export function Toolbar() {
   const { addNodes } = useReactFlow();
 
@@ -96,17 +100,20 @@ export function Toolbar() {
   );
 
   return (
-    <div className="w-64 bg-card p-4 rounded-xl flex flex-col h-full">
-      <div className="mb-4">
-        <h2 className="text-xl font-semibold mb-2">Gates</h2>
-        <p className="text-sm text-muted-foreground mb-2">Drag and drop gates to the canvas or click to add</p>
+    <div className="w-80 bg-card rounded-2xl flex flex-col h-full border border-border/60 shadow-xl overflow-hidden">
+      <div className="p-5 bg-linear-to-br from-primary/5 to-transparent">
+        <h2 className="text-xl font-bold mb-1">Components</h2>
+        <p className="text-sm text-muted-foreground">Drag and drop gates or click to add</p>
       </div>
 
-      <div className="flex flex-col gap-4">
+      <div className="flex-1 overflow-y-auto p-4">
         {sections.map(({ title, gates }) => (
-          <section key={title}>
-            <h3 className="text-md font-medium mb-4">{title}</h3>
-            <div className="grid grid-cols-2 gap-2">
+          <section key={title} className="mb-6 last:mb-0">
+            <h3 className="text-sm font-semibold mb-3 flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-primary" />
+              {title}
+            </h3>
+            <div className="grid grid-cols-3 gap-2">
               {gates.map(({ nodeType, symbol, label }) => (
                 <Gate
                   key={nodeType}
