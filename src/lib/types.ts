@@ -1,6 +1,7 @@
 import { ANDGateNode } from "@/components/nodes/and";
 import { BUFFGateNode } from "@/components/nodes/buff";
 import { DMUXGateNode } from "@/components/nodes/dmux";
+import { FullAdderNode } from "@/components/nodes/fullAdder";
 import { HalfAdderNode } from "@/components/nodes/halfAdder";
 import { InputNode } from "@/components/nodes/input";
 import { MUXGateNode } from "@/components/nodes/mux";
@@ -29,6 +30,7 @@ export const nodeTypes: NodeTypes = {
   dmuxGate: DMUXGateNode,
   buffGate: BUFFGateNode,
   halfAdder: HalfAdderNode,
+  fullAdder: FullAdderNode,
 };
 
 export interface GateNodeProps {
