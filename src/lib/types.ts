@@ -2,6 +2,7 @@ import type { Edge, Node, NodeTypes } from "@xyflow/react";
 import { ANDGateNode } from "@/components/nodes/and";
 import { BUFFGateNode } from "@/components/nodes/buff";
 import { DMUXGateNode } from "@/components/nodes/dmux";
+import { FullAdderNode } from "@/components/nodes/fullAdder";
 import { HalfAdderNode } from "@/components/nodes/halfAdder";
 import { MUXGateNode } from "@/components/nodes/mux";
 import { NANDGateNode } from "@/components/nodes/nand";
@@ -31,6 +32,7 @@ export const nodeTypes: NodeTypes = {
   dmuxGate: DMUXGateNode,
   buffGate: BUFFGateNode,
   halfAdder: HalfAdderNode,
+  fullAdder: FullAdderNode,
 };
 
 export interface GateNodeProps {
