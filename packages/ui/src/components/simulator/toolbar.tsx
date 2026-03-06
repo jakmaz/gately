@@ -1,6 +1,6 @@
 "use client";
 
-import { nodeTypes } from "@/lib/types";
+import { nodeTypes } from "../../node-types";
 
 type GateProps = {
   nodeType: string;

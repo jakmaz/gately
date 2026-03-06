@@ -1,8 +1,8 @@
 import { Menu } from "lucide-react";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { useFileSystem } from "@/hooks/use-file-system";
-import { useHasMounted } from "@/hooks/use-has-mounted";
+import { Button } from "../ui/button";
+import { useFileSystem } from "../../hooks/use-file-system";
+import { useHasMounted } from "../../hooks/use-has-mounted";
 import AndGate from "../icons/and-gate";
 import { Skeleton } from "../ui/skeleton";
 import { Controls } from "./controls";

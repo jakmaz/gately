@@ -3,9 +3,9 @@ import { useReactFlow } from "@xyflow/react";
 import { Download, Upload } from "lucide-react";
 import { nanoid } from "nanoid";
 import { useRef } from "react";
-import { useExport } from "@/hooks/use-export";
-import { useFileSystem } from "@/hooks/use-file-system";
-import type { GateNodeProps } from "@/lib/types";
+import { useExport } from "../../hooks/use-export";
+import { useFileSystem } from "../../hooks/use-file-system";
+import type { GateNodeProps } from "@gately/core/types";
 import { Button } from "../ui/button";
 
 export function ImportExportButtons() {

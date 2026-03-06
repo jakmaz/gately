@@ -1,7 +1,6 @@
 import { ArrowRight } from "lucide-react";
 import { motion } from "motion/react";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import { Button } from "../ui/button";
 
 export function CTA() {
   return (
@@ -46,16 +45,17 @@ export function CTA() {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="flex flex-col sm:flex-row gap-4 mt-4"
           >
-            <Link href="/editor">
-              <Button
-                size="lg"
-                variant="secondary"
-                className="rounded-full h-12 px-8 text-base cursor-pointer shadow-md hover:shadow-lg transition-all duration-300 hover:translate-y-[-2px]"
-              >
+            <Button
+              size="lg"
+              variant="secondary"
+              className="rounded-full h-12 px-8 text-base cursor-pointer shadow-md hover:shadow-lg transition-all duration-300 hover:translate-y-[-2px]"
+              asChild
+            >
+              <a href="/editor">
                 Try It Now
                 <ArrowRight className="ml-2 size-4" />
-              </Button>
-            </Link>
+              </a>
+            </Button>
             <a href="https://github.com/jakmaz/gately" target="_blank" rel="noopener noreferrer">
               <Button
                 size="lg"

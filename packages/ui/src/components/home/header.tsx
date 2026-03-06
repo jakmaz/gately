@@ -1,21 +1,18 @@
 import { ChevronRight, Github, Menu, X } from "lucide-react";
 import { motion } from "motion/react";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-// import Logo from "@/assets/logo.svg";
-// import GitHubIcon from "@/assets/github.svg";
-import { useGithubStars } from "@/hooks/use-github-stars";
-import { cn } from "@/lib/utils";
-import { formatCompactNumber } from "@/utils/format";
-import { ThemeToggle } from "../simulator/theme-toggle";
+import { Button } from "../ui/button";
+import { useGithubStars } from "../../hooks/use-github-stars";
+import { cn, formatCompactNumber } from "@gately/core/utils";
+import type { ReactNode } from "react";
 
 interface HeaderProps {
   isScrolled: boolean;
   mobileMenuOpen: boolean;
   setMobileMenuOpen: (open: boolean) => void;
+  themeToggle?: ReactNode;
 }
 
-export function Header({ isScrolled, mobileMenuOpen, setMobileMenuOpen }: HeaderProps) {
+export function Header({ isScrolled, mobileMenuOpen, setMobileMenuOpen, themeToggle }: HeaderProps) {
   const { stargazersCount } = useGithubStars("jakmaz", "gately");
 
   const handleScrollToSection = (e: React.MouseEvent<HTMLAnchorElement>) => {
@@ -37,12 +34,12 @@ export function Header({ isScrolled, mobileMenuOpen, setMobileMenuOpen }: Header
       )}
     >
       <div className="container mx-auto flex h-16 px-4 md:px-6 items-center justify-between">
-        <Link href="/">
+        <a href="/">
           <div className="flex items-center gap-2 font-bold">
             {/* <Logo className="size-6" /> */}
             <span>gately</span>
           </div>
-        </Link>
+        </a>
         <nav className="hidden md:flex gap-4 lg:gap-8 items-center">
           {["Features", "How It Works", "Roadmap", "FAQ"].map((item, i) => (
             <motion.a
@@ -84,23 +81,23 @@ export function Header({ isScrolled, mobileMenuOpen, setMobileMenuOpen }: Header
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.3, delay: 0.4 }}
           >
-            <ThemeToggle />
+            {themeToggle}
           </motion.div>
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.3, delay: 0.5 }}
           >
-            <Link href="/editor" prefetch>
-              <Button className="rounded-full cursor-pointer transition-transform hover:scale-105 font-medium">
+            <Button className="rounded-full cursor-pointer transition-transform hover:scale-105 font-medium" asChild>
+              <a href="/editor">
                 Open Editor
                 <ChevronRight className="ml-1 size-4" />
-              </Button>
-            </Link>
+              </a>
+            </Button>
           </motion.div>
         </div>
         <div className="flex items-center gap-4 md:hidden">
-          <ThemeToggle />
+          {themeToggle}
           <Button variant="ghost" size="icon" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
             {mobileMenuOpen ? <X className="size-5" /> : <Menu className="size-5" />}
             <span className="sr-only">Toggle menu</span>
@@ -139,12 +136,12 @@ export function Header({ isScrolled, mobileMenuOpen, setMobileMenuOpen }: Header
               transition={{ duration: 0.3, delay: 0.3 }}
               className="pt-2 mt-2 border-t border-border/30"
             >
-              <Link href="/editor/theme" onClick={() => setMobileMenuOpen(false)}>
-                <Button className="w-full rounded-full">
+              <Button className="w-full rounded-full" asChild>
+                <a href="/editor" onClick={() => setMobileMenuOpen(false)}>
                   Try It Now
                   <ChevronRight className="ml-2 size-4" />
-                </Button>
-              </Link>
+                </a>
+              </Button>
             </motion.div>
           </div>
         </motion.div>

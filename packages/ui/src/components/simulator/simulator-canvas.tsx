@@ -12,11 +12,12 @@ import {
 } from "@xyflow/react";
 import { LoaderCircle } from "lucide-react";
 import { useEffect } from "react";
-import { useFileSystem } from "@/hooks/use-file-system";
-import { useHasMounted } from "@/hooks/use-has-mounted";
-import { useSettingsStore } from "@/hooks/use-settings-store";
-import { useSimulatorLogic } from "@/hooks/use-simulator-logic";
-import { type GateNodeProps, nodeTypes } from "@/lib/types";
+import { useFileSystem } from "../../hooks/use-file-system";
+import { useHasMounted } from "../../hooks/use-has-mounted";
+import { useSettingsStore } from "../../hooks/use-settings-store";
+import { useSimulatorLogic } from "../../hooks/use-simulator-logic";
+import type { GateNodeProps } from "@gately/core/types";
+import { nodeTypes } from "../../node-types";
 import { Toolbar } from "./toolbar";
 
 export function SimulatorCanvas() {

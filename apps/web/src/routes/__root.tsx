@@ -1,5 +1,6 @@
 import { createRootRoute, Outlet } from "@tanstack/react-router";
-import * as React from "react";
+import { Toaster } from "sonner";
+import { ThemeProvider } from "../providers/theme-provider";
 
 export const Route = createRootRoute({
 	component: RootComponent,
@@ -7,9 +8,13 @@ export const Route = createRootRoute({
 
 function RootComponent() {
 	return (
-		<React.Fragment>
-			<div>Hello "__root"!</div>
-			<Outlet />
-		</React.Fragment>
+		<ThemeProvider>
+			<div className="font-sans antialiased" style={{ 
+				fontFamily: "var(--font-geist-sans, 'Geist Sans', sans-serif)"
+			}}>
+				<Outlet />
+				<Toaster />
+			</div>
+		</ThemeProvider>
 	);
 }

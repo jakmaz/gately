@@ -3,12 +3,12 @@
 import { useReactFlow } from "@xyflow/react";
 import { Copy, Download } from "lucide-react";
 import { toast } from "sonner";
-import { Button } from "@/components/ui/button";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { useDebugData } from "@/hooks/use-debug-data";
-import { useExport } from "@/hooks/use-export";
-import { useFileSystem } from "@/hooks/use-file-system";
-import type { GateNodeProps } from "@/lib/types";
+import { Button } from "../ui/button";
+import { ScrollArea } from "../ui/scroll-area";
+import { useDebugData } from "../../hooks/use-debug-data";
+import { useExport } from "../../hooks/use-export";
+import { useFileSystem } from "../../hooks/use-file-system";
+import type { GateNodeProps } from "@gately/core/types";
 
 export function ExportTab() {
   const reactFlow = useReactFlow();

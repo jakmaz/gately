@@ -18,8 +18,8 @@ import { useCallback, useRef, useState } from "react";
 import "@xyflow/react/dist/style.css";
 
 import confetti from "canvas-confetti";
-import { calculateNodeStates } from "@/lib/simulator";
-import type { GateNodeProps } from "@/lib/types";
+import { calculateNodeStates } from "@gately/core/simulator";
+import type { GateNodeProps } from "@gately/core/types";
 import { ANDGateNode } from "../nodes/and";
 import { OutputNode } from "../nodes/output";
 import { ToggleNode } from "../nodes/toggle";

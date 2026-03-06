@@ -10,14 +10,20 @@
 		"preview": "vite preview"
 	},
 	"dependencies": {
+		"@fontsource/geist-mono": "^5.1.0",
+		"@fontsource/geist-sans": "^5.1.0",
+		"@gately/core": "workspace:*",
 		"@gately/ui": "workspace:*",
 		"@tanstack/react-router": "^1.166.2",
 		"@tanstack/react-router-devtools": "^1.166.2",
+		"lucide-react": "^0.577.0",
 		"react": "^19.2.0",
-		"react-dom": "^19.2.0"
+		"react-dom": "^19.2.0",
+		"sonner": "^2.0.7"
 	},
 	"devDependencies": {
 		"@eslint/js": "^9.39.1",
+		"@tailwindcss/postcss": "^4.2.1",
 		"@tanstack/router-plugin": "^1.166.2",
 		"@types/node": "^24.10.1",
 		"@types/react": "^19.2.7",

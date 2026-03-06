@@ -1,5 +1,5 @@
 import { motion } from "motion/react";
-import { Badge } from "@/components/ui/badge";
+import { Badge } from "../ui/badge";
 
 const steps = [
   {

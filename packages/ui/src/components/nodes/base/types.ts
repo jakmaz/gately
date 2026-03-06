@@ -1,4 +1,4 @@
-import type { LogicGateProps } from "@/lib/types";
+import type { LogicGateProps } from "@gately/core/types";
 
 export interface GateGeometry {
   bodyPath: string;

@@ -2,7 +2,7 @@ import { ChevronRight, Download, Edit, File, Folder, FolderOpen, MoreVertical, P
 import { AnimatePresence, LayoutGroup, motion } from "motion/react";
 import { useState } from "react";
 import { toast } from "sonner";
-import { Button } from "@/components/ui/button";
+import { Button } from "../ui/button";
 import {
   Dialog,
   DialogContent,
@@ -11,15 +11,15 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
+} from "../ui/dialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Input } from "@/components/ui/input";
-import { type FileNode, useFileSystem } from "@/hooks/use-file-system";
+} from "../ui/dropdown-menu";
+import { Input } from "../ui/input";
+import { type FileNode, useFileSystem } from "../../hooks/use-file-system";
 import { InfoDialog } from "./info-dialog";
 import { ThemeToggle } from "./theme-toggle";
 

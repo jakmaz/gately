@@ -1,8 +1,7 @@
 import { ArrowRight, Check } from "lucide-react";
-import Link from "next/link";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "../ui/badge";
+import { Button } from "../ui/button";
+import { Card, CardContent } from "../ui/card";
 import { MiniPreview } from "./mini-preview";
 
 export function Hero() {
@@ -30,15 +29,16 @@ export function Hero() {
               Build logic circuits with a drag-and-drop interface. Real-time feedback.
             </p>
             <div className="flex flex-col gap-4 sm:flex-row">
-              <Link href="/editor">
-                <Button
-                  size="lg"
-                  className="h-12 w-full cursor-pointer rounded-full text-base shadow-md transition-transform duration-300 hover:-translate-y-0.5 hover:shadow-lg"
-                >
+              <Button
+                size="lg"
+                className="h-12 w-full cursor-pointer rounded-full text-base shadow-md transition-transform duration-300 hover:-translate-y-0.5 hover:shadow-lg"
+                asChild
+              >
+                <a href="/editor">
                   Open Editor
                   <ArrowRight className="ml-2 size-4" />
-                </Button>
-              </Link>
+                </a>
+              </Button>
             </div>
             <div className="mt-8 flex flex-wrap sm:justify-start justify-center items-center gap-6">
               <div className="hidden sm:flex text-muted-foreground items-center gap-2 text-sm">

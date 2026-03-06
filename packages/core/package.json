@@ -9,6 +9,11 @@
 		"./utils": "./src/utils.ts",
 		"./index": "./src/index.ts"
 	},
+	"dependencies": {
+		"@xyflow/react": "^12.10.1",
+		"clsx": "^2.1.1",
+		"tailwind-merge": "^3.5.0"
+	},
 	"devDependencies": {
 		"@types/node": "^20.19.35",
 		"typescript": "^5.9.3"
