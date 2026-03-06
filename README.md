@@ -1,4 +1,4 @@
-![opengraph-image](./src/app/opengraph-image.png)
+![opengraph-image](./docs/assets/banner.png)
 
 **[gately](https://gately.dev)** is a visual logic editor for building, simulating, and sharing digital circuits with
 ease.  
