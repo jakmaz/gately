@@ -1,6 +1,6 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "tauri-app",
+  "productName": "Gately",
   "version": "0.1.0",
   "identifier": "dev.gately.desktop",
   "build": {
@@ -12,9 +12,9 @@
   "app": {
     "windows": [
       {
-        "title": "tauri-app",
-        "width": 800,
-        "height": 600
+        "title": "Gately - Logic Gate Simulator",
+        "width": 1280,
+        "height": 800
       }
     ],
     "security": {
