@@ -1,0 +1,16 @@
+{
+	"name": "@gately/core",
+	"private": true,
+	"license": "MIT",
+	"type": "module",
+	"exports": {
+		"./simulator": "./src/simulator.ts",
+		"./types": "./src/types.ts",
+		"./utils": "./src/utils.ts",
+		"./index": "./src/index.ts"
+	},
+	"devDependencies": {
+		"@types/node": "^20.19.35",
+		"typescript": "^5.9.3"
+	}
+}
