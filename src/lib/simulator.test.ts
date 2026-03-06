@@ -399,4 +399,141 @@ describe("calculateNodeStates", () => {
       expect(andNode?.data.state).toBe(true);
     });
   });
+  describe("Half Adder gate", () => {
+    it("outputs correct sum and carry when both inputs are false", () => {
+      const nodes: Node<GateNodeProps>[] = [
+        createToggleNode("A", false),
+        createToggleNode("B", false),
+        createGateNode("half", "halfAdder"),
+      ];
+      const edges: Edge[] = [
+        createEdge("A", "half", undefined, "input-0"),
+        createEdge("B", "half", undefined, "input-1"),
+      ];
+
+      const result = calculateNodeStates(nodes, edges);
+      const halfNode = result.find((n) => n.id === "half");
+
+      expect(halfNode?.data.outputs).toEqual([false, false]);
+      expect(halfNode?.data.state).toBe(false);
+    });
+
+    it("outputs sum true and carry false when A is true and B is false", () => {
+      const nodes: Node<GateNodeProps>[] = [
+        createToggleNode("A", true),
+        createToggleNode("B", false),
+        createGateNode("half", "halfAdder"),
+      ];
+      const edges: Edge[] = [
+        createEdge("A", "half", undefined, "input-0"),
+        createEdge("B", "half", undefined, "input-1"),
+      ];
+
+      const result = calculateNodeStates(nodes, edges);
+      const halfNode = result.find((n) => n.id === "half");
+
+      expect(halfNode?.data.outputs).toEqual([true, false]);
+      expect(halfNode?.data.state).toBe(true);
+    });
+
+    it("outputs sum false and carry true when both inputs are true", () => {
+      const nodes: Node<GateNodeProps>[] = [
+        createToggleNode("A", true),
+        createToggleNode("B", true),
+        createGateNode("half", "halfAdder"),
+      ];
+      const edges: Edge[] = [
+        createEdge("A", "half", undefined, "input-0"),
+        createEdge("B", "half", undefined, "input-1"),
+      ];
+
+      const result = calculateNodeStates(nodes, edges);
+      const halfNode = result.find((n) => n.id === "half");
+
+      expect(halfNode?.data.outputs).toEqual([false, true]);
+      expect(halfNode?.data.state).toBe(true);
+    });
+  });
+
+  describe("Full Adder gate", () => {
+    it("outputs correct sum and carry when all inputs are false", () => {
+      const nodes: Node<GateNodeProps>[] = [
+        createToggleNode("A", false),
+        createToggleNode("B", false),
+        createToggleNode("Cin", false),
+        createGateNode("full", "fullAdder"),
+      ];
+      const edges: Edge[] = [
+        createEdge("A", "full", undefined, "input-0"),
+        createEdge("B", "full", undefined, "input-1"),
+        createEdge("Cin", "full", undefined, "input-2"),
+      ];
+
+      const result = calculateNodeStates(nodes, edges);
+      const fullNode = result.find((n) => n.id === "full");
+
+      expect(fullNode?.data.outputs).toEqual([false, false]);
+      expect(fullNode?.data.state).toBe(false);
+    });
+
+    it("outputs sum true and carry false for one input true", () => {
+      const nodes: Node<GateNodeProps>[] = [
+        createToggleNode("A", true),
+        createToggleNode("B", false),
+        createToggleNode("Cin", false),
+        createGateNode("full", "fullAdder"),
+      ];
+      const edges: Edge[] = [
+        createEdge("A", "full", undefined, "input-0"),
+        createEdge("B", "full", undefined, "input-1"),
+        createEdge("Cin", "full", undefined, "input-2"),
+      ];
+
+      const result = calculateNodeStates(nodes, edges);
+      const fullNode = result.find((n) => n.id === "full");
+
+      expect(fullNode?.data.outputs).toEqual([true, false]);
+      expect(fullNode?.data.state).toBe(true);
+    });
+
+    it("outputs sum false and carry true for two inputs true", () => {
+      const nodes: Node<GateNodeProps>[] = [
+        createToggleNode("A", true),
+        createToggleNode("B", true),
+        createToggleNode("Cin", false),
+        createGateNode("full", "fullAdder"),
+      ];
+      const edges: Edge[] = [
+        createEdge("A", "full", undefined, "input-0"),
+        createEdge("B", "full", undefined, "input-1"),
+        createEdge("Cin", "full", undefined, "input-2"),
+      ];
+
+      const result = calculateNodeStates(nodes, edges);
+      const fullNode = result.find((n) => n.id === "full");
+
+      expect(fullNode?.data.outputs).toEqual([false, true]);
+      expect(fullNode?.data.state).toBe(true);
+    });
+
+    it("outputs sum true and carry true when all inputs are true", () => {
+      const nodes: Node<GateNodeProps>[] = [
+        createToggleNode("A", true),
+        createToggleNode("B", true),
+        createToggleNode("Cin", true),
+        createGateNode("full", "fullAdder"),
+      ];
+      const edges: Edge[] = [
+        createEdge("A", "full", undefined, "input-0"),
+        createEdge("B", "full", undefined, "input-1"),
+        createEdge("Cin", "full", undefined, "input-2"),
+      ];
+
+      const result = calculateNodeStates(nodes, edges);
+      const fullNode = result.find((n) => n.id === "full");
+
+      expect(fullNode?.data.outputs).toEqual([true, true]);
+      expect(fullNode?.data.state).toBe(true);
+    });
+  });
 });
