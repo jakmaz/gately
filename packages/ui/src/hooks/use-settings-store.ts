@@ -1,0 +1,52 @@
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
+
+export interface Settings {
+  connectionType: "straight" | "curved" | "step";
+  showGrid: boolean;
+  showMinimap: boolean;
+  animateConnections: boolean;
+  snapToGrid: boolean;
+  showNodeLabels: boolean;
+  debugMode: boolean;
+}
+
+const defaultSettings: Settings = {
+  connectionType: "curved",
+  showGrid: true,
+  showMinimap: false,
+  animateConnections: true,
+  snapToGrid: false,
+  showNodeLabels: true,
+  debugMode: false,
+};
+
+interface SettingsState {
+  settings: Settings;
+  ready: boolean;
+  updateSetting: <K extends keyof Settings>(key: K, value: Settings[K]) => void;
+}
+
+export const useSettingsStore = create<SettingsState>()(
+  persist(
+    (set) => ({
+      settings: defaultSettings,
+      ready: false,
+      updateSetting: (key, value) =>
+        set((state) => ({
+          settings: {
+            ...state.settings,
+            [key]: value,
+          },
+        })),
+    }),
+    {
+      name: "settings-store",
+      onRehydrateStorage: () => (state) => {
+        if (state) {
+          state.ready = true;
+        }
+      },
+    },
+  ),
+);

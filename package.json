@@ -1,0 +1,24 @@
+{
+	"name": "gately",
+	"private": true,
+	"workspaces": [
+		"apps/*",
+		"packages/*",
+		"tooling/*"
+	],
+	"scripts": {
+		"dev:web": "turbo run dev --filter=@gately/web",
+		"dev:desktop": "turbo run dev --filter=@gately/desktop",
+		"build:web": "turbo run build --filter=@gately/web",
+		"build:desktop": "turbo run build --filter=@gately/desktop",
+		"build": "turbo run build",
+		"lint": "turbo run lint",
+		"format": "biome format --write .",
+		"test": "turbo run test"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "^2.4.4",
+		"turbo": "^2.3.0",
+		"typescript": "^5.9.3"
+	}
+}
