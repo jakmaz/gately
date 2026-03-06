@@ -10,9 +10,12 @@
   "scripts": {
     "dev:web": "turbo run dev --filter=@gately/web",
     "dev:desktop": "turbo run dev --filter=@gately/desktop",
-    "build:web": "turbo run build --filter=@gately/web",
+    "build:web": "turbo run build --filter=web",
+    "build:landing": "turbo run build --filter=landing",
     "build:desktop": "turbo run build --filter=@gately/desktop",
     "build": "turbo run build",
+    "deploy:web": "turbo run build --filter=web",
+    "deploy:landing": "turbo run build --filter=landing",
     "lint": "biome check .",
     "lint:fix": "biome check --write .",
     "format": "biome format --write .",
