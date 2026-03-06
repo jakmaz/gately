@@ -1,4 +1,4 @@
-import { Boxes, Braces, Circle, GitBranch, Orbit, Triangle, Zap } from "lucide-react";
+import { Boxes, Braces, Circle, GitBranch, Orbit, Zap } from "lucide-react";
 import { motion } from "motion/react";
 import { Card, CardContent } from "../ui/card";
 import { Badge } from "../ui/badge";
@@ -8,7 +8,6 @@ const categories = [
     title: "Logic Gates",
     description: "Complete gate library",
     icon: <Circle className="size-5" />,
-    color: "from-blue-500/10 to-cyan-500/10",
     items: [
       { name: "AND Gate", icon: "∧", description: "Basic conjunction logic" },
       { name: "OR Gate", icon: "∨", description: "Basic disjunction logic" },
@@ -22,7 +21,6 @@ const categories = [
     title: "Circuit Components",
     description: "Advanced building blocks",
     icon: <Boxes className="size-5" />,
-    color: "from-purple-500/10 to-pink-500/10",
     items: [
       { name: "Toggle Switch", icon: "◉", description: "Interactive input control" },
       { name: "LED Output", icon: "●", description: "Visual output indicator" },
@@ -34,7 +32,6 @@ const categories = [
     title: "Editor Features",
     description: "Powerful editing tools",
     icon: <Braces className="size-5" />,
-    color: "from-green-500/10 to-emerald-500/10",
     items: [
       { name: "Drag & Drop", icon: "⇄", description: "Intuitive component placement" },
       { name: "Smart Wiring", icon: "─", description: "Auto-routing connections" },
@@ -48,7 +45,6 @@ const categories = [
     title: "Simulation",
     description: "Real-time circuit testing",
     icon: <Zap className="size-5" />,
-    color: "from-yellow-500/10 to-orange-500/10",
     items: [
       { name: "Live Simulation", icon: "▶", description: "Instant feedback" },
       { name: "Truth Tables", icon: "⊞", description: "Auto-generated tables" },
@@ -60,7 +56,6 @@ const categories = [
     title: "Organization",
     description: "Manage your projects",
     icon: <GitBranch className="size-5" />,
-    color: "from-indigo-500/10 to-violet-500/10",
     items: [
       { name: "Multiple Files", icon: "📁", description: "Organize circuits" },
       { name: "Local Storage", icon: "💾", description: "Auto-save to browser" },
@@ -72,7 +67,6 @@ const categories = [
     title: "Customization",
     description: "Make it your own",
     icon: <Orbit className="size-5" />,
-    color: "from-red-500/10 to-rose-500/10",
     items: [
       { name: "Dark/Light Mode", icon: "☾", description: "Theme switching" },
       { name: "Custom Colors", icon: "🎨", description: "Personalize gates" },
@@ -85,7 +79,9 @@ const categories = [
 export function FeatureShowcase() {
   return (
     <section className="w-full py-14 md:py-24 relative isolate">
-      <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_center,rgba(from_var(--primary)_r_g_b_/_0.03),transparent_70%)]"></div>
+      {/* Graph paper background */}
+      <div className="absolute inset-0 -z-10 bg-[linear-gradient(to_right,rgba(from_var(--muted-foreground)_r_g_b_/_0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(from_var(--muted-foreground)_r_g_b_/_0.03)_1px,transparent_1px)] bg-[size:3rem_3rem]"></div>
+      <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_center,rgba(from_var(--primary)_r_g_b_/_0.05),transparent_70%)]"></div>
 
       <div className="container mx-auto px-4 md:px-6">
         <motion.div
@@ -96,8 +92,7 @@ export function FeatureShowcase() {
           className="text-center mb-16 max-w-3xl mx-auto"
         >
           <Badge className="rounded-full px-4 py-1.5 text-sm font-medium shadow-sm mb-4" variant="secondary">
-            <Triangle className="size-3 mr-2" />
-            Feature Categories
+            ✦ Feature Categories
           </Badge>
           <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4 bg-gradient-to-r from-foreground to-foreground/80 bg-clip-text text-transparent">
             Comprehensive Toolset
@@ -107,50 +102,67 @@ export function FeatureShowcase() {
           </p>
         </motion.div>
 
-        <div className="grid gap-8 lg:grid-cols-2">
-          {categories.map((category, idx) => (
-            <motion.div
-              key={category.title}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: idx * 0.1 }}
-            >
-              <Card
-                className={`h-full border-border/40 bg-gradient-to-br ${category.color} backdrop-blur hover:shadow-xl hover:border-primary/30 transition-all group`}
-              >
-                <CardContent className="space-y-6">
-                  <div className="flex items-center gap-3">
-                    <div className="size-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary group-hover:scale-110 group-hover:bg-primary/20 transition-all duration-300">
-                      {category.icon}
-                    </div>
-                    <div>
-                      <h3 className="text-xl font-bold">{category.title}</h3>
-                      <p className="text-sm text-muted-foreground">{category.description}</p>
-                    </div>
-                  </div>
+        {/* Asymmetric masonry-style grid layout */}
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {categories.map((category, idx) => {
+            // Vary card sizes for visual interest
+            const isLarge = idx === 0 || idx === 2;
+            const spanClass = isLarge ? "lg:col-span-2" : "lg:col-span-1";
 
-                  <div className="grid gap-3">
-                    {category.items.map((item) => (
-                      <motion.div
-                        key={item.name}
-                        whileHover={{ x: 4 }}
-                        className="flex items-start gap-3 p-3 rounded-lg bg-background/50 hover:bg-background/80 transition-colors border border-border/20 hover:border-primary/20"
-                      >
-                        <div className="text-2xl w-8 h-8 flex items-center justify-center shrink-0 text-primary">
-                          {item.icon}
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <div className="font-medium text-sm">{item.name}</div>
-                          <div className="text-xs text-muted-foreground">{item.description}</div>
-                        </div>
-                      </motion.div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            </motion.div>
-          ))}
+            return (
+              <motion.div
+                key={category.title}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: idx * 0.08 }}
+                className={spanClass}
+              >
+                <Card className="h-full border-border/40 bg-card/50 backdrop-blur hover:shadow-lg hover:border-primary/30 transition-all duration-300 group relative overflow-hidden">
+                  {/* Subtle corner accent */}
+                  <div className="absolute top-0 right-0 w-24 h-24 bg-primary/5 blur-3xl group-hover:bg-primary/10 transition-colors duration-500"></div>
+
+                  <CardContent className="relative">
+                    {/* Header */}
+                    <div className="flex items-center gap-3 mb-5 pb-4 border-b border-border/40">
+                      <div className="size-11 rounded-lg bg-primary/10 flex items-center justify-center text-primary group-hover:scale-105 group-hover:bg-primary/15 transition-all duration-300 shadow-sm">
+                        {category.icon}
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="text-lg font-bold tracking-tight">{category.title}</h3>
+                        <p className="text-xs text-muted-foreground">{category.description}</p>
+                      </div>
+                    </div>
+
+                    {/* Items in compact grid */}
+                    <div className={`grid gap-2 ${isLarge ? "sm:grid-cols-2" : "grid-cols-1"}`}>
+                      {category.items.map((item, itemIdx) => (
+                        <motion.div
+                          key={item.name}
+                          initial={{ opacity: 0 }}
+                          whileInView={{ opacity: 1 }}
+                          viewport={{ once: true }}
+                          transition={{ delay: idx * 0.08 + itemIdx * 0.03 }}
+                          whileHover={{ x: 2 }}
+                          className="flex items-center gap-2.5 p-2.5 rounded-md bg-background/40 hover:bg-background/70 transition-colors border border-border/20 hover:border-primary/20 group/item"
+                        >
+                          <div className="text-xl w-7 h-7 flex items-center justify-center shrink-0 text-primary/80 group-hover/item:text-primary group-hover/item:scale-110 transition-all">
+                            {item.icon}
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <div className="font-medium text-xs leading-tight">{item.name}</div>
+                            <div className="text-[10px] text-muted-foreground leading-tight mt-0.5">
+                              {item.description}
+                            </div>
+                          </div>
+                        </motion.div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            );
+          })}
         </div>
       </div>
     </section>

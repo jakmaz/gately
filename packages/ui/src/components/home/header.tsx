@@ -6,6 +6,7 @@ import { cn, formatCompactNumber } from "@gately/core/utils";
 import type { ReactNode } from "react";
 
 const navLinks = [
+  { label: "Home", href: "/" },
   { label: "Features", href: "/features" },
   { label: "Docs", href: "/docs" },
   { label: "Download", href: "/download" },

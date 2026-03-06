@@ -59,21 +59,15 @@ const versions: Version[] = [
 
 const changeTypeConfig = {
   added: {
-    icon: <Plus className="size-4" />,
-    color: "text-green-500",
-    bg: "bg-green-500/10",
+    icon: <Plus className="size-3.5" />,
     label: "Added",
   },
   improved: {
-    icon: <Sparkles className="size-4" />,
-    color: "text-blue-500",
-    bg: "bg-blue-500/10",
+    icon: <Sparkles className="size-3.5" />,
     label: "Improved",
   },
   fixed: {
-    icon: <Wrench className="size-4" />,
-    color: "text-orange-500",
-    bg: "bg-orange-500/10",
+    icon: <Wrench className="size-3.5" />,
     label: "Fixed",
   },
 };
@@ -81,89 +75,94 @@ const changeTypeConfig = {
 export function VersionList() {
   return (
     <section className="w-full py-14 md:py-24 relative isolate">
+      {/* Graph paper background */}
+      <div className="absolute inset-0 -z-10 bg-[linear-gradient(to_right,rgba(from_var(--muted-foreground)_r_g_b_/_0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(from_var(--muted-foreground)_r_g_b_/_0.03)_1px,transparent_1px)] bg-[size:3rem_3rem]"></div>
+
       <div className="container mx-auto px-4 md:px-6">
-        <div className="max-w-4xl mx-auto space-y-8">
-          {versions.map((version, versionIdx) => (
-            <motion.div
-              key={version.version}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: versionIdx * 0.1 }}
-            >
-              <Card className="border-border/40 bg-gradient-to-b from-card to-card/50 backdrop-blur hover:shadow-lg transition-all overflow-hidden">
-                <CardContent className="space-y-6">
-                  {/* Version Header */}
-                  <div className="flex items-start justify-between gap-4 pb-4 border-b border-border/40">
-                    <div>
-                      <div className="flex items-center gap-3 mb-2">
-                        <h3 className="text-2xl font-bold">v{version.version}</h3>
-                        {version.status === "latest" && (
-                          <Badge variant="default" className="shadow-sm">
-                            <Check className="size-3 mr-1" />
-                            Latest
-                          </Badge>
-                        )}
-                        {version.status === "beta" && (
-                          <Badge variant="secondary" className="shadow-sm">
-                            Beta
-                          </Badge>
-                        )}
-                      </div>
-                      <p className="text-sm text-muted-foreground">
-                        Released on{" "}
+        <div className="max-w-5xl mx-auto relative">
+          {/* Vertical timeline line */}
+          <div className="absolute left-8 top-0 bottom-0 w-px bg-gradient-to-b from-primary/40 via-primary/20 to-transparent hidden md:block"></div>
+
+          <div className="space-y-6">
+            {versions.map((version, versionIdx) => (
+              <motion.div
+                key={version.version}
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: versionIdx * 0.1 }}
+                className="relative"
+              >
+                {/* Timeline dot */}
+                <div className="absolute left-8 top-6 size-3 rounded-full bg-primary border-4 border-background shadow-lg hidden md:block -translate-x-1/2 z-10"></div>
+
+                <Card className="md:ml-20 border-border/40 bg-card/80 backdrop-blur hover:shadow-md hover:border-primary/30 transition-all group">
+                  <CardContent className="p-5">
+                    {/* Compact header */}
+                    <div className="flex items-center gap-3 mb-4">
+                      <h3 className="text-xl font-bold">v{version.version}</h3>
+                      {version.status === "latest" && (
+                        <Badge variant="default" className="shadow-sm h-5 text-xs">
+                          <Check className="size-3 mr-1" />
+                          Latest
+                        </Badge>
+                      )}
+                      {version.status === "beta" && (
+                        <Badge variant="secondary" className="shadow-sm h-5 text-xs">
+                          Beta
+                        </Badge>
+                      )}
+                      <span className="text-xs text-muted-foreground ml-auto">
                         {new Date(version.date).toLocaleDateString("en-US", {
                           year: "numeric",
-                          month: "long",
+                          month: "short",
                           day: "numeric",
                         })}
-                      </p>
+                      </span>
                     </div>
-                  </div>
 
-                  {/* Changes List */}
-                  <div className="space-y-3">
-                    {version.changes.map((change) => {
-                      const config = changeTypeConfig[change.type];
-                      return (
-                        <motion.div
-                          key={change.description}
-                          initial={{ opacity: 0, x: -10 }}
-                          whileInView={{ opacity: 1, x: 0 }}
-                          viewport={{ once: true }}
-                          transition={{ duration: 0.3, delay: versionIdx * 0.1 }}
-                          className="flex items-start gap-3 p-3 rounded-lg hover:bg-muted/50 transition-colors group"
-                        >
-                          <div
-                            className={`${config.bg} ${config.color} size-8 rounded-lg flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform`}
-                          >
-                            {config.icon}
-                          </div>
-                          <div className="flex-1 pt-1">
-                            <div className="flex items-center gap-2 mb-1">
-                              <span className={`text-xs font-medium ${config.color}`}>{config.label}</span>
+                    {/* Compact changes - grouped by type */}
+                    <div className="space-y-3">
+                      {(["added", "improved", "fixed"] as const).map((type) => {
+                        const items = version.changes.filter((c) => c.type === type);
+                        if (items.length === 0) return null;
+
+                        const config = changeTypeConfig[type];
+                        return (
+                          <div key={type} className="space-y-1.5">
+                            <div className="flex items-center gap-2 text-xs font-medium text-muted-foreground">
+                              <div className="size-6 rounded bg-primary/10 flex items-center justify-center text-primary">
+                                {config.icon}
+                              </div>
+                              <span className="uppercase tracking-wider">{config.label}</span>
                             </div>
-                            <p className="text-sm text-muted-foreground group-hover:text-foreground transition-colors">
-                              {change.description}
-                            </p>
+                            <ul className="ml-8 space-y-1">
+                              {items.map((item) => (
+                                <motion.li
+                                  key={item.description}
+                                  initial={{ opacity: 0 }}
+                                  whileInView={{ opacity: 1 }}
+                                  viewport={{ once: true }}
+                                  transition={{ delay: versionIdx * 0.1 + items.indexOf(item) * 0.02 }}
+                                  className="text-sm text-muted-foreground hover:text-foreground transition-colors flex items-start gap-2 group/item"
+                                >
+                                  <span className="text-primary/40 group-hover/item:text-primary/70 transition-colors mt-1">
+                                    •
+                                  </span>
+                                  <span className="flex-1">{item.description}</span>
+                                </motion.li>
+                              ))}
+                            </ul>
                           </div>
-                        </motion.div>
-                      );
-                    })}
-                  </div>
-                </CardContent>
-              </Card>
-            </motion.div>
-          ))}
+                        );
+                      })}
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+          </div>
         </div>
-
-        {/* Timeline Decoration */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          className="absolute left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary/20 via-primary/10 to-transparent -z-10 hidden md:block"
-        ></motion.div>
       </div>
     </section>
   );
