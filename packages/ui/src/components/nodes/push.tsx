@@ -9,7 +9,7 @@ const W = 60;
 const H = 60;
 
 export const PushNode = memo(({ id, data, isConnectable }: LogicGateProps) => {
-  const { getNodes, getEdges, setNodes, setEdges } = useReactFlow();
+  const { getNodes, getEdges, setNodes } = useReactFlow();
 
   const updateState = useCallback(
     (newState: boolean) => {

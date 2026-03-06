@@ -1,8 +1,8 @@
 import type { Edge, Node } from "@xyflow/react";
 import { toast } from "sonner";
 import { create } from "zustand";
-import { type PortableCircuit, transformFromPortable, transformToPortable, validateCircuit } from "@/lib/export";
-import { downloadJSON } from "@/lib/export/download";
+import { type PortableCircuit, transformFromPortable, transformToPortable, validateCircuit } from "@gately/core/export";
+import { downloadJSON } from "@gately/core/export";
 
 interface ExportData {
   nodes: Node[];

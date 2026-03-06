@@ -7,7 +7,7 @@
 		"./simulator": "./src/simulator.ts",
 		"./types": "./src/types.ts",
 		"./utils": "./src/utils.ts",
-		"./index": "./src/index.ts"
+		"./export": "./src/export/index.ts"
 	},
 	"dependencies": {
 		"@xyflow/react": "^12.10.1",

@@ -1,5 +1,4 @@
 import { Menu } from "lucide-react";
-import Link from "next/link";
 import { Button } from "../ui/button";
 import { useFileSystem } from "../../hooks/use-file-system";
 import { useHasMounted } from "../../hooks/use-has-mounted";
@@ -25,12 +24,12 @@ export function Header({ onToggleSidebar }: HeaderProps) {
           <Menu className="h-4 w-4" />
         </Button>
 
-        <Link href="/" className="flex items-center gap-2">
+        <a href="/" className="flex items-center gap-2">
           <div className="bg-primary p-0.5 rounded-md">
             <AndGate className="text-white h-6 w-6" />
           </div>
           <h1 className="text-xl font-bold">gately</h1>
-        </Link>
+        </a>
 
         {hasMounted ? (
           <span className="mt-0.5">{currentFile?.name || "No file selected"}</span>

@@ -10,9 +10,9 @@ import {
 } from "@xyflow/react";
 import { nanoid } from "nanoid";
 import { type Dispatch, type SetStateAction, useCallback, useEffect } from "react";
-import { useSettingsStore } from "@/hooks/use-settings-store";
-import { calculateNodeStates } from "@/lib/simulator";
-import type { GateNodeProps } from "@/lib/types";
+import { useSettingsStore } from "./use-settings-store";
+import { calculateNodeStates } from "@gately/core/simulator";
+import type { GateNodeProps } from "@gately/core/types";
 
 export function useSimulatorLogic(
   setNodes: Dispatch<SetStateAction<Node<GateNodeProps>[]>>,

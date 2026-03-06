@@ -2,7 +2,7 @@ import type { Edge, Node } from "@xyflow/react";
 import { nanoid } from "nanoid";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import type { GateNodeProps } from "@/lib/types";
+import type { GateNodeProps } from "@gately/core/types";
 
 export interface FileNode {
   id: string;

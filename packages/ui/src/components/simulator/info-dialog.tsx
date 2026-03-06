@@ -1,7 +1,7 @@
 import { Info } from "lucide-react";
 import { Button } from "../ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
-import { version } from "../../../package.json";
+import { version } from "@gately/ui/package.json";
 
 export function InfoDialog() {
   return (

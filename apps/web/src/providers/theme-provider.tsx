@@ -1,14 +1,7 @@
-import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+import { useContext, useEffect, useState, type ReactNode } from "react";
+import { ThemeContext } from "@gately/ui/hooks/use-theme";
 
 type Theme = "light" | "dark" | "system";
-
-interface ThemeContextType {
-  theme: Theme;
-  setTheme: (theme: Theme) => void;
-  resolvedTheme: "light" | "dark";
-}
-
-const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 function getSystemTheme(): "light" | "dark" {
   if (typeof window === "undefined") return "light";
