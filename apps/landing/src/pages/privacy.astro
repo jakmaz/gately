@@ -1,0 +1,77 @@
+---
+import LandingLayout from '../layouts/LandingLayout.astro';
+import { Badge } from '@gately/ui/components/ui/badge';
+---
+
+<LandingLayout 
+  title="Privacy Policy - Gately"
+  description="Learn how Gately handles your data and protects your privacy."
+>
+  <section class="w-full py-14 md:py-32 relative isolate">
+    <div class="container mx-auto px-4 md:px-6 max-w-4xl">
+      <div class="flex flex-col items-center justify-center space-y-4 text-center mb-12">
+        <Badge className="rounded-full px-4 py-1.5 text-sm font-medium shadow-sm" variant="secondary">
+          <span class="mr-1 text-primary">✦</span> Privacy Policy
+        </Badge>
+        <h1 class="text-3xl md:text-4xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-foreground to-foreground/80">
+          Privacy Policy
+        </h1>
+        <p class="text-muted-foreground text-sm">
+          Last updated: March 6, 2026
+        </p>
+      </div>
+
+      <div class="prose prose-neutral dark:prose-invert max-w-none">
+        <div class="space-y-8 text-foreground">
+          <div>
+            <p class="text-lg text-muted-foreground leading-relaxed">
+              Gately is a client-side logic gate simulator. Your privacy is important to us, and we want to be transparent about how data is handled.
+            </p>
+          </div>
+
+          <div>
+            <h2 class="text-2xl font-bold mb-4">Data Collection</h2>
+            <p class="text-muted-foreground leading-relaxed">
+              This website does not collect or store any personal information by default. Circuit data is stored locally in your browser using localStorage.
+            </p>
+          </div>
+
+          <div>
+            <h2 class="text-2xl font-bold mb-4">Sharing Circuits</h2>
+            <p class="text-muted-foreground leading-relaxed">
+              If you choose to share a circuit, its data will be stored anonymously on our servers to generate a shareable link. We do not attach any identifying information to the data.
+            </p>
+          </div>
+
+          <div>
+            <h2 class="text-2xl font-bold mb-4">Cookies and Tracking</h2>
+            <p class="text-muted-foreground leading-relaxed">
+              This site does not use cookies, analytics tools, or third-party tracking scripts. We do not gather any analytics ourselves.
+            </p>
+          </div>
+
+          <div>
+            <h2 class="text-2xl font-bold mb-4">Third-Party Services</h2>
+            <p class="text-muted-foreground leading-relaxed">
+              This app is hosted on Cloudflare Pages. Basic technical logs (e.g., IP address, request metadata) may be collected by Cloudflare for security and performance reasons. We do not access or use this data.
+            </p>
+          </div>
+
+          <div>
+            <h2 class="text-2xl font-bold mb-4">Open Source</h2>
+            <p class="text-muted-foreground leading-relaxed">
+              Gately is fully open source. You can review the entire codebase, verify our privacy practices, and contribute to the project on <a href="https://github.com/jakobhoeg/gately" class="text-primary hover:underline" target="_blank" rel="noopener noreferrer">GitHub</a>.
+            </p>
+          </div>
+
+          <div>
+            <h2 class="text-2xl font-bold mb-4">Contact</h2>
+            <p class="text-muted-foreground leading-relaxed">
+              If you have any questions or concerns about this Privacy Policy, feel free to reach out at <a href="mailto:contact@jakmaz.com" class="text-primary hover:underline">contact@jakmaz.com</a>.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</LandingLayout>

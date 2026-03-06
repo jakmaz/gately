@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Gately OG Screenshot Tool</title>
+
+<style>
+/* 1. Setup the viewport for a perfect 1200x630 crop */
+body {
+  margin: 0;
+  padding: 0;
+  background: #0b0b0c; /* Matches the OG background */
+  font-family: Inter, system-ui, -apple-system, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  overflow: hidden; /* Removes scrollbars for the screenshot */
+  -webkit-font-smoothing: antialiased;
+}
+
+.og {
+  width: 1200px;
+  height: 630px;
+  padding: 90px;
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+  
+  /* Background styling */
+  background: radial-gradient(circle at 75% 30%, #1c1c22, #0b0b0c 65%);
+  border: 1px solid rgba(255,255,255,0.06);
+}
+
+/* Grid Overlay */
+.og::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+  background-size: 40px 40px;
+  mask-image: radial-gradient(circle at center, black 40%, transparent 85%);
+  -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 85%);
+}
+
+/* Content layer to sit above the grid */
+.content-wrapper {
+  position: relative;
+  z-index: 2;
+}
+
+.brand {
+  color: #d4d4da;
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 48px;
+  letter-spacing: -0.02em;
+}
+
+h1 {
+  font-size: 84px;
+  color: white;
+  line-height: 1.0;
+  margin: 0;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+}
+
+.blue {
+  color: #4f8cff;
+}
+
+.subtitle {
+  margin-top: 24px;
+  color: #b5b5bd;
+  font-size: 28px;
+  max-width: 600px;
+  line-height: 1.4;
+}
+
+.features {
+  display: flex;
+  gap: 16px;
+  margin-top: 50px;
+}
+
+.feature {
+  padding: 12px 24px;
+  border-radius: 999px;
+  font-size: 18px;
+  font-weight: 500;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: #cfcfd6;
+}
+
+</style>
+</head>
+<body>
+
+<div class="og">
+  <div class="content-wrapper">
+    <div class="brand">gately</div>
+
+    <h1>
+      Logic Circuits<br>
+      <span class="blue">Made Visual</span>
+    </h1>
+
+    <div class="subtitle">
+      Drag, connect and simulate digital logic in your browser.
+    </div>
+
+    <div class="features">
+      <div class="feature">Open Source</div>
+      <div class="feature">Free</div>
+      <div class="feature">No Signup</div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

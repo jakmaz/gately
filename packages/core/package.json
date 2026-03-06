@@ -1,0 +1,23 @@
+{
+  "name": "@gately/core",
+  "private": true,
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    "./simulator": "./src/simulator.ts",
+    "./types": "./src/types.ts",
+    "./utils": "./src/utils.ts",
+    "./export": "./src/export/index.ts"
+  },
+  "scripts": {
+    "build": "tsc --build",
+    "clean": "rm -rf dist node_modules/.tmp",
+    "typecheck": "tsc --noEmit",
+    "lint": "biome check ."
+  },
+  "dependencies": {
+    "@xyflow/react": "^12.10.1",
+    "clsx": "^2.1.1",
+    "tailwind-merge": "^3.5.0"
+  }
+}

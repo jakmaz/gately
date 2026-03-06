@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Build, simulate, and share digital circuits with Gately's visual logic editor." />
+    <title>Gately - Logic Gate Editor</title>
+    
+    <!-- Critical CSS - prevents white flash by inlining theme colors -->
+    <style>
+      :root {
+        --background: oklch(1 0 0);
+        --foreground: oklch(0.3211 0 0);
+      }
+      .dark {
+        --background: oklch(0.2046 0 0);
+        --foreground: oklch(0.9219 0 0);
+      }
+      html {
+        background-color: var(--background);
+        color: var(--foreground);
+      }
+      body {
+        background-color: var(--background);
+        color: var(--foreground);
+      }
+    </style>
+    
+    <!-- Theme script - runs BEFORE page renders to prevent flash -->
+    <script>
+      (function() {
+        const theme = localStorage.getItem('theme') || 'dark';
+        const resolved = theme === 'system' 
+          ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+          : theme;
+        document.documentElement.classList.add(resolved);
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

@@ -1,0 +1,24 @@
+{
+  "name": "web",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --build && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "lint": "biome check ."
+  },
+  "dependencies": {
+    "@fontsource/geist-mono": "^5.1.0",
+    "@fontsource/geist-sans": "^5.1.0",
+    "@gately/core": "workspace:*",
+    "@gately/ui": "workspace:*",
+    "lucide-react": "^0.577.0",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
+    "sonner": "^2.0.7"
+  },
+  "devDependencies": {}
+}

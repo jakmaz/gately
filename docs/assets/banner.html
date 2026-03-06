@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Gately GitHub Banner</title>
+
+<style>
+/* Viewport Setup */
+body {
+  margin: 0;
+  padding: 0;
+  background: #0b0b0c;
+  font-family: Inter, system-ui, -apple-system, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Wide & Short Banner Container */
+.banner {
+  width: 1200px;
+  height: 240px;
+  padding: 0 70px;
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  border-radius: 16px; /* A slight curve looks great on GitHub */
+  
+  /* Adjusted gradient for a wide format */
+  background: radial-gradient(ellipse at 50% 150%, #1c1c22, #0b0b0c 70%);
+  border: 1px solid rgba(255,255,255,0.06);
+}
+
+/* Grid Overlay - Fade edges horizontally */
+.banner::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+  background-size: 40px 40px;
+  mask-image: linear-gradient(90deg, transparent 0%, black 15%, black 85%, transparent 100%);
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, black 15%, black 85%, transparent 100%);
+}
+
+/* Flexbox structure to push elements left/right */
+.content-wrapper {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.left-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.brand {
+  color: #d4d4da;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+h1 {
+  font-size: 52px;
+  color: white;
+  line-height: 1.1;
+  margin: 0;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+.blue {
+  color: #4f8cff;
+}
+
+.subtitle {
+  color: #b5b5bd;
+  font-size: 20px;
+  margin-top: 12px;
+}
+
+/* Right-aligned features */
+.features {
+  display: flex;
+  gap: 12px;
+}
+
+.feature {
+  padding: 10px 20px;
+  border-radius: 999px;
+  font-size: 16px;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: #cfcfd6;
+  white-space: nowrap;
+}
+</style>
+</head>
+<body>
+
+<div class="banner">
+  <div class="content-wrapper">
+    
+    <div class="left-section">
+      <div class="brand">gately</div>
+      <h1>Design logic circuits <span class="blue">Visually</span></h1>
+      <div class="subtitle">Drag, connect and simulate in your browser.</div>
+    </div>
+
+    <div class="features">
+      <div class="feature">Open Source</div>
+      <div class="feature">Free</div>
+      <div class="feature">No Signup</div>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>
