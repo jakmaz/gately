@@ -147,49 +147,49 @@ export function calculateNodeStates(nodes: Node<GateNodeProps>[], edges: Edge[])
         if (sourceHandle === "output-1") return Y1;
         return Y0;
       }
-    case "halfAdder": {
-      const A = inputs[0] ?? false;
-      const B = inputs[1] ?? false;
+      case "halfAdder": {
+        const A = inputs[0] ?? false;
+        const B = inputs[1] ?? false;
 
-      const S = A !== B; // Soma (XOR)
-      const C = A && B;  // Carry
+        const S = A !== B; // Soma (XOR)
+        const C = A && B; // Carry
 
-      updatedNodes[nodeIndex] = {
-        ...updatedNodes[nodeIndex],
-        data: {
-          ...updatedNodes[nodeIndex].data,
-          outputs: [S, C],
-          state: S || C,
-          inputs: inputs,
-        },
-      };
+        updatedNodes[nodeIndex] = {
+          ...updatedNodes[nodeIndex],
+          data: {
+            ...updatedNodes[nodeIndex].data,
+            outputs: [S, C],
+            state: S || C,
+            inputs: inputs,
+          },
+        };
 
-      if (sourceHandle === "output-1") return C;
-      return S;
-    }
+        if (sourceHandle === "output-1") return C;
+        return S;
+      }
 
-    case "fullAdder": {
-      const A   = inputs[0] ?? false;
-      const B   = inputs[1] ?? false;
-      const Cin = inputs[2] ?? false;
+      case "fullAdder": {
+        const A = inputs[0] ?? false;
+        const B = inputs[1] ?? false;
+        const Cin = inputs[2] ?? false;
 
-      const sum3 = [A, B, Cin].filter(Boolean).length;
-      const S    = sum3 % 2 === 1;   // Sum
-      const Co   = sum3 >= 2;        // Carry out
+        const sum3 = [A, B, Cin].filter(Boolean).length;
+        const S = sum3 % 2 === 1; // Sum
+        const Co = sum3 >= 2; // Carry out
 
-      updatedNodes[nodeIndex] = {
-        ...updatedNodes[nodeIndex],
-        data: {
-          ...updatedNodes[nodeIndex].data,
-          outputs: [S, Co],
-          state: S || Co,
-          inputs: inputs,
-        },
-      };
+        updatedNodes[nodeIndex] = {
+          ...updatedNodes[nodeIndex],
+          data: {
+            ...updatedNodes[nodeIndex].data,
+            outputs: [S, Co],
+            state: S || Co,
+            inputs: inputs,
+          },
+        };
 
-      if (sourceHandle === "output-1") return Co;
-      return S;
-    }
+        if (sourceHandle === "output-1") return Co;
+        return S;
+      }
       case "outputNode":
         result = inputs[0] ?? false;
         break;

@@ -74,9 +74,7 @@ function TruthTablePanel({ nodes, edges }: { nodes: any[]; edges: any[] }) {
                 style={{ animation: "tt-pulse 2.4s ease-in-out infinite" }}
               />
               <Table2 size={13} className="text-muted-foreground" />
-              <span className="text-xs font-semibold tracking-widest uppercase text-foreground">
-                Truth Table
-              </span>
+              <span className="text-xs font-semibold tracking-widest uppercase text-foreground">Truth Table</span>
             </div>
             <button
               onClick={handleRefresh}
@@ -88,10 +86,7 @@ function TruthTablePanel({ nodes, edges }: { nodes: any[]; edges: any[] }) {
           </div>
 
           {/* Body */}
-          <div
-            className="tt-scroll overflow-auto"
-            style={{ maxHeight: "min(400px, 52vh)" }}
-          >
+          <div className="tt-scroll overflow-auto" style={{ maxHeight: "min(400px, 52vh)" }}>
             {isEmpty ? (
               <div className="py-9 px-5 flex flex-col items-center gap-1.5 text-muted-foreground">
                 <span className="text-2xl opacity-30">⊞</span>

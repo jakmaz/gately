@@ -118,7 +118,15 @@ export function GateRenderer({
 
           {/* Select pin stub */}
           {hasSelectPin && (
-            <line x1={CW / 2} y1={CH + hs} x2={CW / 2} y2={CH - 10} stroke={activeColor} strokeWidth="1.5" opacity="0.5" />
+            <line
+              x1={CW / 2}
+              y1={CH + hs}
+              x2={CW / 2}
+              y2={CH - 10}
+              stroke={activeColor}
+              strokeWidth="1.5"
+              opacity="0.5"
+            />
           )}
 
           {/* Output stub wires */}
