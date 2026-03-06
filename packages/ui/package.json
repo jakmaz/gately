@@ -4,17 +4,11 @@
 	"license": "MIT",
 	"type": "module",
 	"exports": {
-		".": "./src/index.ts",
-		"./components/nodes": "./src/components/nodes/index.ts",
-		"./components/simulator": "./src/components/simulator/index.ts",
-		"./components/home": "./src/components/home/index.ts",
-		"./components/ui": "./src/components/ui/index.ts",
-		"./components/icons": "./src/components/icons/index.ts",
-		"./hooks": "./src/hooks/index.ts",
-		"./styles": "./src/styles/globals.css"
+		"./components/*": "./src/components/*.tsx",
+		"./hooks/*": "./src/hooks/*.ts",
+		"./globals.css": "./src/styles/globals.css"
 	},
 	"dependencies": {
-		"@gately/core": "workspace:*",
 		"@radix-ui/react-accordion": "^1.2.12",
 		"@radix-ui/react-context-menu": "^2.2.16",
 		"@radix-ui/react-dialog": "^1.1.15",
@@ -33,14 +27,11 @@
 		"clsx": "^2.1.1",
 		"lucide-react": "^0.511.0",
 		"motion": "^12.34.3",
-		"nanoid": "^5.1.6",
+		"react": "19.2.4",
+		"react-dom": "19.2.4",
 		"sonner": "^2.0.7",
 		"tailwind-merge": "^3.5.0",
 		"zustand": "^5.0.11"
-	},
-	"peerDependencies": {
-		"react": "^19.0.0",
-		"react-dom": "^19.0.0"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "^2.4.4",
