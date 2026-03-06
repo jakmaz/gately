@@ -1,7 +1,21 @@
-# Tauri + React + Typescript
+# Desktop App
 
-This template should help get you started developing with Tauri, React and Typescript in Vite.
+Native desktop application built with Tauri.
 
-## Recommended IDE Setup
+## Tech Stack
 
-- [VS Code](https://code.visualstudio.com/) + [Tauri](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode) + [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer)
+- Tauri + React 19 + TypeScript
+- @gately/ui components
+- @gately/core simulator
+
+## Development
+
+```bash
+bun install
+bun tauri dev   # Start dev mode
+bun tauri build # Build distributable
+```
+
+## Distribution
+
+GitHub releases with platform-specific installers (macOS, Windows, Linux).

@@ -40,6 +40,18 @@ Yes, easily share circuits via a link.
 **Is it good for teaching?**
 Yes, ideal for education and presentations.
 
+## Project Structure
+
+Gately is a monorepo built with Turborepo:
+
+- **apps/web** - Web editor (app.gately.dev) - Vite SPA
+- **apps/landing** - Marketing site (gately.dev) - Astro static site
+- **apps/desktop** - Desktop app - Tauri native app
+- **packages/ui** - Shared React components for the editor
+- **packages/core** - Core logic simulation engine
+
+See individual app READMEs for development instructions.
+
 ## Getting Started
 
 ### Prerequisites

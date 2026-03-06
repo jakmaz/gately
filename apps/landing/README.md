@@ -1,46 +1,29 @@
-# Astro Starter Kit: Basics
+# Landing Site (gately.dev)
 
-```sh
-bun create astro@latest -- --template basics
+Marketing website with landing pages and documentation.
+
+## Tech Stack
+
+- Astro + React + TypeScript
+- Tailwind v4
+
+## Development
+
+```bash
+bun install
+bun dev        # localhost:4321
+bun build      # Build static site
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## Pages
 
-## 🚀 Project Structure
+- `/` - Home
+- `/features` - Features
+- `/download` - Desktop app download
+- `/docs` - Documentation
+- `/changelog` - Release notes
+- `/privacy` - Privacy policy
 
-Inside of your Astro project, you'll see the following folders and files:
+## Deployment
 
-```text
-/
-├── public/
-│   └── favicon.svg
-├── src
-│   ├── assets
-│   │   └── astro.svg
-│   ├── components
-│   │   └── Welcome.astro
-│   ├── layouts
-│   │   └── Layout.astro
-│   └── pages
-│       └── index.astro
-└── package.json
-```
-
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `bun install`             | Installs dependencies                            |
-| `bun dev`             | Starts local dev server at `localhost:4321`      |
-| `bun build`           | Build your production site to `./dist/`          |
-| `bun preview`         | Preview your build locally, before deploying     |
-| `bun astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `bun astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+Deploys to Cloudflare Pages at gately.dev
