@@ -1,12 +1,8 @@
-import { createRootRoute, Outlet } from "@tanstack/react-router";
+import { LogicGateSimulator } from "@gately/ui/components/simulator/simulator";
 import { Toaster } from "sonner";
-import { ThemeProvider } from "../providers/theme-provider";
+import { ThemeProvider } from "./providers/theme-provider";
 
-export const Route = createRootRoute({
-  component: RootComponent,
-});
-
-function RootComponent() {
+export function App() {
   return (
     <ThemeProvider>
       <div
@@ -15,7 +11,9 @@ function RootComponent() {
           fontFamily: "var(--font-geist-sans, 'Geist Sans', sans-serif)",
         }}
       >
-        <Outlet />
+        <main className="min-h-screen bg-background">
+          <LogicGateSimulator />
+        </main>
         <Toaster />
       </div>
     </ThemeProvider>

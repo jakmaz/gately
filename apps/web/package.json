@@ -15,14 +15,10 @@
     "@fontsource/geist-sans": "^5.1.0",
     "@gately/core": "workspace:*",
     "@gately/ui": "workspace:*",
-    "@tanstack/react-router": "^1.166.2",
-    "@tanstack/react-router-devtools": "^1.166.2",
     "lucide-react": "^0.577.0",
     "react": "19.2.4",
     "react-dom": "19.2.4",
     "sonner": "^2.0.7"
   },
-  "devDependencies": {
-    "@tanstack/router-plugin": "^1.166.2"
-  }
+  "devDependencies": {}
 }
