@@ -1,7 +1,7 @@
 import { ArrowRight, Check } from "lucide-react";
-import { Badge } from "../ui/badge";
-import { Button } from "../ui/button";
-import { Card, CardContent } from "../ui/card";
+import { Badge } from "@gately/ui/components/ui/badge";
+import { Button } from "@gately/ui/components/ui/button";
+import { Card, CardContent } from "@gately/ui/components/ui/card";
 import { MiniPreview } from "./mini-preview";
 
 export function Hero() {

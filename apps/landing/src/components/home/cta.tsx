@@ -1,6 +1,5 @@
 import { ArrowRight } from "lucide-react";
-import { motion } from "motion/react";
-import { Button } from "../ui/button";
+import { Button } from "@gately/ui/components/ui/button";
 
 export function CTA() {
   return (
@@ -13,38 +12,15 @@ export function CTA() {
       ></div>
 
       <div className="container mx-auto px-4 md:px-6 relative">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="flex flex-col items-center justify-center space-y-6 text-center"
-        >
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight"
-          >
+        <div className="flex flex-col items-center justify-center space-y-6 text-center">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight">
             Ready to Build Smarter Circuits?
-          </motion.h2>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="mx-auto max-w-[700px] text-primary-foreground/80 md:text-xl"
-          >
+          </h2>
+          <p className="mx-auto max-w-[700px] text-primary-foreground/80 md:text-xl">
             Start designing logic circuits visually with Gately - fast, intuitive, and perfect for learning or
             prototyping.
-          </motion.p>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="flex flex-col sm:flex-row gap-4 mt-4"
-          >
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 mt-4">
             <Button
               size="lg"
               variant="secondary"
@@ -65,17 +41,11 @@ export function CTA() {
                 View on GitHub
               </Button>
             </a>
-          </motion.div>
-          <motion.p
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-            className="text-sm text-primary-foreground/80 mt-4"
-          >
+          </div>
+          <p className="text-sm text-primary-foreground/80 mt-4">
             No login. No limits. Free and open source.
-          </motion.p>
-        </motion.div>
+          </p>
+        </div>
       </div>
     </section>
   );

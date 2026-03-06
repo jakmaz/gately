@@ -20,9 +20,9 @@ import "@xyflow/react/dist/style.css";
 import confetti from "canvas-confetti";
 import { calculateNodeStates } from "@gately/core/simulator";
 import type { GateNodeProps } from "@gately/core/types";
-import { ANDGateNode } from "../nodes/and";
-import { OutputNode } from "../nodes/output";
-import { ToggleNode } from "../nodes/toggle";
+import { ANDGateNode } from "@gately/ui/components/nodes/and";
+import { OutputNode } from "@gately/ui/components/nodes/output";
+import { ToggleNode } from "@gately/ui/components/nodes/toggle";
 
 const nodeTypes: NodeTypes = {
   toggleNode: ToggleNode,

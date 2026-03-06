@@ -1,6 +1,5 @@
 import { ChevronRight, Github, Menu, X } from "lucide-react";
-import { motion } from "motion/react";
-import { Button } from "../ui/button";
+import { Button } from "@gately/ui/components/ui/button";
 import { useGithubStars } from "../../hooks/use-github-stars";
 import { cn, formatCompactNumber } from "@gately/core/utils";
 import type { ReactNode } from "react";
@@ -38,26 +37,19 @@ export function Header({ isScrolled, mobileMenuOpen, setMobileMenuOpen, themeTog
           </div>
         </a>
         <nav className="hidden md:flex gap-4 lg:gap-8 items-center">
-          {navLinks.map((link, i) => (
-            <motion.a
+          {navLinks.map((link) => (
+            <a
               key={link.label}
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, delay: 0.1 + i * 0.05 }}
               href={link.href}
               className="text-xs lg:text-sm font-medium text-muted-foreground transition-colors hover:text-foreground relative group"
             >
               {link.label}
               <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
-            </motion.a>
+            </a>
           ))}
         </nav>
         <div className="hidden md:flex gap-4 items-center cursor-pointer">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.3, delay: 0.45 }}
-          >
+          <div>
             <Button variant="ghost" asChild>
               <a
                 href="https://github.com/jakmaz/gately"
@@ -70,27 +62,19 @@ export function Header({ isScrolled, mobileMenuOpen, setMobileMenuOpen, themeTog
                 {stargazersCount > 0 && formatCompactNumber(stargazersCount)}
               </a>
             </Button>
-          </motion.div>
+          </div>
 
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.3, delay: 0.4 }}
-          >
+          <div>
             {themeToggle}
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.3, delay: 0.5 }}
-          >
+          </div>
+          <div>
             <Button className="rounded-full cursor-pointer transition-transform hover:scale-105 font-medium" asChild>
               <a href="/editor">
                 Open Editor
                 <ChevronRight className="ml-1 size-4" />
               </a>
             </Button>
-          </motion.div>
+          </div>
         </div>
         <div className="flex items-center gap-4 md:hidden">
           {themeToggle}
@@ -102,42 +86,29 @@ export function Header({ isScrolled, mobileMenuOpen, setMobileMenuOpen, themeTog
       </div>
       {/* Mobile menu */}
       {mobileMenuOpen && (
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -20 }}
-          className="md:hidden absolute top-16 inset-x-0 bg-background/95 backdrop-blur-lg border-b"
-        >
+        <div className="md:hidden absolute top-16 inset-x-0 bg-background/95 backdrop-blur-lg border-b">
           <div className="container mx-auto py-4 flex flex-col gap-4 px-4">
-            {navLinks.map((link, i) => (
-              <motion.a
+            {navLinks.map((link) => (
+              <a
                 key={link.label}
-                initial={{ opacity: 0, x: -10 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.2, delay: i * 0.05 }}
                 href={link.href}
                 onClick={() => setMobileMenuOpen(false)}
                 className="py-2 text-sm font-medium relative overflow-hidden group"
               >
                 <span className="relative z-10">{link.label}</span>
                 <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
-              </motion.a>
+              </a>
             ))}
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, delay: 0.3 }}
-              className="pt-2 mt-2 border-t border-border/30"
-            >
+            <div className="pt-2 mt-2 border-t border-border/30">
               <Button className="w-full rounded-full" asChild>
                 <a href="/editor" onClick={() => setMobileMenuOpen(false)}>
                   Try It Now
                   <ChevronRight className="ml-2 size-4" />
                 </a>
               </Button>
-            </motion.div>
+            </div>
           </div>
-        </motion.div>
+        </div>
       )}
     </header>
   );

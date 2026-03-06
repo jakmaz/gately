@@ -1,7 +1,6 @@
 import { ArrowRight, Github, MessageCircle } from "lucide-react";
-import { motion } from "motion/react";
-import { Button } from "../ui/button";
-import { Card, CardContent } from "../ui/card";
+import { Button } from "@gately/ui/components/ui/button";
+import { Card, CardContent } from "@gately/ui/components/ui/card";
 
 export function DocsResources() {
   return (
@@ -9,26 +8,15 @@ export function DocsResources() {
       <div className="absolute inset-0 -z-10 bg-[linear-gradient(to_right,rgba(from_var(--muted-foreground)_r_g_b_/_0.05)_1px,transparent_1px),linear-gradient(to_bottom,rgba(from_var(--muted-foreground)_r_g_b_/_0.05)_1px,transparent_1px)] bg-[size:3rem_3rem]"></div>
 
       <div className="container mx-auto px-4 md:px-6">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="text-center mb-12 max-w-2xl mx-auto"
-        >
+        <div className="text-center mb-12 max-w-2xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4 bg-gradient-to-r from-foreground to-foreground/80 bg-clip-text text-transparent">
             Need More Help?
           </h2>
           <p className="text-muted-foreground text-lg">Join our community or explore additional resources</p>
-        </motion.div>
+        </div>
 
         <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-          >
+          <div>
             <Card className="h-full border-border/40 bg-gradient-to-b from-card to-card/50 backdrop-blur hover:shadow-lg transition-all hover:border-primary/20 group">
               <CardContent className="text-center space-y-4">
                 <div className="size-16 rounded-full bg-primary/10 flex items-center justify-center text-primary mx-auto group-hover:scale-110 group-hover:bg-primary/20 transition-all duration-300">
@@ -44,14 +32,9 @@ export function DocsResources() {
                 </Button>
               </CardContent>
             </Card>
-          </motion.div>
+          </div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-          >
+          <div>
             <Card className="h-full border-border/40 bg-gradient-to-b from-card to-card/50 backdrop-blur hover:shadow-lg transition-all hover:border-primary/20 group">
               <CardContent className="text-center space-y-4">
                 <div className="size-16 rounded-full bg-primary/10 flex items-center justify-center text-primary mx-auto group-hover:scale-110 group-hover:bg-primary/20 transition-all duration-300">
@@ -64,14 +47,9 @@ export function DocsResources() {
                 </Button>
               </CardContent>
             </Card>
-          </motion.div>
+          </div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-          >
+          <div>
             <Card className="h-full border-border/40 bg-gradient-to-b from-card to-card/50 backdrop-blur hover:shadow-lg transition-all hover:border-primary/20 group">
               <CardContent className="text-center space-y-4">
                 <div className="size-16 rounded-full bg-primary/10 flex items-center justify-center text-primary mx-auto group-hover:scale-110 group-hover:bg-primary/20 transition-all duration-300">
@@ -87,7 +65,7 @@ export function DocsResources() {
                 </Button>
               </CardContent>
             </Card>
-          </motion.div>
+          </div>
         </div>
       </div>
     </section>

@@ -1,6 +1,5 @@
 import { Cpu, HardDrive, MonitorCheck } from "lucide-react";
-import { motion } from "motion/react";
-import { Card, CardContent } from "../ui/card";
+import { Card, CardContent } from "@gately/ui/components/ui/card";
 
 const platforms = [
   {
@@ -42,13 +41,7 @@ export function SystemRequirements() {
   return (
     <section className="w-full py-14 md:py-24 bg-muted/30">
       <div className="container mx-auto px-4 md:px-6">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="text-center mb-12"
-        >
+        <div className="text-center mb-12">
           <div className="flex justify-center mb-4">
             <div className="size-16 rounded-2xl bg-primary/10 flex items-center justify-center text-primary">
               <Cpu className="size-8" />
@@ -58,17 +51,11 @@ export function SystemRequirements() {
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
             Gately Desktop is optimized to run smoothly on modern hardware with minimal system resources
           </p>
-        </motion.div>
+        </div>
 
         <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
-          {platforms.map((platform, i) => (
-            <motion.div
-              key={platform.platform}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: i * 0.1 }}
-            >
+          {platforms.map((platform) => (
+            <div key={platform.platform}>
               <Card className="h-full border-border/40 bg-gradient-to-b from-card to-card/50 backdrop-blur hover:shadow-lg transition-all hover:border-primary/20 group">
                 <CardContent className="space-y-6">
                   <div className="flex items-center justify-between">
@@ -93,22 +80,16 @@ export function SystemRequirements() {
                   </ul>
                 </CardContent>
               </Card>
-            </motion.div>
+            </div>
           ))}
         </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.3 }}
-          className="mt-12 text-center"
-        >
+        <div className="mt-12 text-center">
           <p className="text-sm text-muted-foreground">
             <span className="text-foreground font-medium">Note:</span> These are minimum requirements. For the best
             experience with large circuits, we recommend higher specifications.
           </p>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

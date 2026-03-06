@@ -1,7 +1,6 @@
 import { Apple, ArrowRight, Monitor } from "lucide-react";
-import { motion } from "motion/react";
-import { Badge } from "../ui/badge";
-import { Button } from "../ui/button";
+import { Badge } from "@gately/ui/components/ui/badge";
+import { Button } from "@gately/ui/components/ui/button";
 
 export function DownloadHero() {
   return (
@@ -10,43 +9,23 @@ export function DownloadHero() {
 
       <div className="relative z-10 px-4 md:px-6">
         <div className="max-w-4xl mx-auto text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="flex justify-center mb-6"
-          >
+          <div className="flex justify-center mb-6">
             <Badge className="rounded-full px-4 py-1.5 text-sm font-medium shadow-sm" variant="secondary">
               <Monitor className="size-3 mr-2" />
               Desktop Application
             </Badge>
-          </motion.div>
+          </div>
 
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="text-4xl font-bold tracking-tight md:text-5xl lg:text-6xl mb-6 bg-gradient-to-r from-foreground via-foreground/90 to-foreground/70 bg-clip-text text-transparent"
-          >
+          <h1 className="text-4xl font-bold tracking-tight md:text-5xl lg:text-6xl mb-6 bg-gradient-to-r from-foreground via-foreground/90 to-foreground/70 bg-clip-text text-transparent">
             Gately for <span className="text-primary">Desktop</span>
-          </motion.h1>
+          </h1>
 
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="text-muted-foreground text-lg md:text-xl max-w-2xl mx-auto mb-10 leading-relaxed"
-          >
+          <p className="text-muted-foreground text-lg md:text-xl max-w-2xl mx-auto mb-10 leading-relaxed">
             Experience the full power of Gately with native performance, offline access, and seamless integration with
             your workflow.
-          </motion.p>
+          </p>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-            className="flex flex-col sm:flex-row gap-4 justify-center items-center"
-          >
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <Button
               size="lg"
               disabled
@@ -65,16 +44,11 @@ export function DownloadHero() {
                 <ArrowRight className="ml-2 size-4" />
               </a>
             </Button>
-          </motion.div>
+          </div>
 
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.4 }}
-            className="text-sm text-muted-foreground mt-6"
-          >
+          <p className="text-sm text-muted-foreground mt-6">
             Windows and Linux versions are in development
-          </motion.p>
+          </p>
         </div>
       </div>
 

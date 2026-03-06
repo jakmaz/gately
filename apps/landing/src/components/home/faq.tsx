@@ -1,6 +1,5 @@
-import { motion } from "motion/react";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../ui/accordion";
-import { Badge } from "../ui/badge";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@gately/ui/components/ui/accordion";
+import { Badge } from "@gately/ui/components/ui/badge";
 
 const faqs = [
   {
@@ -44,13 +43,7 @@ export function FAQ() {
   return (
     <section id="faq" className="w-full py-20 md:py-32">
       <div className="container mx-auto px-4 md:px-6">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="flex flex-col items-center justify-center space-y-4 text-center mb-12"
-        >
+        <div className="flex flex-col items-center justify-center space-y-4 text-center mb-12">
           <Badge className="rounded-full px-4 py-1.5 text-sm font-medium shadow-sm" variant="secondary">
             <span className="mr-1 text-primary">✦</span> FAQ
           </Badge>
@@ -60,25 +53,19 @@ export function FAQ() {
           <p className="max-w-[800px] text-muted-foreground md:text-lg">
             Find answers to common questions about Gately.
           </p>
-        </motion.div>
+        </div>
 
         <div className="mx-auto max-w-3xl">
           <Accordion type="single" collapsible className="w-full">
             {faqs.map((faq, i) => (
-              <motion.div
-                key={faq.question}
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.3, delay: i * 0.05 }}
-              >
+              <div key={faq.question}>
                 <AccordionItem value={`item-${i}`} className="border-b border-border/40 py-2 group">
                   <AccordionTrigger className="text-left font-medium hover:no-underline group-hover:text-primary transition-colors">
                     {faq.question}
                   </AccordionTrigger>
                   <AccordionContent className="text-muted-foreground">{faq.answer}</AccordionContent>
                 </AccordionItem>
-              </motion.div>
+              </div>
             ))}
           </Accordion>
         </div>

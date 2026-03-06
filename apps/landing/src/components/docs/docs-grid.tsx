@@ -1,5 +1,4 @@
 import { ArrowRight, BookOpen, Lightbulb, Rocket, Wrench } from "lucide-react";
-import { motion } from "motion/react";
 
 const sections = [
   {
@@ -40,15 +39,8 @@ export function DocsGrid() {
 
       <div className="container mx-auto px-4 md:px-6">
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-          {sections.map((section, idx) => (
-            <motion.div
-              key={section.title}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: idx * 0.1 }}
-              className="group relative"
-            >
+          {sections.map((section) => (
+            <div key={section.title} className="group relative">
               <div className="h-full border border-border/40 bg-gradient-to-b from-card to-card/50 backdrop-blur hover:shadow-lg transition-all hover:border-primary/20 rounded-lg p-6 space-y-4">
                 <div className="size-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary group-hover:scale-105 transition-transform">
                   {section.icon}
@@ -61,21 +53,17 @@ export function DocsGrid() {
 
                 <ul className="space-y-2.5 text-sm">
                   {section.topics.map((topic) => (
-                    <motion.li
+                    <li
                       key={topic}
-                      initial={{ opacity: 0, x: -5 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.3 }}
                       className="flex items-start gap-2 text-muted-foreground group-hover:text-foreground transition-colors"
                     >
                       <ArrowRight className="size-3.5 mt-0.5 shrink-0 text-primary/60" />
                       <span>{topic}</span>
-                    </motion.li>
+                    </li>
                   ))}
                 </ul>
               </div>
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>

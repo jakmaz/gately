@@ -1,0 +1,15 @@
+---
+import LandingLayout from '../layouts/LandingLayout.astro';
+import { FeaturesHero } from '../components/features/features-hero';
+import { FeatureShowcase } from '../components/features/feature-showcase';
+import { Features as FeaturesSection } from '../components/home/features';
+---
+
+<LandingLayout 
+  title="Features - Gately"
+  description="Explore the powerful features of Gately's visual logic editor."
+>
+  <FeaturesHero />
+  <FeatureShowcase />
+  <FeaturesSection />
+</LandingLayout>

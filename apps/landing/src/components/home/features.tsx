@@ -1,7 +1,6 @@
 import { Cpu, FolderTree, LayoutTemplate, Settings, Share2, Zap } from "lucide-react";
-import { motion } from "motion/react";
-import { Badge } from "../ui/badge";
-import { Card, CardContent } from "../ui/card";
+import { Badge } from "@gately/ui/components/ui/badge";
+import { Card, CardContent } from "@gately/ui/components/ui/card";
 
 const features = [
   {
@@ -41,33 +40,12 @@ const features = [
   },
 ];
 
-const container = {
-  hidden: { opacity: 0 },
-  show: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-    },
-  },
-};
-
-const item = {
-  hidden: { opacity: 0, y: 20 },
-  show: { opacity: 1, y: 0 },
-};
-
 export function Features() {
   return (
     <section id="features" className="w-full py-14 md:py-32 relative isolate">
       <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_center,rgba(from_var(--primary)_r_g_b_/_0.03),transparent_70%)]"></div>
       <div className="container mx-auto px-4 md:px-6">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="flex flex-col items-center justify-center space-y-4 text-center mb-12"
-        >
+        <div className="flex flex-col items-center justify-center space-y-4 text-center mb-12">
           <Badge className="rounded-full px-4 py-1.5 text-sm font-medium shadow-sm" variant="secondary">
             <span className="mr-1 text-primary">✦</span> Features
           </Badge>
@@ -77,29 +55,21 @@ export function Features() {
           <p className="max-w-[800px] text-muted-foreground md:text-lg">
             Gately provides all the tools you need to build and customize your logic circuits.
           </p>
-        </motion.div>
+        </div>
 
-        <motion.div
-          variants={container}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true }}
-          className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
-        >
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {features.map((feature) => (
-            <motion.div key={feature.title} variants={item} whileHover={{ y: -5, transition: { duration: 0.2 } }}>
-              <Card className="h-full overflow-hidden border-border/40 bg-gradient-to-b from-card to-card/50 backdrop-blur transition-all hover:shadow-lg hover:border-primary/20 group">
-                <CardContent>
-                  <div className="size-12 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-4 group-hover:bg-primary/20 transition-colors duration-300">
-                    {feature.icon}
-                  </div>
-                  <h3 className="text-xl font-bold mb-2">{feature.title}</h3>
-                  <p className="text-muted-foreground">{feature.description}</p>
-                </CardContent>
-              </Card>
-            </motion.div>
+            <Card key={feature.title} className="h-full overflow-hidden border-border/40 bg-gradient-to-b from-card to-card/50 backdrop-blur transition-all hover:shadow-lg hover:border-primary/20 hover:-translate-y-1 group">
+              <CardContent>
+                <div className="size-12 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-4 group-hover:bg-primary/20 transition-colors duration-300">
+                  {feature.icon}
+                </div>
+                <h3 className="text-xl font-bold mb-2">{feature.title}</h3>
+                <p className="text-muted-foreground">{feature.description}</p>
+              </CardContent>
+            </Card>
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   );

@@ -1,5 +1,4 @@
-import { motion } from "motion/react";
-import { Badge } from "../ui/badge";
+import { Badge } from "@gately/ui/components/ui/badge";
 
 const steps = [
   {
@@ -26,32 +25,22 @@ export function HowItWorks() {
       <div className="absolute inset-0 -z-10 bg-[linear-gradient(to_right,rgba(from_var(--muted-foreground)_r_g_b_/_0.05)_1px,transparent_1px),linear-gradient(to_bottom,rgba(from_var(--muted-foreground)_r_g_b_/_0.05)_1px,transparent_1px)] bg-[size:3rem_3rem]"></div>
 
       <div className="container mx-auto px-4 md:px-6 relative">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="flex flex-col items-center justify-center space-y-4 text-center mb-16"
-        >
+        <div className="flex flex-col items-center justify-center space-y-4 text-center mb-16">
           <Badge className="rounded-full px-4 py-1.5 text-sm font-medium shadow-sm" variant="secondary">
-            <span className="mr-1 text-3xltext-primary">✦</span> How It Works
+            <span className="mr-1 text-primary">✦</span> How It Works
           </Badge>
           <h2 className="text-3xl md:text-4xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-foreground to-foreground/80">
             Simple Process, Beautiful Results
           </h2>
           <p className="max-w-[800px] text-muted-foreground md:text-lg">
-            Customize your shadcn/ui components in just a few simple steps.
+            Build your logic circuits in just a few simple steps.
           </p>
-        </motion.div>
+        </div>
 
         <div className="grid md:grid-cols-3 gap-8 md:gap-12 relative">
           {steps.map((step, i) => (
-            <motion.div
+            <div
               key={step.title}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: i * 0.2 }}
               className="relative z-10 flex flex-col items-center text-center space-y-4"
             >
               <div className="flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-primary to-primary/70 text-primary-foreground text-xl font-bold shadow-lg relative">
@@ -66,7 +55,7 @@ export function HowItWorks() {
               </div>
               <h3 className="text-xl font-bold">{step.title}</h3>
               <p className="text-muted-foreground">{step.description}</p>
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>

@@ -1,7 +1,6 @@
 import { Check, Plus, Sparkles, Wrench } from "lucide-react";
-import { motion } from "motion/react";
-import { Card, CardContent } from "../ui/card";
-import { Badge } from "../ui/badge";
+import { Card, CardContent } from "@gately/ui/components/ui/card";
+import { Badge } from "@gately/ui/components/ui/badge";
 
 interface ChangeEntry {
   type: "added" | "improved" | "fixed";
@@ -84,15 +83,8 @@ export function VersionList() {
           <div className="absolute left-8 top-0 bottom-0 w-px bg-gradient-to-b from-primary/40 via-primary/20 to-transparent hidden md:block"></div>
 
           <div className="space-y-6">
-            {versions.map((version, versionIdx) => (
-              <motion.div
-                key={version.version}
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: versionIdx * 0.1 }}
-                className="relative"
-              >
+            {versions.map((version) => (
+              <div key={version.version} className="relative">
                 {/* Timeline dot */}
                 <div className="absolute left-8 top-6 size-3 rounded-full bg-primary border-4 border-background shadow-lg hidden md:block -translate-x-1/2 z-10"></div>
 
@@ -138,19 +130,15 @@ export function VersionList() {
                             </div>
                             <ul className="ml-8 space-y-1">
                               {items.map((item) => (
-                                <motion.li
+                                <li
                                   key={item.description}
-                                  initial={{ opacity: 0 }}
-                                  whileInView={{ opacity: 1 }}
-                                  viewport={{ once: true }}
-                                  transition={{ delay: versionIdx * 0.1 + items.indexOf(item) * 0.02 }}
                                   className="text-sm text-muted-foreground hover:text-foreground transition-colors flex items-start gap-2 group/item"
                                 >
                                   <span className="text-primary/40 group-hover/item:text-primary/70 transition-colors mt-1">
                                     •
                                   </span>
                                   <span className="flex-1">{item.description}</span>
-                                </motion.li>
+                                </li>
                               ))}
                             </ul>
                           </div>
@@ -159,7 +147,7 @@ export function VersionList() {
                     </div>
                   </CardContent>
                 </Card>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>

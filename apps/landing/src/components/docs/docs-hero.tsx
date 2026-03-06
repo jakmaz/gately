@@ -1,6 +1,5 @@
 import { Book } from "lucide-react";
-import { motion } from "motion/react";
-import { Badge } from "../ui/badge";
+import { Badge } from "@gately/ui/components/ui/badge";
 
 export function DocsHero() {
   return (
@@ -9,35 +8,20 @@ export function DocsHero() {
 
       <div className="relative z-10 px-4 md:px-6">
         <div className="max-w-4xl mx-auto text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="flex justify-center mb-6"
-          >
+          <div className="flex justify-center mb-6">
             <Badge className="rounded-full px-4 py-1.5 text-sm font-medium shadow-sm" variant="secondary">
               <Book className="size-3 mr-2" />
               Documentation
             </Badge>
-          </motion.div>
+          </div>
 
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="text-4xl font-bold tracking-tight md:text-5xl lg:text-6xl mb-6 bg-gradient-to-r from-foreground via-foreground/90 to-foreground/70 bg-clip-text text-transparent"
-          >
+          <h1 className="text-4xl font-bold tracking-tight md:text-5xl lg:text-6xl mb-6 bg-gradient-to-r from-foreground via-foreground/90 to-foreground/70 bg-clip-text text-transparent">
             Learn <span className="text-primary">Gately</span>
-          </motion.h1>
+          </h1>
 
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="text-muted-foreground text-lg md:text-xl max-w-2xl mx-auto leading-relaxed"
-          >
+          <p className="text-muted-foreground text-lg md:text-xl max-w-2xl mx-auto leading-relaxed">
             Everything you need to master circuit design with Gately. From basics to advanced techniques.
-          </motion.p>
+          </p>
         </div>
       </div>
 

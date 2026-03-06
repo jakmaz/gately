@@ -1,7 +1,6 @@
 import { Boxes, Braces, Circle, GitBranch, Orbit, Zap } from "lucide-react";
-import { motion } from "motion/react";
-import { Card, CardContent } from "../ui/card";
-import { Badge } from "../ui/badge";
+import { Card, CardContent } from "@gately/ui/components/ui/card";
+import { Badge } from "@gately/ui/components/ui/badge";
 
 const categories = [
   {
@@ -84,13 +83,7 @@ export function FeatureShowcase() {
       <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_center,rgba(from_var(--primary)_r_g_b_/_0.05),transparent_70%)]"></div>
 
       <div className="container mx-auto px-4 md:px-6">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="text-center mb-16 max-w-3xl mx-auto"
-        >
+        <div className="text-center mb-16 max-w-3xl mx-auto">
           <Badge className="rounded-full px-4 py-1.5 text-sm font-medium shadow-sm mb-4" variant="secondary">
             ✦ Feature Categories
           </Badge>
@@ -100,7 +93,7 @@ export function FeatureShowcase() {
           <p className="text-muted-foreground text-lg">
             From basic gates to advanced circuit design, every feature is crafted for your workflow
           </p>
-        </motion.div>
+        </div>
 
         {/* Asymmetric masonry-style grid layout */}
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -110,14 +103,7 @@ export function FeatureShowcase() {
             const spanClass = isLarge ? "lg:col-span-2" : "lg:col-span-1";
 
             return (
-              <motion.div
-                key={category.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: idx * 0.08 }}
-                className={spanClass}
-              >
+              <div key={category.title} className={spanClass}>
                 <Card className="h-full border-border/40 bg-card/50 backdrop-blur hover:shadow-lg hover:border-primary/30 transition-all duration-300 group relative overflow-hidden">
                   {/* Subtle corner accent */}
                   <div className="absolute top-0 right-0 w-24 h-24 bg-primary/5 blur-3xl group-hover:bg-primary/10 transition-colors duration-500"></div>
@@ -136,15 +122,10 @@ export function FeatureShowcase() {
 
                     {/* Items in compact grid */}
                     <div className={`grid gap-2 ${isLarge ? "sm:grid-cols-2" : "grid-cols-1"}`}>
-                      {category.items.map((item, itemIdx) => (
-                        <motion.div
+                      {category.items.map((item) => (
+                        <div
                           key={item.name}
-                          initial={{ opacity: 0 }}
-                          whileInView={{ opacity: 1 }}
-                          viewport={{ once: true }}
-                          transition={{ delay: idx * 0.08 + itemIdx * 0.03 }}
-                          whileHover={{ x: 2 }}
-                          className="flex items-center gap-2.5 p-2.5 rounded-md bg-background/40 hover:bg-background/70 transition-colors border border-border/20 hover:border-primary/20 group/item"
+                          className="flex items-center gap-2.5 p-2.5 rounded-md bg-background/40 hover:bg-background/70 transition-all border border-border/20 hover:border-primary/20 hover:translate-x-0.5 duration-200 group/item"
                         >
                           <div className="text-xl w-7 h-7 flex items-center justify-center shrink-0 text-primary/80 group-hover/item:text-primary group-hover/item:scale-110 transition-all">
                             {item.icon}
@@ -155,12 +136,12 @@ export function FeatureShowcase() {
                               {item.description}
                             </div>
                           </div>
-                        </motion.div>
+                        </div>
                       ))}
                     </div>
                   </CardContent>
                 </Card>
-              </motion.div>
+              </div>
             );
           })}
         </div>
