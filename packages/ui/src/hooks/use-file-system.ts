@@ -133,6 +133,14 @@ export const useFileSystem = create<FileSystemState>()(
       onRehydrateStorage: () => (state) => {
         if (state) {
           state.ready = true;
+
+          // Auto-select first file if none selected
+          if (!state.currentFileId) {
+            const firstFile = findFirstFile(state.fileTree);
+            if (firstFile) {
+              state.currentFileId = firstFile.id;
+            }
+          }
         }
       },
     },
@@ -211,4 +219,15 @@ function removeItemFromTree(tree: FileNode[], itemId: string): FileNode[] {
     }
     return true;
   });
+}
+
+function findFirstFile(tree: FileNode[]): FileNode | undefined {
+  for (const node of tree) {
+    if (node.type === "file") return node;
+    if (node.children) {
+      const found = findFirstFile(node.children);
+      if (found) return found;
+    }
+  }
+  return undefined;
 }

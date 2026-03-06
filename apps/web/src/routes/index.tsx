@@ -11,43 +11,43 @@ import { Footer } from "@gately/ui/components/home/footer";
 import { ThemeToggle } from "../components/theme-toggle-wrapper";
 
 export const Route = createFileRoute("/")({
-	component: HomePage,
+  component: HomePage,
 });
 
 function HomePage() {
-	const [isScrolled, setIsScrolled] = useState(false);
-	const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-	useEffect(() => {
-		const handleScroll = () => {
-			if (window.scrollY > 10) {
-				setIsScrolled(true);
-			} else {
-				setIsScrolled(false);
-			}
-		};
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 10) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+    };
 
-		window.addEventListener("scroll", handleScroll);
-		return () => window.removeEventListener("scroll", handleScroll);
-	}, []);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
-	return (
-		<div className="flex min-h-dvh justify-items-center items-center flex-col bg-background text-foreground">
-			<Header 
-				isScrolled={isScrolled} 
-				mobileMenuOpen={mobileMenuOpen} 
-				setMobileMenuOpen={setMobileMenuOpen}
-				themeToggle={<ThemeToggle />}
-			/>
-			<main className="flex-1 w-full">
-				<Hero />
-				<Features />
-				<HowItWorks />
-				<Roadmap />
-				<FAQ />
-				<CTA />
-			</main>
-			<Footer />
-		</div>
-	);
+  return (
+    <div className="flex min-h-dvh justify-items-center items-center flex-col bg-background text-foreground">
+      <Header
+        isScrolled={isScrolled}
+        mobileMenuOpen={mobileMenuOpen}
+        setMobileMenuOpen={setMobileMenuOpen}
+        themeToggle={<ThemeToggle />}
+      />
+      <main className="flex-1 w-full">
+        <Hero />
+        <Features />
+        <HowItWorks />
+        <Roadmap />
+        <FAQ />
+        <CTA />
+      </main>
+      <Footer />
+    </div>
+  );
 }
