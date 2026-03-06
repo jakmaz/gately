@@ -1,0 +1,2 @@
+/* Ensure Tailwind v4 scans Astro page and layout files */
+@source "../**/*.astro";
