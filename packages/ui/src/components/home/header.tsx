@@ -5,6 +5,13 @@ import { useGithubStars } from "../../hooks/use-github-stars";
 import { cn, formatCompactNumber } from "@gately/core/utils";
 import type { ReactNode } from "react";
 
+const navLinks = [
+  { label: "Features", href: "/features" },
+  { label: "Docs", href: "/docs" },
+  { label: "Download", href: "/download" },
+  { label: "Changelog", href: "/changelog" },
+];
+
 interface HeaderProps {
   isScrolled: boolean;
   mobileMenuOpen: boolean;
@@ -14,17 +21,6 @@ interface HeaderProps {
 
 export function Header({ isScrolled, mobileMenuOpen, setMobileMenuOpen, themeToggle }: HeaderProps) {
   const { stargazersCount } = useGithubStars("jakmaz", "gately");
-
-  const handleScrollToSection = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault();
-    const targetId = e.currentTarget.getAttribute("href")?.slice(1);
-    if (!targetId) return;
-
-    const element = document.getElementById(targetId);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-    }
-  };
 
   return (
     <header
@@ -41,17 +37,16 @@ export function Header({ isScrolled, mobileMenuOpen, setMobileMenuOpen, themeTog
           </div>
         </a>
         <nav className="hidden md:flex gap-4 lg:gap-8 items-center">
-          {["Features", "How It Works", "Roadmap", "FAQ"].map((item, i) => (
+          {navLinks.map((link, i) => (
             <motion.a
-              key={item}
+              key={link.label}
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3, delay: 0.1 + i * 0.05 }}
-              href={`#${item.toLowerCase().replace(/\s+/g, "-")}`}
-              onClick={handleScrollToSection}
+              href={link.href}
               className="text-xs lg:text-sm font-medium text-muted-foreground transition-colors hover:text-foreground relative group"
             >
-              {item}
+              {link.label}
               <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
             </motion.a>
           ))}
@@ -113,20 +108,17 @@ export function Header({ isScrolled, mobileMenuOpen, setMobileMenuOpen, themeTog
           className="md:hidden absolute top-16 inset-x-0 bg-background/95 backdrop-blur-lg border-b"
         >
           <div className="container mx-auto py-4 flex flex-col gap-4 px-4">
-            {["Features", "How It Works", "Roadmap", "FAQ"].map((item, i) => (
+            {navLinks.map((link, i) => (
               <motion.a
-                key={item}
+                key={link.label}
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.2, delay: i * 0.05 }}
-                href={`#${item.toLowerCase().replace(/\s+/g, "-")}`}
-                onClick={(e) => {
-                  handleScrollToSection(e);
-                  setMobileMenuOpen(false);
-                }}
+                href={link.href}
+                onClick={() => setMobileMenuOpen(false)}
                 className="py-2 text-sm font-medium relative overflow-hidden group"
               >
-                <span className="relative z-10">{item}</span>
+                <span className="relative z-10">{link.label}</span>
                 <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
               </motion.a>
             ))}
