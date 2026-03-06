@@ -16,7 +16,7 @@ export function Footer() {
           <a href="mailto:contact@jakmaz.com" className="hover:text-foreground transition-colors">
             Contact
           </a>
-          <a href="/privacy-policy" className="hover:underline">
+          <a href="/privacy" className="hover:text-foreground transition-colors">
             Privacy Policy
           </a>
         </div>
