@@ -1,0 +1,65 @@
+---
+layout: ../../layouts/DocsLayout.astro
+title: AND, OR, NOT Basic Gates
+description: A complete reference guide to the fundamental Boolean logic gates in Gately.
+---
+import { DocsSimulator } from "../../components/docs/docs-simulator";
+import { MarkerType } from "@xyflow/react";
+
+export const andNodes = [
+  { id: "1", type: "toggleNode", position: { x: 0, y: 0 }, data: { label: "Input A", state: false } },
+  { id: "2", type: "toggleNode", position: { x: 0, y: 120 }, data: { label: "Input B", state: false } },
+  { id: "3", type: "andGate", position: { x: 200, y: 60 }, data: { label: "AND", state: false } },
+  { id: "4", type: "outputNode", position: { x: 400, y: 60 }, data: { label: "Output", state: false } }
+];
+
+export const andEdges = [
+  { id: "e1-3", source: "1", target: "3", targetHandle: "input-0", style: { stroke: "#3b82f6", strokeWidth: 2 }, markerEnd: { type: MarkerType.ArrowClosed, color: "#3b82f6" } },
+  { id: "e2-3", source: "2", target: "3", targetHandle: "input-1", style: { stroke: "#3b82f6", strokeWidth: 2 }, markerEnd: { type: MarkerType.ArrowClosed, color: "#3b82f6" } },
+  { id: "e3-4", source: "3", target: "4", style: { stroke: "#3b82f6", strokeWidth: 2 }, markerEnd: { type: MarkerType.ArrowClosed, color: "#3b82f6" } }
+];
+
+export const orNodes = [
+  { id: "1", type: "toggleNode", position: { x: 0, y: 0 }, data: { label: "Input A", state: false } },
+  { id: "2", type: "toggleNode", position: { x: 0, y: 120 }, data: { label: "Input B", state: false } },
+  { id: "3", type: "orGate", position: { x: 200, y: 60 }, data: { label: "OR", state: false } },
+  { id: "4", type: "outputNode", position: { x: 400, y: 60 }, data: { label: "Output", state: false } }
+];
+
+## The Foundation of Digital Logic
+
+Every complex digital system on the planet—from calculators to modern smartphones—relies heavily on basic logic gates. Understanding how these elementary components behave is critical to mastering the Gately visual logic editor.
+
+### The AND Gate
+
+The **AND gate** is an operation that evaluates to true if and only if **all** of its inputs are true. 
+* **Symbol:** A D-shaped component with straight back and curved front.
+* **Truth behavior:** Think of it like a strict bouncer at a club. You need *both* an ID **AND** a ticket to enter. If one is missing, output is `0`.
+
+<div className="my-10 h-[350px] w-full rounded-2xl overflow-hidden border border-border shadow-2xl relative">
+  <DocsSimulator initialNodes={andNodes} initialEdges={andEdges} height="h-[350px]" client:load />
+</div>
+
+<p className="text-sm text-center text-muted-foreground mt-[-10px] italic">Try flipping both switches ON to watch the logic pass mathematically to completion!</p>
+
+### The OR Gate
+
+The **OR gate** provides a true output when **at least one** of its inputs is true.
+* **Symbol:** A shield-shaped component with a curved back.
+* **Truth behavior:** Think of it like a multiple-choice question where choosing *any* correct answer gives you the point. If `Input A` **OR** `Input B` is ON, the output is `1`.
+
+<div className="my-10 h-[350px] w-full rounded-2xl overflow-hidden border border-border shadow-2xl relative">
+  <DocsSimulator initialNodes={orNodes} initialEdges={andEdges} height="h-[350px]" client:load />
+</div>
+
+### The NOT Gate (Inverter)
+
+The **NOT gate** simply reverses the input signal. It is the only gate with practically a single input and output.
+* **Symbol:** A small triangle pointing right, followed by a slight circular bubble (representing inversion).
+* **Truth behavior:** It fundamentally alters reality. If you input `1`, it outputs `0`. If you input `0`, it outputs `1`. 
+
+## Combining Gates
+
+You can assemble these three fundamental primitives to construct **compound gates** (like `NAND`, `XOR`, `XNOR`). For instance, stringing an `AND` gate directly into a `NOT` gate effectively performs the `NAND` operation!
+
+> "In classical computing architectures, all complex logic can ultimately be reduced into interconnected strings of NAND operations."
