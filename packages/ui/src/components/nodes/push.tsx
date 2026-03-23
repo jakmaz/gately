@@ -1,5 +1,6 @@
 import { calculateNodeStates } from "@gately/core/simulator";
 import type { LogicGateProps } from "@gately/core/types";
+import type { Node } from "@xyflow/react";
 import { useReactFlow } from "@xyflow/react";
 import { memo, useCallback } from "react";
 import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from "../ui/context-menu";
@@ -13,7 +14,7 @@ export const PushNode = memo(({ id, data, isConnectable }: LogicGateProps) => {
 
   const updateState = useCallback(
     (newState: boolean) => {
-      const nodes = getNodes() as any[];
+      const nodes = getNodes() as Node<GateNodeProps>[];
       const edges = getEdges();
 
       const updatedNodes = nodes.map((n) => (n.id === id ? { ...n, data: { ...n.data, state: newState } } : n));

@@ -1,3 +1,4 @@
+/** biome-ignore-all lint/suspicious/noArrayIndexKey: is fine */
 "use client";
 
 import type { GateNodeProps } from "@gately/core/types";
@@ -21,7 +22,7 @@ export function SimulationTab() {
     return <Circle className={`h-3 w-3 ${state ? "text-green-600 fill-green-600" : "text-red-600 fill-red-600"}`} />;
   };
 
-  const getInputsDisplay = (inputs: boolean[] | undefined) => {
+  const getInputsDisplay = (inputs: boolean[] | undefined, nodeId: string) => {
     if (!inputs || inputs.length === 0) {
       return <span className="text-xs text-muted-foreground">None</span>;
     }
@@ -29,7 +30,11 @@ export function SimulationTab() {
     return (
       <div className="flex gap-1 flex-wrap">
         {inputs.map((input, index) => (
-          <Badge key={`input-${index}`} variant={input ? "default" : "secondary"} className="text-xs px-1.5 py-0">
+          <Badge
+            key={`${nodeId}-input-${index}-${input ? "1" : "0"}`}
+            variant={input ? "default" : "secondary"}
+            className="text-xs px-1.5 py-0"
+          >
             {index}: {input ? "1" : "0"}
           </Badge>
         ))}
@@ -76,14 +81,14 @@ export function SimulationTab() {
                   {data?.inputs && (
                     <div className="space-y-1">
                       <div className="text-muted-foreground">Inputs:</div>
-                      {getInputsDisplay(data.inputs)}
+                      {getInputsDisplay(data.inputs, node.id)}
                     </div>
                   )}
 
                   {data?.outputs && (
                     <div className="space-y-1">
                       <div className="text-muted-foreground">Outputs:</div>
-                      {getInputsDisplay(data.outputs)}
+                      {getInputsDisplay(data.outputs, node.id)}
                     </div>
                   )}
                 </div>
@@ -103,7 +108,7 @@ export function SimulationTab() {
           <div className="space-y-1">
             {debugInfo.warnings.map((warning: string, index: number) => (
               <div
-                key={`warning-${index}`}
+                key={`warning-${index}-${warning.slice(0, 20)}`}
                 className="text-xs p-2 bg-yellow-50 dark:bg-yellow-900/20 text-yellow-700 dark:text-yellow-400 rounded border"
               >
                 {warning}
@@ -122,7 +127,7 @@ export function SimulationTab() {
           <div className="space-y-1">
             {debugInfo.errors.map((error: string, index: number) => (
               <div
-                key={`error-${index}`}
+                key={`error-${index}-${error.slice(0, 20)}`}
                 className="text-xs p-2 bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-400 rounded border"
               >
                 {error}
