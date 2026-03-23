@@ -1,8 +1,8 @@
 "use client";
 
-import { Moon, Sun } from "lucide-react";
 import { Button } from "@gately/ui/components/ui/button";
-import { useState, useEffect } from "react";
+import { Moon, Sun } from "lucide-react";
+import { useEffect, useState } from "react";
 
 export function ThemeToggle() {
   const [theme, setThemeState] = useState<"light" | "dark">("dark");
@@ -15,14 +15,14 @@ export function ThemeToggle() {
 
   const toggleTheme = () => {
     const newTheme = theme === "light" ? "dark" : "light";
-    
+
     // Update DOM
     document.documentElement.classList.remove("light", "dark");
     document.documentElement.classList.add(newTheme);
-    
+
     // Update localStorage
     localStorage.setItem("theme", newTheme);
-    
+
     // Update state
     setThemeState(newTheme);
   };

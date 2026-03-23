@@ -17,12 +17,12 @@ import {
 import { useCallback, useRef, useState } from "react";
 import "@xyflow/react/dist/style.css";
 
-import confetti from "canvas-confetti";
 import { calculateNodeStates } from "@gately/core/simulator";
 import type { GateNodeProps } from "@gately/core/types";
 import { ANDGateNode } from "@gately/ui/components/nodes/and";
 import { OutputNode } from "@gately/ui/components/nodes/output";
 import { ToggleNode } from "@gately/ui/components/nodes/toggle";
+import confetti from "canvas-confetti";
 
 const nodeTypes: NodeTypes = {
   toggleNode: ToggleNode,

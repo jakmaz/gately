@@ -1,10 +1,10 @@
 "use client";
 
 import { Bug } from "lucide-react";
+import { useSettingsStore } from "../../hooks/use-settings-store";
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
-import { useSettingsStore } from "../../hooks/use-settings-store";
 import { ExportTab } from "./debug-export-tab";
 import { PerformanceTab } from "./debug-performance-tab";
 import { SimulationTab } from "./debug-simulation-tab";

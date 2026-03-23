@@ -1,5 +1,5 @@
-import { useContext, useEffect, useState, type ReactNode } from "react";
 import { ThemeContext } from "@gately/ui/hooks/use-theme";
+import { type ReactNode, useContext, useEffect, useState } from "react";
 
 type Theme = "light" | "dark" | "system";
 

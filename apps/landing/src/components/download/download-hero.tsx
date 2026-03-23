@@ -1,6 +1,6 @@
-import { Apple, ArrowRight, Monitor } from "lucide-react";
 import { Badge } from "@gately/ui/components/ui/badge";
 import { Button } from "@gately/ui/components/ui/button";
+import { Apple, ArrowRight, Monitor } from "lucide-react";
 
 export function DownloadHero() {
   return (
@@ -46,9 +46,7 @@ export function DownloadHero() {
             </Button>
           </div>
 
-          <p className="text-sm text-muted-foreground mt-6">
-            Windows and Linux versions are in development
-          </p>
+          <p className="text-sm text-muted-foreground mt-6">Windows and Linux versions are in development</p>
         </div>
       </div>
 

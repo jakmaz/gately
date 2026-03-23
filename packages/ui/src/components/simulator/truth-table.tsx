@@ -1,12 +1,12 @@
 "use client";
 
+import { calculateNodeStates } from "@gately/core/simulator";
+import type { GateNodeProps } from "@gately/core/types";
 import type { Edge, Node } from "@xyflow/react";
 import { useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
-import { calculateNodeStates } from "@gately/core/simulator";
-import type { GateNodeProps } from "@gately/core/types";
 
 interface TruthTableProps {
   nodes: Node<GateNodeProps>[];

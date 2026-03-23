@@ -1,5 +1,5 @@
-import { Book } from "lucide-react";
 import { Badge } from "@gately/ui/components/ui/badge";
+import { Book } from "lucide-react";
 
 export function DocsHero() {
   return (

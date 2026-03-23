@@ -1,7 +1,7 @@
-import { useReactFlow } from "@xyflow/react";
-import { memo, useCallback } from "react";
 import { calculateNodeStates } from "@gately/core/simulator";
 import type { LogicGateProps } from "@gately/core/types";
+import { useReactFlow } from "@xyflow/react";
+import { memo, useCallback } from "react";
 import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from "../ui/context-menu";
 import { OutputHandle } from "./base/gate-handle";
 

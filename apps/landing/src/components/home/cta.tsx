@@ -1,5 +1,5 @@
-import { ArrowRight } from "lucide-react";
 import { Button } from "@gately/ui/components/ui/button";
+import { ArrowRight } from "lucide-react";
 
 export function CTA() {
   return (
@@ -42,9 +42,7 @@ export function CTA() {
               </Button>
             </a>
           </div>
-          <p className="text-sm text-primary-foreground/80 mt-4">
-            No login. No limits. Free and open source.
-          </p>
+          <p className="text-sm text-primary-foreground/80 mt-4">No login. No limits. Free and open source.</p>
         </div>
       </div>
     </section>

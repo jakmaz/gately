@@ -1,9 +1,8 @@
 "use client";
 
+import { cn } from "@gately/core/utils";
 import * as LabelPrimitive from "@radix-ui/react-label";
 import type * as React from "react";
-
-import { cn } from "@gately/core/utils";
 
 function Label({ className, ...props }: React.ComponentProps<typeof LabelPrimitive.Root>) {
   return (

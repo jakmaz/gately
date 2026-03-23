@@ -1,6 +1,6 @@
-import { ArrowRight, Sparkles } from "lucide-react";
 import { Badge } from "@gately/ui/components/ui/badge";
 import { Button } from "@gately/ui/components/ui/button";
+import { ArrowRight, Sparkles } from "lucide-react";
 
 export function FeaturesHero() {
   return (

@@ -2,6 +2,7 @@ import { ChevronRight, Download, Edit, File, Folder, FolderOpen, MoreVertical, P
 import { AnimatePresence, LayoutGroup, motion } from "motion/react";
 import { useState } from "react";
 import { toast } from "sonner";
+import { type FileNode, useFileSystem } from "../../hooks/use-file-system";
 import { Button } from "../ui/button";
 import {
   Dialog,
@@ -14,7 +15,6 @@ import {
 } from "../ui/dialog";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../ui/dropdown-menu";
 import { Input } from "../ui/input";
-import { type FileNode, useFileSystem } from "../../hooks/use-file-system";
 import { InfoDialog } from "./info-dialog";
 import { ThemeToggle } from "./theme-toggle";
 

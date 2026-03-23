@@ -1,6 +1,6 @@
-import { Brain, Folder, Grid, Layers, Share2, Users } from "lucide-react";
 import { Badge } from "@gately/ui/components/ui/badge";
 import { Card, CardContent } from "@gately/ui/components/ui/card";
+import { Brain, Folder, Grid, Layers, Share2, Users } from "lucide-react";
 
 const roadmapItems = [
   {

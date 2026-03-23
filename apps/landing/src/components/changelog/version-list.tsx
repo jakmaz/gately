@@ -1,6 +1,6 @@
-import { Check, Plus, Sparkles, Wrench } from "lucide-react";
-import { Card, CardContent } from "@gately/ui/components/ui/card";
 import { Badge } from "@gately/ui/components/ui/badge";
+import { Card, CardContent } from "@gately/ui/components/ui/card";
+import { Check, Plus, Sparkles, Wrench } from "lucide-react";
 
 interface ChangeEntry {
   type: "added" | "improved" | "fixed";

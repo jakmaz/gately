@@ -1,14 +1,14 @@
 "use client";
 
+import type { GateNodeProps } from "@gately/core/types";
 import { useReactFlow } from "@xyflow/react";
 import { Copy, Download } from "lucide-react";
 import { toast } from "sonner";
-import { Button } from "../ui/button";
-import { ScrollArea } from "../ui/scroll-area";
 import { useDebugData } from "../../hooks/use-debug-data";
 import { useExport } from "../../hooks/use-export";
 import { useFileSystem } from "../../hooks/use-file-system";
-import type { GateNodeProps } from "@gately/core/types";
+import { Button } from "../ui/button";
+import { ScrollArea } from "../ui/scroll-area";
 
 export function ExportTab() {
   const reactFlow = useReactFlow();

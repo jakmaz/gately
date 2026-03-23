@@ -1,8 +1,8 @@
-import { ChevronRight, Github, Menu, X } from "lucide-react";
-import { Button } from "@gately/ui/components/ui/button";
-import { useGithubStars } from "../../hooks/use-github-stars";
 import { cn, formatCompactNumber } from "@gately/core/utils";
+import { Button } from "@gately/ui/components/ui/button";
+import { ChevronRight, Github, Menu, X } from "lucide-react";
 import type { ReactNode } from "react";
+import { useGithubStars } from "../../hooks/use-github-stars";
 
 const navLinks = [
   { label: "Home", href: "/" },
@@ -64,9 +64,7 @@ export function Header({ isScrolled, mobileMenuOpen, setMobileMenuOpen, themeTog
             </Button>
           </div>
 
-          <div>
-            {themeToggle}
-          </div>
+          <div>{themeToggle}</div>
           <div>
             <Button className="rounded-full cursor-pointer transition-transform hover:scale-105 font-medium" asChild>
               <a href="/editor">

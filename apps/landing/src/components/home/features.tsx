@@ -1,6 +1,6 @@
-import { Cpu, FolderTree, LayoutTemplate, Settings, Share2, Zap } from "lucide-react";
 import { Badge } from "@gately/ui/components/ui/badge";
 import { Card, CardContent } from "@gately/ui/components/ui/card";
+import { Cpu, FolderTree, LayoutTemplate, Settings, Share2, Zap } from "lucide-react";
 
 const features = [
   {
@@ -59,7 +59,10 @@ export function Features() {
 
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {features.map((feature) => (
-            <Card key={feature.title} className="h-full overflow-hidden border-border/40 bg-gradient-to-b from-card to-card/50 backdrop-blur transition-all hover:shadow-lg hover:border-primary/20 hover:-translate-y-1 group">
+            <Card
+              key={feature.title}
+              className="h-full overflow-hidden border-border/40 bg-gradient-to-b from-card to-card/50 backdrop-blur transition-all hover:shadow-lg hover:border-primary/20 hover:-translate-y-1 group"
+            >
               <CardContent>
                 <div className="size-12 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-4 group-hover:bg-primary/20 transition-colors duration-300">
                   {feature.icon}

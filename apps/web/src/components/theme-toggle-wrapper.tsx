@@ -1,5 +1,5 @@
-import { Moon, Sun } from "lucide-react";
 import { Button } from "@gately/ui/components/ui/button";
+import { Moon, Sun } from "lucide-react";
 import { useTheme } from "../providers/theme-provider";
 
 export function ThemeToggle() {

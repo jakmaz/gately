@@ -1,6 +1,6 @@
-import { ArrowRight, Github, MessageCircle } from "lucide-react";
 import { Button } from "@gately/ui/components/ui/button";
 import { Card, CardContent } from "@gately/ui/components/ui/card";
+import { ArrowRight, Github, MessageCircle } from "lucide-react";
 
 export function DocsResources() {
   return (

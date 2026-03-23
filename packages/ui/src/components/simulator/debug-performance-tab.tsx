@@ -1,8 +1,8 @@
 "use client";
 
 import { useReactFlow } from "@xyflow/react";
-import { Badge } from "../ui/badge";
 import { useDebugData } from "../../hooks/use-debug-data";
+import { Badge } from "../ui/badge";
 
 export function PerformanceTab() {
   const reactFlow = useReactFlow();

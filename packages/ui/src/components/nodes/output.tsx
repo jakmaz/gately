@@ -1,7 +1,7 @@
 "use client";
 
-import { memo } from "react";
 import type { LogicGateProps } from "@gately/core/types";
+import { memo } from "react";
 import { InputHandle } from "./base/gate-handle";
 
 const W = 60;

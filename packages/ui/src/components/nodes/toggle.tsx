@@ -1,9 +1,9 @@
 "use client";
 
-import { memo } from "react";
-import { Switch } from "../ui/switch";
 import type { LogicGateProps } from "@gately/core/types";
+import { memo } from "react";
 import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from "../ui/context-menu";
+import { Switch } from "../ui/switch";
 import { OutputHandle } from "./base/gate-handle";
 
 const W = 60;

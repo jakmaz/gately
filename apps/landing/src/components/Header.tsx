@@ -1,8 +1,7 @@
 "use client";
 
-import { ChevronRight, Github, Menu, X } from "lucide-react";
 import { Button } from "@gately/ui/components/ui/button";
-import { cn } from "@gately/core/utils";
+import { ChevronRight, Github, Menu, X } from "lucide-react";
 import { useState } from "react";
 import { ThemeToggle } from "./ThemeToggle";
 
@@ -50,7 +49,7 @@ export function Header() {
           </Button>
 
           <ThemeToggle />
-          
+
           <Button className="rounded-full cursor-pointer transition-transform hover:scale-105 font-medium" asChild>
             <a href="/editor">
               Open Editor

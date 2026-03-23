@@ -1,5 +1,5 @@
-import { Cpu, HardDrive, MonitorCheck } from "lucide-react";
 import { Card, CardContent } from "@gately/ui/components/ui/card";
+import { Cpu, HardDrive, MonitorCheck } from "lucide-react";
 
 const platforms = [
   {

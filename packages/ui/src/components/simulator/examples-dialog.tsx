@@ -1,12 +1,12 @@
 "use client";
 
+import type { GateNodeProps } from "@gately/core/types";
 import type { Edge, Node } from "@xyflow/react";
 import { Calculator, Clock, Download, Shuffle, Zap } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "../ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "../ui/dialog";
-import type { GateNodeProps } from "@gately/core/types";
 
 interface ExamplesDialogProps {
   open: boolean;

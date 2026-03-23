@@ -1,11 +1,11 @@
 "use client";
 
+import type { GateNodeProps } from "@gately/core/types";
 import { useReactFlow } from "@xyflow/react";
 import { Circle, CircleAlert, Minus } from "lucide-react";
+import { useDebugData } from "../../hooks/use-debug-data";
 import { Badge } from "../ui/badge";
 import { ScrollArea } from "../ui/scroll-area";
-import { useDebugData } from "../../hooks/use-debug-data";
-import type { GateNodeProps } from "@gately/core/types";
 
 export function SimulationTab() {
   const reactFlow = useReactFlow();

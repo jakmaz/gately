@@ -29,7 +29,7 @@
     
     <!-- Theme script - runs BEFORE page renders to prevent flash -->
     <script>
-      (function() {
+      (() => {
         const theme = localStorage.getItem('theme') || 'dark';
         const resolved = theme === 'system' 
           ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')

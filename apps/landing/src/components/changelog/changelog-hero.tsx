@@ -1,5 +1,5 @@
-import { History } from "lucide-react";
 import { Badge } from "@gately/ui/components/ui/badge";
+import { History } from "lucide-react";
 
 export function ChangelogHero() {
   return (
