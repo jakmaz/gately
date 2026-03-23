@@ -2,7 +2,7 @@
 import LandingLayout from "./LandingLayout.astro";
 import { docsSections } from "../components/docs/docs-config";
 
-const { frontmatter } = Astro.props;
+const { frontmatter, headings = [] } = Astro.props;
 const currentPath = Astro.url.pathname.replace(/\/$/, ""); // Normalize trailing slashes
 
 // Flatten all topics that have an actual href link to sequence the Next/Previous pagination
@@ -84,5 +84,26 @@ const nextTopic = currentIndex !== -1 && currentIndex < allTopics.length - 1 ? a
         </div>
       )}
     </main>
+
+    {/* Right Sidebar - Table of Contents */}
+    <aside class="hidden xl:block w-64 shrink-0 order-3 sticky top-24 h-[calc(100vh-8rem)] overflow-y-auto pb-10" style="scrollbar-width: thin">
+      {headings && headings.length > 0 && (
+        <div class="px-3">
+          <h4 class="font-bold text-foreground text-xs tracking-widest uppercase mb-4">On this page</h4>
+          <ul class="space-y-2.5">
+            {headings.filter((h: any) => h.depth > 1 && h.depth < 4).map((heading: any) => (
+              <li class={`${heading.depth === 3 ? "pl-4" : ""}`}>
+                <a 
+                  href={`#${heading.slug}`} 
+                  class="text-sm block text-muted-foreground hover:text-primary hover:bg-primary/5 px-2 py-1 rounded-md transition-colors"
+                >
+                  {heading.text}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </aside>
   </div>
 </LandingLayout>
