@@ -1,24 +1,88 @@
 ---
 import LandingLayout from "./LandingLayout.astro";
+import { docsSections } from "../components/docs/docs-config";
 
 const { frontmatter } = Astro.props;
+const currentPath = Astro.url.pathname.replace(/\/$/, ""); // Normalize trailing slashes
+
+// Flatten all topics that have an actual href link to sequence the Next/Previous pagination
+const allTopics = docsSections.flatMap((sec) => sec.topics).filter((t) => t.href);
+const currentIndex = allTopics.findIndex((t) => t.href === currentPath);
+
+const prevTopic = currentIndex > 0 ? allTopics[currentIndex - 1] : null;
+const nextTopic = currentIndex !== -1 && currentIndex < allTopics.length - 1 ? allTopics[currentIndex + 1] : null;
 ---
 
 <LandingLayout title={frontmatter.title} description={frontmatter.description}>
-  <div class="container mx-auto px-4 py-16 md:py-24 max-w-4xl relative isolate">
+  <div class="container mx-auto px-4 py-8 md:py-16 flex flex-col md:flex-row gap-8 lg:gap-12 relative isolate">
     {/* Subtle grid background */}
     <div class="absolute inset-0 -z-10 bg-[linear-gradient(to_right,rgba(from_var(--muted-foreground)_r_g_b_/_0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(from_var(--muted-foreground)_r_g_b_/_0.03)_1px,transparent_1px)] bg-[size:3rem_3rem]"></div>
     
-    <article class="bg-card/50 backdrop-blur border border-border/40 shadow-xl rounded-2xl p-8 md:p-12 relative">
-      <div class="mb-10 text-center md:text-left border-b border-border/40 pb-10">
-        <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight mb-4 bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
-          {frontmatter.title}
-        </h1>
-        {frontmatter.description && <p class="text-xl text-muted-foreground">{frontmatter.description}</p>}
-      </div>
-      <div class="markdown-body space-y-6">
-        <slot />
-      </div>
-    </article>
+    {/* Left Sidebar Map */}
+    <aside class="w-full md:w-64 lg:w-72 md:shrink-0 order-2 md:order-1 border-t md:border-t-0 md:border-r border-border/40 pt-8 md:pt-0 pr-0 md:pr-6 md:sticky md:top-24 md:h-[calc(100vh-8rem)] overflow-y-auto" style="scrollbar-width: thin">
+      <nav class="space-y-8 pb-10">
+        {docsSections.map((section) => (
+          <div class="space-y-3">
+            <h4 class="font-bold text-foreground text-xs tracking-widest uppercase mb-3 px-3">{section.title}</h4>
+            <ul class="space-y-1">
+              {section.topics.map((topic) => (
+                <li>
+                  {topic.href ? (
+                    <a 
+                      href={topic.href} 
+                      class={`block px-3 py-2 text-sm rounded-md transition-colors ${currentPath === topic.href ? "bg-primary/10 text-primary font-medium" : "text-muted-foreground hover:bg-muted/50 hover:text-foreground"}`}
+                    >
+                      {topic.label}
+                    </a>
+                  ) : (
+                    <span class="block px-3 py-2 text-sm text-muted-foreground/50 cursor-not-allowed">
+                      {topic.label}
+                    </span>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </nav>
+    </aside>
+
+    {/* Main Markdown Content Area */}
+    <main class="flex-1 w-full order-1 md:order-2 max-w-4xl min-w-0">
+      <article class="bg-card/50 backdrop-blur border border-border/40 shadow-xl rounded-2xl p-6 sm:p-8 md:p-12 relative mb-12">
+        <div class="mb-10 text-center md:text-left border-b border-border/40 pb-10">
+          <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight mb-4 bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
+            {frontmatter.title}
+          </h1>
+          {frontmatter.description && <p class="text-xl text-muted-foreground">{frontmatter.description}</p>}
+        </div>
+        <div class="markdown-body space-y-6">
+          <slot />
+        </div>
+      </article>
+
+      {/* Pagination Footer */}
+      {(prevTopic || nextTopic) && (
+        <div class="grid sm:grid-cols-2 gap-4 border-t border-border/40 pt-8 pb-16">
+          {prevTopic ? (
+            <a href={prevTopic.href} class="flex flex-col gap-2 p-5 rounded-xl border border-border/40 bg-card/30 hover:bg-muted/30 hover:border-primary/30 transition-all group">
+              <span class="text-xs font-bold uppercase tracking-wider text-muted-foreground">Previous Lesson</span>
+              <span class="text-primary font-medium group-hover:underline decoration-primary/50 underline-offset-4 flex items-center justify-start gap-2">
+                <span class="text-xl leading-none">&larr;</span> {prevTopic.label}
+              </span>
+            </a>
+          ) : <div></div>}
+          
+          {nextTopic ? (
+            <a href={nextTopic.href} class="flex flex-col gap-2 p-5 rounded-xl border border-border/40 bg-card/30 hover:bg-muted/30 hover:border-primary/30 transition-all sm:text-right group items-start sm:items-end w-full">
+              <span class="text-xs font-bold uppercase tracking-wider text-muted-foreground">Next Lesson</span>
+              <span class="text-primary font-medium group-hover:underline decoration-primary/50 underline-offset-4 flex items-center justify-end gap-2 w-full">
+                {nextTopic.label} <span class="text-xl leading-none">&rarr;</span>
+              </span>
+            </a>
+          ) : <div></div>}
+        </div>
+      )}
+    </main>
   </div>
 </LandingLayout>

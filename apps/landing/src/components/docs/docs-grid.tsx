@@ -1,51 +1,5 @@
-import { ArrowRight, BookOpen, Lightbulb, Rocket, Wrench } from "lucide-react";
-
-const sections = [
-  {
-    title: "Getting Started",
-    description: "Quick start guide to building your first circuit",
-    icon: <Rocket className="size-5" />,
-    topics: [
-      { label: "Creating your first circuit", href: "/docs/first-circuit" },
-      { label: "Understanding the interface" },
-      { label: "Basic gate operations", href: "/docs/basic-gates" },
-      { label: "Saving and loading projects" },
-    ],
-  },
-  {
-    title: "Gate Reference",
-    description: "Complete guide to all available logic gates",
-    icon: <BookOpen className="size-5" />,
-    topics: [
-      { label: "AND, OR, NOT gates", href: "/docs/basic-gates" },
-      { label: "NAND and NOR gates" },
-      { label: "XOR and XNOR gates" },
-      { label: "Truth tables explained" },
-    ],
-  },
-  {
-    title: "Editor Features",
-    description: "Master the circuit editor tools",
-    icon: <Wrench className="size-5" />,
-    topics: [
-      { label: "Drag and drop components" },
-      { label: "Wiring and connections" },
-      { label: "Labeling and organization" },
-      { label: "Keyboard shortcuts", href: "/docs/shortcuts" },
-    ],
-  },
-  {
-    title: "Tutorials",
-    description: "Step-by-step project guides",
-    icon: <Lightbulb className="size-5" />,
-    topics: [
-      { label: "Build a half adder" },
-      { label: "Create a full adder" },
-      { label: "Design a multiplexer" },
-      { label: "Complex circuit patterns" },
-    ],
-  },
-];
+import { ArrowRight } from "lucide-react";
+import { docsSections } from "./docs-config";
 
 export function DocsGrid() {
   return (
@@ -54,7 +8,7 @@ export function DocsGrid() {
 
       <div className="container mx-auto px-4 md:px-6">
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-          {sections.map((section) => (
+          {docsSections.map((section) => (
             <div key={section.title} className="group relative">
               <div className="h-full border border-border/40 bg-gradient-to-b from-card to-card/50 backdrop-blur hover:shadow-lg transition-all hover:border-primary/20 rounded-lg p-6 space-y-4">
                 <div className="size-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary group-hover:scale-105 transition-transform">
