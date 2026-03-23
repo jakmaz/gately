@@ -1,5 +1,5 @@
 import { calculateNodeStates } from "@gately/core/simulator";
-import type { LogicGateProps } from "@gately/core/types";
+import type { GateNodeProps, LogicGateProps } from "@gately/core/types";
 import type { Node } from "@xyflow/react";
 import { useReactFlow } from "@xyflow/react";
 import { memo, useCallback } from "react";
