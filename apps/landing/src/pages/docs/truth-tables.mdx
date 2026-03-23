@@ -3,6 +3,7 @@ layout: ../../layouts/DocsLayout.astro
 title: Truth Tables Explained
 description: Learn to read and generate truth tables to mathematically profile your circuits.
 ---
+import { TruthTable } from "../../components/docs/truth-table";
 
 ## What is a Truth Table?
 
@@ -14,11 +15,28 @@ In human terms: It’s basically a cheat sheet showing exactly what an output wi
 
 Let's imagine an AND gate with two inputs, A and B, and one output, Q. Since there are 2 inputs in binary, there are exactly 4 total possible states (`2^n`).
 
-| Input A | Input B | Output (Q) |
-|---------|---------|------------|
-| 0 | 0 | **0** |
-| 0 | 1 | **0** |
-| 1 | 0 | **0** |
-| 1 | 1 | **1** |
+<TruthTable 
+  headers={["Input A", "Input B", "Output (Q)"]}
+  rows={[
+    [0, 0, 0],
+    [0, 1, 0],
+    [1, 0, 0],
+    [1, 1, 1],
+  ]}
+/>
+
+### A Basic OR Gate Truth Table
+
+The OR gate evaluates to High (`1`) if absolutely any of its contributing inputs are High.
+
+<TruthTable 
+  headers={["Input A", "Input B", "Output (Q)"]}
+  rows={[
+    [0, 0, 0],
+    [0, 1, 1],
+    [1, 0, 1],
+    [1, 1, 1],
+  ]}
+/>
 
 Gately features automated truth table generation. When you select a cluster of interconnected logic gates, you can mathematically generate exactly how those gates compute entirely without manually toggling inputs!
