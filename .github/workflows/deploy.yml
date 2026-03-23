@@ -16,10 +16,10 @@ jobs:
         run: bun install
 
       - name: Build landing
-        run: bun run deploy:landing
+        run: bun run build:landing
 
       - name: Build web
-        run: bun run deploy:web
+        run: bun run build:web
 
       - name: Deploy landing to Cloudflare Pages
         uses: cloudflare/wrangler-action@v3
