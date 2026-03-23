@@ -1,4 +1,5 @@
 ---
+import { ClientRouter } from 'astro:transitions';
 import "@gately/ui/globals.css";
 import "../styles/astro-scan.css";
 import "@fontsource/geist-sans/400.css";
@@ -24,19 +25,30 @@ const {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
+    <ClientRouter />
     
     <title>{title}</title>
     <meta name="description" content={description} />
     
     <!-- Theme script - runs BEFORE page renders to prevent flash -->
     <script is:inline>
-      (function() {
+      const applyTheme = () => {
         const theme = localStorage.getItem('theme') || 'dark';
         const resolved = theme === 'system' 
           ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
           : theme;
+        document.documentElement.classList.remove('light', 'dark');
         document.documentElement.classList.add(resolved);
-      })();
+      };
+
+      // Apply initially
+      applyTheme();
+
+      // Ensure the theme is preserved during the view transition swap
+      // By mutating the new document BEFORE it's swapped in, we prevent any CSS transition flashes
+      document.addEventListener('astro:before-swap', (ev) => {
+        ev.newDocument.documentElement.className = document.documentElement.className;
+      });
     </script>
   </head>
   <body class="font-sans antialiased" style="font-family: var(--font-geist-sans, 'Geist Sans', sans-serif)">

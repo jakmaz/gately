@@ -11,7 +11,7 @@ export function Hero() {
         <div className="grid items-center gap-8 lg:grid-cols-2">
           {/* Left Column - Text Content */}
           <div className="mx-auto sm:text-left text-center">
-            <div className="flex justify-center sm:justify-start">
+            <div className="flex justify-center sm:justify-start opacity-0 animate-[fade-up_0.5s_ease-out_forwards]">
               <Badge
                 className="mb-4 rounded-full px-4 py-1.5 text-sm font-medium shadow-sm transition-none"
                 variant="secondary"
@@ -19,16 +19,16 @@ export function Hero() {
                 <span className="text-primary mr-1">✦</span> Visual Logic Editor
               </Badge>
             </div>
-            <h1 className="from-foreground via-foreground/90 to-foreground/70 mb-6 bg-linear-to-r bg-clip-text text-4xl font-bold tracking-tight text-transparent md:text-5xl lg:text-6xl">
+            <h1 className="from-foreground via-foreground/90 to-foreground/70 mb-6 bg-linear-to-r bg-clip-text text-4xl font-bold tracking-tight text-transparent md:text-5xl lg:text-6xl opacity-0 animate-[fade-up_0.5s_ease-out_forwards] [animation-delay:150ms]">
               Design Logic
               <br />
               <span className="-ml-2 font-serif text-muted-foreground italic">Visually</span> with{" "}
               <span className="text-primary">gately</span>
             </h1>
-            <p className="text-muted-foreground mb-8 text-lg leading-relaxed md:text-xl">
+            <p className="text-muted-foreground mb-8 text-lg leading-relaxed md:text-xl opacity-0 animate-[fade-up_0.5s_ease-out_forwards] [animation-delay:300ms]">
               Build logic circuits with a drag-and-drop interface. Real-time feedback.
             </p>
-            <div className="flex flex-col gap-4 sm:flex-row">
+            <div className="flex flex-col gap-4 sm:flex-row opacity-0 animate-[fade-up_0.5s_ease-out_forwards] [animation-delay:450ms]">
               <Button
                 size="lg"
                 className="h-12 w-full cursor-pointer rounded-full text-base shadow-md transition-transform duration-300 hover:-translate-y-0.5 hover:shadow-lg"
@@ -40,7 +40,7 @@ export function Hero() {
                 </a>
               </Button>
             </div>
-            <div className="mt-8 flex flex-wrap sm:justify-start justify-center items-center gap-6">
+            <div className="mt-8 flex flex-wrap sm:justify-start justify-center items-center gap-6 opacity-0 animate-[fade-up_0.5s_ease-out_forwards] [animation-delay:600ms]">
               <div className="hidden sm:flex text-muted-foreground items-center gap-2 text-sm">
                 <Check className="text-primary size-5" />
                 <span>Drag & Drop Interface</span>
@@ -57,7 +57,7 @@ export function Hero() {
           </div>
 
           {/* Right Column - Preview Card */}
-          <div className="relative">
+          <div className="relative opacity-0 animate-[fade-up_0.8s_ease-out_forwards] [animation-delay:300ms]">
             <Card className="p-0 border-border/40 from-background to-background/95 relative overflow-hidden rounded-2xl bg-linear-to-b shadow-xl backdrop-blur">
               <CardContent className="p-0">
                 <div className="flex items-center justify-between border-b p-4">

@@ -13,7 +13,9 @@ const { title, description } = Astro.props;
 
 <BaseLayout title={title} description={description}>
   <div class="flex min-h-dvh justify-items-center items-center flex-col bg-background text-foreground">
-    <Header client:load />
+    <div transition:persist="header" class="w-full relative z-50">
+      <Header client:load />
+    </div>
     <main class="flex-1 w-full">
       <slot />
     </main>

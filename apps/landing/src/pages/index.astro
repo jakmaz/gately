@@ -1,33 +1,18 @@
 ---
-import { Header } from "../components/Header";
 import { CTA } from "../components/home/cta";
 import { FAQ } from "../components/home/faq";
 import { Features } from "../components/home/features";
-import { Footer } from "../components/home/footer";
 import { Hero } from "../components/home/hero";
 import { HowItWorks } from "../components/home/how-it-works";
 import { Roadmap } from "../components/home/roadmap";
-import "@gately/ui/globals.css";
+import LandingLayout from "../layouts/LandingLayout.astro";
 ---
 
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Gately - Visual Logic Circuit Editor</title>
-    <meta name="description" content="Build, simulate, and share digital circuits with an intuitive drag-and-drop interface." />
-  </head>
-  <body>
-    <Header client:only="react" />
-    <main>
-      <Hero client:only="react" />
-      <Features client:load />
-      <HowItWorks client:load />
-      <Roadmap client:load />
-      <FAQ client:only="react" />
-      <CTA client:load />
-    </main>
-    <Footer client:load />
-  </body>
-</html>
+<LandingLayout>
+  <Hero client:load />
+  <Features client:load />
+  <HowItWorks client:load />
+  <Roadmap client:load />
+  <FAQ client:only="react" />
+  <CTA client:load />
+</LandingLayout>

@@ -14,7 +14,7 @@ import {
   useEdgesState,
   useNodesState,
 } from "@xyflow/react";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useRef, useState, useEffect } from "react";
 import "@xyflow/react/dist/style.css";
 
 import { calculateNodeStates } from "@gately/core/simulator";
@@ -91,6 +91,11 @@ export function MiniPreview() {
   const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>(initialEdges);
   const [reactFlowInstance, setReactFlowInstance] = useState<ReactFlowInstance<Node<GateNodeProps>, Edge> | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   // Helper function to get confetti origin relative to container center
   const getConfettiOrigin = useCallback(() => {
@@ -250,6 +255,10 @@ export function MiniPreview() {
       }, 100);
     }
   };
+
+  if (!isMounted) {
+    return <div className="h-40 sm:h-82 w-full bg-muted/10 animate-pulse rounded-xl" />;
+  }
 
   return (
     <div ref={containerRef} className="h-40 sm:h-82 w-full">
