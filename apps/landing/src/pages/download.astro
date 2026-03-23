@@ -1,0 +1,17 @@
+---
+import { DesktopFeatures } from "../components/download/desktop-features";
+import { DownloadHero } from "../components/download/download-hero";
+import { InstallationGuide } from "../components/download/installation-guide";
+import { SystemRequirements } from "../components/download/system-requirements";
+import LandingLayout from "../layouts/LandingLayout.astro";
+---
+
+<LandingLayout 
+  title="Download - Gately"
+  description="Download Gately desktop application for Windows, macOS, and Linux."
+>
+  <DownloadHero client:load />
+  <DesktopFeatures client:load />
+  <InstallationGuide client:load />
+  <SystemRequirements client:load />
+</LandingLayout>

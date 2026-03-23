@@ -1,0 +1,15 @@
+---
+import { DocsGrid } from "../components/docs/docs-grid";
+import { DocsHero } from "../components/docs/docs-hero";
+import { DocsResources } from "../components/docs/docs-resources";
+import LandingLayout from "../layouts/LandingLayout.astro";
+---
+
+<LandingLayout 
+  title="Documentation - Gately"
+  description="Learn how to use Gately's visual logic editor with comprehensive guides and tutorials."
+>
+  <DocsHero client:load />
+  <DocsGrid client:load />
+  <DocsResources client:load />
+</LandingLayout>
