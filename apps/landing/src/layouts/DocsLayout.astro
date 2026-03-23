@@ -1,0 +1,24 @@
+---
+import LandingLayout from "./LandingLayout.astro";
+
+const { frontmatter } = Astro.props;
+---
+
+<LandingLayout title={frontmatter.title} description={frontmatter.description}>
+  <div class="container mx-auto px-4 py-16 md:py-24 max-w-4xl relative isolate">
+    {/* Subtle grid background */}
+    <div class="absolute inset-0 -z-10 bg-[linear-gradient(to_right,rgba(from_var(--muted-foreground)_r_g_b_/_0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(from_var(--muted-foreground)_r_g_b_/_0.03)_1px,transparent_1px)] bg-[size:3rem_3rem]"></div>
+    
+    <article class="bg-card/50 backdrop-blur border border-border/40 shadow-xl rounded-2xl p-8 md:p-12 relative">
+      <div class="mb-10 text-center md:text-left border-b border-border/40 pb-10">
+        <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight mb-4 bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
+          {frontmatter.title}
+        </h1>
+        {frontmatter.description && <p class="text-xl text-muted-foreground">{frontmatter.description}</p>}
+      </div>
+      <div class="markdown-body space-y-6">
+        <slot />
+      </div>
+    </article>
+  </div>
+</LandingLayout>

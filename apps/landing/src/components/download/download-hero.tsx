@@ -31,11 +31,8 @@ export function DownloadHero() {
               disabled
               className="h-14 px-8 rounded-full text-base shadow-lg relative overflow-hidden group"
             >
-              <Apple className="mr-2 size-5" />
               Download for macOS
-              <Badge variant="secondary" className="ml-2 text-xs">
-                Coming Soon
-              </Badge>
+              <Badge className="ml-2 text-xs">Coming Soon</Badge>
             </Button>
 
             <Button size="lg" variant="outline" className="h-14 px-8 rounded-full text-base" asChild>

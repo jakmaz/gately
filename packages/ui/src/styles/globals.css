@@ -199,8 +199,54 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
+  }
+
+  .markdown-body h2 {
+    @apply text-2xl md:text-3xl font-bold mt-12 mb-6 tracking-tight text-foreground;
+  }
+
+  .markdown-body h3 {
+    @apply text-xl font-bold mt-8 mb-4 tracking-tight text-foreground;
+  }
+
+  .markdown-body p {
+    @apply leading-relaxed text-muted-foreground md:text-lg;
+  }
+
+  .markdown-body ul {
+    @apply list-inside space-y-3 text-muted-foreground md:text-lg ml-2;
+    list-style-type: square;
+  }
+
+  .markdown-body li>p {
+    display: inline;
+  }
+
+  .markdown-body code {
+    @apply bg-primary/10 text-primary px-1.5 py-0.5 rounded-md text-sm font-mono font-medium;
+  }
+
+  .markdown-body pre {
+    @apply bg-[#1a1b26] border border-border/40 p-5 rounded-xl overflow-x-auto my-8 shadow-inner;
+  }
+
+  .markdown-body pre code {
+    @apply bg-transparent text-gray-200 p-0;
+  }
+
+  .markdown-body strong {
+    @apply text-foreground font-bold;
+  }
+
+  .markdown-body a {
+    @apply text-primary font-medium hover:underline decoration-primary/50 underline-offset-4 transition-all;
+  }
+
+  .markdown-body blockquote {
+    @apply border-l-4 border-primary/50 pl-6 italic text-muted-foreground/80 my-8;
   }
 }
 
@@ -210,6 +256,7 @@
       opacity: 0;
       transform: translateY(20px);
     }
+
     100% {
       opacity: 1;
       transform: translateY(0);
