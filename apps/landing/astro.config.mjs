@@ -9,6 +9,10 @@ import { defineConfig } from "astro/config";
 export default defineConfig({
   integrations: [react(), mdx()],
 
+  redirects: {
+    '/docs': '/docs/first-circuit',
+  },
+
   vite: {
     plugins: [tailwindcss()],
   },
