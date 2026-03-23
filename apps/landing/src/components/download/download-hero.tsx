@@ -39,7 +39,7 @@ export function DownloadHero() {
             </Button>
 
             <Button size="lg" variant="outline" className="h-14 px-8 rounded-full text-base" asChild>
-              <a href="/editor">
+              <a href="https://app.gately.dev">
                 Try Web Version
                 <ArrowRight className="ml-2 size-4" />
               </a>

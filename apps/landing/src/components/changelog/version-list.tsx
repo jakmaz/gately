@@ -16,44 +16,13 @@ interface Version {
 
 const versions: Version[] = [
   {
-    version: "1.0.0",
-    date: "2024-12-15",
+    version: "0.0.1",
+    date: "2026-03-23",
     status: "latest",
     changes: [
-      { type: "added", description: "Initial public release" },
-      { type: "added", description: "Complete logic gate library (AND, OR, NOT, XOR, NAND, NOR)" },
-      { type: "added", description: "Drag-and-drop circuit editor" },
-      { type: "added", description: "Real-time circuit simulation" },
-      { type: "added", description: "Automatic truth table generation" },
-      { type: "added", description: "Dark and light theme support" },
-      { type: "added", description: "Local storage for circuit persistence" },
-      { type: "improved", description: "Smooth animations and transitions" },
-      { type: "improved", description: "Responsive design for all devices" },
+      { type: "added", description: "Initial public release" }
     ],
-  },
-  {
-    version: "0.9.0",
-    date: "2024-11-28",
-    changes: [
-      { type: "added", description: "Custom labels for gates and wires" },
-      { type: "added", description: "Grid snapping and alignment tools" },
-      { type: "improved", description: "Enhanced wire routing algorithm" },
-      { type: "improved", description: "Performance optimizations for large circuits" },
-      { type: "fixed", description: "Connection detection issues" },
-      { type: "fixed", description: "Safari rendering bugs" },
-    ],
-  },
-  {
-    version: "0.8.0",
-    date: "2024-11-10",
-    changes: [
-      { type: "added", description: "Multi-file project support" },
-      { type: "added", description: "Import/export functionality" },
-      { type: "improved", description: "Redesigned toolbar and toolbox" },
-      { type: "fixed", description: "Memory leaks in simulation engine" },
-      { type: "fixed", description: "Undo/redo state management" },
-    ],
-  },
+  }
 ];
 
 const changeTypeConfig = {

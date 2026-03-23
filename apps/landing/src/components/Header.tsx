@@ -51,7 +51,7 @@ export function Header() {
           <ThemeToggle />
 
           <Button className="rounded-full cursor-pointer transition-transform hover:scale-105 font-medium" asChild>
-            <a href="/editor">
+            <a href="https://app.gately.dev">
               Open Editor
               <ChevronRight className="ml-1 size-4" />
             </a>
@@ -82,7 +82,7 @@ export function Header() {
             ))}
             <div className="pt-2 mt-2 border-t border-border/30">
               <Button className="w-full rounded-full" asChild>
-                <a href="/editor" onClick={() => setMobileMenuOpen(false)}>
+                <a href="https://app.gately.dev" onClick={() => setMobileMenuOpen(false)}>
                   Try It Now
                   <ChevronRight className="ml-2 size-4" />
                 </a>

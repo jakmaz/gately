@@ -58,7 +58,7 @@ export function DocsResources() {
                 <h3 className="text-xl font-bold">Examples</h3>
                 <p className="text-muted-foreground text-sm">Explore sample circuits and templates</p>
                 <Button variant="outline" className="w-full" asChild>
-                  <a href="/editor">
+                  <a href="https://app.gately.dev">
                     Try Editor
                     <ArrowRight className="ml-2 size-4" />
                   </a>

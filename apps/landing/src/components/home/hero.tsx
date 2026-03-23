@@ -34,7 +34,7 @@ export function Hero() {
                 className="h-12 w-full cursor-pointer rounded-full text-base shadow-md transition-transform duration-300 hover:-translate-y-0.5 hover:shadow-lg"
                 asChild
               >
-                <a href="/editor">
+                <a href="https://app.gately.dev">
                   Open Editor
                   <ArrowRight className="ml-2 size-4" />
                 </a>

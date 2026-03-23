@@ -27,7 +27,7 @@ export function CTA() {
               className="rounded-full h-12 px-8 text-base cursor-pointer shadow-md hover:shadow-lg transition-all duration-300 hover:translate-y-[-2px]"
               asChild
             >
-              <a href="/editor">
+              <a href="https://app.gately.dev">
                 Try It Now
                 <ArrowRight className="ml-2 size-4" />
               </a>

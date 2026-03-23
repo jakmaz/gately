@@ -31,7 +31,7 @@ export function FeaturesHero() {
               className="h-14 px-8 rounded-full text-base shadow-lg hover:shadow-xl transition-all hover:scale-105"
               asChild
             >
-              <a href="/editor">
+              <a href="https://app.gately.dev">
                 Start Building
                 <ArrowRight className="ml-2 size-4" />
               </a>
