@@ -1,0 +1,61 @@
+---
+layout: ../../layouts/DocsLayout.astro
+title: Design a Multiplexer
+description: Build a digital traffic director to route multiple incoming signals safely down a single bus.
+---
+import { DocsSimulator } from "../../components/docs/docs-simulator";
+import { TruthTable } from "../../components/docs/truth-table";
+
+export const muxNodes = [
+  { id: "In0", type: "toggleNode", position: { x: 0, y: 0 }, data: { label: "Channel 0" } },
+  { id: "In1", type: "toggleNode", position: { x: 0, y: 300 }, data: { label: "Channel 1" } },
+  { id: "Sel", type: "toggleNode", position: { x: 0, y: 150 }, data: { label: "Selector" } },
+  { id: "Not1", type: "notGate", position: { x: 200, y: 150 }, data: { label: "NOT" } },
+  { id: "And1", type: "andGate", position: { x: 400, y: 50 }, data: { label: "AND" } },
+  { id: "And2", type: "andGate", position: { x: 400, y: 250 }, data: { label: "AND" } },
+  { id: "Or1", type: "orGate", position: { x: 650, y: 150 }, data: { label: "OR" } },
+  { id: "Out1", type: "outputNode", position: { x: 850, y: 150 }, data: { label: "Output" } },
+];
+
+export const muxEdges = [
+  { id: "e-sel-not", source: "Sel", target: "Not1", targetHandle: "input-0" },
+  { id: "e-in0-a1", source: "In0", target: "And1", targetHandle: "input-0" },
+  { id: "e-not-a1", source: "Not1", target: "And1", targetHandle: "input-1" },
+  { id: "e-sel-a2", source: "Sel", target: "And2", targetHandle: "input-0" },
+  { id: "e-in1-a2", source: "In1", target: "And2", targetHandle: "input-1" },
+  { id: "e-a1-or", source: "And1", target: "Or1", targetHandle: "input-0" },
+  { id: "e-a2-or", source: "And2", target: "Or1", targetHandle: "input-1" },
+  { id: "e-or-out", source: "Or1", target: "Out1" },
+];
+
+## What is a Multiplexer (MUX)?
+
+A multiplexer is effectively a highly complex digital train switch track. Imagine having four different data streams (like four separate network connections), but you only own a single output wire into your processor. 
+
+You strictly need a mechanism allowing you to specify exactly *which* feed selectively passes through the output wire while completely discarding the ambient noise of the others. 
+
+### Data Funneling
+
+A massive 2-to-1 multiplexer exclusively selects streams via a single `Selector` variable.
+- If Selector = `0`, only `Channel 0` data survives.
+- If Selector = `1`, the internal AND gates forcibly sever `Channel 0`, and exclusively pipe `Channel 1`.
+
+Use the Selector Switch in the middle of our visual diagram below to change which stream lights up the backend!
+
+<div className="my-8 h-[500px] w-full border border-border rounded-xl overflow-hidden shadow-xl">
+  <DocsSimulator initialNodes={muxNodes} initialEdges={muxEdges} height="h-[500px]" client:load />
+</div>
+
+<TruthTable 
+  headers={["Selector", "Channel 0", "Channel 1", "Output"]}
+  rows={[
+    [0, 0, 0, 0],
+    [0, 0, 1, 0],
+    [0, 1, 0, 1],
+    [0, 1, 1, 1],
+    [1, 0, 0, 0],
+    [1, 0, 1, 1],
+    [1, 1, 0, 0],
+    [1, 1, 1, 1],
+  ]}
+/>

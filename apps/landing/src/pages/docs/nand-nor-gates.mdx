@@ -1,0 +1,66 @@
+---
+layout: ../../layouts/DocsLayout.astro
+title: NAND and NOR Gates
+description: Understand inverted universal logic gates and how they can build any digital system.
+---
+import { DocsSimulator } from "../../components/docs/docs-simulator";
+import { TruthTable } from "../../components/docs/truth-table";
+
+export const nandNodes = [
+  { id: "1", type: "toggleNode", position: { x: 0, y: 0 }, data: { label: "Input A", state: false } },
+  { id: "2", type: "toggleNode", position: { x: 0, y: 120 }, data: { label: "Input B", state: false } },
+  { id: "3", type: "nandGate", position: { x: 200, y: 60 }, data: { label: "NAND", state: true } },
+  { id: "4", type: "outputNode", position: { x: 400, y: 60 }, data: { label: "Output", state: true } }
+];
+export const nandEdges = [
+  { id: "e1", source: "1", target: "3", targetHandle: "input-0" },
+  { id: "e2", source: "2", target: "3", targetHandle: "input-1" },
+  { id: "e3", source: "3", target: "4" }
+];
+
+export const norNodes = [
+  { id: "1", type: "toggleNode", position: { x: 0, y: 0 }, data: { label: "Input A", state: false } },
+  { id: "2", type: "toggleNode", position: { x: 0, y: 120 }, data: { label: "Input B", state: false } },
+  { id: "3", type: "norGate", position: { x: 200, y: 60 }, data: { label: "NOR", state: true } },
+  { id: "4", type: "outputNode", position: { x: 400, y: 60 }, data: { label: "Output", state: true } }
+];
+
+## The Power of Universal Gates
+
+Did you know that you can build literally *any* logic circuit in existence using nothing but NAND gates? This is called universal logic. NAND and NOR gates are simply their base counterparts (AND / OR) permanently fused with an integrated NOT inverter on their output.
+
+### The NAND Gate
+
+The **NAND gate** (NOT-AND) acts precisely opposite to an AND gate. It evaluates to true unless **both** of its inputs are true. Try flipping both switches ON in the simulator; the output will drop to `0`!
+
+<div className="my-8 h-[350px] w-full border border-border rounded-xl overflow-hidden">
+  <DocsSimulator initialNodes={nandNodes} initialEdges={nandEdges} height="h-[350px]" client:load />
+</div>
+
+<TruthTable 
+  headers={["Input A", "Input B", "NAND Output"]}
+  rows={[
+    [0, 0, 1],
+    [0, 1, 1],
+    [1, 0, 1],
+    [1, 1, 0],
+  ]}
+/>
+
+### The NOR Gate
+
+The **NOR gate** (NOT-OR) evaluates to true if and only if **both** inputs are false. It acts as a complete blocker. The exact moment *any* single input turns `1`, the entire NOR gate violently shuts down and outputs `0`.
+
+<div className="my-8 h-[350px] w-full border border-border rounded-xl overflow-hidden">
+  <DocsSimulator initialNodes={norNodes} initialEdges={nandEdges} height="h-[350px]" client:load />
+</div>
+
+<TruthTable 
+  headers={["Input A", "Input B", "NOR Output"]}
+  rows={[
+    [0, 0, 1],
+    [0, 1, 0],
+    [1, 0, 0],
+    [1, 1, 0],
+  ]}
+/>

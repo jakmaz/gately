@@ -1,0 +1,76 @@
+---
+layout: ../../layouts/DocsLayout.astro
+title: XOR and XNOR Gates
+description: Learn how exclusive logic routing behaves, the cornerstone of modern cryptography and arithmetic.
+---
+import { DocsSimulator } from "../../components/docs/docs-simulator";
+import { TruthTable } from "../../components/docs/truth-table";
+
+export const xorNodes = [
+  { id: "1", type: "toggleNode", position: { x: 0, y: 0 }, data: { label: "A", state: false } },
+  { id: "2", type: "toggleNode", position: { x: 0, y: 120 }, data: { label: "B", state: false } },
+  { id: "3", type: "xorGate", position: { x: 200, y: 60 }, data: { label: "XOR", state: false } },
+  { id: "4", type: "outputNode", position: { x: 400, y: 60 }, data: { label: "Out", state: false } }
+];
+export const xorEdges = [
+  { id: "e1", source: "1", target: "3", targetHandle: "input-0" },
+  { id: "e2", source: "2", target: "3", targetHandle: "input-1" },
+  { id: "e3", source: "3", target: "4" }
+];
+
+export const xnorNodes = [
+  { id: "1", type: "toggleNode", position: { x: 0, y: 0 }, data: { label: "A", state: false } },
+  { id: "2", type: "toggleNode", position: { x: 0, y: 120 }, data: { label: "B", state: false } },
+  { id: "3", type: "xorGate", position: { x: 200, y: 60 }, data: { label: "XOR", state: false } },
+  { id: "4", type: "notGate", position: { x: 380, y: 60 }, data: { label: "NOT", state: true } },
+  { id: "5", type: "outputNode", position: { x: 550, y: 60 }, data: { label: "XNOR", state: true } }
+];
+export const xnorEdges = [
+  { id: "e1", source: "1", target: "3", targetHandle: "input-0" },
+  { id: "e2", source: "2", target: "3", targetHandle: "input-1" },
+  { id: "e3", source: "3", target: "4", targetHandle: "input-0" },
+  { id: "e4", source: "4", target: "5" }
+];
+
+
+## Exclusive Logic
+
+Standard basic gates don't care if both inputs are active at once. Exclusive logic gates are significantly stricter. They are highly specialized tools designed specifically to detect inequality or absolute equality.
+
+### The XOR Gate (Exclusive OR)
+
+The XOR gate outputs `1` if the inputs are **different** from each other. Think of it as an inequality detector. It perfectly mimics adding `1 + 1` producing a `0`. Test it with alternating switches!
+
+<div className="my-8 h-[350px] w-full border border-border rounded-xl overflow-hidden">
+  <DocsSimulator initialNodes={xorNodes} initialEdges={xorEdges} height="h-[350px]" client:load />
+</div>
+
+<TruthTable 
+  headers={["Input A", "Input B", "XOR Output"]}
+  rows={[
+    [0, 0, 0],
+    [0, 1, 1],
+    [1, 0, 1],
+    [1, 1, 0],
+  ]}
+/>
+
+### The XNOR Gate (Equivalence Gate)
+
+The XNOR gate outputs `1` if the inputs are precisely **identical**. While Gately doesn't include a rigid singular "XNOR" primitive by default, you natively construct it by stringing an XOR directly into a NOT gate! 
+
+<div className="my-8 h-[350px] w-full border border-border rounded-xl overflow-hidden">
+  <DocsSimulator initialNodes={xnorNodes} initialEdges={xnorEdges} height="h-[350px]" client:load />
+</div>
+
+Notice that the output exclusively turns OFF when the inputs differ!
+
+<TruthTable 
+  headers={["Input A", "Input B", "XNOR Output"]}
+  rows={[
+    [0, 0, 1],
+    [0, 1, 0],
+    [1, 0, 0],
+    [1, 1, 1],
+  ]}
+/>

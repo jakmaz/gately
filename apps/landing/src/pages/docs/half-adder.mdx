@@ -1,0 +1,49 @@
+---
+layout: ../../layouts/DocsLayout.astro
+title: Build a Half Adder
+description: Combine fundamental gates to perform your absolute first arithmetic logic.
+---
+import { DocsSimulator } from "../../components/docs/docs-simulator";
+import { TruthTable } from "../../components/docs/truth-table";
+
+export const haNodes = [
+  { id: "1", type: "toggleNode", position: { x: 0, y: 40 }, data: { label: "Input A", state: false } },
+  { id: "2", type: "toggleNode", position: { x: 0, y: 160 }, data: { label: "Input B", state: false } },
+  { id: "3", type: "xorGate", position: { x: 250, y: -20 }, data: { label: "XOR", state: false } },
+  { id: "4", type: "andGate", position: { x: 250, y: 220 }, data: { label: "AND", state: false } },
+  { id: "5", type: "outputNode", position: { x: 500, y: -20 }, data: { label: "Sum", state: false } },
+  { id: "6", type: "outputNode", position: { x: 500, y: 220 }, data: { label: "Carry", state: false } }
+];
+
+export const haEdges = [
+  { id: "e1-3", source: "1", target: "3", targetHandle: "input-0" },
+  { id: "e2-3", source: "2", target: "3", targetHandle: "input-1" },
+  { id: "e1-4", source: "1", target: "4", targetHandle: "input-0" },
+  { id: "e2-4", source: "2", target: "4", targetHandle: "input-1" },
+  { id: "e3-sum", source: "3", target: "5" },
+  { id: "e4-car", source: "4", target: "6" }
+];
+
+## The Arithmetic Threshold
+
+Computers process logic using gates, but they perform math using Adders. A Half Adder fundamentally adds two separate 1-bit binary inputs (`A` and `B`) producing a total `Sum` bit, and if it exceeds 1, pushing out a `Carry` overflow bit.
+
+This logic leverages exactly two overlapping primitive gates mapping identical signal trajectories simultaneously.
+
+### Interactive Demonstration
+
+Test running `1 + 1` mathematically inside the embedded visual physics simulation below. When both gates activate, the Sum violently returns to `0`, but the Carry indicator lights up, calculating `10` (the binary representation of 2)!
+
+<div className="my-8 h-[450px] w-full border border-border rounded-xl overflow-hidden">
+  <DocsSimulator initialNodes={haNodes} initialEdges={haEdges} height="h-[450px]" client:load />
+</div>
+
+<TruthTable 
+  headers={["Input A", "Input B", "Carry (Overflow)", "Sum"]}
+  rows={[
+    [0, 0, 0, 0],
+    [0, 1, 0, 1],
+    [1, 0, 0, 1],
+    [1, 1, 1, 0],
+  ]}
+/>

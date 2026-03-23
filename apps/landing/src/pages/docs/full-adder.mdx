@@ -1,0 +1,66 @@
+---
+layout: ../../layouts/DocsLayout.astro
+title: Create a Full Adder
+description: Expand standard addition by accepting carry-overs from previous computational columns.
+---
+import { DocsSimulator } from "../../components/docs/docs-simulator";
+import { TruthTable } from "../../components/docs/truth-table";
+
+export const rcaNodes = [
+  { id: "A", type: "toggleNode", position: { x: 0, y: 0 }, data: { label: "A", state: false } },
+  { id: "B", type: "toggleNode", position: { x: 0, y: 150 }, data: { label: "B", state: false } },
+  { id: "Cin", type: "toggleNode", position: { x: 0, y: 300 }, data: { label: "Carry In", state: false } },
+  { id: "xor1", type: "xorGate", position: { x: 200, y: 75 }, data: { label: "XOR" } },
+  { id: "and1", type: "andGate", position: { x: 200, y: 225 }, data: { label: "AND" } },
+  { id: "xor2", type: "xorGate", position: { x: 450, y: -50 }, data: { label: "XOR" } },
+  { id: "and2", type: "andGate", position: { x: 450, y: 175 }, data: { label: "AND" } },
+  { id: "or1", type: "orGate", position: { x: 650, y: 200 }, data: { label: "OR" } },
+  { id: "Sum", type: "outputNode", position: { x: 800, y: -50 }, data: { label: "Sum" } },
+  { id: "Cout", type: "outputNode", position: { x: 850, y: 200 }, data: { label: "Carry Out" } }
+];
+
+export const rcaEdges = [
+  { id: "e-a-x1", source: "A", target: "xor1", targetHandle: "input-0" },
+  { id: "e-b-x1", source: "B", target: "xor1", targetHandle: "input-1" },
+  { id: "e-a-a1", source: "A", target: "and1", targetHandle: "input-0" },
+  { id: "e-b-a1", source: "B", target: "and1", targetHandle: "input-1" },
+  { id: "e-x1-x2", source: "xor1", target: "xor2", targetHandle: "input-0" },
+  { id: "e-cin-x2", source: "Cin", target: "xor2", targetHandle: "input-1" },
+  { id: "e-x1-a2", source: "xor1", target: "and2", targetHandle: "input-0" },
+  { id: "e-cin-a2", source: "Cin", target: "and2", targetHandle: "input-1" },
+  { id: "e-a2-or1", source: "and2", target: "or1", targetHandle: "input-0" },
+  { id: "e-a1-or1", source: "and1", target: "or1", targetHandle: "input-1" },
+  { id: "e-sum", source: "xor2", target: "Sum" },
+  { id: "e-cout", source: "or1", target: "Cout" }
+];
+
+## Processing Carries
+
+A Half Adder adds two numbers beautifully, but it functionally breaks if you try to chain them together because it absolutely ignores 'Carry bits' spilling over from the previous mathematical column!
+
+A **Full Adder** effectively addresses this by accepting *three* distinct inputs: `A`, `B`, and `Carry In`.
+
+### Cascading Architecture
+
+Instead of wiring everything randomly, think modularly! A Full Adder is effectively just **two individual Half Adders** smashed together, bridged safely by a single trailing OR Gate. 
+Notice how complex the wiring topology becomes as logic compounds. Toggle all three inputs in the embedded simulator below to definitively prove `1 + 1 + 1 = Sum 1, Carry 1`.
+
+<div className="my-8 h-[550px] w-full border border-border rounded-xl overflow-hidden shadow-xl">
+  <DocsSimulator initialNodes={rcaNodes} initialEdges={rcaEdges} height="h-[550px]" client:load />
+</div>
+
+<TruthTable 
+  headers={["A", "B", "Carry In", "Carry Out", "Sum"]}
+  rows={[
+    [0, 0, 0, 0, 0],
+    [0, 0, 1, 0, 1],
+    [0, 1, 0, 0, 1],
+    [0, 1, 1, 1, 0],
+    [1, 0, 0, 0, 1],
+    [1, 0, 1, 1, 0],
+    [1, 1, 0, 1, 0],
+    [1, 1, 1, 1, 1],
+  ]}
+/>
+
+By sequentially linking multiple Full Adders in a row (Outputting a Carry directly into the Input Carry of the next module), you definitively construct a **Ripple Carry Processor** allowing you to rapidly compute arbitrarily large math!

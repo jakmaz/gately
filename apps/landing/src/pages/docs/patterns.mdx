@@ -1,0 +1,49 @@
+---
+layout: ../../layouts/DocsLayout.astro
+title: Complex Circuit Patterns
+description: Move beyond basic arithmetic and explore sequential memory logic like latches and flip-flops.
+---
+import { DocsSimulator } from "../../components/docs/docs-simulator";
+import { TruthTable } from "../../components/docs/truth-table";
+
+export const srNodes = [
+  { id: "Set", type: "toggleNode", position: { x: 0, y: 0 }, data: { label: "Set" } },
+  { id: "Reset", type: "toggleNode", position: { x: 0, y: 200 }, data: { label: "Reset" } },
+  { id: "Nor1", type: "norGate", position: { x: 250, y: 20 }, data: { label: "NOR" } },
+  { id: "Nor2", type: "norGate", position: { x: 250, y: 160 }, data: { label: "NOR" } },
+  { id: "Q", type: "outputNode", position: { x: 500, y: 20 }, data: { label: "Q Data" } },
+  { id: "NotQ", type: "outputNode", position: { x: 500, y: 160 }, data: { label: "Inverse !Q" } },
+];
+
+export const srEdges = [
+  { id: "e-set-nor1", source: "Set", target: "Nor1", targetHandle: "input-0" },
+  { id: "e-rst-nor2", source: "Reset", target: "Nor2", targetHandle: "input-1" },
+  
+  // The cross-coupled memory paradox lines!
+  { id: "e-nor2-nor1", source: "Nor2", target: "Nor1", targetHandle: "input-1", animated: true },
+  { id: "e-nor1-nor2", source: "Nor1", target: "Nor2", targetHandle: "input-0", animated: true },
+
+  { id: "e-nor1-out", source: "Nor1", target: "Q" },
+  { id: "e-nor2-notq", source: "Nor2", target: "NotQ" },
+];
+
+## Combinational vs. Sequential Logic 
+
+Everything built in primitive tutorials evaluates as completely **Combinational Logic**. This strictly means the current physical output depends *exclusively* on the immediate current inputs. If you turn off an adder's inputs, the circuit entirely forgets it calculated anything.
+
+**Sequential Logic** fundamentally breaks the laws of spatial progression.
+
+## The SR Latch (Memory)
+
+A Set/Reset (SR) Latch is the absolute smallest unit of digital memory in the universe. It actively remembers its physical state entirely without continuous outer electrical injection.
+
+To accomplish this, we forcefully cross-couple the outputs of identical NOR Gates massively mapping their outputs simultaneously backward into each other's collision spaces. This traps an endless high-signal logic wave.
+
+<div className="my-8 h-[400px] w-full border border-border rounded-xl overflow-hidden shadow-xl">
+  <DocsSimulator initialNodes={srNodes} initialEdges={srEdges} height="h-[400px]" client:load />
+</div>
+
+- **Click SET** once and disable it. Notice how the logic stays trapped ON forever?
+- **Click RESET** once and disable it. The logic loop crashes, forcefully rewriting itself back essentially to a blank state.
+
+You just manually operated massive volatile server memory mechanics inside your local browser!
