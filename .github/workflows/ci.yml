@@ -27,7 +27,6 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 25
-          cache: "npm"
 
       - uses: oven-sh/setup-bun@v2
         with:
