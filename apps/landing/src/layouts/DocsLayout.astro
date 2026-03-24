@@ -1,6 +1,6 @@
 ---
-import LandingLayout from "./LandingLayout.astro";
 import { docsSections } from "../components/docs/docs-config";
+import LandingLayout from "./LandingLayout.astro";
 
 const { frontmatter, headings = [] } = Astro.props;
 const currentPath = Astro.url.pathname.replace(/\/$/, ""); // Normalize trailing slashes

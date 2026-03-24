@@ -31,12 +31,23 @@ export function Hero() {
             <div className="flex flex-col gap-4 sm:flex-row opacity-0 animate-[fade-up_0.5s_ease-out_forwards] [animation-delay:450ms]">
               <Button
                 size="lg"
-                className="h-12 w-full cursor-pointer rounded-full text-base shadow-md transition-transform duration-300 hover:-translate-y-0.5 hover:shadow-lg"
+                className="h-12 w-full sm:w-1/2 cursor-pointer rounded-full text-base shadow-md transition-transform duration-300 hover:-translate-y-0.5 hover:shadow-lg"
                 asChild
               >
                 <a href="https://app.gately.dev">
                   Open Editor
                   <ArrowRight className="ml-2 size-4" />
+                </a>
+              </Button>
+              <Button
+                size="lg"
+                variant="outline"
+                className="h-12 w-full sm:w-1/2 cursor-pointer rounded-full text-base shadow-sm transition-transform duration-300 hover:-translate-y-0.5 hover:bg-muted/50 border-primary/20 hover:border-primary/50"
+                asChild
+              >
+                <a href="/learn/first-circuit">
+                  Interactive Course
+                  <ArrowRight className="ml-2 size-4 text-primary" />
                 </a>
               </Button>
             </div>

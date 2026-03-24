@@ -1,6 +1,6 @@
 import { Badge } from "@gately/ui/components/ui/badge";
 import { Button } from "@gately/ui/components/ui/button";
-import { Apple, ArrowRight, Monitor } from "lucide-react";
+import { ArrowRight, Monitor } from "lucide-react";
 
 export function DownloadHero() {
   return (

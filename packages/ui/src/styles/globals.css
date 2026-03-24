@@ -221,7 +221,7 @@
     list-style-type: square;
   }
 
-  .markdown-body li>p {
+  .markdown-body li > p {
     display: inline;
   }
 

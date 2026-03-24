@@ -19,10 +19,8 @@ const versions: Version[] = [
     version: "0.0.1",
     date: "2026-03-23",
     status: "latest",
-    changes: [
-      { type: "added", description: "Initial public release" }
-    ],
-  }
+    changes: [{ type: "added", description: "Initial public release" }],
+  },
 ];
 
 const changeTypeConfig = {
