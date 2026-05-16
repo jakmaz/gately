@@ -13,69 +13,70 @@ const prevTopic = currentIndex > 0 ? allTopics[currentIndex - 1] : null;
 const nextTopic = currentIndex !== -1 && currentIndex < allTopics.length - 1 ? allTopics[currentIndex + 1] : null;
 
 // Find the current section for breadcrumb
-const currentSection = docsSections.find((sec) => 
-  sec.topics.some((t) => t.href === currentPath)
-);
-const sectionIndex = docsSections.indexOf(currentSection!);
+const currentSection = docsSections.find((sec) => sec.topics.some((t) => t.href === currentPath));
 
 // Build breadcrumb list items
 const breadcrumbList = [
   {
     "@type": "ListItem",
-    "position": 1,
-    "name": "Home",
-    "item": "https://gately.dev/",
+    position: 1,
+    name: "Home",
+    item: "https://gately.dev/",
   },
   {
     "@type": "ListItem",
-    "position": 2,
-    "name": "Learn",
-    "item": "https://gately.dev/learn/first-circuit",
+    position: 2,
+    name: "Learn",
+    item: "https://gately.dev/learn/first-circuit",
   },
-  ...(currentSection ? [{
-    "@type": "ListItem",
-    "position": 3,
-    "name": currentSection.title,
-  }] : []),
+  ...(currentSection
+    ? [
+        {
+          "@type": "ListItem",
+          position: 3,
+          name: currentSection.title,
+        },
+      ]
+    : []),
   {
     "@type": "ListItem",
-    "position": currentSection ? 4 : 3,
-    "name": frontmatter.title,
-    "item": `https://gately.dev${currentPath}`,
+    position: currentSection ? 4 : 3,
+    name: frontmatter.title,
+    item: `https://gately.dev${currentPath}`,
   },
 ];
 
 const articleSchema = {
   "@context": "https://schema.org",
   "@type": "Article",
-  "headline": frontmatter.title,
-  "description": frontmatter.description || "",
-  "url": `https://gately.dev${currentPath}`,
-  "author": {
+  headline: frontmatter.title,
+  description: frontmatter.description || "",
+  url: `https://gately.dev${currentPath}`,
+  author: {
     "@type": "Organization",
-    "name": "Gately",
-    "url": "https://gately.dev",
+    name: "Gately",
+    url: "https://gately.dev",
   },
-  "publisher": {
+  publisher: {
     "@type": "Organization",
-    "name": "Gately",
-    "url": "https://gately.dev",
-    "logo": {
+    name: "Gately",
+    url: "https://gately.dev",
+    logo: {
       "@type": "ImageObject",
-      "url": "https://gately.dev/favicon.ico",
+      url: "https://gately.dev/favicon.ico",
     },
   },
-  "isPartOf": {
+  isPartOf: {
     "@type": "LearningResource",
-    "name": "Gately Interactive Course",
-    "description": "Learn digital logic design step-by-step with interactive tutorials",
+    name: "Gately Interactive Course",
+    description: "Learn digital logic design step-by-step with interactive tutorials",
   },
 };
 
 const breadcrumbSchema = {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
-  "itemListElement": breadcrumbList,
+  itemListElement: breadcrumbList,
 };
 ---
 
