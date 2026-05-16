@@ -10,6 +10,97 @@ import LandingLayout from "../layouts/LandingLayout.astro";
 ---
 
 <LandingLayout>
+  <script type="application/ld+json" is:inline>
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Gately",
+      "url": "https://gately.dev",
+      "logo": "https://gately.dev/favicon.svg",
+      "sameAs": ["https://github.com/jakobhoeg/gately"],
+      "description": "Visual Logic Circuit Editor - Build, simulate, and share digital circuits"
+    }
+  </script>
+  <script type="application/ld+json" is:inline>
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "Gately",
+      "url": "https://gately.dev",
+      "applicationCategory": "EducationalApplication",
+      "operatingSystem": "Web, Windows, macOS, Linux",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "description": "Build, simulate, and share digital circuits with an intuitive drag-and-drop interface."
+    }
+  </script>
+  <script type="application/ld+json" is:inline>
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is Gately?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Gately is a modern, visual editor for designing logic circuits. It allows you to build, customize, and share logic gate diagrams with a smooth and intuitive interface."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is Gately free to use?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, Gately is completely free to use. We may add optional premium features in the future, but all core functionality will remain free."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do I need to know digital logic to use Gately?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No prior experience is required! Gately is designed to be beginner-friendly, with visual tools that let anyone experiment with logic gates."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I share my circuits with others?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Absolutely. Every circuit can be shared with a unique link, making it easy to collaborate, teach, or showcase your designs."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does Gately support custom logic blocks?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Support for reusable/custom logic blocks is on our roadmap. In the meantime, you can manually recreate frequently used patterns."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I use Gately for teaching or presentations?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes! Gately is perfect for education and demos. You can build circuits, walk through logic visually, and export or share them with ease."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is Gately open source?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Gately is open source. You can explore the code on GitHub, contribute to development, or join the community on Discord for help and feedback."
+          }
+        }
+      ]
+    }
+  </script>
   <Hero client:load />
   
   <CourseMarketing client:load />

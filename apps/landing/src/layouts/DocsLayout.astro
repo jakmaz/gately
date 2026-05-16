@@ -11,9 +11,130 @@ const currentIndex = allTopics.findIndex((t) => t.href === currentPath);
 
 const prevTopic = currentIndex > 0 ? allTopics[currentIndex - 1] : null;
 const nextTopic = currentIndex !== -1 && currentIndex < allTopics.length - 1 ? allTopics[currentIndex + 1] : null;
+
+// Find the current section for breadcrumb
+const currentSection = docsSections.find((sec) => 
+  sec.topics.some((t) => t.href === currentPath)
+);
+const sectionIndex = docsSections.indexOf(currentSection!);
+
+// Build breadcrumb list items
+const breadcrumbList = [
+  {
+    "@type": "ListItem",
+    "position": 1,
+    "name": "Home",
+    "item": "https://gately.dev/",
+  },
+  {
+    "@type": "ListItem",
+    "position": 2,
+    "name": "Learn",
+    "item": "https://gately.dev/learn/first-circuit",
+  },
+  ...(currentSection ? [{
+    "@type": "ListItem",
+    "position": 3,
+    "name": currentSection.title,
+  }] : []),
+  {
+    "@type": "ListItem",
+    "position": currentSection ? 4 : 3,
+    "name": frontmatter.title,
+    "item": `https://gately.dev${currentPath}`,
+  },
+];
+
+const articleSchema = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": frontmatter.title,
+  "description": frontmatter.description || "",
+  "url": `https://gately.dev${currentPath}`,
+  "author": {
+    "@type": "Organization",
+    "name": "Gately",
+    "url": "https://gately.dev",
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Gately",
+    "url": "https://gately.dev",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://gately.dev/favicon.ico",
+    },
+  },
+  "isPartOf": {
+    "@type": "LearningResource",
+    "name": "Gately Interactive Course",
+    "description": "Learn digital logic design step-by-step with interactive tutorials",
+  },
+};
+
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": breadcrumbList,
+};
 ---
 
 <LandingLayout title={frontmatter.title} description={frontmatter.description}>
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": frontmatter.title,
+    "description": frontmatter.description || "",
+    "url": `https://gately.dev${currentPath}`,
+    "author": {
+      "@type": "Organization",
+      "name": "Gately",
+      "url": "https://gately.dev"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Gately",
+      "url": "https://gately.dev",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://gately.dev/favicon.ico"
+      }
+    },
+    "isPartOf": {
+      "@type": "LearningResource",
+      "name": "Gately Interactive Course",
+      "description": "Learn digital logic design step-by-step with interactive tutorials"
+    }
+  })} />
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://gately.dev/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Learn",
+        "item": "https://gately.dev/learn/first-circuit"
+      },
+      ...(currentSection ? [{
+        "@type": "ListItem",
+        "position": 3,
+        "name": currentSection.title
+      }] : []),
+      {
+        "@type": "ListItem",
+        "position": currentSection ? 4 : 3,
+        "name": frontmatter.title,
+        "item": `https://gately.dev${currentPath}`
+      }
+    ]
+  })} />
   <div class="container mx-auto px-4 py-8 md:py-16 flex flex-col md:flex-row gap-8 lg:gap-12 relative isolate">
     {/* Subtle grid background */}
     <div class="absolute inset-0 -z-10 bg-[linear-gradient(to_right,rgba(from_var(--muted-foreground)_r_g_b_/_0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(from_var(--muted-foreground)_r_g_b_/_0.03)_1px,transparent_1px)] bg-[size:3rem_3rem]"></div>

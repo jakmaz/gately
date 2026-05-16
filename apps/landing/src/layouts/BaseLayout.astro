@@ -11,12 +11,20 @@ import "@fontsource/geist-sans/700.css";
 interface Props {
   title?: string;
   description?: string;
+  image?: string;
+  canonicalUrl?: string;
 }
 
 const {
   title = "Gately - Visual Logic Circuit Editor",
   description = "Build, simulate, and share digital circuits with an intuitive drag-and-drop interface.",
+  image = "/opengraph-image.png",
+  canonicalUrl,
 } = Astro.props;
+
+const siteUrl = "https://gately.dev";
+const url = canonicalUrl ? `${siteUrl}${canonicalUrl}` : siteUrl + Astro.url.pathname;
+const ogImage = image.startsWith("http") ? image : `${siteUrl}${image}`;
 ---
 
 <!doctype html>
@@ -24,12 +32,32 @@ const {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="canonical" href={url} />
     <meta name="generator" content={Astro.generator} />
+    <meta name="theme-color" content="#0a0a0a" />
     <ClientRouter />
     
     <title>{title}</title>
     <meta name="description" content={description} />
+    
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:site_name" content="Gately" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={url} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Gately - Visual Logic Circuit Editor" />
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
     
     <!-- Theme script - runs BEFORE page renders to prevent flash -->
     <script is:inline>
