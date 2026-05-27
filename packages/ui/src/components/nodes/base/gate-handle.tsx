@@ -12,11 +12,6 @@ interface OutputHandleProps {
 
 export function OutputHandle({ index, state, y, outputX, isConnectable = true, customId }: OutputHandleProps) {
   const handleId = customId || `output-${index}`;
-  const connections = useNodeConnections({
-    handleType: "source",
-    handleId,
-  });
-
   const activeColor = state ? "var(--color-success)" : "var(--color-primary)";
   const bgColor = "var(--card, #1a1a2e)";
   const HANDLE_SIZE = 8;

@@ -1,8 +1,9 @@
-import { calculateNodeStates } from "@gately/core/simulator";
 import type { GateNodeProps, LogicGateProps } from "@gately/core/types";
 import type { Node } from "@xyflow/react";
 import { useReactFlow } from "@xyflow/react";
 import { memo, useCallback } from "react";
+import { simulateCircuit } from "../../hooks/simulator-utils";
+import { useSettingsStore } from "../../hooks/use-settings-store";
 import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from "../ui/context-menu";
 import { OutputHandle } from "./base/gate-handle";
 
@@ -10,7 +11,8 @@ const W = 60;
 const H = 60;
 
 export const PushNode = memo(({ id, data, isConnectable }: LogicGateProps) => {
-  const { getNodes, getEdges, setNodes } = useReactFlow();
+  const { getNodes, getEdges, setEdges, setNodes } = useReactFlow();
+  const { settings } = useSettingsStore();
 
   const updateState = useCallback(
     (newState: boolean) => {
@@ -19,12 +21,11 @@ export const PushNode = memo(({ id, data, isConnectable }: LogicGateProps) => {
 
       const updatedNodes = nodes.map((n) => (n.id === id ? { ...n, data: { ...n.data, state: newState } } : n));
 
-      setNodes(updatedNodes);
-
-      const calculatedNodes = calculateNodeStates(updatedNodes, edges);
-      setNodes(calculatedNodes);
+      const simulated = simulateCircuit(updatedNodes, edges, settings);
+      setNodes(simulated.nodes);
+      setEdges(simulated.edges);
     },
-    [id, getNodes, getEdges, setNodes],
+    [id, getNodes, getEdges, setEdges, setNodes, settings],
   );
 
   const handleMouseDown = useCallback(

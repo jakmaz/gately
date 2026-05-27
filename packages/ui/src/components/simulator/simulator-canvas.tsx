@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 
+import { calculateNodeStates } from "@gately/core/simulator";
 import type { GateNodeProps } from "@gately/core/types";
 import {
   Background,
@@ -50,7 +51,7 @@ export function SimulatorCanvas() {
     console.debug("Loading file", currentFileId);
 
     if (currentFile?.data) {
-      setNodes(currentFile.data.nodes);
+      setNodes(calculateNodeStates(currentFile.data.nodes, currentFile.data.edges));
       setEdges(currentFile.data.edges);
     } else {
       setNodes([]);

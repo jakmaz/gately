@@ -1,4 +1,3 @@
-import { calculateNodeStates } from "@gately/core/simulator";
 import type { GateNodeProps } from "@gately/core/types";
 import {
   addEdge,
@@ -6,12 +5,12 @@ import {
   type Connection,
   type Edge,
   type EdgeChange,
-  MarkerType,
   type Node,
   useReactFlow,
 } from "@xyflow/react";
 import { nanoid } from "nanoid";
 import { type Dispatch, type SetStateAction, useCallback, useEffect } from "react";
+import { simulateCircuit, styleSimulationEdges } from "./simulator-utils";
 import { useSettingsStore } from "./use-settings-store";
 
 export function useSimulatorLogic(
@@ -22,41 +21,21 @@ export function useSimulatorLogic(
 
   const { settings } = useSettingsStore();
 
-  const updateEdgeStyles = useCallback(
-    (currentNodes: Node<GateNodeProps>[], currentEdges: Edge[]) => {
-      const nodeStates = new Map<string, boolean>();
-      currentNodes.forEach((node) => {
-        nodeStates.set(node.id, node.data.state);
-      });
-
-      const updatedEdges = currentEdges.map((edge) => {
-        const sourceState = nodeStates.get(edge.source) || false;
-        return {
-          ...edge,
-          animated: sourceState && settings.animateConnections, // Apply animation toggle
-          type: settings.connectionType, // Apply the selected connection type
-          style: {
-            stroke: sourceState ? "var(--color-success)" : "var(--color-primary)",
-            strokeWidth: 2,
-          },
-          markerEnd: {
-            type: MarkerType.ArrowClosed,
-            color: sourceState ? "var(--color-success)" : "var(--color-primary)",
-          },
-        };
-      });
-
-      return updatedEdges;
+  const applySimulation = useCallback(
+    (nextNodes: Node<GateNodeProps>[], nextEdges: Edge[]) => {
+      const simulated = simulateCircuit(nextNodes, nextEdges, settings);
+      setNodes(simulated.nodes);
+      setEdges(simulated.edges);
     },
-    [settings.animateConnections, settings.connectionType],
+    [setEdges, setNodes, settings],
   );
 
   useEffect(() => {
     const nodes = getNodes() as Node<GateNodeProps>[];
     const edges = getEdges();
-    const styledEdges = updateEdgeStyles(nodes, edges);
+    const styledEdges = styleSimulationEdges(nodes, edges, settings);
     setEdges(styledEdges);
-  }, [getNodes, getEdges, updateEdgeStyles, setEdges]);
+  }, [getNodes, getEdges, settings, setEdges]);
 
   const onConnectEdge = useCallback(
     (params: Connection | Edge) => {
@@ -70,22 +49,13 @@ export function useSimulatorLogic(
         sourceHandle: params.sourceHandle,
         targetHandle: params.targetHandle,
         animated: false,
-        type: settings.connectionType, // Set initial type from settings
-        style: { stroke: "#3b82f6", strokeWidth: 2 },
-        markerEnd: {
-          type: MarkerType.ArrowClosed,
-          color: "#3b82f6",
-        },
+        type: settings.connectionType,
+        style: { stroke: "var(--color-primary)", strokeWidth: 2 },
       };
 
-      setEdges((eds) => addEdge(edge, eds));
-
-      const updatedNodes = calculateNodeStates(nodes, [...edges, edge as Edge]);
-      setNodes(updatedNodes);
-      const styledEdges = updateEdgeStyles(updatedNodes, [...edges, edge as Edge]);
-      setEdges(styledEdges);
+      applySimulation(nodes, addEdge(edge, edges));
     },
-    [setNodes, setEdges, updateEdgeStyles, getNodes, getEdges, settings.connectionType],
+    [applySimulation, getNodes, getEdges, settings.connectionType],
   );
 
   const onNodeClick = useCallback(
@@ -99,14 +69,9 @@ export function useSimulatorLogic(
         n.id === node.id ? { ...n, data: { ...n.data, state: !n.data.state } } : n,
       );
 
-      setNodes(updatedNodes);
-
-      const calculatedNodes = calculateNodeStates(updatedNodes, edges);
-      setNodes(calculatedNodes);
-      const styledEdges = updateEdgeStyles(calculatedNodes, edges);
-      setEdges(styledEdges);
+      applySimulation(updatedNodes, edges);
     },
-    [setNodes, updateEdgeStyles, getNodes, getEdges, setEdges],
+    [applySimulation, getNodes, getEdges],
   );
 
   const onEdgesChangeWithSimulation = useCallback(
@@ -123,18 +88,13 @@ export function useSimulatorLogic(
       if (hasRemoval) {
         // When edges are removed, recalculate all node states
         // Disconnected nodes should become false (no power = false)
-        const updatedNodes = calculateNodeStates(currentNodes, updatedEdges);
-        setNodes(updatedNodes);
-
-        // Update edge styles based on new node states and set edges once
-        const styledEdges = updateEdgeStyles(updatedNodes, updatedEdges);
-        setEdges(styledEdges);
+        applySimulation(currentNodes, updatedEdges);
       } else {
         // For other changes (select, etc.), just update edges without restyling
         setEdges(updatedEdges);
       }
     },
-    [getEdges, getNodes, setEdges, setNodes, updateEdgeStyles],
+    [applySimulation, getEdges, getNodes, setEdges],
   );
 
   const onDragOver = useCallback((event: React.DragEvent<HTMLDivElement>) => {

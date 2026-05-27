@@ -4,8 +4,10 @@ import { useReactFlow } from "@xyflow/react";
 import { Download, Upload } from "lucide-react";
 import { nanoid } from "nanoid";
 import { useRef } from "react";
+import { simulateCircuit } from "../../hooks/simulator-utils";
 import { useExport } from "../../hooks/use-export";
 import { useFileSystem } from "../../hooks/use-file-system";
+import { useSettingsStore } from "../../hooks/use-settings-store";
 import { Button } from "../ui/button";
 
 export function ImportExportButtons() {
@@ -13,6 +15,7 @@ export function ImportExportButtons() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { getCurrentFile, createItem, switchToFile } = useFileSystem();
   const { exportCircuit, importCircuit, isExporting, isImporting } = useExport();
+  const { settings } = useSettingsStore();
 
   const handleExport = async () => {
     const nodes = reactFlow.getNodes();
@@ -43,6 +46,8 @@ export function ImportExportButtons() {
 
     const result = await importCircuit(file);
     if (result?.success) {
+      const simulated = simulateCircuit(result.nodes as Node<GateNodeProps>[], result.edges, settings);
+
       // Create a new file with the imported data
       const newFileId = nanoid();
       const newFile = {
@@ -50,8 +55,8 @@ export function ImportExportButtons() {
         name: result.fileName,
         type: "file" as const,
         data: {
-          nodes: result.nodes as Node<GateNodeProps>[],
-          edges: result.edges,
+          nodes: simulated.nodes,
+          edges: simulated.edges,
         },
       };
 
@@ -60,8 +65,8 @@ export function ImportExportButtons() {
       switchToFile(newFileId);
 
       // Update the React Flow canvas with imported data
-      reactFlow.setNodes(result.nodes);
-      reactFlow.setEdges(result.edges);
+      reactFlow.setNodes(simulated.nodes);
+      reactFlow.setEdges(simulated.edges);
     }
 
     // Reset the file input

@@ -1,0 +1,8 @@
+name = "web"
+pages_build_output_dir = "dist"
+compatibility_date = "2026-05-27"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "gately"
+database_id = "a20f8070-fbc6-433f-bef5-421cce36b103"

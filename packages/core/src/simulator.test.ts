@@ -10,6 +10,13 @@ const createToggleNode = (id: string, state: boolean): Node<GateNodeProps> => ({
   data: { label: "Input", state },
 });
 
+const createPushNode = (id: string, state: boolean): Node<GateNodeProps> => ({
+  id,
+  type: "pushNode",
+  position: { x: 0, y: 0 },
+  data: { label: "Push", state },
+});
+
 const createGateNode = (id: string, type: string): Node<GateNodeProps> => ({
   id,
   type,
@@ -345,6 +352,39 @@ describe("calculateNodeStates", () => {
       expect(dmuxNode?.data.outputs).toEqual([false, true]);
       expect(dmuxNode?.data.state).toBe(true);
     });
+
+    it("propagates a selected output handle", () => {
+      const nodes: Node<GateNodeProps>[] = [
+        createToggleNode("data", true),
+        createToggleNode("sel", true),
+        createGateNode("dmux", "dmuxGate"),
+        createOutputNode("out0"),
+        createOutputNode("out1"),
+      ];
+      const edges: Edge[] = [
+        createEdge("data", "dmux", undefined, "input-0"),
+        createEdge("sel", "dmux", undefined, "input-1"),
+        createEdge("dmux", "out0", "output-0", "input-0"),
+        createEdge("dmux", "out1", "output-1", "input-0"),
+      ];
+
+      const result = calculateNodeStates(nodes, edges);
+      const out0 = result.find((n) => n.id === "out0");
+      const out1 = result.find((n) => n.id === "out1");
+      expect(out0?.data.state).toBe(false);
+      expect(out1?.data.state).toBe(true);
+    });
+  });
+
+  describe("Push node", () => {
+    it("acts as a source node", () => {
+      const nodes: Node<GateNodeProps>[] = [createPushNode("push", true), createOutputNode("out")];
+      const edges: Edge[] = [createEdge("push", "out", "output", "input-0")];
+
+      const result = calculateNodeStates(nodes, edges);
+      const outNode = result.find((n) => n.id === "out");
+      expect(outNode?.data.state).toBe(true);
+    });
   });
 
   describe("Buffer gate", () => {
@@ -390,13 +430,14 @@ describe("calculateNodeStates", () => {
   });
 
   describe("unconnected inputs", () => {
-    it("uses only connected inputs (other indices are undefined and treated as false by every())", () => {
+    it("treats missing input handles as false", () => {
       const nodes: Node<GateNodeProps>[] = [createToggleNode("in1", true), createGateNode("and", "andGate")];
       const edges: Edge[] = [createEdge("in1", "and", undefined, "input-0")];
 
       const result = calculateNodeStates(nodes, edges);
       const andNode = result.find((n) => n.id === "and");
-      expect(andNode?.data.state).toBe(true);
+      expect(andNode?.data.state).toBe(false);
+      expect(andNode?.data.inputs).toEqual([true, false]);
     });
   });
 });
