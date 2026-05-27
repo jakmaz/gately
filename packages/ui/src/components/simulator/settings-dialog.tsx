@@ -37,7 +37,7 @@ export function SettingsDialog() {
             <TabsTrigger value="debug">Debug</TabsTrigger>
           </TabsList>
 
-          <div className="max-h-[400px] overflow-y-auto mt-4">
+          <div className="h-64 overflow-y-auto mt-4">
             <TabsContent value="appearance" className="space-y-4">
               <Card>
                 <CardHeader>
