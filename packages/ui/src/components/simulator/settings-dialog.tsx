@@ -1,11 +1,10 @@
 "use client";
 
-import { DialogTrigger } from "@radix-ui/react-dialog";
 import { Bug, Grid, Keyboard, Palette, SettingsIcon, Zap } from "lucide-react";
 import { useState } from "react";
 import { type Settings, useSettingsStore } from "../../hooks/use-settings-store";
 import { Button } from "../ui/button";
-import { Dialog, DialogContent, DialogDescription, DialogTitle } from "../ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from "../ui/dialog";
 import { Label } from "../ui/label";
 import { Switch } from "../ui/switch";
 import { ThemeToggle } from "./theme-toggle";
@@ -57,11 +56,9 @@ export function SettingsDialog() {
 
   return (
     <Dialog>
-      <DialogTrigger asChild>
-        <Button variant="ghost" size="sm">
-          <SettingsIcon className="h-4 w-4 mr-2" />
-          Settings
-        </Button>
+      <DialogTrigger render={<Button variant="ghost" size="sm" />}>
+        <SettingsIcon className="h-4 w-4 mr-2" />
+        Settings
       </DialogTrigger>
       <DialogContent className="sm:max-w-4xl w-full h-[70vh] flex flex-col p-0 gap-0 overflow-hidden bg-background sm:rounded-xl">
         <DialogDescription className="sr-only">Customize your simulator experience</DialogDescription>

@@ -178,10 +178,11 @@ export function FileExplorer({ isCollapsed }: FileExplorerProps) {
           )}
 
           <DropdownMenu>
-            <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
-              <Button variant="link" size="sm" className="h-6 w-6 p-0 cursor-pointer">
-                <MoreVertical className="h-4 w-4 text-muted-foreground" />
-              </Button>
+            <DropdownMenuTrigger
+              render={<Button variant="link" size="sm" className="h-6 w-6 p-0 cursor-pointer" />}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <MoreVertical className="h-4 w-4 text-muted-foreground" />
             </DropdownMenuTrigger>
             <DropdownMenuContent>
               <DropdownMenuItem onClick={() => handleRename(item)} className="focus:bg-white/10 ">
@@ -224,10 +225,8 @@ export function FileExplorer({ isCollapsed }: FileExplorerProps) {
               <Download className="h-4 w-4" />
             </Button>
             <Dialog open={newItemDialog} onOpenChange={setNewItemDialog}>
-              <DialogTrigger asChild>
-                <Button variant="ghost" size="sm" className="p-1">
-                  <Plus className="h-4 w-4" />
-                </Button>
+              <DialogTrigger render={<Button variant="ghost" size="sm" className="p-1" />}>
+                <Plus className="h-4 w-4" />
               </DialogTrigger>
               <DialogContent>
                 <DialogHeader>

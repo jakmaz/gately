@@ -6,11 +6,9 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 export function InfoDialog() {
   return (
     <Dialog>
-      <DialogTrigger asChild>
-        <Button variant="outline" size="icon">
-          <Info className="h-4 w-4" />
-          <span className="sr-only">App Information</span>
-        </Button>
+      <DialogTrigger render={<Button variant="outline" size="icon" />}>
+        <Info className="h-4 w-4" />
+        <span className="sr-only">App Information</span>
       </DialogTrigger>
       <DialogContent className="flex flex-col">
         <DialogHeader>
@@ -44,11 +42,15 @@ export function InfoDialog() {
         </div>
 
         <div className="mt-4 flex justify-center">
-          <Button variant="outline" asChild className="w-full">
-            <a href="https://roadwiseapp.com/app/gately" target="_blank" rel="noopener noreferrer">
-              Suggest features and provide feedback here!
-            </a>
-          </Button>
+          <Button
+            variant="outline"
+            className="w-full"
+            render={
+              <a href="https://roadwiseapp.com/app/gately" target="_blank" rel="noopener noreferrer">
+                Suggest features and provide feedback here!
+              </a>
+            }
+          />
         </div>
       </DialogContent>
     </Dialog>

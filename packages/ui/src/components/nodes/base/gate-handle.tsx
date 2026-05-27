@@ -17,8 +17,6 @@ export function OutputHandle({ index, state, y, outputX, isConnectable = true, c
     handleId,
   });
 
-  const canConnect = connections.length === 0 && isConnectable;
-
   const activeColor = state ? "var(--color-success)" : "var(--color-primary)";
   const bgColor = "var(--card, #1a1a2e)";
   const HANDLE_SIZE = 8;
@@ -41,7 +39,7 @@ export function OutputHandle({ index, state, y, outputX, isConnectable = true, c
         borderRadius: "50%",
         transform: "none",
       }}
-      isConnectable={canConnect}
+      isConnectable={isConnectable}
     />
   );
 }

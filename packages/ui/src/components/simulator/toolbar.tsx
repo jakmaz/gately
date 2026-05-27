@@ -82,7 +82,7 @@ const sections = [
 export function Toolbar() {
   return (
     <div className="w-80 bg-card rounded-2xl flex flex-col h-full border border-border/60 shadow-xl overflow-hidden">
-      <div className="p-5 bg-linear-to-br from-primary/5 to-transparent">
+      <div className="p-5 border-b border-border/40">
         <h2 className="text-xl font-bold mb-1">Components</h2>
         <p className="text-sm text-muted-foreground">Drag gates to add to circuit</p>
       </div>

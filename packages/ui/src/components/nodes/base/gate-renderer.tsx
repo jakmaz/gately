@@ -189,7 +189,7 @@ export function GateRenderer({ data, isConnectable, geometry, label, inputHandle
           <OutputHandle
             key={`output-${index}`}
             index={index}
-            state={data.state}
+            state={data.outputs?.[index] ?? data.state}
             y={y}
             outputX={geometry.outputX}
             isConnectable={isConnectable}

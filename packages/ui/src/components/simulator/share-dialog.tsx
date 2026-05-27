@@ -1,10 +1,10 @@
-import { Label } from "@radix-ui/react-label";
 import { Copy, Share } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import { Button } from "../ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "../ui/dialog";
 import { Input } from "../ui/input";
+import { Label } from "../ui/label";
 
 export function ShareDialog() {
   const [shareDialogOpen, setShareDialogOpen] = useState(false);

@@ -1,179 +1,175 @@
 import type { Edge, Node } from "@xyflow/react";
 import type { GateNodeProps } from "./types";
 
+type IncomingEdge = {
+  sourceId: string;
+  sourceHandle: string | null;
+  targetHandle: string | null;
+};
+
+type Evaluation = {
+  state: boolean;
+  inputs: boolean[];
+  outputs: boolean[];
+};
+
+const INPUT_COUNTS: Record<string, number> = {
+  outputNode: 1,
+  buffGate: 1,
+  notGate: 1,
+  andGate: 2,
+  nandGate: 2,
+  orGate: 2,
+  norGate: 2,
+  xorGate: 2,
+  xnorGate: 2,
+  xnor3Gate: 3,
+  muxGate: 3,
+  dmuxGate: 2,
+};
+
+const SOURCE_NODE_TYPES = new Set(["toggleNode", "pushNode"]);
+
+function parseHandleIndex(handle: string | null, prefix: "input" | "output") {
+  if (!handle || handle === prefix) return 0;
+
+  const rawIndex = handle.startsWith(`${prefix}-`) ? handle.slice(prefix.length + 1) : "";
+  const index = Number.parseInt(rawIndex, 10);
+
+  return Number.isFinite(index) && index >= 0 ? index : 0;
+}
+
+function getInputCount(nodeType: string | undefined) {
+  if (!nodeType) return 0;
+  return INPUT_COUNTS[nodeType] ?? 0;
+}
+
+function evaluateGate(nodeType: string | undefined, inputs: boolean[]): Evaluation {
+  switch (nodeType) {
+    case "andGate": {
+      const state = inputs.every(Boolean);
+      return { state, inputs, outputs: [state] };
+    }
+
+    case "orGate": {
+      const state = inputs.some(Boolean);
+      return { state, inputs, outputs: [state] };
+    }
+
+    case "notGate": {
+      const state = !inputs[0];
+      return { state, inputs, outputs: [state] };
+    }
+
+    case "buffGate":
+    case "outputNode": {
+      const state = inputs[0] ?? false;
+      return { state, inputs, outputs: [state] };
+    }
+
+    case "nandGate": {
+      const state = !inputs.every(Boolean);
+      return { state, inputs, outputs: [state] };
+    }
+
+    case "norGate": {
+      const state = !inputs.some(Boolean);
+      return { state, inputs, outputs: [state] };
+    }
+
+    case "xorGate": {
+      const state = inputs.filter(Boolean).length % 2 === 1;
+      return { state, inputs, outputs: [state] };
+    }
+
+    case "xnorGate":
+    case "xnor3Gate": {
+      const state = inputs.filter(Boolean).length % 2 === 0;
+      return { state, inputs, outputs: [state] };
+    }
+
+    case "muxGate": {
+      const [a, b, select] = inputs;
+      const state = select ? b : a;
+      return { state, inputs, outputs: [state] };
+    }
+
+    case "dmuxGate": {
+      const [dataIn, select] = inputs;
+      const outputs = [dataIn && !select, dataIn && select];
+      return { state: outputs.some(Boolean), inputs, outputs };
+    }
+
+    default:
+      return { state: false, inputs, outputs: [false] };
+  }
+}
+
 export function calculateNodeStates(nodes: Node<GateNodeProps>[], edges: Edge[]): Node<GateNodeProps>[] {
-  const updatedNodes = [...nodes];
+  const nodeById = new Map(nodes.map((node) => [node.id, node]));
+  const incomingByTarget = new Map<string, IncomingEdge[]>();
+  const cache = new Map<string, Evaluation>();
+  const visiting = new Set<string>();
 
-  const nodeMap = new Map<string, number>();
-  updatedNodes.forEach((node, index) => {
-    nodeMap.set(node.id, index);
-  });
-  const incomingEdges = new Map<
-    string,
-    {
-      sourceId: string;
-      sourceHandle: string | null;
-      targetHandle: string | null;
-    }[]
-  >();
   edges.forEach((edge) => {
-    if (!incomingEdges.has(edge.target)) incomingEdges.set(edge.target, []);
-    const targetEdges = incomingEdges.get(edge.target);
-    if (targetEdges) {
-      targetEdges.push({
-        sourceId: edge.source,
-        sourceHandle: edge.sourceHandle ?? null,
-        targetHandle: edge.targetHandle ?? null,
-      });
-    }
+    const incoming = incomingByTarget.get(edge.target) ?? [];
+    incoming.push({
+      sourceId: edge.source,
+      sourceHandle: edge.sourceHandle ?? null,
+      targetHandle: edge.targetHandle ?? null,
+    });
+    incomingByTarget.set(edge.target, incoming);
   });
 
-  const evaluateNode = (nodeId: string, sourceHandle: string | null = null, visited = new Set<string>()): boolean => {
-    const visitKey = `${nodeId}:${sourceHandle ?? ""}`;
-    if (visited.has(visitKey)) return false;
-    visited.add(visitKey);
+  const evaluateNode = (nodeId: string): Evaluation => {
+    const cached = cache.get(nodeId);
+    if (cached) return cached;
 
-    const nodeIndex = nodeMap.get(nodeId);
-    if (nodeIndex === undefined) return false;
+    const node = nodeById.get(nodeId);
+    if (!node) return { state: false, inputs: [], outputs: [false] };
 
-    const node = updatedNodes[nodeIndex];
-
-    if (node.type === "toggleNode") return node.data.state;
-
-    const incoming = incomingEdges.get(nodeId) || [];
-    if (incoming.length === 0) {
-      if (node.type === "dmuxGate") {
-        updatedNodes[nodeIndex] = {
-          ...updatedNodes[nodeIndex],
-          data: { ...updatedNodes[nodeIndex].data, state: false, outputs: [false, false], inputs: [] },
-        };
-      } else {
-        updatedNodes[nodeIndex] = {
-          ...updatedNodes[nodeIndex],
-          data: { ...updatedNodes[nodeIndex].data, state: false, inputs: [] },
-        };
-      }
-      return false;
+    if (SOURCE_NODE_TYPES.has(node.type ?? "")) {
+      const state = node.data.state;
+      const evaluation = { state, inputs: [], outputs: [state] };
+      cache.set(nodeId, evaluation);
+      return evaluation;
     }
 
-    const evalSource = (e: { sourceId: string; sourceHandle: string | null }) =>
-      evaluateNode(e.sourceId, e.sourceHandle, new Set(visited));
-
-    // Unified input collection function
-    const collectInputs = (
-      incoming: { sourceId: string; sourceHandle: string | null; targetHandle: string | null }[],
-    ) => {
-      const inputs: boolean[] = [];
-
-      // Collect all inputs by handle index
-      incoming.forEach((edge) => {
-        let handleIndex = 0;
-
-        if (edge.targetHandle?.startsWith("input-")) {
-          // Standard format: "input-0", "input-1", etc.
-          handleIndex = parseInt(edge.targetHandle.replace("input-", ""), 10);
-        } else if (edge.targetHandle === "input") {
-          // Custom format: just "input" (for output nodes)
-          handleIndex = 0;
-        }
-
-        inputs[handleIndex] = evalSource(edge);
-      });
-
-      // Fill missing slots with false (unconnected inputs)
-      return inputs.map((input) => input ?? false);
-    };
-
-    const inputs = collectInputs(incoming);
-
-    let result = false;
-
-    switch (node.type) {
-      case "andGate":
-        result = inputs.every(Boolean);
-        break;
-
-      case "orGate":
-        result = inputs.some(Boolean);
-        break;
-
-      case "notGate":
-        result = !inputs[0];
-        break;
-
-      case "buffGate":
-        result = inputs[0] ?? false;
-        break;
-
-      case "nandGate":
-        result = !inputs.every(Boolean);
-        break;
-
-      case "norGate":
-        result = !inputs.some(Boolean);
-        break;
-
-      case "xorGate":
-        result = inputs.filter(Boolean).length % 2 === 1;
-        break;
-
-      case "xnorGate":
-      case "xnor3Gate":
-        result = inputs.filter(Boolean).length % 2 === 0;
-        break;
-      case "muxGate": {
-        const A = inputs[0];
-        const B = inputs[1];
-        const S = inputs[2];
-        result = S ? B : A;
-        break;
-      }
-
-      case "dmuxGate": {
-        const dataIn = inputs[0];
-        const sel = inputs[1];
-        const Y0 = dataIn && !sel;
-        const Y1 = dataIn && sel;
-
-        updatedNodes[nodeIndex] = {
-          ...updatedNodes[nodeIndex],
-          data: {
-            ...updatedNodes[nodeIndex].data,
-            outputs: [Y0, Y1],
-            state: Y0 || Y1,
-            inputs: inputs,
-          },
-        };
-
-        if (sourceHandle === "output-1") return Y1;
-        return Y0;
-      }
-
-      case "outputNode":
-        result = inputs[0] ?? false;
-        break;
-
-      default:
-        result = false;
+    if (visiting.has(nodeId)) {
+      const inputCount = getInputCount(node.type);
+      return { state: false, inputs: Array(inputCount).fill(false), outputs: [false] };
     }
 
-    updatedNodes[nodeIndex] = {
-      ...updatedNodes[nodeIndex],
-      data: {
-        ...updatedNodes[nodeIndex].data,
-        state: result,
-        inputs: inputs,
-      },
-    };
+    visiting.add(nodeId);
 
-    return result;
-  };
+    const inputs = Array(getInputCount(node.type)).fill(false) as boolean[];
+    const incoming = incomingByTarget.get(nodeId) ?? [];
 
-  updatedNodes
-    .filter((n) => n.type !== "toggleNode")
-    .forEach((n) => {
-      evaluateNode(n.id);
+    incoming.forEach((edge) => {
+      const source = evaluateNode(edge.sourceId);
+      const inputIndex = parseHandleIndex(edge.targetHandle, "input");
+      const outputIndex = parseHandleIndex(edge.sourceHandle, "output");
+      inputs[inputIndex] = source.outputs[outputIndex] ?? false;
     });
 
-  return updatedNodes;
+    const evaluation = evaluateGate(node.type, inputs);
+    visiting.delete(nodeId);
+    cache.set(nodeId, evaluation);
+
+    return evaluation;
+  };
+
+  return nodes.map((node) => {
+    const evaluation = evaluateNode(node.id);
+
+    return {
+      ...node,
+      data: {
+        ...node.data,
+        state: evaluation.state,
+        inputs: evaluation.inputs,
+        outputs: evaluation.outputs,
+      },
+    };
+  });
 }
