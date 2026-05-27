@@ -1,16 +1,59 @@
+"use client";
+
 import { DialogTrigger } from "@radix-ui/react-dialog";
-import { Bug, Grid, Palette, SettingsIcon, Zap } from "lucide-react";
+import { Bug, Grid, Keyboard, Palette, SettingsIcon, Zap } from "lucide-react";
+import { useState } from "react";
 import { type Settings, useSettingsStore } from "../../hooks/use-settings-store";
 import { Button } from "../ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "../ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogTitle } from "../ui/dialog";
 import { Label } from "../ui/label";
 import { Switch } from "../ui/switch";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import { ThemeToggle } from "./theme-toggle";
+
+type TabId = "appearance" | "connections" | "canvas" | "debug" | "hotkeys";
+
+function SettingRow({
+  title,
+  description,
+  children,
+}: {
+  title: string;
+  description: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="flex items-center justify-between py-5 border-b border-border/40 last:border-0">
+      <div className="pr-8">
+        <Label className="text-base font-medium">{title}</Label>
+        <p className="text-sm text-muted-foreground mt-1">{description}</p>
+      </div>
+      <div className="shrink-0">{children}</div>
+    </div>
+  );
+}
+
+function HotkeyRow({ action, shortcut }: { action: string; shortcut: string }) {
+  return (
+    <div className="flex items-center justify-between py-3 border-b border-border/40 last:border-0">
+      <span className="text-sm font-medium">{action}</span>
+      <span className="text-xs text-muted-foreground bg-muted px-2 py-1 rounded-md border border-border/50 font-mono">
+        {shortcut}
+      </span>
+    </div>
+  );
+}
 
 export function SettingsDialog() {
   const { settings, updateSetting } = useSettingsStore();
+  const [activeTab, setActiveTab] = useState<TabId>("appearance");
+
+  const tabs = [
+    { id: "appearance", label: "Appearance", icon: Palette },
+    { id: "connections", label: "Connections", icon: Zap },
+    { id: "canvas", label: "Canvas", icon: Grid },
+    { id: "debug", label: "Debug", icon: Bug },
+    { id: "hotkeys", label: "Hotkeys", icon: Keyboard },
+  ] as const;
 
   return (
     <Dialog>
@@ -20,171 +63,132 @@ export function SettingsDialog() {
           Settings
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-w-2xl max-h-[80vh] overflow-hidden">
-        <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            <SettingsIcon className="h-5 w-5" />
-            Settings
-          </DialogTitle>
-          <DialogDescription>Customize your simulator experience</DialogDescription>
-        </DialogHeader>
+      <DialogContent className="sm:max-w-4xl w-full h-[70vh] flex flex-col p-0 gap-0 overflow-hidden bg-background sm:rounded-xl">
+        <DialogDescription className="sr-only">Customize your simulator experience</DialogDescription>
+        <div className="flex flex-1 overflow-hidden h-full">
+          {/* Sidebar */}
+          <div className="w-56 border-r border-border/40 bg-muted/10 p-4 space-y-1 overflow-y-auto shrink-0">
+            <div className="mb-6 px-2 mt-2">
+              <DialogTitle className="text-lg font-bold flex items-center gap-2">
+                <SettingsIcon className="h-5 w-5" />
+                Settings
+              </DialogTitle>
+            </div>
+            {tabs.map((tab) => (
+              <button
+                key={tab.id}
+                type="button"
+                onClick={() => setActiveTab(tab.id as TabId)}
+                className={`w-full flex items-center gap-3 px-3 py-2 text-sm rounded-md transition-colors ${
+                  activeTab === tab.id
+                    ? "bg-primary/10 text-primary font-medium"
+                    : "text-muted-foreground hover:bg-muted/50 hover:text-foreground"
+                }`}
+              >
+                <tab.icon className="h-4 w-4" />
+                {tab.label}
+              </button>
+            ))}
+          </div>
 
-        <Tabs defaultValue="appearance" className="w-full">
-          <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="appearance">Appearance</TabsTrigger>
-            <TabsTrigger value="connections">Connections</TabsTrigger>
-            <TabsTrigger value="canvas">Canvas</TabsTrigger>
-            <TabsTrigger value="debug">Debug</TabsTrigger>
-          </TabsList>
+          {/* Content */}
+          <div className="flex-1 overflow-y-auto p-8 w-full">
+            <div className="max-w-3xl w-full">
+              <h3 className="text-2xl font-semibold mb-6">{tabs.find((t) => t.id === activeTab)?.label}</h3>
 
-          <div className="h-64 overflow-y-auto mt-4">
-            <TabsContent value="appearance" className="space-y-4">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Palette className="h-4 w-4" />
-                    Theme
-                  </CardTitle>
-                  <CardDescription>Choose your preferred color scheme</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <Label htmlFor="theme-toggle">Theme</Label>
+              {activeTab === "appearance" && (
+                <div className="flex flex-col">
+                  <SettingRow title="Theme" description="Choose your preferred color scheme">
                     <ThemeToggle />
-                  </div>
-
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <Label htmlFor="node-labels">Show Node Labels</Label>
-                      <p className="text-sm text-muted-foreground">Display labels on all nodes</p>
-                    </div>
+                  </SettingRow>
+                  <SettingRow title="Show Node Labels" description="Display labels on all nodes">
                     <Switch
-                      id="node-labels"
                       checked={settings.showNodeLabels}
                       onCheckedChange={(checked) => updateSetting("showNodeLabels", checked)}
                     />
-                  </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
+                  </SettingRow>
+                </div>
+              )}
 
-            <TabsContent value="connections" className="space-y-4">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Zap className="h-4 w-4" />
-                    Connection Settings
-                  </CardTitle>
-                  <CardDescription>Customize how connections appear and behave</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="space-y-3">
-                    <Label>Connection Type</Label>
-                    <div className="grid grid-cols-3 gap-2">
+              {activeTab === "connections" && (
+                <div className="flex flex-col">
+                  <SettingRow title="Connection Type" description="Customize how connections appear and behave">
+                    <div className="flex gap-1 bg-muted/50 p-1 rounded-lg border border-border/50">
                       {["straight", "curved", "step"].map((type) => (
                         <Button
                           key={type}
-                          variant={settings.connectionType === type ? "default" : "outline"}
+                          variant={settings.connectionType === type ? "default" : "ghost"}
                           size="sm"
                           onClick={() => updateSetting("connectionType", type as Settings["connectionType"])}
-                          className="capitalize"
+                          className="capitalize h-8 px-4"
                         >
                           {type}
                         </Button>
                       ))}
                     </div>
-                  </div>
-
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <Label htmlFor="animate-connections">Animate Connections</Label>
-                      <p className="text-sm text-muted-foreground">Show flowing animation on active connections</p>
-                    </div>
+                  </SettingRow>
+                  <SettingRow title="Animate Connections" description="Show flowing animation on active connections">
                     <Switch
-                      id="animate-connections"
                       checked={settings.animateConnections}
                       onCheckedChange={(checked) => updateSetting("animateConnections", checked)}
                     />
-                  </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
+                  </SettingRow>
+                </div>
+              )}
 
-            <TabsContent value="canvas" className="space-y-4">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Grid className="h-4 w-4" />
-                    Canvas Settings
-                  </CardTitle>
-                  <CardDescription>Configure the workspace appearance</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <Label htmlFor="show-grid">Show Grid</Label>
-                      <p className="text-sm text-muted-foreground">Display background grid</p>
-                    </div>
+              {activeTab === "canvas" && (
+                <div className="flex flex-col">
+                  <SettingRow title="Show Grid" description="Display background grid">
                     <Switch
-                      id="show-grid"
                       checked={settings.showGrid}
                       onCheckedChange={(checked) => updateSetting("showGrid", checked)}
                     />
-                  </div>
-
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <Label htmlFor="show-minimap">Show Minimap</Label>
-                      <p className="text-sm text-muted-foreground">Display navigation minimap</p>
-                    </div>
+                  </SettingRow>
+                  <SettingRow title="Show Minimap" description="Display navigation minimap">
                     <Switch
-                      id="show-minimap"
                       checked={settings.showMinimap}
                       onCheckedChange={(checked) => updateSetting("showMinimap", checked)}
                     />
-                  </div>
-
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <Label htmlFor="snap-to-grid">Snap to Grid</Label>
-                      <p className="text-sm text-muted-foreground">Align nodes to grid when moving</p>
-                    </div>
+                  </SettingRow>
+                  <SettingRow title="Snap to Grid" description="Align nodes to grid when moving">
                     <Switch
-                      id="snap-to-grid"
                       checked={settings.snapToGrid}
                       onCheckedChange={(checked) => updateSetting("snapToGrid", checked)}
                     />
-                  </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
+                  </SettingRow>
+                </div>
+              )}
 
-            <TabsContent value="debug" className="space-y-4">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Bug className="h-4 w-4" />
-                    Debug Settings
-                  </CardTitle>
-                  <CardDescription>Configure debugging and development tools</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <Label htmlFor="debug-mode">Debug Mode</Label>
-                      <p className="text-sm text-muted-foreground">Show debug panel with simulation details</p>
-                    </div>
+              {activeTab === "debug" && (
+                <div className="flex flex-col">
+                  <SettingRow title="Debug Mode" description="Show debug panel with simulation details">
                     <Switch
-                      id="debug-mode"
                       checked={settings.debugMode}
                       onCheckedChange={(checked) => updateSetting("debugMode", checked)}
                     />
+                  </SettingRow>
+                </div>
+              )}
+
+              {activeTab === "hotkeys" && (
+                <div className="flex flex-col">
+                  <div className="mb-4 mt-2 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                    Navigation
                   </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
+                  <HotkeyRow action="Pan Canvas" shortcut="Space + Drag / Middle Click" />
+                  <HotkeyRow action="Zoom In / Out" shortcut="Ctrl/Cmd + Scroll" />
+                  <HotkeyRow action="Fit View" shortcut="Double Click Background" />
+
+                  <div className="mt-8 mb-4 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                    Selection & Editing
+                  </div>
+                  <HotkeyRow action="Select Multiple" shortcut="Shift + Drag" />
+                  <HotkeyRow action="Delete Selected" shortcut="Backspace / Delete" />
+                </div>
+              )}
+            </div>
           </div>
-        </Tabs>
+        </div>
       </DialogContent>
     </Dialog>
   );
