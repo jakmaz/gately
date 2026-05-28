@@ -1,9 +1,32 @@
-import { ChevronRight, Download, Edit, File, Folder, FolderOpen, MoreVertical, Plus, Trash2 } from "lucide-react";
+import {
+  ChevronRight,
+  ChevronsDown,
+  ChevronsUp,
+  Copy,
+  Download,
+  Edit,
+  File,
+  FilePlus,
+  Folder,
+  FolderOpen,
+  FolderPlus,
+  MoreVertical,
+  Plus,
+  Share,
+  Trash2,
+} from "lucide-react";
 import { AnimatePresence, LayoutGroup, motion } from "motion/react";
 import { useState } from "react";
 import { toast } from "sonner";
 import { type FileNode, useFileSystem } from "../../hooks/use-file-system";
 import { Button } from "../ui/button";
+import {
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuSeparator,
+  ContextMenuTrigger,
+} from "../ui/context-menu";
 import {
   Dialog,
   DialogContent,
@@ -13,7 +36,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../ui/dialog";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../ui/dropdown-menu";
 import { Input } from "../ui/input";
 import { InfoDialog } from "./info-dialog";
 import { ThemeToggle } from "./theme-toggle";
@@ -29,6 +51,7 @@ export function FileExplorer({ isCollapsed }: FileExplorerProps) {
   const [newItemDialog, setNewItemDialog] = useState(false);
   const [newItemName, setNewItemName] = useState("");
   const [newItemType, setNewItemType] = useState<"file" | "directory">("file");
+  const [targetParentId, setTargetParentId] = useState<string | null>(null);
   const [editingItemId, setEditingItemId] = useState<string | null>(null);
   const [editingName, setEditingName] = useState("");
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -65,16 +88,92 @@ export function FileExplorer({ isCollapsed }: FileExplorerProps) {
       isOpen: newItemType === "directory" ? false : undefined,
     };
 
-    createItem(null, newItem); // Add to root for now
+    createItem(targetParentId, newItem);
 
     setNewItemDialog(false);
     setNewItemName("");
+    setTargetParentId(null);
     toast.success(`${newItemType === "file" ? "File" : "Directory"} created successfully`);
   };
 
   const handleRename = (item: FileNode) => {
     setEditingItemId(item.id);
     setEditingName(item.name);
+  };
+
+  const handleDuplicate = (item: FileNode) => {
+    const findParentId = (tree: FileNode[], targetId: string, currentParentId: string | null = null): string | null => {
+      for (const node of tree) {
+        if (node.id === targetId) return currentParentId;
+        if (node.children) {
+          const found = findParentId(node.children, targetId, node.id);
+          if (found !== null) return found;
+        }
+      }
+      return null;
+    };
+
+    const parentId = findParentId(fileTree, item.id);
+    const duplicatedItem: FileNode = {
+      ...item,
+      id: Date.now().toString(),
+      name: `${item.name} (Copy)`,
+    };
+    createItem(parentId, duplicatedItem);
+    toast.success(`${item.type === "file" ? "File" : "Directory"} duplicated successfully`);
+  };
+
+  const openNewItemDialog = (type: "file" | "directory", parentId: string | null = null) => {
+    setNewItemType(type);
+    setTargetParentId(parentId);
+    setNewItemDialog(true);
+  };
+
+  const expandAll = () => {
+    updateFileTree((tree) => {
+      const expandAllItems = (items: FileNode[]): FileNode[] => {
+        return items.map((item) => ({
+          ...item,
+          isOpen: item.type === "directory" ? true : item.isOpen,
+          children: item.children ? expandAllItems(item.children) : undefined,
+        }));
+      };
+      return expandAllItems(tree);
+    });
+    toast.success("All folders expanded");
+  };
+
+  const collapseAll = () => {
+    updateFileTree((tree) => {
+      const collapseAllItems = (items: FileNode[]): FileNode[] => {
+        return items.map((item) => ({
+          ...item,
+          isOpen: item.type === "directory" ? false : item.isOpen,
+          children: item.children ? collapseAllItems(item.children) : undefined,
+        }));
+      };
+      return collapseAllItems(tree);
+    });
+    toast.success("All folders collapsed");
+  };
+
+  const handleExportFile = (item: FileNode) => {
+    if (item.type !== "file") return;
+    const fileData = item.data;
+    if (!fileData) {
+      toast.error("File is empty");
+      return;
+    }
+    const blob = new Blob([JSON.stringify(fileData, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `${item.name}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    toast.success(`Exported ${item.name}`);
   };
 
   const saveRename = () => {
@@ -130,75 +229,139 @@ export function FileExplorer({ isCollapsed }: FileExplorerProps) {
 
     return (
       <div key={item.id}>
-        <div
-          className={`flex items-center gap-2 px-2 py-1 rounded cursor-pointer transition-colors ${isSelected ? "bg-primary/30" : " hover:bg-primary/10 "}`}
-          style={{ paddingLeft: `${8 + depth * 16}px` }}
-          onClick={() => {
-            if (item.type === "directory") {
-              toggleDirectory(item.id);
-            } else {
-              switchToFile(item.id);
+        <ContextMenu>
+          <ContextMenuTrigger
+            render={
+              <div
+                className={`flex items-center gap-2 px-2 py-1 rounded cursor-pointer transition-colors group ${isSelected ? "bg-primary/30" : " hover:bg-primary/10 "}`}
+                style={{ paddingLeft: `${8 + depth * 16}px` }}
+                onClick={() => {
+                  if (item.type === "directory") {
+                    toggleDirectory(item.id);
+                  } else {
+                    switchToFile(item.id);
+                  }
+                }}
+                draggable
+                onDragStart={(e) => handleDragStart(e, item)}
+                onDragOver={handleDragOver}
+                onDrop={(e) => handleDrop(e, item.type === "directory" ? item.id : null)}
+              />
             }
-          }}
-          draggable
-          onDragStart={(e) => handleDragStart(e, item)}
-          onDragOver={handleDragOver}
-          onDrop={(e) => handleDrop(e, item.type === "directory" ? item.id : null)}
-        >
-          {item.type === "directory" ? (
-            <>
-              <motion.div animate={{ rotate: item.isOpen ? 90 : 0 }} transition={{ duration: 0.15 }}>
-                <ChevronRight className="h-4 w-4" />
-              </motion.div>
-              <motion.div animate={{ scale: item.isOpen ? 1.1 : 1 }} transition={{ duration: 0.15 }}>
-                {item.isOpen ? <FolderOpen className="h-4 w-4" /> : <Folder className="h-4 w-4" />}
-              </motion.div>
-            </>
-          ) : (
-            <>
-              <div className="w-4" /> {/* Spacer for alignment */}
-              <File className="h-4 w-4" />
-            </>
-          )}
+          >
+            {item.type === "directory" ? (
+              <>
+                <motion.div animate={{ rotate: item.isOpen ? 90 : 0 }} transition={{ duration: 0.15 }}>
+                  <ChevronRight className="h-4 w-4" />
+                </motion.div>
+                <motion.div animate={{ scale: item.isOpen ? 1.1 : 1 }} transition={{ duration: 0.15 }}>
+                  {item.isOpen ? <FolderOpen className="h-4 w-4" /> : <Folder className="h-4 w-4" />}
+                </motion.div>
+              </>
+            ) : (
+              <>
+                <div className="w-4" /> {/* Spacer for alignment */}
+                <File className="h-4 w-4" />
+              </>
+            )}
 
-          {isEditing ? (
-            <Input
-              value={editingName}
-              onChange={(e) => setEditingName(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") saveRename();
-                if (e.key === "Escape") setEditingItemId(null);
+            {isEditing ? (
+              <Input
+                value={editingName}
+                onChange={(e) => setEditingName(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") saveRename();
+                  if (e.key === "Escape") setEditingItemId(null);
+                }}
+                onClick={(e) => e.stopPropagation()}
+                className="h-6 text-sm"
+                autoFocus
+              />
+            ) : (
+              <span className="text-sm truncate flex-1">{item.name}</span>
+            )}
+
+            <Button
+              variant="link"
+              size="sm"
+              className="h-6 w-6 p-0 cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity"
+              onClick={(e) => {
+                e.stopPropagation();
+                // Programmatically trigger context menu on this item
+                const trigger = e.currentTarget.closest('[data-slot="context-menu-trigger"]') as HTMLElement;
+                if (trigger) {
+                  const event = new MouseEvent("contextmenu", {
+                    bubbles: true,
+                    cancelable: true,
+                    clientX: e.clientX,
+                    clientY: e.clientY,
+                  });
+                  trigger.dispatchEvent(event);
+                }
               }}
-              onClick={(e) => e.stopPropagation()}
-              className="h-6 text-sm"
-              autoFocus
-            />
-          ) : (
-            <span className="text-sm truncate flex-1">{item.name}</span>
-          )}
-
-          <DropdownMenu>
-            <DropdownMenuTrigger
-              render={<Button variant="link" size="sm" className="h-6 w-6 p-0 cursor-pointer" />}
-              onClick={(e) => e.stopPropagation()}
             >
               <MoreVertical className="h-4 w-4 text-muted-foreground" />
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <DropdownMenuItem onClick={() => handleRename(item)} className="focus:bg-white/10 ">
-                <Edit className="h-4 w-4 mr-2" />
-                Rename
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                onClick={() => handleDelete(item)}
-                className="focus:text-destructive focus:bg-white/10 text-destructive"
-              >
-                <Trash2 className="h-4 text-destructive w-4 mr-2" />
-                Delete
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
+            </Button>
+          </ContextMenuTrigger>
+          <ContextMenuContent>
+            {item.type === "file" ? (
+              <>
+                <ContextMenuItem onClick={() => handleRename(item)}>
+                  <Edit className="h-4 w-4 mr-2" />
+                  Rename
+                </ContextMenuItem>
+                <ContextMenuItem onClick={() => handleDuplicate(item)}>
+                  <Copy className="h-4 w-4 mr-2" />
+                  Duplicate
+                </ContextMenuItem>
+                <ContextMenuItem onClick={() => handleExportFile(item)}>
+                  <Download className="h-4 w-4 mr-2" />
+                  Export
+                </ContextMenuItem>
+                <ContextMenuItem disabled>
+                  <Share className="h-4 w-4 mr-2" />
+                  Share
+                </ContextMenuItem>
+                <ContextMenuSeparator />
+                <ContextMenuItem
+                  onClick={() => handleDelete(item)}
+                  className="text-destructive focus:text-destructive focus:bg-destructive/10"
+                >
+                  <Trash2 className="h-4 w-4 mr-2" />
+                  Delete
+                </ContextMenuItem>
+              </>
+            ) : (
+              <>
+                <ContextMenuItem onClick={() => openNewItemDialog("file", item.id)}>
+                  <FilePlus className="h-4 w-4 mr-2" />
+                  New File
+                </ContextMenuItem>
+                <ContextMenuItem onClick={() => openNewItemDialog("directory", item.id)}>
+                  <FolderPlus className="h-4 w-4 mr-2" />
+                  New Folder
+                </ContextMenuItem>
+                <ContextMenuSeparator />
+                <ContextMenuItem onClick={() => handleRename(item)}>
+                  <Edit className="h-4 w-4 mr-2" />
+                  Rename
+                </ContextMenuItem>
+                <ContextMenuItem onClick={() => handleDuplicate(item)}>
+                  <Copy className="h-4 w-4 mr-2" />
+                  Duplicate
+                </ContextMenuItem>
+                <ContextMenuSeparator />
+                <ContextMenuItem
+                  onClick={() => handleDelete(item)}
+                  className="text-destructive focus:text-destructive focus:bg-destructive/10"
+                >
+                  <Trash2 className="h-4 w-4 mr-2" />
+                  Delete
+                </ContextMenuItem>
+              </>
+            )}
+          </ContextMenuContent>
+        </ContextMenu>
 
         {item.type === "directory" && item.isOpen && item.children && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.15 }}>
@@ -269,24 +432,45 @@ export function FileExplorer({ isCollapsed }: FileExplorerProps) {
         </div>
       </div>
 
-      <div className="flex-1 overflow-auto p-2 w-64">
-        <LayoutGroup>
-          <AnimatePresence>
-            {fileTree.map((item) => (
-              <motion.div
-                key={item.id}
-                layout
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.2 }}
-              >
-                {renderFileItem(item)}
-              </motion.div>
-            ))}
-          </AnimatePresence>
-        </LayoutGroup>
-      </div>
+      <ContextMenu>
+        <ContextMenuTrigger render={<div className="flex-1 overflow-auto p-2 w-64" />}>
+          <LayoutGroup>
+            <AnimatePresence>
+              {fileTree.map((item) => (
+                <motion.div
+                  key={item.id}
+                  layout
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  {renderFileItem(item)}
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </LayoutGroup>
+        </ContextMenuTrigger>
+        <ContextMenuContent>
+          <ContextMenuItem onClick={() => openNewItemDialog("file")}>
+            <FilePlus className="h-4 w-4 mr-2" />
+            New File
+          </ContextMenuItem>
+          <ContextMenuItem onClick={() => openNewItemDialog("directory")}>
+            <FolderPlus className="h-4 w-4 mr-2" />
+            New Folder
+          </ContextMenuItem>
+          <ContextMenuSeparator />
+          <ContextMenuItem onClick={expandAll}>
+            <ChevronsDown className="h-4 w-4 mr-2" />
+            Expand All
+          </ContextMenuItem>
+          <ContextMenuItem onClick={collapseAll}>
+            <ChevronsUp className="h-4 w-4 mr-2" />
+            Collapse All
+          </ContextMenuItem>
+        </ContextMenuContent>
+      </ContextMenu>
 
       <div className="py-2 px-4 mt-auto flex justify-between w-64">
         <ThemeToggle />
