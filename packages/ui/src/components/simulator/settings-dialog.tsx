@@ -1,7 +1,7 @@
 "use client";
 
 import { Bug, Grid, Keyboard, Palette, SettingsIcon, Zap } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { type Settings, useSettingsStore } from "../../hooks/use-settings-store";
 import { Button } from "../ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from "../ui/dialog";
@@ -45,6 +45,34 @@ function HotkeyRow({ action, shortcut }: { action: string; shortcut: string }) {
 export function SettingsDialog() {
   const { settings, updateSetting } = useSettingsStore();
   const [activeTab, setActiveTab] = useState<TabId>("appearance");
+  const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // If we are running inside Tauri, the native OS menu will catch Cmd+, and emit the custom event.
+      // We skip the keydown listener here to prevent it from firing twice.
+      // @ts-expect-error - Tauri injects this global
+      if (window.__TAURI_INTERNALS__) return;
+
+      // Check for Cmd+, (Mac) or Ctrl+, (Windows/Linux)
+      if (e.key === "," && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault();
+        setIsOpen((prev) => !prev);
+      }
+    };
+
+    const handleCustomEvent = () => {
+      setIsOpen((prev) => !prev);
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("open-settings", handleCustomEvent);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("open-settings", handleCustomEvent);
+    };
+  }, []);
 
   const tabs = [
     { id: "appearance", label: "Appearance", icon: Palette },
@@ -55,7 +83,7 @@ export function SettingsDialog() {
   ] as const;
 
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger render={<Button variant="ghost" size="sm" />}>
         <SettingsIcon className="h-4 w-4 mr-2" />
         Settings
@@ -170,6 +198,11 @@ export function SettingsDialog() {
               {activeTab === "hotkeys" && (
                 <div className="flex flex-col">
                   <div className="mb-4 mt-2 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                    General
+                  </div>
+                  <HotkeyRow action="Open Settings" shortcut="Cmd/Ctrl + ," />
+
+                  <div className="mt-8 mb-4 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
                     Navigation
                   </div>
                   <HotkeyRow action="Pan Canvas" shortcut="Space + Drag / Middle Click" />
