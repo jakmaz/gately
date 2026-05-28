@@ -1,14 +1,34 @@
 /** biome-ignore-all lint/suspicious/noArrayIndexKey: handles are positional */
 "use client";
 
-import { Position } from "@xyflow/react";
+import { calculateNodeStates } from "@gately/core/simulator";
+import type { GateNodeProps } from "@gately/core/types";
+import { Position, useReactFlow } from "@xyflow/react";
+import { Copy, Power, Trash2, Unplug } from "lucide-react";
+import { nanoid } from "nanoid";
 import { useState } from "react";
+import {
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuSeparator,
+  ContextMenuTrigger,
+} from "../../ui/context-menu";
 import { H, hs, W } from "./constants";
 import { InputHandle, OutputHandle } from "./gate-handle";
 import type { GateRendererProps } from "./types";
 
-export function GateRenderer({ data, isConnectable, geometry, label, inputHandles, outputHandles }: GateRendererProps) {
+export function GateRenderer({
+  id,
+  data,
+  isConnectable,
+  geometry,
+  label,
+  inputHandles,
+  outputHandles,
+}: GateRendererProps) {
   const [hovered, setHovered] = useState(false);
+  const { getNodes, setNodes, getEdges, setEdges, addNodes, deleteElements } = useReactFlow();
   const activeColor = data.preview
     ? "var(--color-foreground)"
     : data.state
@@ -16,6 +36,7 @@ export function GateRenderer({ data, isConnectable, geometry, label, inputHandle
       : "var(--color-primary)";
   const bgColor = "var(--card, #1a1a2e)";
   const hasSelectPin = label === "MUX" || label === "DMUX";
+  const isInputNode = label === "TOGGLE" || label === "PUSH";
 
   const inputYs: (number | null)[] = Array.from({ length: inputHandles }, (_, i) => {
     if (geometry.inputYOverrides && i < geometry.inputYOverrides.length) return geometry.inputYOverrides[i];
@@ -29,13 +50,45 @@ export function GateRenderer({ data, isConnectable, geometry, label, inputHandle
     return H * 0.25 + ((H * 0.5) / (outputHandles - 1)) * i;
   });
 
-  return (
-    <div
-      className="relative"
-      style={{ width: W, height: H }}
-      onMouseEnter={() => !data.preview && setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-    >
+  const handleDuplicate = () => {
+    if (!id) return;
+    const node = getNodes().find((n) => n.id === id);
+    if (!node) return;
+    const newNode = {
+      ...node,
+      id: nanoid(),
+      position: { x: node.position.x + 40, y: node.position.y + 40 },
+      selected: false,
+    };
+    addNodes(newNode);
+  };
+
+  const handleDelete = () => {
+    if (!id) return;
+    deleteElements({ nodes: [{ id }] });
+  };
+
+  const handleDisconnect = () => {
+    if (!id) return;
+    const edges = getEdges();
+    const filtered = edges.filter((e) => e.source !== id && e.target !== id);
+    setEdges(filtered);
+    const nodes = getNodes() as import("@xyflow/react").Node<GateNodeProps>[];
+    const calculated = calculateNodeStates(nodes, filtered);
+    setNodes(calculated);
+  };
+
+  const handleToggle = () => {
+    if (!id || !isInputNode) return;
+    const nodes = getNodes() as import("@xyflow/react").Node<GateNodeProps>[];
+    const edges = getEdges();
+    const updatedNodes = nodes.map((n) => (n.id === id ? { ...n, data: { ...n.data, state: !n.data.state } } : n));
+    const calculated = calculateNodeStates(updatedNodes, edges);
+    setNodes(calculated);
+  };
+
+  const gateContent = (
+    <>
       {/* Hover tooltip */}
       <div
         style={{
@@ -195,6 +248,55 @@ export function GateRenderer({ data, isConnectable, geometry, label, inputHandle
             isConnectable={isConnectable}
           />
         ))}
-    </div>
+    </>
+  );
+
+  if (data.preview || !id) {
+    return (
+      <div className="relative" style={{ width: W, height: H }}>
+        {gateContent}
+      </div>
+    );
+  }
+
+  return (
+    <ContextMenu>
+      <ContextMenuTrigger
+        render={
+          <div
+            className="relative"
+            style={{ width: W, height: H }}
+            onMouseEnter={() => setHovered(true)}
+            onMouseLeave={() => setHovered(false)}
+          />
+        }
+      >
+        {gateContent}
+      </ContextMenuTrigger>
+      <ContextMenuContent>
+        <ContextMenuItem onClick={handleDuplicate}>
+          <Copy className="h-4 w-4 mr-2" />
+          Duplicate
+        </ContextMenuItem>
+        <ContextMenuItem onClick={handleDisconnect}>
+          <Unplug className="h-4 w-4 mr-2" />
+          Disconnect All
+        </ContextMenuItem>
+        {isInputNode && (
+          <ContextMenuItem onClick={handleToggle}>
+            <Power className="h-4 w-4 mr-2" />
+            Toggle State
+          </ContextMenuItem>
+        )}
+        <ContextMenuSeparator />
+        <ContextMenuItem
+          onClick={handleDelete}
+          className="text-destructive focus:text-destructive focus:bg-destructive/10"
+        >
+          <Trash2 className="h-4 w-4 mr-2" />
+          Delete
+        </ContextMenuItem>
+      </ContextMenuContent>
+    </ContextMenu>
   );
 }

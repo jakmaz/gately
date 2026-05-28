@@ -1,18 +1,57 @@
+import { calculateNodeStates } from "@gately/core/simulator";
 import type { GateNodeProps, LogicGateProps } from "@gately/core/types";
 import type { Node } from "@xyflow/react";
 import { useReactFlow } from "@xyflow/react";
+import { Copy, Power, Trash2, Unplug } from "lucide-react";
+import { nanoid } from "nanoid";
 import { memo, useCallback } from "react";
-import { simulateCircuit } from "../../hooks/simulator-utils";
-import { useSettingsStore } from "../../hooks/use-settings-store";
-import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from "../ui/context-menu";
+import {
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuSeparator,
+  ContextMenuTrigger,
+} from "../ui/context-menu";
 import { OutputHandle } from "./base/gate-handle";
 
 const W = 60;
 const H = 60;
 
 export const PushNode = memo(({ id, data, isConnectable }: LogicGateProps) => {
-  const { getNodes, getEdges, setEdges, setNodes } = useReactFlow();
-  const { settings } = useSettingsStore();
+  const { getNodes, getEdges, setEdges, setNodes, addNodes, deleteElements } = useReactFlow();
+
+  const handleDuplicate = () => {
+    const node = getNodes().find((n) => n.id === id);
+    if (!node) return;
+    const newNode = {
+      ...node,
+      id: nanoid(),
+      position: { x: node.position.x + 40, y: node.position.y + 40 },
+      selected: false,
+    };
+    addNodes(newNode);
+  };
+
+  const handleDelete = () => {
+    deleteElements({ nodes: [{ id }] });
+  };
+
+  const handleDisconnect = () => {
+    const edges = getEdges();
+    const filtered = edges.filter((e) => e.source !== id && e.target !== id);
+    setEdges(filtered);
+    const nodes = getNodes() as Node<GateNodeProps>[];
+    const calculated = calculateNodeStates(nodes, filtered);
+    setNodes(calculated);
+  };
+
+  const handleToggle = () => {
+    const nodes = getNodes() as Node<GateNodeProps>[];
+    const edges = getEdges();
+    const updatedNodes = nodes.map((n) => (n.id === id ? { ...n, data: { ...n.data, state: !n.data.state } } : n));
+    const calculated = calculateNodeStates(updatedNodes, edges);
+    setNodes(calculated);
+  };
 
   const updateState = useCallback(
     (newState: boolean) => {
@@ -21,11 +60,10 @@ export const PushNode = memo(({ id, data, isConnectable }: LogicGateProps) => {
 
       const updatedNodes = nodes.map((n) => (n.id === id ? { ...n, data: { ...n.data, state: newState } } : n));
 
-      const simulated = simulateCircuit(updatedNodes, edges, settings);
-      setNodes(simulated.nodes);
-      setEdges(simulated.edges);
+      const calculated = calculateNodeStates(updatedNodes, edges);
+      setNodes(calculated);
     },
-    [id, getNodes, getEdges, setEdges, setNodes, settings],
+    [id, getNodes, getEdges, setNodes],
   );
 
   const handleMouseDown = useCallback(
@@ -56,47 +94,68 @@ export const PushNode = memo(({ id, data, isConnectable }: LogicGateProps) => {
 
   return (
     <ContextMenu>
-      <ContextMenuTrigger>
-        <div
-          className="relative rounded-md border-2 flex flex-col items-center justify-center"
-          style={{
-            width: W,
-            height: H,
-            borderColor: activeColor,
-            background: bgColor,
-            boxShadow: `0 0 8px ${activeColor}40`,
-          }}
-        >
-          {/* Push Button Circle */}
+      <ContextMenuTrigger
+        render={
           <div
-            className="w-10 h-10 rounded-full border-2 flex items-center justify-center text-xs font-semibold transition-all duration-150 cursor-pointer select-none"
+            className="relative rounded-md border-2 flex flex-col items-center justify-center"
             style={{
+              width: W,
+              height: H,
               borderColor: activeColor,
-              backgroundColor: data.state ? activeColor : "transparent",
-              color: data.state ? bgColor : activeColor,
-              transform: data.state ? "scale(0.9)" : "scale(1)",
-              boxShadow: data.state ? `inset 0 2px 4px rgba(0,0,0,0.2)` : `0 2px 4px ${activeColor}20`,
+              background: bgColor,
+              boxShadow: `0 0 8px ${activeColor}40`,
             }}
-            onMouseDown={handleMouseDown}
-            onDragStart={(e) => e.preventDefault()} // Prevent dragging
-          >
-            I1
-          </div>
-
-          {!data.preview && (
-            <OutputHandle
-              index={0}
-              state={data.state}
-              y={H / 2}
-              outputX={W}
-              customId="output"
-              isConnectable={isConnectable}
-            />
-          )}
+          />
+        }
+      >
+        {/* Push Button Circle */}
+        <div
+          className="w-10 h-10 rounded-full border-2 flex items-center justify-center text-xs font-semibold transition-all duration-150 cursor-pointer select-none"
+          style={{
+            borderColor: activeColor,
+            backgroundColor: data.state ? activeColor : "transparent",
+            color: data.state ? bgColor : activeColor,
+            transform: data.state ? "scale(0.9)" : "scale(1)",
+            boxShadow: data.state ? `inset 0 2px 4px rgba(0,0,0,0.2)` : `0 2px 4px ${activeColor}20`,
+          }}
+          onMouseDown={handleMouseDown}
+          onDragStart={(e) => e.preventDefault()} // Prevent dragging
+        >
+          I1
         </div>
+
+        {!data.preview && (
+          <OutputHandle
+            index={0}
+            state={data.state}
+            y={H / 2}
+            outputX={W}
+            customId="output"
+            isConnectable={isConnectable}
+          />
+        )}
       </ContextMenuTrigger>
       <ContextMenuContent>
-        <ContextMenuItem>Rename</ContextMenuItem>
+        <ContextMenuItem onClick={handleDuplicate}>
+          <Copy className="h-4 w-4 mr-2" />
+          Duplicate
+        </ContextMenuItem>
+        <ContextMenuItem onClick={handleDisconnect}>
+          <Unplug className="h-4 w-4 mr-2" />
+          Disconnect All
+        </ContextMenuItem>
+        <ContextMenuItem onClick={handleToggle}>
+          <Power className="h-4 w-4 mr-2" />
+          Toggle State
+        </ContextMenuItem>
+        <ContextMenuSeparator />
+        <ContextMenuItem
+          onClick={handleDelete}
+          className="text-destructive focus:text-destructive focus:bg-destructive/10"
+        >
+          <Trash2 className="h-4 w-4 mr-2" />
+          Delete
+        </ContextMenuItem>
       </ContextMenuContent>
     </ContextMenu>
   );
