@@ -46,7 +46,7 @@ export function InfoDialog() {
             variant="outline"
             className="w-full"
             render={
-              <a href="https://roadwiseapp.com/app/gately" target="_blank" rel="noopener noreferrer">
+              <a href="https://gately.roadwiseapp.com" target="_blank" rel="noopener noreferrer">
                 Suggest features and provide feedback here!
               </a>
             }
