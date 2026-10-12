@@ -33,7 +33,7 @@ export function Header({ isScrolled, mobileMenuOpen, setMobileMenuOpen, themeTog
       <div className="container mx-auto flex h-16 px-4 md:px-6 items-center justify-between">
         <a href="/">
           <div className="flex items-center gap-2 font-bold">
-            <Logo className="size-6 rounded-md" />
+            <Logo className="size-6 shrink-0" aria-hidden="true" />
             <span>gately</span>
           </div>
         </a>

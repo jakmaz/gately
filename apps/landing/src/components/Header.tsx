@@ -1,5 +1,6 @@
 "use client";
 
+import { Logo } from "@gately/ui/components/Logo";
 import { Button } from "@gately/ui/components/ui/button";
 import { ChevronRight, Github, Menu, X } from "lucide-react";
 import { useState } from "react";
@@ -21,6 +22,7 @@ export function Header() {
       <div className="container mx-auto flex h-16 px-4 md:px-6 items-center justify-between">
         <a href="/">
           <div className="flex items-center gap-2 font-bold">
+            <Logo className="size-6 shrink-0" aria-hidden="true" />
             <span>gately</span>
           </div>
         </a>

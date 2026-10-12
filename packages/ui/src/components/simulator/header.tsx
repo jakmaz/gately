@@ -1,7 +1,7 @@
 import { Menu } from "lucide-react";
 import { useFileSystem } from "../../hooks/use-file-system";
 import { useHasMounted } from "../../hooks/use-has-mounted";
-import AndGate from "../icons/and-gate";
+import { Logo } from "../Logo";
 import { Button } from "../ui/button";
 import { Skeleton } from "../ui/skeleton";
 import { Controls } from "./controls";
@@ -26,9 +26,7 @@ export function Header({ onToggleSidebar }: HeaderProps) {
         </Button>
 
         <a href="/" className="flex items-center gap-2">
-          <div className="bg-primary p-0.5 rounded-md">
-            <AndGate className="text-white h-6 w-6" />
-          </div>
+          <Logo className="size-7 shrink-0" aria-hidden="true" />
           <h1 className="text-xl font-bold">gately</h1>
         </a>
 

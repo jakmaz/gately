@@ -8,6 +8,7 @@
     "tooling/*"
   ],
   "scripts": {
+    "branding:export": "bun packages/ui/scripts/export-branding.tsx",
     "dev:web": "turbo run dev --filter=@gately/web",
     "dev:desktop": "turbo run dev --filter=@gately/desktop",
     "build:web": "turbo run build --filter=web",

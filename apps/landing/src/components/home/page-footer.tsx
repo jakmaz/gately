@@ -1,8 +1,10 @@
+import { Logo } from "@gately/ui/components/Logo";
+
 export function PageFooter() {
   return (
     <footer className="footer">
       <a className="brand" href="/" aria-label="Gately home">
-        <img src="/favicon.svg" alt="" width="24" height="24" />
+        <Logo width={24} height={24} aria-hidden="true" />
         gately
       </a>
       <p>A little logic goes a long way.</p>

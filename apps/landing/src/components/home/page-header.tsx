@@ -1,5 +1,6 @@
 "use client";
 
+import { Logo } from "@gately/ui/components/Logo";
 import { ArrowRight, Menu, Moon, Sun, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
@@ -62,7 +63,7 @@ export function PageHeader({ learn = false }: { learn?: boolean }) {
       <header className="site-header" ref={header}>
         <div className="nav-inner">
           <a className="brand" href="/" aria-label="Gately home" onClick={() => setMenuOpen(false)}>
-            <img src="/favicon.svg" alt="" width="28" height="28" />
+            <Logo width={28} height={28} aria-hidden="true" />
             gately
           </a>
           <nav id="site-navigation" className={`navigation${menuOpen ? " open" : ""}`} aria-label="Main navigation">

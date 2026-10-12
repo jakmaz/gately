@@ -117,7 +117,8 @@ html:has(.gately-site) {
   letter-spacing: -1px;
   color: var(--foreground);
 }
-.gately-site .brand img {
+.gately-site .brand svg {
+  flex: none;
   border-radius: 6px;
 }
 .gately-site .wrap {
@@ -680,7 +681,7 @@ html:has(.gately-site) {
 .gately-site .footer .brand {
   font-size: 20px;
 }
-.gately-site .footer .brand img {
+.gately-site .footer .brand svg {
   width: 24px;
   height: 24px;
 }
@@ -820,7 +821,7 @@ html:has(.gately-site) {
   .gately-site .brand {
     font-size: 21px;
   }
-  .gately-site .brand img {
+  .gately-site .brand svg {
     width: 25px;
     height: 25px;
   }
