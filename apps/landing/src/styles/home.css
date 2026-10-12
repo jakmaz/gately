@@ -212,6 +212,18 @@ html:has(.gately-site) {
 .gately-site .icon-button:hover {
   background: var(--secondary);
 }
+.gately-site .theme-toggle {
+  color: var(--muted-foreground);
+}
+.gately-site .theme-toggle:hover {
+  color: var(--foreground);
+}
+.gately-site .theme-toggle .icon {
+  display: block;
+  width: 16px;
+  height: 16px;
+  stroke-width: 1.5;
+}
 .gately-site .theme-toggle .sun {
   display: none;
 }
