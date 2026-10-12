@@ -1,25 +1,31 @@
 ---
 layout: ../../layouts/DocsLayout.astro
-title: Understanding the Interface
-description: A comprehensive overview of Gately's workspace, toolbars, and canvas areas.
+title: Understanding the interface
+description: Find your circuits, place components, and navigate the canvas.
 ---
 
-## The Main Canvas
+## The canvas
 
-The infinite canvas is where your logic circuits come to life. Gately uses a seamless zoom-and-pan engine to ensure you never run out of space. 
-- **Panning:** Click and hold the `Spacebar` while dragging the mouse.
-- **Zooming:** Use your mouse wheel or trackpad to organically zoom into dense micro-circuits.
+The canvas is where you place components and connect them. Drag an empty area to pan, and use the mouse wheel or a trackpad to zoom. The header also has **Zoom In**, **Zoom Out**, and **Center Canvas** controls.
 
-## The Toolbox
+## Components
 
-Located continuously on the left side of the screen, the Toolbox contains every logical component available in our engine:
-1. **Inputs:** Toggle switches, Push Buttons, and Clock pulse generators.
-2. **Logic Gates:** The fundamental Boolean operators (AND, OR, NOT, XOR).
-3. **Outputs:** LED indicators, Buzzers, and Hex Displays.
+The **Components** panel groups the available building blocks:
 
-## Top Navigation Bar
+- **Input & Output:** Toggle Switch, Push Button, and Output.
+- **Basic Logic Gates:** BUFFER, NOT, AND, NAND, OR, NOR, XOR, and XNOR.
+- **Multiplexers:** MUX and DMUX.
 
-The header provides critical project controls:
-- **Simulation Play/Pause:** Freeze your circuit state in time to debug race conditions.
-- **Clear Canvas:** Wipes everything clean to start fresh.
-- **Theme Toggle:** Instantly swap between dark mode and light mode, natively synchronized to your system preferences.
+Drag a component onto the canvas to add it. Toggle switches provide binary inputs; output components display the result.
+
+## Files
+
+Use the menu button beside the Gately logo to show the file panel. Select a circuit to open it, or create files and folders to organize your work.
+
+Circuit files are saved locally. Use **Export Circuit** to download a backup, and **Import Circuit** to open a JSON file.
+
+## Settings
+
+Open **Settings** to change the theme, connection style, grid, snapping, and minimap. These preferences affect how you work with the canvas.
+
+For a guided start, follow [Your first circuit](/learn/first-circuit).

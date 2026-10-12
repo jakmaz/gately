@@ -1,14 +1,8 @@
-.gately-site.gately-learn .nav-inner,
-.gately-site.gately-learn .footer,
-.gately-learn .learn-shell {
-  width: calc(100% - 64px);
-  max-width: 1480px;
-}
 .gately-learn .learn-shell {
   display: grid;
-  grid-template-columns: 208px minmax(0, 1fr) 176px;
+  grid-template-columns: 192px minmax(0, 1fr) 144px;
   align-items: start;
-  gap: 32px;
+  gap: 24px;
   margin: 44px auto 80px;
 }
 .gately-learn .learn-sidebar,
@@ -74,7 +68,7 @@
   min-width: 0;
 }
 .gately-learn .learn-article {
-  padding: 42px 48px 48px;
+  padding: 36px 40px 40px;
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: 10px;
@@ -210,6 +204,39 @@
   text-transform: none;
   color: var(--foreground);
 }
+.gately-learn .learn-truth-table-frame {
+  width: 100%;
+  max-width: 640px;
+  margin: 24px 0 32px;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--card);
+}
+.gately-learn .markdown-body .learn-truth-table {
+  table-layout: auto;
+  min-width: 260px;
+}
+.gately-learn .learn-truth-table .truth-table-heading {
+  padding: 12px;
+  text-align: center;
+  font-size: 12px;
+  white-space: nowrap;
+}
+.gately-learn .learn-truth-table .truth-table-cell {
+  padding: 10px 12px;
+  text-align: center;
+  font-family: "Geist Mono", monospace;
+}
+.gately-learn .learn-truth-table .truth-table-output {
+  font-weight: 600;
+}
+.gately-learn .learn-truth-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+.gately-learn .learn-truth-table tbody tr:hover {
+  background: var(--muted);
+}
 .gately-learn .learn-toc a {
   display: block;
   padding: 5px 0;
@@ -337,10 +364,10 @@
   color: var(--foreground);
   font-family: "Geist Mono", monospace;
 }
-@media (max-width: 1279px) {
+@media (max-width: 1399px) {
   .gately-learn .learn-shell {
-    grid-template-columns: 208px minmax(0, 1fr);
-    gap: 28px;
+    grid-template-columns: 192px minmax(0, 1fr);
+    gap: 24px;
   }
   .gately-learn .learn-toc {
     display: none;
@@ -350,11 +377,6 @@
   }
 }
 @media (max-width: 899px) {
-  .gately-site.gately-learn .nav-inner,
-  .gately-site.gately-learn .footer,
-  .gately-learn .learn-shell {
-    width: calc(100% - 40px);
-  }
   .gately-learn .learn-shell {
     display: block;
     margin-top: 24px;
@@ -396,11 +418,6 @@
   }
 }
 @media (max-width: 599px) {
-  .gately-site.gately-learn .nav-inner,
-  .gately-site.gately-learn .footer,
-  .gately-learn .learn-shell {
-    width: calc(100% - 32px);
-  }
   .gately-learn .learn-article {
     padding: 26px 20px 30px;
   }

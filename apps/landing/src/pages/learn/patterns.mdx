@@ -1,10 +1,9 @@
 ---
 layout: ../../layouts/DocsLayout.astro
-title: Complex Circuit Patterns
-description: Move beyond basic arithmetic and explore sequential memory logic like latches and flip-flops.
+title: Circuit patterns
+description: Understand reusable circuit blocks and the role of feedback.
 ---
 import { DocsSimulator } from "../../components/docs/docs-simulator";
-import { TruthTable } from "../../components/docs/truth-table";
 
 export const srNodes = [
   { id: "Set", type: "toggleNode", position: { x: 0, y: 0 }, data: { label: "Set" } },
@@ -27,23 +26,30 @@ export const srEdges = [
   { id: "e-nor2-notq", source: "Nor2", target: "NotQ" },
 ];
 
-## Combinational vs. Sequential Logic 
+## Combinational circuits
 
-Everything built in primitive tutorials evaluates as completely **Combinational Logic**. This strictly means the current physical output depends *exclusively* on the immediate current inputs. If you turn off an adder's inputs, the circuit entirely forgets it calculated anything.
+In a combinational circuit, the output depends on the current inputs. Gates, adders, and multiplexers are examples.
 
-**Sequential Logic** fundamentally breaks the laws of spatial progression.
+Build and check a small block before combining it with others. A truth table is useful for checking every input combination.
 
-## The SR Latch (Memory)
+## Reuse a structure
 
-A Set/Reset (SR) Latch is the absolute smallest unit of digital memory in the universe. It actively remembers its physical state entirely without continuous outer electrical injection.
+A useful circuit pattern separates a problem into smaller parts. A full adder combines two half adders; a multiplexer combines two selectable paths.
 
-To accomplish this, we forcefully cross-couple the outputs of identical NOR Gates massively mapping their outputs simultaneously backward into each other's collision spaces. This traps an endless high-signal logic wave.
+Arrange these parts so their inputs and outputs are easy to follow. Use the same convention when building a larger circuit.
 
-<div className="my-8 h-[400px] w-full border border-border rounded-xl overflow-hidden shadow-xl">
+## Feedback and memory
+
+Sequential circuits depend on both current inputs and stored state. Feedback, where an output connects back to an earlier part of the circuit, is one way to build memory.
+
+An SR latch uses two cross-coupled NOR gates. Set and Reset control which state it stores.
+
+<div className="my-8 h-[400px] w-full border border-border rounded-xl overflow-hidden">
   <DocsSimulator initialNodes={srNodes} initialEdges={srEdges} height="h-[400px]" client:load />
 </div>
 
-- **Click SET** once and disable it. Notice how the logic stays trapped ON forever?
-- **Click RESET** once and disable it. The logic loop crashes, forcefully rewriting itself back essentially to a blank state.
+This diagram illustrates the feedback structure. Gately's current simulator does not provide a reliable latch memory model, so the example should not be used to verify stored state or timing behavior.
 
-You just manually operated massive volatile server memory mechanics inside your local browser!
+## Where to continue
+
+Use [half adders](/learn/half-adder), [full adders](/learn/full-adder), and [multiplexers](/learn/multiplexer) to explore larger combinational circuits. Check each block on its own, then verify the combined result.

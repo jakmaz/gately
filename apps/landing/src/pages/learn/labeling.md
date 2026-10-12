@@ -1,20 +1,23 @@
 ---
 layout: ../../layouts/DocsLayout.astro
-title: Labeling and Organization
-description: Keep your massive computer architectures legible with integrated text manipulation.
+title: Labeling and organization
+description: Keep circuits easy to find and their connections easy to follow.
 ---
 
-## The Chaos Scale
+## Name your files
 
-When you first build an AND gate, everything is obvious. Once you assemble a 4-bit ALU processor simulating 230 concurrent routing splines, if you don't use Labels, you will never understand your own creation!
+Use descriptive circuit names, such as `first-and-gate` or `half-adder`. Group related experiments in folders.
 
-## Node Labeling
+The file panel's context menu lets you rename files and folders. Names should help you recognize the circuit when you return to it.
 
-Almost every physical input, output, and logic gate supports direct string manipulation. 
-- Double-click the tiny text string floating directly above or under a gate.
-- It will instantly swap into an active text-input field.
-- Type names like `Data_Bus_L` or `Clock_Tick` and press Enter to save.
+## Arrange related components
 
-## Text Nodes
+Keep inputs, processing gates, and outputs in a clear order. Place related gates together and leave space between separate parts of a circuit.
 
-You can also place arbitrary freeform "Label Nodes" from the Toolbox. These perform literally zero logic—they exist entirely to let you type enormous, styled headers like `MEMORY CONTROLLER SUBSYSTEM` acting as visual boundaries across your massive infinite canvas regions.
+For an adder, group the gates that calculate the sum and keep the carry path easy to follow. The same layout convention can help across several experiments.
+
+## Component labels
+
+Component labels identify the parts of a circuit.
+
+The current editor does not provide inline component-label editing or standalone text-label components. Use file names, folders, and circuit layout to organize your work.

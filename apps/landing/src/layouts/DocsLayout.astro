@@ -42,7 +42,7 @@ const structuredData = [
 
 <LandingLayout learn title={frontmatter.title} description={frontmatter.description}>
   <script type="application/ld+json" is:inline set:html={JSON.stringify(structuredData).replaceAll("<", "\\u003c")} />
-  <div class="learn-shell">
+  <div class="wrap learn-shell">
     <aside class="learn-sidebar">
       <a class="learn-home" href="/learn/first-circuit">Learn</a>
       <p class="learn-sidebar-description">Digital logic with Gately.</p>

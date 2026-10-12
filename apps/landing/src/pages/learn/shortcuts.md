@@ -1,32 +1,26 @@
 ---
 layout: ../../layouts/DocsLayout.astro
-title: Keyboard Shortcuts
-description: Boost your circuit-building velocity with time-saving keyboard shortcuts.
+title: Keyboard shortcuts
+description: Navigate the canvas and work with selected components.
 ---
 
-## Navigation & Canvas
+## Canvas navigation
 
-Mastering canvas manipulation enables you to freely explore large logic circuits without disrupting your wiring flow.
+| Action | Control |
+| --- | --- |
+| Pan the canvas | Drag an empty area, or hold Space while dragging |
+| Zoom | Mouse wheel or trackpad |
+| Select an area | Hold Shift and drag |
+| Add to a selection | Hold Ctrl on Windows/Linux or Command on macOS while clicking |
 
-* **Pan Canvas:** Hold `Spacebar` + Click and Drag
-* **Zoom In/Out:** Scroll `Mouse Wheel` or trackpad two-finger scroll.
-* **Fit to Screen:** Press `Shift + 1` to immediately center your entire circuit on the screen.
+Use **Center Canvas** in the header to bring the whole circuit into view.
 
-## Editing Shortcuts
+## Editing
 
-Skip the toolbar menus and build at the speed of thought.
+Select a node or connection and press **Backspace** to delete it. Components also have context menus with actions such as **Duplicate**, **Delete**, and **Disconnect All**.
 
-* **Delete Node/Wire:** Select an item and press `Backspace` or `Delete`.
-* **Duplicate:** Select nodes and press `Ctrl + D` (or `Cmd + D` on Mac).
-* **Undo:** `Ctrl + Z` (or `Cmd + Z` on Mac).
-* **Redo:** `Ctrl + Y` (or `Cmd + Shift + Z` on Mac).
-* **Select All:** `Ctrl + A` (or `Cmd + A` on Mac).
+## Settings
 
-## Selection Modes
+Press **Ctrl + ,** on Windows/Linux or **Command + ,** on macOS to open Settings.
 
-Gately lets you mass-edit groups of logic gates faster with bulk selections.
-
-* **Box Select Mode:** Hold `Shift` + Click and Drag across the canvas.
-* **Multi-Select:** Hold `Ctrl` (or `Cmd` on Mac) while clicking individual gates.
-
-Memorizing just `Spacebar` panning and `Shift` box selection will immediately elevate your productivity!
+The editor does not currently register undo/redo, duplicate, or fit-to-screen keyboard shortcuts. Use the available context-menu and header controls for those actions that are supported.

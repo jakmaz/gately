@@ -1,7 +1,7 @@
 ---
 layout: ../../layouts/DocsLayout.astro
-title: Creating Your First Circuit
-description: Learn how to assemble and simulate a simple digital logic circuit in Gately.
+title: Your first circuit
+description: Build an AND circuit with two switches and one output.
 ---
 import { DocsSimulator } from "../../components/docs/docs-simulator";
 
@@ -18,44 +18,40 @@ export const firstEdges = [
   { id: "e3", source: "3", target: "4" }
 ];
 
-## Overview
+## What you'll build
 
-Welcome to Gately! In this tutorial, we will construct our very first logic circuit: a simple mechanism to turn on a light bulb when two inputs are active simultaneously. This will intimately introduce you to the core interface and workflow of our visual editor.
+This circuit has two input switches, an AND gate, and an output. The output is `1` only when both inputs are `1`.
 
-## Step 1: Add Input Switches
+Try each switch on its own, then turn both on.
 
-Input elements allow you to feed binary data (`0` or `1`) into your circuit.
-1. Open the **Tools Palette** located on the left side of the editor.
-2. Drag and drop two **Toggle Nodes** onto your canvas.
-3. Click the labels on these nodes to rename them `Input A` and `Input B`.
-
-## Step 2: Place an AND Gate
-
-An `AND` gate only outputs a high signal (`1`) if absolutely all of its connected inputs are high.
-1. Return to the **Tools Palette**.
-2. Locate the **Logic Gates** category.
-3. Drag and drop the **AND Gate** into the middle of your canvas, slightly to the right of your inputs.
-
-## Step 3: Wire it Together
-
-Wiring connects the output of one node to the input of another, transferring logic signals in real-time.
-- Click and drag directly from the right-side glowing circle (output handle) of `Input A` to the top-left circle (input handle) of the `AND Gate`. 
-- Repeat the process to wire `Input B` to the bottom-left handle of the `AND Gate`.
-
-## Step 4: Add an Output Display
-
-To observe our circuit's final output, we require an output node.
-1. Drag an **Output Node** onto the canvas, placing it to the far right.
-2. Connect the output of your `AND Gate` to the input of this `Output Node`.
-
-## Running the Simulation
-
-Gately is entirely event-driven, which means your circuit is *already* simulating! Try physically clicking the input switches on the interactive logic circuit embedded below!
-
-<div className="my-10 h-[350px] w-full rounded-2xl overflow-hidden border border-border shadow-2xl relative">
+<div className="my-8 h-[350px] w-full rounded-xl overflow-hidden border border-border">
   <DocsSimulator initialNodes={firstNodes} initialEdges={firstEdges} height="h-[350px]" client:load />
 </div>
 
-In this example, gray means `0` and blue means `1`. Turn on both inputs and the `AND` gate's output becomes `1`.
+The example uses gray for `0` and blue for `1`. To build your own version, [open the editor](https://app.gately.dev) and choose or create a circuit in the file panel.
 
-Congratulations, you've just built your very first digital logic circuit! 🚀
+## 1. Add two switches
+
+Find **Toggle Switch** under **Input & Output** in the **Components** panel. Drag two switches onto the canvas, one above the other.
+
+The upper switch will be input A; the lower one will be input B.
+
+## 2. Place an AND gate
+
+Find **AND** under **Basic Logic Gates**. Place it to the right of the two switches, with space for the connections.
+
+## 3. Connect the inputs
+
+Drag from the upper switch's output handle to one input handle on the AND gate. Connect the lower switch to the other input handle.
+
+Each switch should feed a different gate input.
+
+## 4. Add an output
+
+Drag **Output** from **Input & Output** to the right of the gate. Connect the AND gate's output handle to it.
+
+## Check the result
+
+Turn on one switch. The output stays `0`. Turn on the second switch and the output becomes `1`. Turning either switch off returns it to `0`.
+
+The circuit updates as you change inputs. Next, compare this behavior with [other basic gates](/learn/basic-gates).

@@ -61,7 +61,7 @@ export function PageHeader({ learn = false }: { learn?: boolean }) {
       </a>
       <header className="site-header" ref={header}>
         <div className="nav-inner">
-          <a className="brand" href="/" aria-label="Gately home">
+          <a className="brand" href="/" aria-label="Gately home" onClick={() => setMenuOpen(false)}>
             <img src="/favicon.svg" alt="" width="28" height="28" />
             gately
           </a>

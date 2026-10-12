@@ -19,8 +19,8 @@ const modern = home || learn;
 
 <BaseLayout title={title} description={description}>
   <div class:list={["flex min-h-dvh justify-items-center items-center flex-col bg-background text-foreground", { "gately-site": modern, "gately-home": home, "gately-learn": learn }]}>
-    <div transition:persist={learn ? "learn-header" : home ? "home-header" : "header"} class="w-full relative z-50">
-      {modern ? <PageHeader learn={learn} client:load /> : <Header client:load />}
+    <div class="w-full relative z-50">
+      {modern ? <PageHeader learn={learn} client:load transition:persist="site-header" /> : <Header client:load transition:persist="header" />}
     </div>
     <main id="main" class="flex-1 w-full" tabindex="-1">
       <slot />

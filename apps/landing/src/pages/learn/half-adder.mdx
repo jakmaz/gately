@@ -1,7 +1,7 @@
 ---
 layout: ../../layouts/DocsLayout.astro
-title: Build a Half Adder
-description: Combine fundamental gates to perform your absolute first arithmetic logic.
+title: Build a half adder
+description: Add two one-bit inputs with XOR and AND gates.
 ---
 import { DocsSimulator } from "../../components/docs/docs-simulator";
 import { TruthTable } from "../../components/docs/truth-table";
@@ -24,26 +24,33 @@ export const haEdges = [
   { id: "e4-car", source: "4", target: "6" }
 ];
 
-## The Arithmetic Threshold
+## Add two bits
 
-Computers process logic using gates, but they perform math using Adders. A Half Adder fundamentally adds two separate 1-bit binary inputs (`A` and `B`) producing a total `Sum` bit, and if it exceeds 1, pushing out a `Carry` overflow bit.
+A half adder takes two inputs, A and B, and produces two outputs: **Sum** and **Carry**.
 
-This logic leverages exactly two overlapping primitive gates mapping identical signal trajectories simultaneously.
+XOR calculates the sum bit. AND calculates the carry bit.
 
-### Interactive Demonstration
+## Try the circuit
 
-Test running `1 + 1` mathematically inside the embedded visual physics simulation below. When both gates activate, the Sum violently returns to `0`, but the Carry indicator lights up, calculating `10` (the binary representation of 2)!
+Try `0 + 1`, then `1 + 1`. When both inputs are `1`, Sum is `0` and Carry is `1`.
 
 <div className="my-8 h-[450px] w-full border border-border rounded-xl overflow-hidden">
   <DocsSimulator initialNodes={haNodes} initialEdges={haEdges} height="h-[450px]" client:load />
 </div>
 
-<TruthTable 
-  headers={["Input A", "Input B", "Carry (Overflow)", "Sum"]}
-  rows={[
-    [0, 0, 0, 0],
-    [0, 1, 0, 1],
-    [1, 0, 0, 1],
-    [1, 1, 1, 0],
-  ]}
-/>
+Read the result as **Carry, Sum**. For `1 + 1`, those bits are `10`, the binary representation of two.
+
+<TruthTable headers={["A", "B", "Carry", "Sum"]} rows={[[0, 0, 0, 0], [0, 1, 0, 1], [1, 0, 0, 1], [1, 1, 1, 0]]} />
+
+## Build it in the editor
+
+1. Place two Toggle Switch components, an XOR gate, an AND gate, and two Output components.
+2. Connect both switches to the XOR gate.
+3. Connect the same switches to the AND gate.
+4. Connect each gate to its own output.
+
+The XOR output is Sum; the AND output is Carry. Both gates receive the same two input values.
+
+## Add a carry input
+
+A half adder has no input for a carry from a previous bit. A [full adder](/learn/full-adder) adds that third input, which lets several adders work together.

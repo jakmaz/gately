@@ -31,7 +31,7 @@ export function CourseMarketing() {
               <div className="lesson-circuit-board">
                 <svg viewBox="0 0 290 160" role="img" aria-labelledby={circuitTitleId}>
                   <title id={circuitTitleId}>
-                    AND gate: A {Number(inputs.a)}, B {Number(inputs.b)}, output {Number(output)}.
+                    {`AND gate: A ${Number(inputs.a)}, B ${Number(inputs.b)}, output ${Number(output)}.`}
                   </title>
                   <path className={`wire signal${inputs.a ? " high" : ""}`} d="M57 44H100V62H145" />
                   <path className={`wire signal${inputs.b ? " high" : ""}`} d="M57 116H119V98H145" />

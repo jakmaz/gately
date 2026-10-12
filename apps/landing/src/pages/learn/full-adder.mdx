@@ -1,7 +1,7 @@
 ---
 layout: ../../layouts/DocsLayout.astro
-title: Create a Full Adder
-description: Expand standard addition by accepting carry-overs from previous computational columns.
+title: Build a full adder
+description: Add two bits and a carry input, producing sum and carry outputs.
 ---
 import { DocsSimulator } from "../../components/docs/docs-simulator";
 import { TruthTable } from "../../components/docs/truth-table";
@@ -34,33 +34,36 @@ export const rcaEdges = [
   { id: "e-cout", source: "or1", target: "Cout" }
 ];
 
-## Processing Carries
+## Include a carry
 
-A Half Adder adds two numbers beautifully, but it functionally breaks if you try to chain them together because it absolutely ignores 'Carry bits' spilling over from the previous mathematical column!
+A full adder has three inputs: **A**, **B**, and **Carry In**. It produces **Sum** and **Carry Out**.
 
-A **Full Adder** effectively addresses this by accepting *three* distinct inputs: `A`, `B`, and `Carry In`.
+The extra input carries a result from the previous bit position when adding multi-bit numbers.
 
-### Cascading Architecture
+## Try the circuit
 
-Instead of wiring everything randomly, think modularly! A Full Adder is effectively just **two individual Half Adders** smashed together, bridged safely by a single trailing OR Gate. 
-Notice how complex the wiring topology becomes as logic compounds. Toggle all three inputs in the embedded simulator below to definitively prove `1 + 1 + 1 = Sum 1, Carry 1`.
+Turn on one input, then two, then all three. With all three inputs set to `1`, Sum and Carry Out are both `1`, giving the binary result `11`.
 
-<div className="my-8 h-[550px] w-full border border-border rounded-xl overflow-hidden shadow-xl">
+<div className="my-8 h-[550px] w-full border border-border rounded-xl overflow-hidden">
   <DocsSimulator initialNodes={rcaNodes} initialEdges={rcaEdges} height="h-[550px]" client:load />
 </div>
 
-<TruthTable 
+<TruthTable
   headers={["A", "B", "Carry In", "Carry Out", "Sum"]}
-  rows={[
-    [0, 0, 0, 0, 0],
-    [0, 0, 1, 0, 1],
-    [0, 1, 0, 0, 1],
-    [0, 1, 1, 1, 0],
-    [1, 0, 0, 0, 1],
-    [1, 0, 1, 1, 0],
-    [1, 1, 0, 1, 0],
-    [1, 1, 1, 1, 1],
-  ]}
+  rows={[[0, 0, 0, 0, 0], [0, 0, 1, 0, 1], [0, 1, 0, 0, 1], [0, 1, 1, 1, 0], [1, 0, 0, 0, 1], [1, 0, 1, 1, 0], [1, 1, 0, 1, 0], [1, 1, 1, 1, 1]]}
 />
 
-By sequentially linking multiple Full Adders in a row (Outputting a Carry directly into the Input Carry of the next module), you definitively construct a **Ripple Carry Processor** allowing you to rapidly compute arbitrarily large math!
+## Combine two half adders
+
+The first half adder adds A and B. The second adds that sum to Carry In. An OR gate combines their carry outputs.
+
+- **Sum:** `A XOR B XOR Carry In`
+- **Carry Out:** `(A AND B) OR (Carry In AND (A XOR B))`
+
+This uses two XOR gates, two AND gates, and one OR gate.
+
+## Add more bits
+
+Connect Carry Out from one full adder to Carry In on the next bit position. This arrangement is called a **ripple-carry adder**.
+
+Each stage adds one pair of bits and passes its carry to the next stage.

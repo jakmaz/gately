@@ -1,26 +1,33 @@
 ---
 layout: ../../layouts/DocsLayout.astro
-title: Basic Gate Operations
-description: Learn the programmatic differences of how logic gates evaluate inputs and handle active states.
+title: Basic gate operations
+description: Understand binary inputs, gate outputs, and live simulation.
 ---
 
-## Event-Driven Updates
+## Binary values
 
-Unlike static circuit diagrams, Gately simulates exactly like physical hardware. When you modify an input node, the signal propagates instantaneously through the wires. 
+Gately works with two values: **0** and **1**. Input switches let you change those values. Gates combine or invert their inputs, and output components display the result.
 
-Basic gate operations rely on a Boolean framework:
-- A signal is either `High` (represented as **1** or brightly lit green).
-- A signal is either `Low` (represented as **0** or dark gray).
+The examples in Learn use gray for `0` and blue for `1`. Read the displayed values when checking a circuit.
 
-## Propagation Delay
+## How gates respond
 
-In the real world, electricity takes microscopic amounts of time to travel through logic gates. Gately accurately simulates this **propagation delay**. 
+A gate's output depends on its input values:
 
-If you run incredibly complex logic chains or create feedback loops (where the output of a gate wires back into its own input), you might observe the signals visibly "racing" across the wires. This makes debugging oscillating circuits highly intuitive.
+- **AND:** outputs `1` when both inputs are `1`.
+- **OR:** outputs `1` when at least one input is `1`.
+- **NOT:** changes `0` to `1` and `1` to `0`.
 
-## Visual Feedback
+See [AND, OR, NOT gates](/learn/basic-gates) for examples and truth tables.
 
-You can always tell what a gate is actively operating on via its **pin colors**.
-- A glowing green input pin means that specific entry point is receiving a High signal.
-- The body of the logic gate pulses when it evaluates an output state change.
-- Wires animate signal flow directionally from left to right.
+## Live updates
+
+Changing an input or a connection recalculates the circuit. There is no separate play button needed to try a combinational circuit.
+
+A disconnected input is evaluated as `0`. Check the wires and input handles if an output does not behave as expected.
+
+## Simulation scope
+
+This is a Boolean simulation. It does not model electrical voltages or gate propagation delays.
+
+Combinational circuits, whose outputs depend on current inputs, are the main supported use case. Feedback circuits need a stateful simulation model to represent memory reliably; see [Circuit patterns](/learn/patterns).

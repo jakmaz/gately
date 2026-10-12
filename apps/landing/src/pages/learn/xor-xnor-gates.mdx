@@ -1,7 +1,7 @@
 ---
 layout: ../../layouts/DocsLayout.astro
-title: XOR and XNOR Gates
-description: Learn how exclusive logic routing behaves, the cornerstone of modern cryptography and arithmetic.
+title: XOR and XNOR gates
+description: Compare two inputs and detect whether their values match.
 ---
 import { DocsSimulator } from "../../components/docs/docs-simulator";
 import { TruthTable } from "../../components/docs/truth-table";
@@ -32,45 +32,34 @@ export const xnorEdges = [
   { id: "e4", source: "4", target: "5" }
 ];
 
+For two inputs, XOR detects different values and XNOR detects matching values. These operations are useful in comparisons and binary addition.
 
-## Exclusive Logic
+## XOR gate
 
-Standard basic gates don't care if both inputs are active at once. Exclusive logic gates are significantly stricter. They are highly specialized tools designed specifically to detect inequality or absolute equality.
+XOR outputs `1` when exactly one of its two inputs is `1`.
 
-### The XOR Gate (Exclusive OR)
-
-The XOR gate outputs `1` if the inputs are **different** from each other. Think of it as an inequality detector. It perfectly mimics adding `1 + 1` producing a `0`. Test it with alternating switches!
+Turn on one switch, then the other. Notice that the output returns to `0` when both inputs are on.
 
 <div className="my-8 h-[350px] w-full border border-border rounded-xl overflow-hidden">
   <DocsSimulator initialNodes={xorNodes} initialEdges={xorEdges} height="h-[350px]" client:load />
 </div>
 
-<TruthTable 
-  headers={["Input A", "Input B", "XOR Output"]}
-  rows={[
-    [0, 0, 0],
-    [0, 1, 1],
-    [1, 0, 1],
-    [1, 1, 0],
-  ]}
-/>
+<TruthTable headers={["A", "B", "Output"]} rows={[[0, 0, 0], [0, 1, 1], [1, 0, 1], [1, 1, 0]]} />
 
-### The XNOR Gate (Equivalence Gate)
+## XNOR gate
 
-The XNOR gate outputs `1` if the inputs are precisely **identical**. While Gately doesn't include a rigid singular "XNOR" primitive by default, you natively construct it by stringing an XOR directly into a NOT gate! 
+XNOR outputs `1` when both inputs have the same value. Its output is the inverse of XOR.
+
+The editor includes an XNOR component. This example builds the same function from XOR followed by NOT.
 
 <div className="my-8 h-[350px] w-full border border-border rounded-xl overflow-hidden">
   <DocsSimulator initialNodes={xnorNodes} initialEdges={xnorEdges} height="h-[350px]" client:load />
 </div>
 
-Notice that the output exclusively turns OFF when the inputs differ!
+<TruthTable headers={["A", "B", "Output"]} rows={[[0, 0, 1], [0, 1, 0], [1, 0, 0], [1, 1, 1]]} />
 
-<TruthTable 
-  headers={["Input A", "Input B", "XNOR Output"]}
-  rows={[
-    [0, 0, 1],
-    [0, 1, 0],
-    [1, 0, 0],
-    [1, 1, 1],
-  ]}
-/>
+## Use XOR in addition
+
+XOR calculates the sum bit when adding two one-bit inputs. An AND gate calculates the carry bit.
+
+See [Build a half adder](/learn/half-adder) for the combined circuit.

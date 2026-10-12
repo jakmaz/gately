@@ -1,7 +1,7 @@
 ---
 layout: ../../layouts/DocsLayout.astro
-title: NAND and NOR Gates
-description: Understand inverted universal logic gates and how they can build any digital system.
+title: NAND and NOR gates
+description: Invert AND and OR outputs, and understand universal gates.
 ---
 import { DocsSimulator } from "../../components/docs/docs-simulator";
 import { TruthTable } from "../../components/docs/truth-table";
@@ -25,42 +25,32 @@ export const norNodes = [
   { id: "4", type: "outputNode", position: { x: 400, y: 60 }, data: { label: "Output", state: true } }
 ];
 
-## The Power of Universal Gates
+NAND and NOR invert the output of AND and OR. Each is also a universal gate: combinations of NAND gates, or combinations of NOR gates, can express any Boolean function.
 
-Did you know that you can build literally *any* logic circuit in existence using nothing but NAND gates? This is called universal logic. NAND and NOR gates are simply their base counterparts (AND / OR) permanently fused with an integrated NOT inverter on their output.
+## NAND gate
 
-### The NAND Gate
+NAND outputs `0` only when both inputs are `1`. For every other input combination, its output is `1`.
 
-The **NAND gate** (NOT-AND) acts precisely opposite to an AND gate. It evaluates to true unless **both** of its inputs are true. Try flipping both switches ON in the simulator; the output will drop to `0`!
+Turn both switches on, then turn either one off.
 
 <div className="my-8 h-[350px] w-full border border-border rounded-xl overflow-hidden">
   <DocsSimulator initialNodes={nandNodes} initialEdges={nandEdges} height="h-[350px]" client:load />
 </div>
 
-<TruthTable 
-  headers={["Input A", "Input B", "NAND Output"]}
-  rows={[
-    [0, 0, 1],
-    [0, 1, 1],
-    [1, 0, 1],
-    [1, 1, 0],
-  ]}
-/>
+<TruthTable headers={["A", "B", "Output"]} rows={[[0, 0, 1], [0, 1, 1], [1, 0, 1], [1, 1, 0]]} />
 
-### The NOR Gate
+## NOR gate
 
-The **NOR gate** (NOT-OR) evaluates to true if and only if **both** inputs are false. It acts as a complete blocker. The exact moment *any* single input turns `1`, the entire NOR gate violently shuts down and outputs `0`.
+NOR outputs `1` only when both inputs are `0`. Turning on either input makes the output `0`.
+
+Compare this with OR: every output value is inverted.
 
 <div className="my-8 h-[350px] w-full border border-border rounded-xl overflow-hidden">
   <DocsSimulator initialNodes={norNodes} initialEdges={nandEdges} height="h-[350px]" client:load />
 </div>
 
-<TruthTable 
-  headers={["Input A", "Input B", "NOR Output"]}
-  rows={[
-    [0, 0, 1],
-    [0, 1, 0],
-    [1, 0, 0],
-    [1, 1, 0],
-  ]}
-/>
+<TruthTable headers={["A", "B", "Output"]} rows={[[0, 0, 1], [0, 1, 0], [1, 0, 0], [1, 1, 0]]} />
+
+## Read the symbol
+
+The small circle at a gate's output represents inversion. An AND shape with this circle is NAND; an OR shape with the circle is NOR.

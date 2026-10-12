@@ -1,42 +1,33 @@
 ---
 layout: ../../layouts/DocsLayout.astro
-title: Truth Tables Explained
-description: Learn to read and generate truth tables to mathematically profile your circuits.
+title: Truth tables
+description: List every input combination and check the corresponding outputs.
 ---
 import { TruthTable } from "../../components/docs/truth-table";
 
-## What is a Truth Table?
+## Read a truth table
 
-A truth table is a mathematical grid utilized in logic processing specifically to compute the functional values of logical expressions on each possible combination of their logical variables.
+A truth table lists every possible input combination and the output for each one. Each row describes one case.
 
-In human terms: It’s basically a cheat sheet showing exactly what an output will do for every single possible input scenario.
+A circuit with `n` binary inputs has `2^n` input combinations. Two inputs give four rows; three inputs give eight.
 
-### A Basic AND Gate Truth Table
+## AND example
 
-Let's imagine an AND gate with two inputs, A and B, and one output, Q. Since there are 2 inputs in binary, there are exactly 4 total possible states (`2^n`).
+The first two columns are inputs A and B. The final column is the output. AND produces `1` only in the last row, where both inputs are `1`.
 
-<TruthTable 
-  headers={["Input A", "Input B", "Output (Q)"]}
-  rows={[
-    [0, 0, 0],
-    [0, 1, 0],
-    [1, 0, 0],
-    [1, 1, 1],
-  ]}
-/>
+<TruthTable headers={["A", "B", "Output"]} rows={[[0, 0, 0], [0, 1, 0], [1, 0, 0], [1, 1, 1]]} />
 
-### A Basic OR Gate Truth Table
+## OR example
 
-The OR gate evaluates to High (`1`) if absolutely any of its contributing inputs are High.
+OR produces `1` whenever at least one input is `1`. Compare the middle two rows with the AND table.
 
-<TruthTable 
-  headers={["Input A", "Input B", "Output (Q)"]}
-  rows={[
-    [0, 0, 0],
-    [0, 1, 1],
-    [1, 0, 1],
-    [1, 1, 1],
-  ]}
-/>
+<TruthTable headers={["A", "B", "Output"]} rows={[[0, 0, 0], [0, 1, 1], [1, 0, 1], [1, 1, 1]]} />
 
-Gately features automated truth table generation. When you select a cluster of interconnected logic gates, you can mathematically generate exactly how those gates compute entirely without manually toggling inputs!
+## Check a circuit
+
+1. Write down its inputs and outputs.
+2. List every input combination.
+3. Set the input switches to match each row.
+4. Record the output values and compare them with the expected behavior.
+
+You can try this with the interactive examples in [AND, OR, NOT gates](/learn/basic-gates). A table checks all cases, including the combinations you might miss when toggling inputs at random.

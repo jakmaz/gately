@@ -2,33 +2,33 @@ import { BookOpen, Lightbulb, Rocket, Wrench } from "lucide-react";
 
 export const docsSections = [
   {
-    title: "Getting Started",
-    description: "Quick start guide to building your first circuit",
+    title: "Getting started",
+    description: "Build a circuit and learn the editor basics",
     icon: <Rocket className="size-5" />,
     topics: [
-      { label: "Creating your first circuit", href: "/learn/first-circuit" },
-      { label: "Understanding the interface", href: "/learn/interface" },
+      { label: "Your first circuit", href: "/learn/first-circuit" },
+      { label: "The interface", href: "/learn/interface" },
       { label: "Basic gate operations", href: "/learn/gate-operations" },
-      { label: "Saving and loading projects", href: "/learn/saving-projects" },
+      { label: "Saving and loading", href: "/learn/saving-projects" },
     ],
   },
   {
-    title: "Gate Reference",
-    description: "Complete guide to all available logic gates",
+    title: "Gate reference",
+    description: "Compare gate behavior and truth tables",
     icon: <BookOpen className="size-5" />,
     topics: [
       { label: "AND, OR, NOT gates", href: "/learn/basic-gates" },
       { label: "NAND and NOR gates", href: "/learn/nand-nor-gates" },
       { label: "XOR and XNOR gates", href: "/learn/xor-xnor-gates" },
-      { label: "Truth tables explained", href: "/learn/truth-tables" },
+      { label: "Truth tables", href: "/learn/truth-tables" },
     ],
   },
   {
-    title: "Editor Features",
-    description: "Master the circuit editor tools",
+    title: "Editor features",
+    description: "Place, connect, and organize components",
     icon: <Wrench className="size-5" />,
     topics: [
-      { label: "Drag and drop components", href: "/learn/drag-drop" },
+      { label: "Drag and drop", href: "/learn/drag-drop" },
       { label: "Wiring and connections", href: "/learn/wiring" },
       { label: "Labeling and organization", href: "/learn/labeling" },
       { label: "Keyboard shortcuts", href: "/learn/shortcuts" },
@@ -36,13 +36,13 @@ export const docsSections = [
   },
   {
     title: "Tutorials",
-    description: "Step-by-step project guides",
+    description: "Combine gates into larger circuits",
     icon: <Lightbulb className="size-5" />,
     topics: [
       { label: "Build a half adder", href: "/learn/half-adder" },
-      { label: "Create a full adder", href: "/learn/full-adder" },
-      { label: "Design a multiplexer", href: "/learn/multiplexer" },
-      { label: "Complex circuit patterns", href: "/learn/patterns" },
+      { label: "Build a full adder", href: "/learn/full-adder" },
+      { label: "Build a multiplexer", href: "/learn/multiplexer" },
+      { label: "Circuit patterns", href: "/learn/patterns" },
     ],
   },
 ];

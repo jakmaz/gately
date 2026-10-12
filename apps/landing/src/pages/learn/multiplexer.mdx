@@ -1,7 +1,7 @@
 ---
 layout: ../../layouts/DocsLayout.astro
-title: Design a Multiplexer
-description: Build a digital traffic director to route multiple incoming signals safely down a single bus.
+title: Build a multiplexer
+description: Use a selector to choose which of two inputs reaches the output.
 ---
 import { DocsSimulator } from "../../components/docs/docs-simulator";
 import { TruthTable } from "../../components/docs/truth-table";
@@ -28,34 +28,30 @@ export const muxEdges = [
   { id: "e-or-out", source: "Or1", target: "Out1" },
 ];
 
-## What is a Multiplexer (MUX)?
+## Select an input
 
-A multiplexer is effectively a highly complex digital train switch track. Imagine having four different data streams (like four separate network connections), but you only own a single output wire into your processor. 
+A two-to-one multiplexer has two data inputs, one selector, and one output.
 
-You strictly need a mechanism allowing you to specify exactly *which* feed selectively passes through the output wire while completely discarding the ambient noise of the others. 
+- When **Selector** is `0`, the output follows **Channel 0**.
+- When **Selector** is `1`, the output follows **Channel 1**.
 
-### Data Funneling
+## Try the circuit
 
-A massive 2-to-1 multiplexer exclusively selects streams via a single `Selector` variable.
-- If Selector = `0`, only `Channel 0` data survives.
-- If Selector = `1`, the internal AND gates forcibly sever `Channel 0`, and exclusively pipe `Channel 1`.
+Set Channel 0 to `1` and Channel 1 to `0`. Change Selector and watch which channel reaches the output.
 
-Use the Selector Switch in the middle of our visual diagram below to change which stream lights up the backend!
-
-<div className="my-8 h-[500px] w-full border border-border rounded-xl overflow-hidden shadow-xl">
+<div className="my-8 h-[500px] w-full border border-border rounded-xl overflow-hidden">
   <DocsSimulator initialNodes={muxNodes} initialEdges={muxEdges} height="h-[500px]" client:load />
 </div>
 
-<TruthTable 
+<TruthTable
   headers={["Selector", "Channel 0", "Channel 1", "Output"]}
-  rows={[
-    [0, 0, 0, 0],
-    [0, 0, 1, 0],
-    [0, 1, 0, 1],
-    [0, 1, 1, 1],
-    [1, 0, 0, 0],
-    [1, 0, 1, 1],
-    [1, 1, 0, 0],
-    [1, 1, 1, 1],
-  ]}
+  rows={[[0, 0, 0, 0], [0, 0, 1, 0], [0, 1, 0, 1], [0, 1, 1, 1], [1, 0, 0, 0], [1, 0, 1, 1], [1, 1, 0, 0], [1, 1, 1, 1]]}
 />
+
+## Build it from gates
+
+NOT inverts the selector. One AND gate combines Channel 0 with the inverted selector; the other combines Channel 1 with the selector. OR combines the two paths into one output.
+
+The output is `(Channel 0 AND NOT Selector) OR (Channel 1 AND Selector)`.
+
+The editor also includes a **MUX** component. Building the function from basic gates helps explain what that component does.
