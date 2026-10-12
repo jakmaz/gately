@@ -1,35 +1,41 @@
 "use client";
 
 import { memo } from "react";
-import { type GateGeometry, GateRenderer, H, type LogicGateProps, W } from "./base/index";
+import { type GateGeometry, GateRenderer, type LogicGateProps } from "./base/index";
 
-function getNOTGeometry(): GateGeometry {
-  const bubR = 5;
-  const tipX = W - 18;
-  return {
-    bodyPath: `M10 4 L${tipX} ${H / 2} L10 ${H - 4} Z`,
-    bubble: { cx: tipX + bubR, cy: H / 2, r: bubR },
-    outputX: tipX + bubR * 2,
-    outputY: H / 2,
-    inputPinX: 10,
-  };
-}
+export const NOT_GEOMETRY: GateGeometry = {
+  bodyPath: "M16 12L60 40L16 68Z",
+  bubble: {
+    cx: 64,
+    cy: 40,
+    r: 4,
+  },
+  ports: [
+    {
+      id: "input-0",
+      kind: "input",
+      index: 0,
+      side: "left",
+      x: 0,
+      y: 40,
+      bodyX: 16,
+      bodyY: 40,
+    },
+    {
+      id: "output-0",
+      kind: "output",
+      index: 0,
+      side: "right",
+      x: 80,
+      y: 40,
+      bodyX: 68,
+      bodyY: 40,
+    },
+  ],
+};
 
-export const NOTGateNode = memo(({ id, data, isConnectable }: LogicGateProps) => {
-  const geometry = getNOTGeometry();
-
-  return (
-    <GateRenderer
-      id={id}
-      data={data}
-      isConnectable={isConnectable}
-      geometry={geometry}
-      label="NOT"
-      symbol="¬"
-      inputHandles={1}
-      outputHandles={1}
-    />
-  );
-});
+export const NOTGateNode = memo(({ id, data, isConnectable }: LogicGateProps) => (
+  <GateRenderer id={id} data={data} isConnectable={isConnectable} geometry={NOT_GEOMETRY} label="NOT" />
+));
 
 NOTGateNode.displayName = "NOTGateNode";

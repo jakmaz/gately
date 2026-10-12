@@ -119,12 +119,12 @@ export function TruthTable({ nodes, edges }: TruthTableProps) {
                 <TableRow>
                   {toggleNodes.map((node) => (
                     <TableHead key={`header_input_${node.id}`} className="text-center">
-                      Input {node.id.split("-")[1]}
+                      {node.data.label}
                     </TableHead>
                   ))}
                   {outputNodes.map((node) => (
                     <TableHead key={`header_output_${node.id}`} className="text-center">
-                      Output {node.id.split("-")[1]}
+                      {node.data.label}
                     </TableHead>
                   ))}
                 </TableRow>
@@ -138,7 +138,7 @@ export function TruthTable({ nodes, edges }: TruthTableProps) {
                       {toggleNodes.map((node) => (
                         <TableCell
                           key={`cell_input_${node.id}_${inputKey}`}
-                          className={`text-center ${row[`input_${node.id}`] ? "bg-green-100 dark:bg-green-900/30" : "bg-red-100 dark:bg-red-900/30"}`}
+                          className={`text-center ${row[`input_${node.id}`] ? "bg-signal-high/10" : "bg-signal-low/10"}`}
                         >
                           {row[`input_${node.id}`] ? "1" : "0"}
                         </TableCell>
@@ -146,7 +146,7 @@ export function TruthTable({ nodes, edges }: TruthTableProps) {
                       {outputNodes.map((node) => (
                         <TableCell
                           key={`cell_output_${node.id}_${inputKey}`}
-                          className={`text-center font-bold ${row[`output_${node.id}`] ? "bg-green-200 dark:bg-green-900/50" : "bg-red-200 dark:bg-red-900/50"}`}
+                          className={`text-center font-bold ${row[`output_${node.id}`] ? "bg-signal-high/20" : "bg-signal-low/20"}`}
                         >
                           {row[`output_${node.id}`] ? "1" : "0"}
                         </TableCell>

@@ -386,7 +386,7 @@ export function ExamplesDialog({ open, onOpenChange, onImportExample }: Examples
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
       case "Beginner":
-        return "text-green-600 bg-green-100";
+        return "text-muted-foreground bg-muted";
       case "Intermediate":
         return "text-yellow-600 bg-yellow-100";
       case "Advanced":

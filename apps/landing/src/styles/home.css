@@ -15,14 +15,11 @@
 .gately-site {
   --action: var(--chart-2);
   --blue-ink: var(--chart-3);
-  --signal-low: var(--muted-foreground);
-  --signal-high: var(--primary);
   --blue-wash: color-mix(in srgb, var(--primary) 7%, var(--background));
   color-scheme: light;
 }
 .dark .gately-site {
   --blue-ink: var(--chart-1);
-  --signal-high: var(--chart-1);
   color-scheme: dark;
 }
 .gately-site * {

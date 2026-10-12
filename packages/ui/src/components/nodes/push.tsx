@@ -1,163 +1,57 @@
-import { calculateNodeStates } from "@gately/core/simulator";
-import type { GateNodeProps, LogicGateProps } from "@gately/core/types";
-import type { Node } from "@xyflow/react";
-import { useReactFlow } from "@xyflow/react";
-import { Copy, Power, Trash2, Unplug } from "lucide-react";
-import { nanoid } from "nanoid";
-import { memo, useCallback } from "react";
-import {
-  ContextMenu,
-  ContextMenuContent,
-  ContextMenuItem,
-  ContextMenuSeparator,
-  ContextMenuTrigger,
-} from "../ui/context-menu";
-import { OutputHandle } from "./base/gate-handle";
+"use client";
 
-const W = 60;
-const H = 60;
+import { memo, useEffect } from "react";
+import { type GateGeometry, GateRenderer, type LogicGateProps } from "./base/index";
+import { useGateActions } from "./base/use-gate-actions";
+
+export const PUSH_GEOMETRY: GateGeometry = {
+  bodyPath: "M40 12A28 28 0 1 1 40 68A28 28 0 1 1 40 12Z",
+  terminal: "push",
+  ports: [{ id: "output", kind: "output", index: 0, side: "right", x: 80, y: 40, bodyX: 68, bodyY: 40 }],
+};
 
 export const PushNode = memo(({ id, data, isConnectable }: LogicGateProps) => {
-  const { getNodes, getEdges, setEdges, setNodes, addNodes, deleteElements } = useReactFlow();
+  const { updateState } = useGateActions(id);
 
-  const handleDuplicate = () => {
-    const node = getNodes().find((n) => n.id === id);
-    if (!node) return;
-    const newNode = {
-      ...node,
-      id: nanoid(),
-      position: { x: node.position.x + 40, y: node.position.y + 40 },
-      selected: false,
-    };
-    addNodes(newNode);
-  };
-
-  const handleDelete = () => {
-    deleteElements({ nodes: [{ id }] });
-  };
-
-  const handleDisconnect = () => {
-    const edges = getEdges();
-    const filtered = edges.filter((e) => e.source !== id && e.target !== id);
-    setEdges(filtered);
-    const nodes = getNodes() as Node<GateNodeProps>[];
-    const calculated = calculateNodeStates(nodes, filtered);
-    setNodes(calculated);
-  };
-
-  const handleToggle = () => {
-    const nodes = getNodes() as Node<GateNodeProps>[];
-    const edges = getEdges();
-    const updatedNodes = nodes.map((n) => (n.id === id ? { ...n, data: { ...n.data, state: !n.data.state } } : n));
-    const calculated = calculateNodeStates(updatedNodes, edges);
-    setNodes(calculated);
-  };
-
-  const updateState = useCallback(
-    (newState: boolean) => {
-      const nodes = getNodes() as Node<GateNodeProps>[];
-      const edges = getEdges();
-
-      const updatedNodes = nodes.map((n) => (n.id === id ? { ...n, data: { ...n.data, state: newState } } : n));
-
-      const calculated = calculateNodeStates(updatedNodes, edges);
-      setNodes(calculated);
-    },
-    [id, getNodes, getEdges, setNodes],
-  );
-
-  const handleMouseDown = useCallback(
-    (e: React.MouseEvent) => {
-      e.preventDefault();
-      e.stopPropagation(); // Prevent ReactFlow from handling this event
-      updateState(true);
-
-      // Add global mouse up listener to handle mouse release anywhere
-      const handleMouseUp = () => {
-        updateState(false);
-        document.removeEventListener("mouseup", handleMouseUp);
-        document.removeEventListener("mouseleave", handleMouseUp);
-      };
-
-      document.addEventListener("mouseup", handleMouseUp);
-      document.addEventListener("mouseleave", handleMouseUp);
-    },
-    [updateState],
-  );
-
-  const activeColor = data.preview
-    ? "var(--color-foreground)"
-    : data.state
-      ? "var(--color-success)"
-      : "var(--color-primary)";
-  const bgColor = "var(--card, #1a1a2e)";
+  useEffect(() => {
+    const release = () => updateState(false);
+    window.addEventListener("blur", release);
+    return () => window.removeEventListener("blur", release);
+  }, [updateState]);
 
   return (
-    <ContextMenu>
-      <ContextMenuTrigger
-        render={
-          <div
-            className="relative rounded-md border-2 flex flex-col items-center justify-center"
-            style={{
-              width: W,
-              height: H,
-              borderColor: activeColor,
-              background: bgColor,
-              boxShadow: `0 0 8px ${activeColor}40`,
-            }}
-          />
-        }
-      >
-        {/* Push Button Circle */}
-        <div
-          className="w-10 h-10 rounded-full border-2 flex items-center justify-center text-xs font-semibold transition-all duration-150 cursor-pointer select-none"
-          style={{
-            borderColor: activeColor,
-            backgroundColor: data.state ? activeColor : "transparent",
-            color: data.state ? bgColor : activeColor,
-            transform: data.state ? "scale(0.9)" : "scale(1)",
-            boxShadow: data.state ? `inset 0 2px 4px rgba(0,0,0,0.2)` : `0 2px 4px ${activeColor}20`,
-          }}
-          onMouseDown={handleMouseDown}
-          onDragStart={(e) => e.preventDefault()} // Prevent dragging
-        >
-          I1
-        </div>
-
-        {!data.preview && (
-          <OutputHandle
-            index={0}
-            state={data.state}
-            y={H / 2}
-            outputX={W}
-            customId="output"
-            isConnectable={isConnectable}
-          />
-        )}
-      </ContextMenuTrigger>
-      <ContextMenuContent>
-        <ContextMenuItem onClick={handleDuplicate}>
-          <Copy className="h-4 w-4 mr-2" />
-          Duplicate
-        </ContextMenuItem>
-        <ContextMenuItem onClick={handleDisconnect}>
-          <Unplug className="h-4 w-4 mr-2" />
-          Disconnect All
-        </ContextMenuItem>
-        <ContextMenuItem onClick={handleToggle}>
-          <Power className="h-4 w-4 mr-2" />
-          Toggle State
-        </ContextMenuItem>
-        <ContextMenuSeparator />
-        <ContextMenuItem
-          onClick={handleDelete}
-          className="text-destructive focus:text-destructive focus:bg-destructive/10"
-        >
-          <Trash2 className="h-4 w-4 mr-2" />
-          Delete
-        </ContextMenuItem>
-      </ContextMenuContent>
-    </ContextMenu>
+    <GateRenderer id={id} data={data} isConnectable={isConnectable} geometry={PUSH_GEOMETRY} label="Push input">
+      <button
+        type="button"
+        className="nopan absolute left-3 top-3 size-14 touch-none cursor-grab rounded-full outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background active:cursor-grabbing"
+        aria-label={`${data.label}, push input: ${Number(data.state)}. Hold to send 1`}
+        aria-pressed={data.state}
+        onPointerDown={(event) => {
+          if (event.button !== 0) return;
+          event.currentTarget.setPointerCapture(event.pointerId);
+          updateState(true);
+        }}
+        onPointerUp={(event) => {
+          updateState(false);
+          if (event.currentTarget.hasPointerCapture(event.pointerId))
+            event.currentTarget.releasePointerCapture(event.pointerId);
+        }}
+        onPointerCancel={() => updateState(false)}
+        onLostPointerCapture={() => updateState(false)}
+        onBlur={() => updateState(false)}
+        onKeyDown={(event) => {
+          if (event.key !== " " && event.key !== "Enter") return;
+          event.preventDefault();
+          if (!event.repeat) updateState(true);
+        }}
+        onKeyUp={(event) => {
+          if (event.key !== " " && event.key !== "Enter") return;
+          event.preventDefault();
+          updateState(false);
+        }}
+        onClick={(event) => event.stopPropagation()}
+      />
+    </GateRenderer>
   );
 });
 

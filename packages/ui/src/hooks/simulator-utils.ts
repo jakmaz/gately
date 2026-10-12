@@ -19,7 +19,7 @@ export function styleSimulationEdges(nodes: Node<GateNodeProps>[], edges: Edge[]
     const sourceData = nodeStates.get(edge.source);
     const sourceOutputIndex = parseOutputHandleIndex(edge.sourceHandle);
     const sourceState = sourceData?.outputs?.[sourceOutputIndex] ?? sourceData?.state ?? false;
-    const color = sourceState ? "var(--color-success)" : "var(--color-primary)";
+    const color = sourceState ? "var(--signal-high)" : "var(--signal-low)";
 
     return {
       ...edge,

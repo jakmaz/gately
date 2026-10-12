@@ -1,6 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-
-import { calculateNodeStates } from "@gately/core/simulator";
 import type { GateNodeProps } from "@gately/core/types";
 import {
   Background,
@@ -14,11 +11,13 @@ import {
 } from "@xyflow/react";
 import { LoaderCircle } from "lucide-react";
 import { useEffect } from "react";
+import { simulateCircuit } from "../../hooks/simulator-utils";
 import { useFileSystem } from "../../hooks/use-file-system";
 import { useHasMounted } from "../../hooks/use-has-mounted";
 import { useSettingsStore } from "../../hooks/use-settings-store";
 import { useSimulatorLogic } from "../../hooks/use-simulator-logic";
 import { nodeTypes } from "../../node-types";
+import { GRID_SIZE } from "../nodes/base/constants";
 import { Toolbar } from "./toolbar";
 
 export function SimulatorCanvas() {
@@ -28,7 +27,7 @@ export function SimulatorCanvas() {
 
   const [nodes, setNodes, onNodesChange] = useNodesState<Node<GateNodeProps>>([]);
   const [edges, setEdges, _onEdgesChange] = useEdgesState<Edge>([]);
-  const { onConnectEdge, onNodeClick, onEdgesChangeWithSimulation, onDrop, onDragOver } = useSimulatorLogic(
+  const { onConnectEdge, onAddGate, onEdgesChangeWithSimulation, onDrop, onDragOver } = useSimulatorLogic(
     setNodes,
     setEdges,
   );
@@ -51,8 +50,13 @@ export function SimulatorCanvas() {
     console.debug("Loading file", currentFileId);
 
     if (currentFile?.data) {
-      setNodes(calculateNodeStates(currentFile.data.nodes, currentFile.data.edges));
-      setEdges(currentFile.data.edges);
+      const simulated = simulateCircuit(
+        currentFile.data.nodes,
+        currentFile.data.edges,
+        useSettingsStore.getState().settings,
+      );
+      setNodes(simulated.nodes);
+      setEdges(simulated.edges);
     } else {
       setNodes([]);
       setEdges([]);
@@ -79,16 +83,15 @@ export function SimulatorCanvas() {
         onDrop={onDrop}
         onDragOver={onDragOver}
         snapToGrid={settings.snapToGrid}
-        snapGrid={[20, 20]}
+        snapGrid={[GRID_SIZE, GRID_SIZE]}
         nodeTypes={nodeTypes}
-        onNodeClick={(_, node) => onNodeClick(node)}
         fitView
       >
         <Panel position="top-left">
-          <Toolbar />
+          <Toolbar onAddGate={onAddGate} />
         </Panel>
         {settings.showMinimap && <MiniMap className="bg-card" />}
-        {settings.showGrid && <Background gap={12} size={1} />}
+        {settings.showGrid && <Background gap={GRID_SIZE} size={1} color="var(--border)" />}
       </ReactFlow>
     </div>
   );

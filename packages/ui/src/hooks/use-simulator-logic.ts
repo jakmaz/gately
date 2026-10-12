@@ -10,6 +10,9 @@ import {
 } from "@xyflow/react";
 import { nanoid } from "nanoid";
 import { type Dispatch, type SetStateAction, useCallback, useEffect } from "react";
+import { H, W } from "../components/nodes/base/constants";
+import { getNextTerminalName, isTerminalType } from "../components/nodes/base/terminal-names";
+import { type GateType, gateCatalog, isGateType } from "../node-types";
 import { simulateCircuit, styleSimulationEdges } from "./simulator-utils";
 import { useSettingsStore } from "./use-settings-store";
 
@@ -17,7 +20,7 @@ export function useSimulatorLogic(
   setNodes: Dispatch<SetStateAction<Node<GateNodeProps>[]>>,
   setEdges: Dispatch<SetStateAction<Edge[]>>,
 ) {
-  const { getNodes, getEdges, screenToFlowPosition } = useReactFlow();
+  const { getNodes, getEdges, screenToFlowPosition } = useReactFlow<Node<GateNodeProps>, Edge>();
 
   const { settings } = useSettingsStore();
 
@@ -31,7 +34,7 @@ export function useSimulatorLogic(
   );
 
   useEffect(() => {
-    const nodes = getNodes() as Node<GateNodeProps>[];
+    const nodes = getNodes();
     const edges = getEdges();
     const styledEdges = styleSimulationEdges(nodes, edges, settings);
     setEdges(styledEdges);
@@ -39,7 +42,7 @@ export function useSimulatorLogic(
 
   const onConnectEdge = useCallback(
     (params: Connection | Edge) => {
-      const nodes = getNodes() as Node<GateNodeProps>[];
+      const nodes = getNodes();
       const edges = getEdges();
 
       const edge: Edge = {
@@ -50,7 +53,7 @@ export function useSimulatorLogic(
         targetHandle: params.targetHandle,
         animated: false,
         type: settings.connectionType,
-        style: { stroke: "var(--color-primary)", strokeWidth: 2 },
+        style: { stroke: "var(--signal-low)", strokeWidth: 2 },
       };
 
       applySimulation(nodes, addEdge(edge, edges));
@@ -58,26 +61,10 @@ export function useSimulatorLogic(
     [applySimulation, getNodes, getEdges, settings.connectionType],
   );
 
-  const onNodeClick = useCallback(
-    (node: Node<GateNodeProps>) => {
-      if (node.type !== "toggleNode") return;
-
-      const nodes = getNodes() as Node<GateNodeProps>[];
-      const edges = getEdges();
-
-      const updatedNodes = nodes.map((n) =>
-        n.id === node.id ? { ...n, data: { ...n.data, state: !n.data.state } } : n,
-      );
-
-      applySimulation(updatedNodes, edges);
-    },
-    [applySimulation, getNodes, getEdges],
-  );
-
   const onEdgesChangeWithSimulation = useCallback(
     (changes: EdgeChange[]) => {
       const currentEdges = getEdges();
-      const currentNodes = getNodes() as Node<GateNodeProps>[];
+      const currentNodes = getNodes();
 
       // Apply the edge changes first (add, remove, etc.)
       const updatedEdges = applyEdgeChanges(changes, currentEdges);
@@ -102,31 +89,39 @@ export function useSimulatorLogic(
     event.dataTransfer.dropEffect = "move";
   }, []);
 
+  const addGate = useCallback(
+    (type: GateType, clientPosition: { x: number; y: number }) => {
+      const position = screenToFlowPosition(clientPosition);
+      const nodes = getNodes();
+      const newNode: Node<GateNodeProps> = {
+        id: nanoid(),
+        type,
+        position,
+        data: {
+          label: isTerminalType(type) ? getNextTerminalName(type, nodes) : gateCatalog[type].label,
+          state: false,
+        },
+      };
+      applySimulation([...nodes, newNode], getEdges());
+    },
+    [screenToFlowPosition, applySimulation, getNodes, getEdges],
+  );
+
   const onDrop = useCallback(
     (event: React.DragEvent<HTMLDivElement>) => {
       event.preventDefault();
       const type = event.dataTransfer.getData("application/@xyflow/react");
-
-      const position = screenToFlowPosition({
-        x: event.clientX,
-        y: event.clientY,
-      });
-
-      const newNode = {
-        id: nanoid(), // instead of `${type}-${getNodes.length + 1}`
-        type,
-        position,
-        data: { label: type, state: false },
-      };
-
-      setNodes((nds) => nds.concat(newNode));
+      if (isGateType(type)) addGate(type, { x: event.clientX, y: event.clientY });
     },
-    [screenToFlowPosition, setNodes],
+    [addGate],
   );
+
+  const onAddGate = (type: GateType) =>
+    addGate(type, { x: window.innerWidth / 2 - W / 2, y: window.innerHeight / 2 - H / 2 });
 
   return {
     onConnectEdge,
-    onNodeClick,
+    onAddGate,
     onEdgesChangeWithSimulation,
     onDragOver,
     onDrop,

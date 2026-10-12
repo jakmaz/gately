@@ -19,7 +19,7 @@ export function SimulationTab() {
     if (state === undefined) {
       return <Minus className="h-3 w-3 text-muted-foreground" />;
     }
-    return <Circle className={`h-3 w-3 ${state ? "text-green-600 fill-green-600" : "text-red-600 fill-red-600"}`} />;
+    return <Circle className={`h-3 w-3 fill-current ${state ? "text-signal-high" : "text-signal-low"}`} />;
   };
 
   const getInputsDisplay = (inputs: boolean[] | undefined, nodeId: string) => {
@@ -32,8 +32,8 @@ export function SimulationTab() {
         {inputs.map((input, index) => (
           <Badge
             key={`${nodeId}-input-${index}-${input ? "1" : "0"}`}
-            variant={input ? "default" : "secondary"}
-            className="text-xs px-1.5 py-0"
+            variant="outline"
+            className={`text-xs px-1.5 py-0 ${input ? "border-signal-high/30 bg-signal-high/10" : "border-signal-low/20 bg-signal-low/10"}`}
           >
             {index}: {input ? "1" : "0"}
           </Badge>

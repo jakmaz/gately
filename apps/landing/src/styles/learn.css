@@ -292,8 +292,6 @@
   box-shadow: none;
 }
 .gately-learn .learn-simulator {
-  --color-success: var(--signal-high);
-  --color-primary: var(--signal-low);
   font-size: 13px;
 }
 .gately-learn .lesson-canvas-scroll {
@@ -305,46 +303,22 @@
 }
 .gately-learn .lesson-terminal {
   position: relative;
-  width: 60px;
-  height: 60px;
-  color: var(--signal-low);
+  width: 80px;
+  height: 80px;
 }
-.gately-learn .lesson-terminal.is-high {
-  color: var(--signal-high);
-}
-.gately-learn .lesson-terminal :is(button, output) {
-  display: grid;
-  place-items: center;
-  width: 100%;
-  height: 100%;
+.gately-learn .lesson-terminal button {
+  position: absolute;
+  left: 12px;
+  top: 12px;
+  width: 56px;
+  height: 56px;
   padding: 0;
-  border: 2px solid currentColor;
-  border-radius: 6px;
-  background: var(--card);
-  color: inherit;
-  font:
-    550 24px "Geist Mono",
-    monospace;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
 }
 .gately-learn .lesson-terminal button:hover {
-  background: var(--muted);
-}
-.gately-learn .lesson-terminal-label {
-  position: absolute;
-  left: 50%;
-  bottom: calc(100% + 10px);
-  transform: translateX(-50%);
-  white-space: nowrap;
-  color: var(--foreground);
-  font:
-    14px "Geist Mono",
-    monospace;
-}
-.gately-learn .lesson-terminal .react-flow__handle {
-  width: 6px;
-  height: 6px;
-  border: 0;
-  background: currentColor;
+  background: color-mix(in srgb, var(--foreground) 4%, transparent);
 }
 .gately-learn .learn-simulator .react-flow__node:not(.react-flow__node-toggleNode) {
   pointer-events: none;

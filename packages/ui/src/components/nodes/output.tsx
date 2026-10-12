@@ -1,107 +1,16 @@
 "use client";
 
-import { calculateNodeStates } from "@gately/core/simulator";
-import type { GateNodeProps, LogicGateProps } from "@gately/core/types";
-import { useReactFlow } from "@xyflow/react";
-import { Copy, Trash2, Unplug } from "lucide-react";
-import { nanoid } from "nanoid";
 import { memo } from "react";
-import {
-  ContextMenu,
-  ContextMenuContent,
-  ContextMenuItem,
-  ContextMenuSeparator,
-  ContextMenuTrigger,
-} from "../ui/context-menu";
-import { InputHandle } from "./base/gate-handle";
+import { type GateGeometry, GateRenderer, type LogicGateProps } from "./base/index";
 
-const W = 60;
-const H = 60;
+export const OUTPUT_GEOMETRY: GateGeometry = {
+  bodyPath: "M18 12H62Q68 12 68 18V62Q68 68 62 68H18Q12 68 12 62V18Q12 12 18 12Z",
+  terminal: "output",
+  ports: [{ id: "input", kind: "input", index: 0, side: "left", x: 0, y: 40, bodyX: 12, bodyY: 40 }],
+};
 
-export const OutputNode = memo(({ id, data, isConnectable }: LogicGateProps) => {
-  const { getNodes, setNodes, getEdges, setEdges, addNodes, deleteElements } = useReactFlow();
-
-  const activeColor = data.preview
-    ? "var(--color-foreground)"
-    : data.state
-      ? "var(--color-success)"
-      : "var(--color-primary)";
-  const bgColor = "var(--card, #1a1a2e)";
-
-  const handleDuplicate = () => {
-    const node = getNodes().find((n) => n.id === id);
-    if (!node) return;
-    const newNode = {
-      ...node,
-      id: nanoid(),
-      position: { x: node.position.x + 40, y: node.position.y + 40 },
-      selected: false,
-    };
-    addNodes(newNode);
-  };
-
-  const handleDelete = () => {
-    deleteElements({ nodes: [{ id }] });
-  };
-
-  const handleDisconnect = () => {
-    const edges = getEdges();
-    const filtered = edges.filter((e) => e.source !== id && e.target !== id);
-    setEdges(filtered);
-    const nodes = getNodes() as import("@xyflow/react").Node<GateNodeProps>[];
-    const calculated = calculateNodeStates(nodes, filtered);
-    setNodes(calculated);
-  };
-
-  return (
-    <ContextMenu>
-      <ContextMenuTrigger
-        render={
-          <div
-            className="relative rounded-md border-2 flex flex-col items-center justify-center gap-1"
-            style={{
-              width: W,
-              height: H,
-              borderColor: activeColor,
-              background: bgColor,
-              boxShadow: `0 0 8px ${activeColor}40`,
-            }}
-          />
-        }
-      >
-        <div className="text-xs font-bold tracking-widest uppercase" style={{ color: activeColor }}>
-          Q1
-        </div>
-        {!data.preview && (
-          <InputHandle
-            index={0}
-            state={data.inputs?.[0] ?? false}
-            y={H / 2}
-            customId="input"
-            isConnectable={isConnectable}
-          />
-        )}
-      </ContextMenuTrigger>
-      <ContextMenuContent>
-        <ContextMenuItem onClick={handleDuplicate}>
-          <Copy className="h-4 w-4 mr-2" />
-          Duplicate
-        </ContextMenuItem>
-        <ContextMenuItem onClick={handleDisconnect}>
-          <Unplug className="h-4 w-4 mr-2" />
-          Disconnect All
-        </ContextMenuItem>
-        <ContextMenuSeparator />
-        <ContextMenuItem
-          onClick={handleDelete}
-          className="text-destructive focus:text-destructive focus:bg-destructive/10"
-        >
-          <Trash2 className="h-4 w-4 mr-2" />
-          Delete
-        </ContextMenuItem>
-      </ContextMenuContent>
-    </ContextMenu>
-  );
-});
+export const OutputNode = memo(({ id, data, isConnectable }: LogicGateProps) => (
+  <GateRenderer id={id} data={data} isConnectable={isConnectable} geometry={OUTPUT_GEOMETRY} label="Output" />
+));
 
 OutputNode.displayName = "OutputNode";

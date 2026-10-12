@@ -1,36 +1,52 @@
 "use client";
 
 import { memo } from "react";
-import { type GateGeometry, GateRenderer, H, type LogicGateProps, W } from "./base/index";
+import { type GateGeometry, GateRenderer, type LogicGateProps } from "./base/index";
 
-function getXNORGeometry(): GateGeometry {
-  const bubR = 5;
-  const tipX = W - 10;
-  return {
-    bodyPath: `M14 4 C32 4, ${tipX - 6} ${H * 0.18}, ${tipX} ${H / 2} C${tipX - 6} ${H * 0.82}, 32 ${H - 4}, 14 ${H - 4} Q25 ${H / 2}, 14 4 Z`,
-    extraPath: `M8 4 Q19 ${H / 2}, 8 ${H - 4}`,
-    bubble: { cx: tipX + bubR, cy: H / 2, r: bubR },
-    outputX: tipX + bubR * 2,
-    outputY: H / 2,
-    inputPinX: 15,
-  };
-}
+export const XNOR_GEOMETRY: GateGeometry = {
+  bodyPath: "M16 12C38 12 56 20 64 40C56 60 38 68 16 68Q32 40 16 12Z",
+  extraPath: "M6 12Q22 40 6 68",
+  bubble: {
+    cx: 68,
+    cy: 40,
+    r: 4,
+  },
+  ports: [
+    {
+      id: "input-0",
+      kind: "input",
+      index: 0,
+      side: "left",
+      x: 0,
+      y: 20,
+      bodyX: 28,
+      bodyY: 20,
+    },
+    {
+      id: "input-1",
+      kind: "input",
+      index: 1,
+      side: "left",
+      x: 0,
+      y: 60,
+      bodyX: 28,
+      bodyY: 60,
+    },
+    {
+      id: "output-0",
+      kind: "output",
+      index: 0,
+      side: "right",
+      x: 80,
+      y: 40,
+      bodyX: 72,
+      bodyY: 40,
+    },
+  ],
+};
 
-export const XNORGateNode = memo(({ id, data, isConnectable }: LogicGateProps) => {
-  const geometry = getXNORGeometry();
-
-  return (
-    <GateRenderer
-      id={id}
-      data={data}
-      isConnectable={isConnectable}
-      geometry={geometry}
-      label="XNOR"
-      symbol="=̅1"
-      inputHandles={2}
-      outputHandles={1}
-    />
-  );
-});
+export const XNORGateNode = memo(({ id, data, isConnectable }: LogicGateProps) => (
+  <GateRenderer id={id} data={data} isConnectable={isConnectable} geometry={XNOR_GEOMETRY} label="XNOR" />
+));
 
 XNORGateNode.displayName = "XNORGateNode";

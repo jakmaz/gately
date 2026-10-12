@@ -3,18 +3,21 @@
 import { calculateNodeStates } from "@gately/core/simulator";
 import type { GateNodeProps, LogicGateProps } from "@gately/core/types";
 import { ANDGateNode } from "@gately/ui/components/nodes/and";
+import { GRID_SIZE } from "@gately/ui/components/nodes/base/constants";
+import { GateHandle } from "@gately/ui/components/nodes/base/gate-handle";
+import { GateSymbol } from "@gately/ui/components/nodes/base/gate-symbol";
 import { NANDGateNode } from "@gately/ui/components/nodes/nand";
 import { NORGateNode } from "@gately/ui/components/nodes/nor";
 import { NOTGateNode } from "@gately/ui/components/nodes/not";
 import { ORGateNode } from "@gately/ui/components/nodes/or";
+import { OUTPUT_GEOMETRY } from "@gately/ui/components/nodes/output";
+import { TOGGLE_GEOMETRY } from "@gately/ui/components/nodes/toggle";
 import { XORGateNode } from "@gately/ui/components/nodes/xor";
 import {
   Background,
   type Edge,
-  Handle,
   type Node,
   type NodeTypes,
-  Position,
   ReactFlow,
   ReactFlowProvider,
   useNodesState,
@@ -26,32 +29,32 @@ import "@xyflow/react/dist/style.css";
 function LessonInput({ id, data }: LogicGateProps) {
   const { setNodes } = useReactFlow<Node<GateNodeProps>, Edge>();
   return (
-    <div className={`lesson-terminal${data.state ? " is-high" : ""}`}>
-      <span className="lesson-terminal-label">{data.label}</span>
+    <div className="lesson-terminal" title={`${data.label}: ${Number(data.state)}`}>
+      <GateSymbol geometry={TOGGLE_GEOMETRY} data={data} />
       <button
         type="button"
         className="nodrag nopan"
-        aria-label={data.label}
+        aria-label={`${data.label}: ${Number(data.state)}`}
         aria-pressed={Boolean(data.state)}
         onClick={() =>
           setNodes((nodes) =>
             nodes.map((node) => (node.id === id ? { ...node, data: { ...node.data, state: !node.data.state } } : node)),
           )
         }
-      >
-        {Number(Boolean(data.state))}
-      </button>
-      <Handle type="source" position={Position.Right} id="output" isConnectable={false} />
+      />
+      <GateHandle port={TOGGLE_GEOMETRY.ports[0]} state={data.state} isConnectable={false} />
     </div>
   );
 }
 
 function LessonOutput({ data }: LogicGateProps) {
   return (
-    <div className={`lesson-terminal${data.state ? " is-high" : ""}`}>
-      <span className="lesson-terminal-label">{data.label}</span>
-      <output aria-label={data.label}>{Number(Boolean(data.state))}</output>
-      <Handle type="target" position={Position.Left} id="input" isConnectable={false} />
+    <div className="lesson-terminal" title={`${data.label}: ${Number(data.state)}`}>
+      <GateSymbol geometry={OUTPUT_GEOMETRY} data={data} label={`${data.label}: ${Number(data.state)}`} />
+      <output className="sr-only" aria-label={data.label}>
+        {Number(Boolean(data.state))}
+      </output>
+      <GateHandle port={OUTPUT_GEOMETRY.ports[0]} state={data.state} isConnectable={false} />
     </div>
   );
 }
@@ -118,7 +121,7 @@ export function DocsSimulator({ initialNodes, initialEdges, height = "h-[400px]"
               deleteKeyCode={null}
               preventScrolling={false}
             >
-              <Background gap={18} size={1} color="var(--border)" />
+              <Background gap={GRID_SIZE} size={1} color="var(--border)" />
             </ReactFlow>
           </ReactFlowProvider>
         </div>

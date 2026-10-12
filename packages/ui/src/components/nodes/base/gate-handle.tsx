@@ -1,97 +1,40 @@
 import { Handle, Position, useNodeConnections } from "@xyflow/react";
-import type React from "react";
+import { HANDLE_SIZE } from "./constants";
+import type { GatePort } from "./types";
 
-interface OutputHandleProps {
-  index: number;
+const POSITIONS = { left: Position.Left, right: Position.Right, bottom: Position.Bottom };
+
+export function GateHandle({
+  port,
+  state,
+  isConnectable = true,
+}: {
+  port: GatePort;
   state: boolean;
-  y: number;
-  outputX: number;
   isConnectable?: boolean;
-  customId?: string;
-}
+}) {
+  const type = port.kind === "input" ? "target" : "source";
+  const connections = useNodeConnections({ handleType: type, handleId: port.id });
 
-export function OutputHandle({ index, state, y, outputX, isConnectable = true, customId }: OutputHandleProps) {
-  const handleId = customId || `output-${index}`;
-  const activeColor = state ? "var(--color-success)" : "var(--color-primary)";
-  const bgColor = "var(--card, #1a1a2e)";
-  const HANDLE_SIZE = 8;
-  const hs = HANDLE_SIZE / 2;
-
-  // Outputs can have unlimited connections (fan-out is allowed)
   return (
     <Handle
-      key={handleId}
-      type="source"
-      position={Position.Right}
-      id={handleId}
+      type={type}
+      position={POSITIONS[port.side]}
+      id={port.id}
+      title={`${port.kind} ${port.index + 1}`}
       style={{
-        top: y - hs,
-        left: outputX - hs,
+        left: port.x - HANDLE_SIZE / 2,
+        top: port.y - HANDLE_SIZE / 2,
+        right: "auto",
+        bottom: "auto",
         width: HANDLE_SIZE,
         height: HANDLE_SIZE,
-        background: activeColor,
-        border: `2px solid ${bgColor}`,
+        background: state ? "var(--signal-high)" : "var(--signal-low)",
+        border: "2px solid var(--card)",
         borderRadius: "50%",
         transform: "none",
       }}
-      isConnectable={isConnectable}
-    />
-  );
-}
-
-interface InputHandleProps {
-  index: number;
-  state: boolean;
-  y: number;
-  isConnectable?: boolean;
-  position?: Position;
-  style?: React.CSSProperties;
-  customId?: string;
-}
-
-export function InputHandle({
-  index,
-  state,
-  y,
-  isConnectable = true,
-  position = Position.Left,
-  style,
-  customId,
-}: InputHandleProps) {
-  const handleId = customId || `input-${index}`;
-  const connections = useNodeConnections({
-    handleType: "target",
-    handleId,
-  });
-
-  const activeColor = state ? "var(--color-success)" : "var(--color-primary)";
-  const bgColor = "var(--card, #1a1a2e)";
-  const HANDLE_SIZE = 8;
-  const hs = HANDLE_SIZE / 2;
-
-  // Input handles can only have 1 connection (no multiple inputs to same handle)
-  const canConnect = connections.length === 0 && isConnectable;
-
-  const defaultStyle = {
-    top: y - hs,
-    left: position === Position.Left ? -hs : undefined,
-    bottom: position === Position.Bottom ? -hs : undefined,
-    width: HANDLE_SIZE,
-    height: HANDLE_SIZE,
-    background: activeColor,
-    border: `2px solid ${bgColor}`,
-    borderRadius: "50%",
-    transform: "none",
-  };
-
-  return (
-    <Handle
-      key={handleId}
-      type="target"
-      position={position}
-      id={handleId}
-      style={{ ...defaultStyle, ...style }}
-      isConnectable={canConnect}
+      isConnectable={isConnectable && (port.kind === "output" || connections.length === 0)}
     />
   );
 }

@@ -1,32 +1,36 @@
 "use client";
 
 import { memo } from "react";
-import { type GateGeometry, GateRenderer, H, type LogicGateProps, W } from "./base/index";
+import { type GateGeometry, GateRenderer, type LogicGateProps } from "./base/index";
 
-function getBUFFGeometry(): GateGeometry {
-  return {
-    bodyPath: `M10 4 L${W - 10} ${H / 2} L10 ${H - 4} Z`,
-    outputX: W - 10,
-    outputY: H / 2,
-    inputPinX: 10,
-  };
-}
+export const BUFF_GEOMETRY: GateGeometry = {
+  bodyPath: "M16 12L68 40L16 68Z",
+  ports: [
+    {
+      id: "input-0",
+      kind: "input",
+      index: 0,
+      side: "left",
+      x: 0,
+      y: 40,
+      bodyX: 16,
+      bodyY: 40,
+    },
+    {
+      id: "output-0",
+      kind: "output",
+      index: 0,
+      side: "right",
+      x: 80,
+      y: 40,
+      bodyX: 68,
+      bodyY: 40,
+    },
+  ],
+};
 
-export const BUFFGateNode = memo(({ id, data, isConnectable }: LogicGateProps) => {
-  const geometry = getBUFFGeometry();
-
-  return (
-    <GateRenderer
-      id={id}
-      data={data}
-      isConnectable={isConnectable}
-      geometry={geometry}
-      label="BUFF"
-      symbol="BUF(A)"
-      inputHandles={1}
-      outputHandles={1}
-    />
-  );
-});
+export const BUFFGateNode = memo(({ id, data, isConnectable }: LogicGateProps) => (
+  <GateRenderer id={id} data={data} isConnectable={isConnectable} geometry={BUFF_GEOMETRY} label="BUFFER" />
+));
 
 BUFFGateNode.displayName = "BUFFGateNode";

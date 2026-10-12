@@ -5,6 +5,7 @@
   "license": "MIT",
   "type": "module",
   "exports": {
+    "./components/nodes/base/constants": "./src/components/nodes/base/constants.ts",
     "./components/*": "./src/components/*.tsx",
     "./hooks/*": "./src/hooks/*.ts",
     "./globals.css": "./src/styles/globals.css",
