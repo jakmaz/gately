@@ -2,6 +2,8 @@
 
 This guide is for agentic coding agents (AI assistants) working on the Gately codebase. Gately is a visual logic editor for building, simulating, and sharing digital circuits using Next.js, React, and ReactFlow.
 
+Before UI work, read [DESIGN.md](DESIGN.md) for project-wide design principles.
+
 ## Package Manager & Development
 
 **IMPORTANT**: This project uses **bun** as the package manager. Always use `bun` commands, never `npm` or `yarn`.
