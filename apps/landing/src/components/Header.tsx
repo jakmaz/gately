@@ -1,7 +1,8 @@
 "use client";
 
+import { cn } from "@gately/core/utils";
 import { Logo } from "@gately/ui/components/Logo";
-import { Button } from "@gately/ui/components/ui/button";
+import { Button, buttonVariants } from "@gately/ui/components/ui/button";
 import { ChevronRight, Github, Menu, X } from "lucide-react";
 import { useState } from "react";
 import { ThemeToggle } from "./ThemeToggle";
@@ -39,25 +40,28 @@ export function Header() {
           ))}
         </nav>
         <div className="hidden md:flex gap-4 items-center cursor-pointer">
-          <Button variant="ghost" asChild>
-            <a
-              href="https://github.com/jakmaz/gately"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-semibold"
-            >
-              <Github />
-            </a>
-          </Button>
+          <a
+            href="https://github.com/jakmaz/gately"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="GitHub repository"
+            className={cn(buttonVariants({ variant: "ghost" }), "font-semibold")}
+          >
+            <Github />
+          </a>
 
           <ThemeToggle />
 
-          <Button className="rounded-full cursor-pointer transition-transform hover:scale-105 font-medium" asChild>
-            <a href="https://app.gately.dev">
-              Open Editor
-              <ChevronRight className="ml-1 size-4" />
-            </a>
-          </Button>
+          <a
+            href="https://app.gately.dev"
+            className={cn(
+              buttonVariants(),
+              "rounded-full cursor-pointer transition-transform hover:scale-105 font-medium",
+            )}
+          >
+            Open Editor
+            <ChevronRight className="ml-1 size-4" />
+          </a>
         </div>
         <div className="flex items-center gap-4 md:hidden">
           <ThemeToggle />
@@ -83,12 +87,14 @@ export function Header() {
               </a>
             ))}
             <div className="pt-2 mt-2 border-t border-border/30">
-              <Button className="w-full rounded-full" asChild>
-                <a href="https://app.gately.dev" onClick={() => setMobileMenuOpen(false)}>
-                  Try It Now
-                  <ChevronRight className="ml-2 size-4" />
-                </a>
-              </Button>
+              <a
+                href="https://app.gately.dev"
+                onClick={() => setMobileMenuOpen(false)}
+                className={cn(buttonVariants(), "w-full rounded-full")}
+              >
+                Try It Now
+                <ChevronRight className="ml-2 size-4" />
+              </a>
             </div>
           </div>
         </div>

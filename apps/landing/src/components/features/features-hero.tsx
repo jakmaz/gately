@@ -1,5 +1,6 @@
+import { cn } from "@gately/core/utils";
 import { Badge } from "@gately/ui/components/ui/badge";
-import { Button } from "@gately/ui/components/ui/button";
+import { buttonVariants } from "@gately/ui/components/ui/button";
 import { ArrowRight, Sparkles } from "lucide-react";
 
 export function FeaturesHero() {
@@ -26,16 +27,16 @@ export function FeaturesHero() {
           </p>
 
           <div>
-            <Button
-              size="lg"
-              className="h-14 px-8 rounded-full text-base shadow-lg hover:shadow-xl transition-all hover:scale-105"
-              asChild
+            <a
+              href="https://app.gately.dev"
+              className={cn(
+                buttonVariants({ size: "lg" }),
+                "h-14 px-8 rounded-full text-base shadow-lg hover:shadow-xl transition-all hover:scale-105",
+              )}
             >
-              <a href="https://app.gately.dev">
-                Start Building
-                <ArrowRight className="ml-2 size-4" />
-              </a>
-            </Button>
+              Start Building
+              <ArrowRight className="ml-2 size-4" />
+            </a>
           </div>
         </div>
       </div>

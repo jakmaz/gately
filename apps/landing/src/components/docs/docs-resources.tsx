@@ -1,4 +1,5 @@
-import { Button } from "@gately/ui/components/ui/button";
+import { cn } from "@gately/core/utils";
+import { Button, buttonVariants } from "@gately/ui/components/ui/button";
 import { Card, CardContent } from "@gately/ui/components/ui/card";
 import { ArrowRight, Github, MessageCircle } from "lucide-react";
 
@@ -24,12 +25,15 @@ export function DocsResources() {
                 </div>
                 <h3 className="text-xl font-bold">GitHub</h3>
                 <p className="text-muted-foreground text-sm">Browse the source code, report issues, and contribute</p>
-                <Button variant="outline" className="w-full" asChild>
-                  <a href="https://github.com/jakmaz/gately" target="_blank" rel="noopener noreferrer">
-                    View Repository
-                    <ArrowRight className="ml-2 size-4" />
-                  </a>
-                </Button>
+                <a
+                  href="https://github.com/jakmaz/gately"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={cn(buttonVariants({ variant: "outline" }), "w-full")}
+                >
+                  View Repository
+                  <ArrowRight className="ml-2 size-4" />
+                </a>
               </CardContent>
             </Card>
           </div>
@@ -57,12 +61,10 @@ export function DocsResources() {
                 </div>
                 <h3 className="text-xl font-bold">Examples</h3>
                 <p className="text-muted-foreground text-sm">Explore sample circuits and templates</p>
-                <Button variant="outline" className="w-full" asChild>
-                  <a href="https://app.gately.dev">
-                    Try Editor
-                    <ArrowRight className="ml-2 size-4" />
-                  </a>
-                </Button>
+                <a href="https://app.gately.dev" className={cn(buttonVariants({ variant: "outline" }), "w-full")}>
+                  Try Editor
+                  <ArrowRight className="ml-2 size-4" />
+                </a>
               </CardContent>
             </Card>
           </div>

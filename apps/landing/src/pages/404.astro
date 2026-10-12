@@ -1,0 +1,32 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="Page not found - Gately" description="This page could not be found." noindex>
+  <main class="flex min-h-dvh items-center justify-center bg-background px-6 py-20 text-foreground">
+    <div class="w-full max-w-lg space-y-6">
+      <a href="/" class="font-semibold focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-4">
+        gately
+      </a>
+      <div class="space-y-3">
+        <p class="text-sm text-muted-foreground">404</p>
+        <h1 class="text-3xl font-semibold tracking-tight">Page not found</h1>
+        <p class="text-muted-foreground">The link may be outdated, or the page may have moved.</p>
+      </div>
+      <div class="flex flex-wrap gap-3">
+        <a
+          href="/"
+          class="inline-flex h-10 items-center justify-center rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground hover:bg-primary/90 focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-4"
+        >
+          Back to home
+        </a>
+        <a
+          href="/learn/first-circuit"
+          class="inline-flex h-10 items-center justify-center rounded-md border border-border px-4 text-sm font-medium hover:bg-accent hover:text-accent-foreground focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-4"
+        >
+          Browse lessons
+        </a>
+      </div>
+    </div>
+  </main>
+</BaseLayout>

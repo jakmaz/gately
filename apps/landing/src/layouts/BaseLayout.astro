@@ -12,19 +12,19 @@ interface Props {
   title?: string;
   description?: string;
   image?: string;
-  canonicalUrl?: string;
+  noindex?: boolean;
 }
 
 const {
-  title = "Gately - Visual Logic Circuit Editor",
+  title = "Gately - Free Online Logic Circuit Simulator",
   description = "Build, simulate, and share digital circuits with an intuitive drag-and-drop interface.",
   image = "/opengraph-image.png",
-  canonicalUrl,
+  noindex = false,
 } = Astro.props;
 
-const siteUrl = "https://gately.dev";
-const url = canonicalUrl ? `${siteUrl}${canonicalUrl}` : siteUrl + Astro.url.pathname;
-const ogImage = image.startsWith("http") ? image : `${siteUrl}${image}`;
+const pathname = Astro.url.pathname.replace(/(?:\/index)?\.html$/, "").replace(/\/+$/, "") || "/";
+const url = new URL(pathname, Astro.site).href;
+const ogImage = new URL(image, Astro.site).href;
 ---
 
 <!doctype html>
@@ -35,7 +35,8 @@ const ogImage = image.startsWith("http") ? image : `${siteUrl}${image}`;
     <link rel="icon" type="image/x-icon" href="/favicon.ico" sizes="16x16 32x32 48x48 96x96" />
     <link rel="icon" type="image/png" href="/favicon.png" sizes="96x96" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" sizes="any" />
-    <link rel="canonical" href={url} />
+    {!noindex && <link rel="canonical" href={url} />}
+    {noindex && <meta name="robots" content="noindex" />}
     <meta name="generator" content={Astro.generator} />
     <meta name="theme-color" content="#0a0a0a" />
     <ClientRouter />
@@ -53,7 +54,7 @@ const ogImage = image.startsWith("http") ? image : `${siteUrl}${image}`;
     <meta property="og:image" content={ogImage} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="Gately - Visual Logic Circuit Editor" />
+    <meta property="og:image:alt" content="Gately - Free Online Logic Circuit Simulator" />
     
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />

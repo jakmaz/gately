@@ -1,5 +1,6 @@
+import { cn } from "@gately/core/utils";
 import { Badge } from "@gately/ui/components/ui/badge";
-import { Button } from "@gately/ui/components/ui/button";
+import { Button, buttonVariants } from "@gately/ui/components/ui/button";
 import { ArrowRight, Monitor } from "lucide-react";
 
 export function DownloadHero() {
@@ -35,12 +36,13 @@ export function DownloadHero() {
               <Badge className="ml-2 text-xs">Coming Soon</Badge>
             </Button>
 
-            <Button size="lg" variant="outline" className="h-14 px-8 rounded-full text-base" asChild>
-              <a href="https://app.gately.dev">
-                Try Web Version
-                <ArrowRight className="ml-2 size-4" />
-              </a>
-            </Button>
+            <a
+              href="https://app.gately.dev"
+              className={cn(buttonVariants({ size: "lg", variant: "outline" }), "h-14 px-8 rounded-full text-base")}
+            >
+              Try Web Version
+              <ArrowRight className="ml-2 size-4" />
+            </a>
           </div>
 
           <p className="text-sm text-muted-foreground mt-6">Windows and Linux versions are in development</p>

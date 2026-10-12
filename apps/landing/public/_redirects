@@ -1,0 +1,15 @@
+/docs /learn/first-circuit 301
+/docs/ /learn/first-circuit 301
+/learn /learn/first-circuit 301
+/learn/ /learn/first-circuit 301
+/features/ /features 301
+/download/ /download 301
+/changelog/ /changelog 301
+/privacy/ /privacy 301
+/privacy-policy /privacy 301
+/privacy-policy/ /privacy 301
+/editor https://app.gately.dev 301
+/editor/ https://app.gately.dev 301
+/docs/:slug /learn/:slug 301
+/docs/:slug/ /learn/:slug 301
+/learn/:slug/ /learn/:slug 301

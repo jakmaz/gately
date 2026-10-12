@@ -9,6 +9,8 @@ import { defineConfig } from "astro/config";
 // https://astro.build/config
 export default defineConfig({
   site: "https://gately.dev",
+  trailingSlash: "never",
+  build: { format: "file" },
   integrations: [react(), mdx(), sitemap()],
 
   redirects: {
