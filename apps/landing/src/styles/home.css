@@ -619,22 +619,26 @@ html:has(.gately-site) {
   line-height: 1.7;
 }
 .gately-site .closing {
-  padding: 65px 70px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 48px;
+  padding: 48px 56px;
   position: relative;
   background: var(--action);
   color: var(--primary-foreground);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 55px;
   border-radius: 10px;
   margin-bottom: 50px;
 }
-.gately-site .closing a:focus {
+.gately-site .closing a:focus-visible {
   outline-color: var(--primary-foreground);
 }
 .gately-site .closing h2 {
-  font-size: 40px;
+  max-width: 420px;
+  font-size: 36px;
+}
+.gately-site .cta-copy {
+  min-width: 0;
 }
 .gately-site .closing p {
   color: var(--primary-foreground);
@@ -642,20 +646,14 @@ html:has(.gately-site) {
   font-size: 16px;
 }
 .gately-site .closing .actions {
-  margin-top: 27px;
+  margin-top: 0;
+  flex-wrap: nowrap;
 }
 .gately-site .cta-note {
   display: block;
-  margin-top: 22px;
+  margin-top: 18px;
+  text-align: center;
   font-size: 12px;
-}
-.gately-site .cta-circuit {
-  width: 290px;
-  flex: none;
-  fill: none;
-  stroke: var(--primary-foreground);
-  stroke-width: 1.5;
-  opacity: 0.7;
 }
 .gately-site .footer {
   max-width: 1160px;
@@ -786,10 +784,12 @@ html:has(.gately-site) {
     gap: 35px;
   }
   .gately-site .closing {
-    padding: 45px;
+    grid-template-columns: 1fr;
+    gap: 28px;
+    padding: 40px;
   }
-  .gately-site .cta-circuit {
-    width: 220px;
+  .gately-site .cta-note {
+    text-align: left;
   }
 }
 @media (max-width: 767px) {
@@ -928,7 +928,6 @@ html:has(.gately-site) {
   }
   .gately-site .closing {
     padding: 35px 25px;
-    display: block;
     margin-bottom: 25px;
   }
   .gately-site .closing h2 {
@@ -939,9 +938,6 @@ html:has(.gately-site) {
   }
   .gately-site .closing .actions {
     gap: 10px;
-  }
-  .gately-site .cta-circuit {
-    display: none;
   }
   .gately-site .footer {
     gap: 18px;
@@ -1394,6 +1390,17 @@ html:has(.gately-site) {
 }
 .gately-site .closing .outline-white:hover {
   color: var(--primary-foreground);
+}
+@media (max-width: 479px) {
+  .gately-site .closing .actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+@media (max-width: 359px) {
+  .gately-site .closing h2 {
+    font-size: 30px;
+  }
 }
 .gately-site .footer nav a:last-child {
   display: block;
