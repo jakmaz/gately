@@ -1,7 +1,7 @@
 {
   "name": "gately",
   "private": true,
-  "packageManager": "bun@1.3.0",
+  "packageManager": "bun@1.4.3",
   "workspaces": [
     "apps/*",
     "packages/*",
@@ -9,7 +9,7 @@
   ],
   "scripts": {
     "branding:export": "bun packages/ui/scripts/export-branding.tsx",
-    "dev:web": "turbo run dev --filter=@gately/web",
+    "dev:web": "turbo run dev --filter=web",
     "dev:desktop": "turbo run dev --filter=@gately/desktop",
     "build:web": "turbo run build --filter=web",
     "build:landing": "turbo run build --filter=landing",

@@ -1,226 +1,78 @@
 # AGENTS.md
 
-This guide is for agentic coding agents (AI assistants) working on the Gately codebase. Gately is a visual logic editor for building, simulating, and sharing digital circuits using Next.js, React, and ReactFlow.
+Gately is a free visual logic circuit simulator. This is a Bun/Turbo monorepo with an Astro landing site, React/Vite web app, Tauri desktop app, and shared TypeScript packages.
 
-Before UI work, read [DESIGN.md](DESIGN.md) for project-wide design principles.
+Before UI work, read [DESIGN.md](DESIGN.md).
 
-## Package Manager & Development
+## Working rules
 
-**IMPORTANT**: This project uses **bun** as the package manager. Always use `bun` commands, never `npm` or `yarn`.
+- Questions are read-only. Analyze before editing and clarify contradictions instead of guessing.
+- Use Bun and Bunx, never npm or yarn. The Bun version is pinned in root `package.json` and used by CI and Deploy.
+- Do not add dependencies, commit, push, start servers, run builds, or publish/deploy without explicit user instruction for that action.
+- Keep changes small, read files before editing, preserve existing patterns, and remove obsolete code when replacing it.
+- Use strict TypeScript. Avoid `any`, type/lint suppression, and casts that hide errors.
+- Do not add documentation unless asked. This guide and the justfile are the workflow reference.
 
-**CRITICAL**: Never start any development servers yourself. Do not run `bun dev`, `bun start`, or any server commands without explicit user permission.
+## Commands
 
-## Build, Lint & Test Commands
+Run from the repository root. `just` lists commands and has no side effects. Just and an authenticated GitHub CLI (`gh`) are needed for release commands; ordinary checks only need Bun.
 
-```bash
-# Development (DO NOT RUN WITHOUT PERMISSION)
-bun dev                    # Start development server on localhost:3000
+| Command | Purpose |
+| --- | --- |
+| `bun install --frozen-lockfile` | Install the locked dependencies |
+| `just check` | Lint and typecheck all five workspaces; no builds |
+| `bun run lint` | Biome checks without changing files |
+| `bun run typecheck` | Native `bun check` in every workspace; no output files |
+| `bun run lint:fix` | Apply Biome fixes; review the diff |
+| `just release vX.Y.Z` | **Publishes and deploys production; explicit authorization required** |
+| `just release-status vX.Y.Z` | List deployment runs for that release tag |
 
-# Building
-bun run build              # Build for production
-bun start                  # Start production server (DO NOT RUN)
+`bun check` uses TypeScript 7 and checks TS/TSX, including landing React components. It does not check Astro/MDX templates. Keep `tsc` for declaration-emitting builds; do not add a package script named `check` that shadows Bun's native command. CI also builds the apps, so a local `just check` alone does not guarantee a production build will pass.
 
-# Code Quality
-bun run lint               # Run Biome linter and formatter checks
-bun run format             # Format code with Biome
+Existing UI tests use `node:test`; the older simulator test imports Vitest and has no configured runner. Root `bun run test` currently has no workspace test tasks. Do not claim a full application test suite passed after running only lint and typechecks.
 
-# Package Management
-bun install                # Install dependencies
-bun add <package>          # Add new dependency
-bun remove <package>       # Remove dependency
-```
+Only when explicitly authorized:
 
-**Note**: This project currently has no test setup. If tests need to be added, consider Vitest or Jest.
+- `bun run dev:web` / `bun run dev:desktop` start the Vite apps.
+- `bun run --cwd apps/landing dev` starts Astro.
+- `bun run build:landing` / `bun run build:web` build the two production sites.
+- `bun run build` runs all configured workspace builds.
 
-## Project Structure
+## Project map
 
-```
-src/
-├── app/                   # Next.js App Router pages and layouts
-├── components/            # React components
-│   ├── nodes/            # Logic gate and circuit node components
-│   │   ├── base/         # Shared gate infrastructure
-│   │   ├── and.tsx       # Individual gate components (self-contained)
-│   │   └── ...           # Other gates (or, not, xor, nand, etc.)
-│   ├── ui/               # shadcn/ui components
-│   ├── simulator/        # Circuit simulation components
-│   └── home/             # Landing page components
-├── lib/                  # Utilities and types
-├── hooks/                # Custom React hooks
-└── utils/                # Helper functions
-```
+| Path | Owns |
+| --- | --- |
+| `apps/landing/src/pages/` | Astro pages and Markdown/MDX learning content |
+| `apps/landing/src/layouts/` | SEO metadata and page layouts |
+| `apps/landing/public/` | robots.txt, Cloudflare redirects, public assets |
+| `apps/web/src/` | React/Vite simulator entry point and providers |
+| `apps/desktop/` | React/Vite app and Tauri shell (`src-tauri/`) |
+| `packages/core/src/` | Simulation, circuit types, validation and export utilities |
+| `packages/ui/src/` | Shared simulator UI, gate nodes, hooks and state |
+| `packages/ui/src/components/ui/` | shadcn-style components built on Base UI |
+| `packages/ui/src/components/nodes/base/` | Gate geometry, rendering and handles |
+| `packages/ui/src/styles/globals.css` | Tailwind v4 theme and shared styles |
+| `justfile` | Shortcuts for checks, publishing releases and deployment status |
+| `.github/workflows/` | CI and release-triggered Cloudflare Pages deployment |
 
-## Code Style Guidelines
+Shared packages export source files directly. Typechecking does not require building them first. Typecheck caching is disabled so changes to root compiler settings or Bun always get checked. Turbo retains dependency builds for production builds.
 
-### Imports
-```typescript
-// Order: external, internal (@/), relative
-import { memo } from "react";
-import { Handle, Position } from "@xyflow/react";
-import { type GateGeometry, GateRenderer } from "./base/index";
+## Code and UI conventions
 
-// Use type imports when importing only for types
-import type { LogicGateProps } from "@/lib/types";
-```
+- Biome: two-space indentation, double quotes, 120-character lines, organized imports. Use type imports for types.
+- Use kebab-case filenames, PascalCase components/types, camelCase functions, and uppercase constants.
+- React Flow (`@xyflow/react`) renders circuits; Zustand stores circuit state. Motion handles animation.
+- Each gate owns its geometry and delegates rendering to the shared gate infrastructure. Keep simulation in `packages/core` and presentation in `packages/ui`.
+- Use the shared Tailwind theme, CSS custom properties and `cn()` for styles. Avoid hard-coded theme colors.
+- Base UI APIs differ from Radix. For button-styled navigation use a native anchor with `buttonVariants`; do not assume `asChild` exists.
+- Handle empty, loading and error states. Keep copy concise and avoid continuously repainting animations.
 
-### Formatting
-- **Formatter**: Biome (configured in `biome.json`)
-- **Line width**: 120 characters
-- **Indentation**: 2 spaces
-- **Organize imports**: Automatic via Biome
+## Release workflow
 
-### TypeScript Guidelines
-```typescript
-// Always use strict TypeScript with proper types
-interface ComponentProps {
-  id: string;
-  data: GateNodeProps;
-  isConnectable: boolean;
-}
+Production deploys when a stable GitHub release is published. Publishing a release affects **both `gately.dev` and `app.gately.dev`**. Pushing main runs CI and does not deploy. Drafts/prereleases do not deploy; desktop distribution is separate.
 
-// Use type assertions sparingly, prefer type guards
-function isValidNode(node: unknown): node is Node {
-  return typeof node === 'object' && node !== null;
-}
+1. Finish the requested changes and run `just check`. Commit and push only if explicitly requested. Before releasing, verify successful CI for the intended commit on GitHub main using `gh run list --workflow ci.yml --branch main`.
+2. Only with explicit release/deployment authorization, run `just release vX.Y.Z` with an unused stable version. It runs `gh release create --target main --generate-notes` and publishes from GitHub main. The recipe does not perform preflight checks. Questions about releases are not permission to publish.
+3. Run `just release-status vX.Y.Z` to get the Deploy run ID, then `gh run watch <run-id> --exit-status` to wait for its result. Check the live sites after deployment; for SEO changes also check redirects, canonical tags, robots.txt, sitemap and missing-page 404 responses. Report the release URL and deployment result. If deployment fails, investigate that run instead of blindly creating another release.
 
-// Prefer type over interface for simple types
-type Status = 'loading' | 'success' | 'error';
-
-// Use interface for extensible object shapes
-interface BaseProps {
-  children: React.ReactNode;
-}
-```
-
-### React Component Guidelines
-```typescript
-// Use memo for performance when appropriate
-export const GateNode = memo(({ id, data, isConnectable }: LogicGateProps) => {
-  return <div>{/* component content */}</div>;
-});
-
-// Always set displayName for better debugging
-GateNode.displayName = "GateNode";
-
-// Use "use client" directive for client components
-"use client";
-
-// Prefer function declarations for components
-function ComponentName() {
-  return <div />;
-}
-```
-
-### Naming Conventions
-- **Files**: kebab-case for regular files, PascalCase for components (`gate-renderer.tsx`, `GateNode.tsx`)
-- **Components**: PascalCase (`GateRenderer`, `ToggleNode`)
-- **Variables/functions**: camelCase (`activeColor`, `getGeometry`)
-- **Constants**: UPPER_SNAKE_CASE (`HANDLE_SIZE`, `DEFAULT_WIDTH`)
-- **Types/Interfaces**: PascalCase (`GateGeometry`, `LogicGateProps`)
-
-### CSS & Styling
-```typescript
-// Use Tailwind classes with cn() utility for conditional styling
-import { cn } from "@/lib/utils";
-
-className={cn(
-  "base-classes",
-  condition && "conditional-classes",
-  className // Allow className override
-)}
-
-// Use CSS custom properties for theme colors (established pattern)
-style={{
-  borderColor: data.state ? "var(--color-success)" : "var(--color-primary)",
-  background: "var(--card, #1a1a2e)"
-}}
-
-// Avoid hard-coded hex colors - use theme system
-// ❌ borderColor: "#22c55e"  
-// ✅ borderColor: "var(--color-success)"
-```
-
-### Gate Component Architecture
-Each gate component should be self-contained with its own geometry:
-
-```typescript
-"use client";
-import { memo } from "react";
-import { type GateGeometry, GateRenderer, W, H, type LogicGateProps } from "./base/index";
-
-function getGateGeometry(): GateGeometry {
-  return {
-    bodyPath: "M10 4 L70 30 L10 56 Z", // SVG path
-    outputX: 70,
-    outputY: 30,
-    inputPinX: 10,
-  };
-}
-
-export const GateNode = memo(({ id, data, isConnectable }: LogicGateProps) => {
-  const geometry = getGateGeometry();
-  
-  return (
-    <GateRenderer
-      id={id}
-      data={data}
-      isConnectable={isConnectable}
-      geometry={geometry}
-      label="GATE"
-      symbol="&"
-      inputHandles={2}
-      outputHandles={1}
-    />
-  );
-});
-```
-
-### Error Handling
-```typescript
-// Use Result pattern or throw meaningful errors
-function parseCircuit(data: unknown): CircuitData | null {
-  try {
-    // validation logic
-    return parsedData;
-  } catch (error) {
-    console.error("Failed to parse circuit data:", error);
-    return null;
-  }
-}
-
-// Handle async operations properly
-async function saveCircuit(data: CircuitData) {
-  try {
-    await api.save(data);
-  } catch (error) {
-    console.error("Failed to save circuit:", error);
-    throw new Error("Circuit save failed");
-  }
-}
-```
-
-## Key Technologies & Patterns
-
-- **React Flow**: For circuit diagram nodes and edges
-- **Tailwind CSS v4**: Using CSS custom properties and @theme inline syntax
-- **Radix UI**: Accessible component primitives
-- **Zustand**: State management for circuit data
-- **Next.js App Router**: File-based routing
-- **Motion**: Animation library (prefer over Framer Motion)
-
-## File Modification Rules
-
-1. **Always read files before editing** - Use Read tool first
-2. **Preserve existing patterns** - Match established code style
-3. **Component isolation** - Each gate owns its geometry and rendering
-4. **Theme consistency** - Use CSS custom properties, not hard-coded colors
-5. **Type safety** - Ensure all TypeScript types are properly defined
-
-## Common Tasks
-
-- **Adding gates**: Create self-contained component in `/components/nodes/`
-- **Theme changes**: Modify `/src/app/globals.css` custom properties
-- **UI components**: Use shadcn/ui patterns in `/components/ui/`
-- **Simulation logic**: Update `/src/lib/simulator.ts`
-
-Remember: This project prioritizes clean architecture with self-contained components, strong TypeScript typing, and consistent theming. Always maintain these principles when making changes.
+CI and Deploy use frozen installs and the same pinned Bun runtime. Production deployments run serially and do not cancel a running deployment. Cloudflare credentials stay in GitHub secrets; never print them. Do not change DNS, Cloudflare configuration or production data as part of an ordinary code change.

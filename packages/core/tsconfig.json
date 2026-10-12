@@ -6,7 +6,6 @@
     "declarationDir": "./dist",
     "declaration": true,
     "noUncheckedIndexedAccess": false,
-    "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
     }
