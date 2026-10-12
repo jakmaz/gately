@@ -1,0 +1,26 @@
+---
+import { docsSections } from "./docs-config";
+
+interface Props {
+  currentPath: string;
+}
+
+const { currentPath } = Astro.props;
+---
+
+<nav class="learn-lesson-nav" aria-label="Lessons">
+  {docsSections.map((section) => (
+    <div class="learn-lesson-group">
+      <h2>{section.title}</h2>
+      <ul>
+        {section.topics.map((topic) => (
+          <li>
+            <a href={topic.href} aria-current={currentPath === topic.href ? "page" : undefined}>
+              {topic.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  ))}
+</nav>

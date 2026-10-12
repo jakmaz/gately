@@ -1,285 +1,126 @@
 "use client";
 
-import {
-  addEdge,
-  Background,
-  type Connection,
-  type Edge,
-  MarkerType,
-  type Node,
-  type NodeTypes,
-  ReactFlow,
-  type ReactFlowInstance,
-  ReactFlowProvider,
-  useEdgesState,
-  useNodesState,
-} from "@xyflow/react";
-import { useCallback, useEffect, useRef, useState } from "react";
-import "@xyflow/react/dist/style.css";
-
 import { calculateNodeStates } from "@gately/core/simulator";
 import type { GateNodeProps } from "@gately/core/types";
-import { ANDGateNode } from "@gately/ui/components/nodes/and";
-import { OutputNode } from "@gately/ui/components/nodes/output";
-import { ToggleNode } from "@gately/ui/components/nodes/toggle";
-import confetti from "canvas-confetti";
+import type { Edge, Node } from "@xyflow/react";
+import { useId, useState } from "react";
+import { GateDrawing, GateShelf } from "./visuals";
 
-const nodeTypes: NodeTypes = {
-  toggleNode: ToggleNode,
-  outputNode: OutputNode,
-  andGate: ANDGateNode,
-};
-
-const initialNodes = [
-  {
-    id: "input-1",
-    type: "toggleNode",
-    position: { x: 0, y: 0 },
-    data: { label: "Input A", state: false },
-  },
-  {
-    id: "input-2",
-    type: "toggleNode",
-    position: { x: 0, y: 120 },
-    data: { label: "Input B", state: false },
-  },
-  {
-    id: "and-1",
-    type: "andGate",
-    position: { x: 200, y: 60 },
-    data: { label: "AND", state: false },
-  },
-  {
-    id: "output-1",
-    type: "outputNode",
-    position: { x: 400, y: 60 },
-    data: { label: "Output", state: false },
-  },
+const HALF_ADDER_EDGES: Edge[] = [
+  { id: "a-sum", source: "a", target: "xor", targetHandle: "input-0" },
+  { id: "b-sum", source: "b", target: "xor", targetHandle: "input-1" },
+  { id: "a-carry", source: "a", target: "and", targetHandle: "input-0" },
+  { id: "b-carry", source: "b", target: "and", targetHandle: "input-1" },
+  { id: "sum", source: "xor", target: "sum" },
+  { id: "carry", source: "and", target: "carry" },
 ];
 
-const initialEdges = [
-  {
-    id: "input-1-and-1",
-    source: "input-1",
-    target: "and-1",
-    targetHandle: "input-0",
-    animated: false,
-    style: { stroke: "#3b82f6", strokeWidth: 2 },
-    markerEnd: { type: MarkerType.ArrowClosed, color: "#3b82f6" },
-  },
-  {
-    id: "input-2-and-1",
-    source: "input-2",
-    target: "and-1",
-    targetHandle: "input-1",
-    animated: false,
-    style: { stroke: "#3b82f6", strokeWidth: 2 },
-    markerEnd: { type: MarkerType.ArrowClosed, color: "#3b82f6" },
-  },
-  {
-    id: "and-1-output-1",
-    source: "and-1",
-    target: "output-1",
-    animated: false,
-    style: { stroke: "#3b82f6", strokeWidth: 2 },
-    markerEnd: { type: MarkerType.ArrowClosed, color: "#3b82f6" },
-  },
-];
+function evaluateHalfAdder(a: boolean, b: boolean) {
+  const nodes: Node<GateNodeProps>[] = [
+    { id: "a", type: "toggleNode", position: { x: 0, y: 0 }, data: { label: "A", state: a } },
+    { id: "b", type: "toggleNode", position: { x: 0, y: 0 }, data: { label: "B", state: b } },
+    { id: "xor", type: "xorGate", position: { x: 0, y: 0 }, data: { label: "XOR", state: false } },
+    { id: "and", type: "andGate", position: { x: 0, y: 0 }, data: { label: "AND", state: false } },
+    { id: "sum", type: "outputNode", position: { x: 0, y: 0 }, data: { label: "Sum", state: false } },
+    { id: "carry", type: "outputNode", position: { x: 0, y: 0 }, data: { label: "Carry", state: false } },
+  ];
+  const evaluated = calculateNodeStates(nodes, HALF_ADDER_EDGES);
+  return {
+    sum: evaluated.find((node) => node.id === "sum")?.data.state ?? false,
+    carry: evaluated.find((node) => node.id === "carry")?.data.state ?? false,
+  };
+}
+
+function Terminal({ x, y, label, state }: { x: number; y: number; label: string; state: boolean }) {
+  return (
+    <g className={`terminal signal${state ? " high" : ""}`}>
+      <rect x={x - 23} y={y - 23} width="46" height="46" rx="6" />
+      <text x={x} y={y + 7} className="bit">
+        {Number(state)}
+      </text>
+      <text x={x} y={y - 38} className="terminal-label">
+        {label}
+      </text>
+    </g>
+  );
+}
 
 export function MiniPreview() {
-  const [nodes, setNodes, onNodesChange] = useNodesState<Node<GateNodeProps>>(initialNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>(initialEdges);
-  const [reactFlowInstance, setReactFlowInstance] = useState<ReactFlowInstance<Node<GateNodeProps>, Edge> | null>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [isMounted, setIsMounted] = useState(false);
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
-  // Helper function to get confetti origin relative to container center
-  const getConfettiOrigin = useCallback(() => {
-    if (!containerRef.current) {
-      return { x: 0.5, y: 0.5 }; // fallback to center
-    }
-
-    const rect = containerRef.current.getBoundingClientRect();
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
-
-    return {
-      x: centerX / window.innerWidth,
-      y: centerY / window.innerHeight,
-    };
-  }, []);
-
-  // Function to update edge colors and animation based on source node states
-  const updateEdgeStyles = useCallback(
-    (currentNodes: Node<GateNodeProps>[], currentEdges: Edge[]) => {
-      const nodeStates = new Map<string, boolean>();
-
-      // Create a map of node IDs to their states
-      currentNodes.forEach((node) => {
-        nodeStates.set(node.id, node.data.state);
-      });
-
-      // Update edge colors and animation based on source node state
-      const updatedEdges = currentEdges.map((edge) => {
-        const sourceState = nodeStates.get(edge.source) || false;
-        return {
-          ...edge,
-          animated: sourceState, // Only animate when state is high (true)
-          style: {
-            stroke: sourceState ? "#10b981" : "#3b82f6", // Green for high state, blue for low state
-            strokeWidth: 2,
-          },
-          markerEnd: {
-            type: MarkerType.ArrowClosed,
-            color: sourceState ? "#10b981" : "#3b82f6",
-          },
-        };
-      });
-
-      setEdges(updatedEdges);
-    },
-    [setEdges],
-  );
-
-  // Add a new node to the flow
-  const onDragOver = useCallback((event: React.DragEvent<HTMLDivElement>) => {
-    event.preventDefault();
-    event.dataTransfer.dropEffect = "move";
-  }, []);
-
-  const onDrop = useCallback(
-    (event: React.DragEvent<HTMLDivElement>) => {
-      event.preventDefault();
-
-      const type = event.dataTransfer.getData("application/@xyflow/react");
-
-      if (typeof type === "undefined" || !type) {
-        return;
-      }
-
-      if (!reactFlowInstance) {
-        return;
-      }
-
-      const position = reactFlowInstance.screenToFlowPosition({
-        x: event.clientX,
-        y: event.clientY,
-      });
-
-      const newNode = {
-        id: `${type}-${nodes.length + 1}`,
-        type,
-        position,
-        data: { label: type, state: false },
-      };
-
-      setNodes((nds) => nds.concat(newNode));
-    },
-    [reactFlowInstance, nodes, setNodes],
-  );
-
-  const onConnect = useCallback(
-    (params: Connection | Edge) => {
-      // Create edges with default blue color and no animation (low state)
-      const edge = {
-        ...params,
-        animated: false, // Default to not animated for low state
-        style: { stroke: "#3b82f6", strokeWidth: 2 }, // Default to blue (low state)
-        markerEnd: {
-          type: MarkerType.ArrowClosed,
-          color: "#3b82f6",
-        },
-      };
-
-      setEdges((eds) => addEdge(edge, eds));
-
-      // Recalculate all node states after connection
-      setTimeout(() => {
-        const updatedNodes = calculateNodeStates(nodes, [...edges, edge as Edge]);
-        setNodes(updatedNodes);
-
-        // Update edge styles after node states are calculated
-        updateEdgeStyles(updatedNodes, [...edges, edge as Edge]);
-
-        const outputNode = updatedNodes.find((n) => n.type === "outputNode");
-        if (outputNode?.data?.state === true) {
-          confetti({
-            particleCount: 100,
-            spread: 70,
-            origin: getConfettiOrigin(),
-          });
-        }
-      }, 100);
-    },
-    [setEdges, nodes, edges, setNodes, updateEdgeStyles, getConfettiOrigin],
-  );
-
-  // Toggle input node state
-  const handleNodeClick = (node: Node<GateNodeProps>) => {
-    if (node.type === "toggleNode") {
-      const updatedNodes = nodes.map((n) => {
-        if (n.id === node.id) {
-          return {
-            ...n,
-            data: {
-              ...n.data,
-              state: !n.data.state,
-            },
-          };
-        }
-        return n;
-      });
-
-      setNodes(updatedNodes);
-
-      // Recalculate all node states after input change
-      setTimeout(() => {
-        const calculatedNodes = calculateNodeStates(updatedNodes, edges);
-        setNodes(calculatedNodes);
-
-        // Update edge styles after node states are calculated
-        updateEdgeStyles(calculatedNodes, edges);
-
-        const outputNode = calculatedNodes.find((n) => n.type === "outputNode");
-        if (outputNode?.data?.state === true) {
-          confetti({
-            particleCount: 100,
-            spread: 70,
-            origin: getConfettiOrigin(),
-          });
-        }
-      }, 100);
-    }
-  };
-
-  if (!isMounted) {
-    return <div className="h-40 sm:h-82 w-full bg-muted/10 animate-pulse rounded-xl" />;
-  }
-
+  const [inputs, setInputs] = useState({ a: true, b: false });
+  const titleId = useId();
+  const { sum, carry } = evaluateHalfAdder(inputs.a, inputs.b);
+  const signal = (state: boolean) => `wire signal${state ? " high" : ""}`;
   return (
-    <div ref={containerRef} className="h-40 sm:h-82 w-full">
-      <ReactFlowProvider>
-        <ReactFlow<Node<GateNodeProps>, Edge>
-          className="bg-b"
-          nodes={nodes}
-          edges={edges}
-          onNodesChange={onNodesChange}
-          onEdgesChange={onEdgesChange}
-          onConnect={onConnect}
-          onInit={setReactFlowInstance}
-          onDrop={onDrop}
-          onDragOver={onDragOver}
-          nodeTypes={nodeTypes}
-          onNodeClick={(_, node) => handleNodeClick(node)}
-          fitView
-        >
-          <Background gap={12} size={1} />
-        </ReactFlow>
-      </ReactFlowProvider>
+    <div className="studio-window panel">
+      <div className="panel-top">
+        <strong>Half adder</strong>
+        <span>Interactive circuit example</span>
+      </div>
+      <div className="studio-workspace">
+        <aside className="tool-tray" aria-label="Examples from the component toolbox">
+          <h3>Components</h3>
+          <p>A few of the building blocks.</p>
+          <GateShelf />
+        </aside>
+        <div className="circuit-widget">
+          <div className="circuit-canvas">
+            <div className="circuit-board">
+              <svg className="circuit-svg" viewBox="0 0 520 310" role="img" aria-labelledby={titleId}>
+                <title id={titleId}>
+                  Half adder: A and B feed an XOR gate for the sum and an AND gate for the carry.
+                </title>
+                <path className={signal(inputs.a)} d="M83 90H145V66H250 M145 90V196H250" />
+                <path className={signal(inputs.b)} d="M83 220H180V114H250 M180 220V244H250" />
+                <circle className={`junction signal${inputs.a ? " high" : ""}`} cx="145" cy="90" r="3" />
+                <circle className={`junction signal${inputs.b ? " high" : ""}`} cx="180" cy="220" r="3" />
+                <path className={signal(sum)} d="M335 90H425" />
+                <path className={signal(carry)} d="M331 220H425" />
+                <GateDrawing type="XOR" x={238} y={51} scale={1.3} state={sum} label />
+                <GateDrawing type="AND" x={238} y={181} scale={1.3} state={carry} label />
+                <Terminal x={448} y={90} label="Sum" state={sum} />
+                <Terminal x={448} y={220} label="Carry" state={carry} />
+              </svg>
+              {(["a", "b"] as const).map((input) => (
+                <button
+                  key={input}
+                  className={`circuit-input signal${inputs[input] ? " high" : ""}`}
+                  style={{ left: `${(60 / 520) * 100}%`, top: `${((input === "a" ? 90 : 220) / 310) * 100}%` }}
+                  type="button"
+                  aria-label={`Input ${input.toUpperCase()}`}
+                  aria-pressed={inputs[input]}
+                  onClick={() => setInputs((previous) => ({ ...previous, [input]: !previous[input] }))}
+                >
+                  <span className="circuit-input-label" aria-hidden="true">
+                    {input.toUpperCase()}
+                  </span>
+                  {Number(inputs[input])}
+                </button>
+              ))}
+            </div>
+          </div>
+          <output className="sr-only" aria-live="polite" aria-atomic="true">
+            Sum {Number(sum)} · Carry {Number(carry)}
+          </output>
+        </div>
+        <aside className="circuit-note">
+          <span className="mono">Two bits in.</span>
+          <h3>
+            Add them
+            <br />
+            with two gates.
+          </h3>
+          <p>
+            XOR finds the sum.
+            <br />
+            AND finds the carry.
+          </p>
+          <div className="note-equation">
+            {Number(inputs.a)} + {Number(inputs.b)} = {Number(carry)}
+            {Number(sum)}
+          </div>
+          <small>The result is in binary.</small>
+        </aside>
+      </div>
     </div>
   );
 }

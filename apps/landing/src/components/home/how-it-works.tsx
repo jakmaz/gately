@@ -1,60 +1,170 @@
-import { Badge } from "@gately/ui/components/ui/badge";
+"use client";
+
+import { type TransitionEventHandler, useEffect, useId, useState } from "react";
+import { GateDrawing } from "./visuals";
+
+type Demonstration = "place" | "connect" | "simulate";
 
 const steps = [
+  { kind: "place", title: "Place a gate.", description: "Drag a component from the toolbox onto your canvas." },
+  { kind: "connect", title: "Connect the handles.", description: "Draw wires from the input switches to the gate." },
   {
-    step: "01",
-    title: "Add Logic Gates",
-    description: "Pick from a toolbox of gates like AND, OR, NOT, and more to start building your circuit.",
+    kind: "simulate",
+    title: "Change an input.",
+    description: "Toggle a switch. Gates and outputs update immediately.",
   },
-  {
-    step: "02",
-    title: "Connect and Customize",
-    description: "Drag to connect gates, adjust layout, and label inputs/outputs using a smooth, intuitive interface.",
-  },
-  {
-    step: "03",
-    title: "Share or Export",
-    description:
-      "Instantly share your finished circuit with a link or export it for presentations, teaching, or collaboration.",
-  },
-];
+] as const;
+
+function Cursor({
+  x,
+  y,
+  className,
+  onTransitionEnd,
+}: {
+  x: number;
+  y: number;
+  className: string;
+  onTransitionEnd?: TransitionEventHandler<SVGGElement>;
+}) {
+  return (
+    <g transform={`translate(${x} ${y})`}>
+      <g className={`workflow-cursor ${className}`} onTransitionEnd={onTransitionEnd}>
+        <path d="M0 0L6 18L10 10L18 6Z" />
+      </g>
+    </g>
+  );
+}
+
+function StepTerminal({ x, y, value, label }: { x: number; y: number; value: boolean; label: string }) {
+  return (
+    <g className={`workflow-terminal signal${value ? " high" : ""}`}>
+      <rect x={x - 18} y={y - 18} width="36" height="36" rx="5" />
+      <text x={x} y={y + 6}>
+        {Number(value)}
+      </text>
+      <text className="workflow-terminal-label" x={x} y={y - 28}>
+        {label}
+      </text>
+    </g>
+  );
+}
+
+function WorkflowDemo({ kind, title }: { kind: Demonstration; title: string }) {
+  const canvasPatternId = useId();
+  const [hovered, setHovered] = useState(false);
+  const [selected, setSelected] = useState(false);
+  const [inputEnabled, setInputEnabled] = useState(false);
+  const active = hovered || selected;
+  const signalHigh = active && inputEnabled;
+
+  useEffect(() => {
+    if (kind !== "simulate") return;
+    if (!active) {
+      setInputEnabled(false);
+      return;
+    }
+    // Reduced motion skips the cursor transition, so it cannot emit transitionend.
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const enableWithoutMotion = () => {
+      if (reducedMotion.matches) setInputEnabled(true);
+    };
+    enableWithoutMotion();
+    reducedMotion.addEventListener("change", enableWithoutMotion);
+    return () => reducedMotion.removeEventListener("change", enableWithoutMotion);
+  }, [active, kind]);
+
+  return (
+    <button
+      type="button"
+      className={`workflow-demo${active ? " is-active" : ""}`}
+      data-demo={kind}
+      aria-label={`Try: ${title}`}
+      aria-pressed={active}
+      onPointerEnter={(event) => {
+        if (event.pointerType === "mouse") setHovered(true);
+      }}
+      onPointerLeave={() => setHovered(false)}
+      onClick={() => setSelected((previous) => !previous)}
+    >
+      <svg viewBox="0 0 300 175" aria-hidden="true">
+        {kind === "place" ? (
+          <>
+            <defs>
+              <pattern id={canvasPatternId} width="10" height="10" patternUnits="userSpaceOnUse">
+                <circle className="workflow-grid-dot" cx="5" cy="5" r="0.65" />
+              </pattern>
+            </defs>
+            <text className="workflow-label" x="64" y="25" textAnchor="middle">
+              Toolbox
+            </text>
+            <text className="workflow-label" x="210" y="25" textAnchor="middle">
+              Canvas
+            </text>
+            <rect className="workflow-toolbox" x="12" y="43" width="104" height="104" rx="6" />
+            <rect className="workflow-canvas" x="132" y="39" width="156" height="112" rx="6" />
+            <rect x="132" y="39" width="156" height="112" rx="6" fill={`url(#${canvasPatternId})`} />
+            <g className="placing-gate">
+              <GateDrawing type="AND" x={28} y={65} />
+            </g>
+            <Cursor x={80} y={105} className="placing-cursor" />
+          </>
+        ) : kind === "connect" ? (
+          <g className="connecting-circuit" transform="translate(16.5 0)">
+            <path className="connection-guide" d="M63 54H108V70H160 M63 124H130V106H160" />
+            <path className="connecting-wire first" pathLength="1" d="M63 54H108V70H160" />
+            <path className="connecting-wire second" pathLength="1" d="M63 124H130V106H160" />
+            <GateDrawing type="AND" x={160} y={58} state={false} />
+            <StepTerminal x={45} y={54} value={false} label="A" />
+            <StepTerminal x={45} y={124} value={false} label="B" />
+            <circle className="workflow-pin" cx="63" cy="54" r="3" />
+            <circle className="workflow-pin" cx="63" cy="124" r="3" />
+            <circle className="workflow-pin" cx="160" cy="70" r="3" />
+            <circle className="workflow-pin" cx="160" cy="106" r="3" />
+            <Cursor x={63} y={54} className="connecting-cursor" />
+          </g>
+        ) : (
+          <>
+            <path className="wire signal high" d="M63 54H108V70H160" />
+            <path className={`wire signal${signalHigh ? " high" : ""}`} d="M63 124H130V106H160 M240 88H255" />
+            <GateDrawing type="AND" x={160} y={58} state={signalHigh} />
+            <StepTerminal x={45} y={54} value label="A" />
+            <StepTerminal x={45} y={124} value={signalHigh} label="B" />
+            <StepTerminal x={273} y={88} value={signalHigh} label="Out" />
+            <Cursor
+              x={106}
+              y={150}
+              className="toggling-cursor"
+              onTransitionEnd={(event) => {
+                if (active && event.target === event.currentTarget && event.propertyName === "transform") {
+                  setInputEnabled(true);
+                }
+              }}
+            />
+          </>
+        )}
+      </svg>
+      <span className="workflow-demo-hint">{selected ? "Select again to reset" : "Hover or select to try"}</span>
+    </button>
+  );
+}
 
 export function HowItWorks() {
   return (
-    <section id="how-it-works" className="w-full py-14 md:py-32 bg-muted/30 relative overflow-hidden isolate">
-      <div className="absolute inset-0 -z-10 bg-[linear-gradient(to_right,rgba(from_var(--muted-foreground)_r_g_b_/_0.05)_1px,transparent_1px),linear-gradient(to_bottom,rgba(from_var(--muted-foreground)_r_g_b_/_0.05)_1px,transparent_1px)] bg-[size:3rem_3rem]"></div>
-
-      <div className="container mx-auto px-4 md:px-6 relative">
-        <div className="flex flex-col items-center justify-center space-y-4 text-center mb-16">
-          <Badge className="rounded-full px-4 py-1.5 text-sm font-medium shadow-sm" variant="secondary">
-            <span className="mr-1 text-primary">✦</span> How It Works
-          </Badge>
-          <h2 className="text-3xl md:text-4xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-foreground to-foreground/80">
-            Simple Process, Beautiful Results
-          </h2>
-          <p className="max-w-[800px] text-muted-foreground md:text-lg">
-            Build your logic circuits in just a few simple steps.
-          </p>
-        </div>
-
-        <div className="grid md:grid-cols-3 gap-8 md:gap-12 relative">
-          {steps.map((step, i) => (
-            <div key={step.title} className="relative z-10 flex flex-col items-center text-center space-y-4">
-              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-primary to-primary/70 text-primary-foreground text-xl font-bold shadow-lg relative">
-                {step.step}
-                <div
-                  className="absolute inset-0 rounded-full bg-primary/20 animate-ping opacity-75"
-                  style={{
-                    animationDuration: "3s",
-                    animationDelay: `${i * 0.5}s`,
-                  }}
-                ></div>
-              </div>
-              <h3 className="text-xl font-bold">{step.title}</h3>
-              <p className="text-muted-foreground">{step.description}</p>
-            </div>
-          ))}
-        </div>
+    <section id="explore" className="wrap section studio-workflow" aria-labelledby="workflow-title">
+      <div className="section-head">
+        <h2 id="workflow-title">An idea becomes a circuit.</h2>
+        <p>Place it. Connect it. Try an input.</p>
+      </div>
+      <div className="workflow">
+        {steps.map(({ kind, title, description }) => (
+          <figure key={kind}>
+            <WorkflowDemo kind={kind} title={title} />
+            <figcaption>
+              <h3>{title}</h3>
+              <p>{description}</p>
+            </figcaption>
+          </figure>
+        ))}
       </div>
     </section>
   );

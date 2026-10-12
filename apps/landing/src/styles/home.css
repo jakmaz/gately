@@ -1,0 +1,1329 @@
+@font-face {
+  font-family: "Geist";
+  src: url("/fonts/geist-sans-latin.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Geist Mono";
+  src: url("/fonts/geist-mono-latin.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+.gately-site {
+  --action: var(--chart-2);
+  --blue-ink: var(--chart-3);
+  --signal-low: var(--muted-foreground);
+  --signal-high: var(--primary);
+  --blue-wash: color-mix(in srgb, var(--primary) 7%, var(--background));
+  color-scheme: light;
+}
+.dark .gately-site {
+  --blue-ink: var(--chart-1);
+  --signal-high: var(--chart-1);
+  color-scheme: dark;
+}
+.gately-site * {
+  box-sizing: border-box;
+}
+html:has(.gately-site) {
+  scroll-behavior: smooth;
+  scroll-padding-top: 100px;
+}
+.gately-site {
+  margin: 0;
+  background: var(--background);
+  color: var(--foreground);
+  font:
+    16px / 1.6 "Geist",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+.gately-site h1,
+.gately-site h2,
+.gately-site h3,
+.gately-site p,
+.gately-site figure {
+  margin: 0;
+}
+.gately-site h1,
+.gately-site h2,
+.gately-site h3 {
+  line-height: 1.15;
+  font-weight: 560;
+  letter-spacing: -0.045em;
+}
+.gately-site h1 {
+  font-size: clamp(36px, 4.25vw, 56px);
+}
+.gately-site h2 {
+  font-size: clamp(28px, 3vw, 40px);
+}
+.gately-site h3 {
+  font-size: 21px;
+  letter-spacing: -0.025em;
+}
+.gately-site p {
+  color: var(--muted-foreground);
+}
+.gately-site a {
+  color: inherit;
+  text-decoration: none;
+}
+.gately-site button {
+  font: inherit;
+  color: inherit;
+}
+.gately-site button,
+.gately-site a,
+.gately-site summary {
+  -webkit-tap-highlight-color: transparent;
+}
+.gately-site button {
+  cursor: pointer;
+}
+.gately-site button:disabled {
+  cursor: default;
+}
+.gately-site a:focus-visible,
+.gately-site button:focus-visible,
+.gately-site summary:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 4px;
+}
+.gately-site a:hover {
+  color: var(--blue-ink);
+}
+.gately-site button:active,
+.gately-site .button:active {
+  transform: translateY(1px);
+}
+.gately-site ::selection {
+  background: var(--accent);
+  color: var(--accent-foreground);
+}
+.gately-site .icon {
+  vertical-align: middle;
+  flex: none;
+}
+.gately-site .brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 23px;
+  font-weight: 680;
+  letter-spacing: -1px;
+  color: var(--foreground);
+}
+.gately-site .brand img {
+  border-radius: 6px;
+}
+.gately-site .wrap {
+  max-width: 1160px;
+  width: calc(100% - 80px);
+  margin-inline: auto;
+}
+.gately-site .section {
+  padding-block: 88px;
+}
+.gately-site .section-head {
+  max-width: 570px;
+  margin-bottom: 38px;
+}
+.gately-site .section-head p {
+  margin-top: 15px;
+  font-size: 17px;
+}
+.gately-site .mono {
+  font-family: "Geist Mono", monospace;
+}
+.gately-site .eyebrow {
+  font-size: 13px;
+  font-weight: 550;
+  color: var(--blue-ink);
+  margin-bottom: 18px;
+}
+.gately-site .actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+.gately-site .button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 13px;
+  padding: 12px 20px;
+  min-height: 46px;
+  font-size: 14px;
+  font-weight: 580;
+  border-radius: var(--radius);
+  border: 1px solid transparent;
+  white-space: nowrap;
+  transition:
+    background-color 140ms,
+    transform 140ms;
+}
+.gately-site .button.primary {
+  background: var(--action);
+  color: var(--primary-foreground);
+}
+.gately-site .button.primary:hover {
+  background: var(--chart-3);
+}
+.gately-site .button.secondary {
+  background: var(--background);
+  border-color: var(--border);
+}
+.gately-site .button.secondary:hover {
+  background: var(--secondary);
+}
+.gately-site .button.white {
+  background: var(--primary-foreground);
+  color: var(--chart-4);
+}
+.gately-site .button.outline-white {
+  border-color: color-mix(in srgb, var(--primary-foreground) 45%, transparent);
+  color: var(--primary-foreground);
+}
+.gately-site .button.outline-white:hover {
+  background: color-mix(in srgb, var(--primary-foreground) 12%, transparent);
+}
+.gately-site .text-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  color: var(--blue-ink);
+  font-weight: 550;
+  font-size: 14px;
+}
+.gately-site .icon-button {
+  height: 42px;
+  width: 42px;
+  display: grid;
+  place-items: center;
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  background: transparent;
+}
+.gately-site .icon-button:hover {
+  background: var(--secondary);
+}
+.gately-site .theme-toggle .sun {
+  display: none;
+}
+.dark .gately-site .theme-toggle .sun {
+  display: block;
+}
+.dark .gately-site .theme-toggle .moon {
+  display: none;
+}
+.gately-site .site-header {
+  border-bottom: 1px solid var(--border);
+  background: var(--background);
+  position: relative;
+  z-index: 5;
+}
+.gately-site .nav-inner {
+  height: 64px;
+  max-width: 1160px;
+  width: calc(100% - 80px);
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 30px;
+}
+.gately-site .navigation {
+  display: flex;
+  gap: 30px;
+  margin-left: auto;
+  font-size: 14px;
+  color: var(--muted-foreground);
+}
+.gately-site .nav-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+.gately-site .nav-actions > .button {
+  padding: 10px 16px;
+  min-height: 42px;
+}
+.gately-site .menu-toggle {
+  display: none;
+}
+.gately-site .skip {
+  position: fixed;
+  left: 20px;
+  top: -70px;
+  z-index: 20;
+  padding: 10px 18px;
+  background: var(--background);
+  border: 2px solid var(--primary);
+}
+.gately-site .skip:focus {
+  top: 12px;
+}
+.gately-site .panel {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--card);
+}
+.gately-site .panel-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 15px 22px;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+}
+.gately-site .panel-top strong {
+  font-weight: 550;
+}
+.gately-site .panel-top > span {
+  color: var(--muted-foreground);
+}
+.gately-site .circuit-canvas {
+  background-image: radial-gradient(var(--border) 1px, transparent 1px);
+  background-size: 18px 18px;
+  padding: 14px;
+}
+.gately-site .circuit-svg {
+  display: block;
+  width: 100%;
+  max-height: 370px;
+  margin: auto;
+  overflow: visible;
+}
+.gately-site .wire {
+  fill: none;
+  stroke: var(--primary);
+  stroke-width: 2;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+.gately-site .signal.high {
+  --signal: var(--signal-high);
+}
+.gately-site .signal {
+  --signal: var(--signal-low);
+}
+.gately-site .wire.signal {
+  stroke: var(--signal);
+}
+.gately-site .junction.signal {
+  fill: var(--signal);
+}
+.gately-site .gate-body {
+  fill: var(--card);
+  stroke: var(--primary);
+  stroke-width: 1.8;
+  stroke-linejoin: round;
+}
+.gately-site .gate.signal .gate-body {
+  stroke: var(--signal);
+}
+.gately-site .gate-extra {
+  fill: none;
+  stroke: var(--primary);
+  stroke-width: 1.8;
+}
+.gately-site .gate.signal .gate-extra {
+  stroke: var(--signal);
+}
+.gately-site .gate-name {
+  font:
+    15px "Geist Mono",
+    monospace;
+  text-anchor: middle;
+  fill: var(--muted-foreground);
+  stroke: none;
+}
+.gately-site .terminal rect {
+  fill: var(--card);
+  stroke: var(--signal);
+  stroke-width: 2;
+}
+.gately-site .terminal text {
+  fill: var(--foreground);
+  text-anchor: middle;
+  font-family: "Geist Mono", monospace;
+}
+.gately-site .terminal .bit {
+  font-size: 22px;
+  font-weight: 550;
+}
+.gately-site .terminal-label {
+  font-size: 20px;
+}
+.gately-site .diagram-label {
+  font:
+    18px "Geist Mono",
+    monospace;
+  fill: var(--foreground);
+  text-anchor: middle;
+}
+
+.gately-site .caption {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: space-between;
+  font-size: 12px;
+  color: var(--muted-foreground);
+  margin-top: 13px;
+}
+.gately-site .legend {
+  display: inline-flex;
+  gap: 12px;
+}
+.gately-site .legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+.gately-site .legend i {
+  width: 15px;
+  height: 2px;
+  background: var(--signal-low);
+}
+.gately-site .legend i.high {
+  background: var(--signal-high);
+}
+.gately-site .gate-shelf {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 18px;
+  padding: 26px 0;
+}
+.gately-site .gate-shelf > div {
+  text-align: center;
+  font:
+    12px "Geist Mono",
+    monospace;
+  color: var(--muted-foreground);
+}
+.gately-site .gate-shelf svg {
+  display: block;
+  width: 65px;
+  height: 58px;
+  margin: 0 auto 8px;
+}
+.gately-site .gate-shelf .gate-body {
+  stroke: var(--foreground);
+  fill: none;
+}
+.gately-site .gate-shelf .gate-extra {
+  stroke: var(--foreground);
+}
+.gately-site .workflow {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+}
+.gately-site .workflow-demo {
+  display: block;
+  width: 100%;
+  padding: 16px 12px 12px;
+  margin-bottom: 24px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--muted);
+  text-align: left;
+  overflow: hidden;
+}
+.gately-site .workflow-demo:active {
+  transform: none;
+}
+.gately-site .workflow-demo svg {
+  display: block;
+  width: 100%;
+}
+.gately-site .workflow-demo-hint {
+  display: block;
+  margin: 4px 8px 0;
+  font-size: 11px;
+  color: var(--muted-foreground);
+}
+.gately-site .workflow-label,
+.gately-site .workflow-terminal-label {
+  font:
+    11px "Geist Mono",
+    monospace;
+  fill: var(--muted-foreground);
+}
+.gately-site .workflow-toolbox,
+.gately-site .workflow-canvas {
+  fill: var(--background);
+  stroke: var(--border);
+}
+.gately-site .workflow-grid-dot {
+  fill: var(--border);
+}
+.gately-site .placing-gate .gate-body,
+.gately-site .placing-gate .gate-extra {
+  stroke: var(--foreground);
+}
+.gately-site .workflow-cursor {
+  opacity: 0;
+  pointer-events: none;
+  fill: var(--foreground);
+  stroke: var(--background);
+  stroke-width: 1.5;
+  stroke-linejoin: round;
+  transition:
+    transform 500ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 150ms ease-out;
+}
+.gately-site .placing-gate {
+  transition: transform 500ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.gately-site .is-active .workflow-cursor {
+  opacity: 1;
+}
+.gately-site .is-active .placing-gate {
+  transform: translateX(146px);
+}
+.gately-site .is-active .placing-cursor {
+  transform: translate(146px, 0);
+}
+.gately-site .is-active .connecting-cursor {
+  transform: translate(97px, 16px);
+}
+.gately-site .is-active .toggling-cursor {
+  transform: translate(-49px, -16px) scale(0.94);
+}
+.gately-site .connection-guide {
+  fill: none;
+  stroke: var(--border);
+  stroke-width: 1.5;
+  stroke-dasharray: 4 4;
+}
+.gately-site .connecting-wire {
+  fill: none;
+  stroke: var(--signal-low);
+  stroke-width: 2;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  transition: stroke-dashoffset 450ms ease;
+}
+.gately-site .is-active .connecting-wire {
+  stroke-dashoffset: 0;
+}
+.gately-site .is-active .connecting-wire.second {
+  transition-delay: 180ms;
+}
+.gately-site .workflow-pin {
+  fill: var(--signal-low);
+}
+.gately-site .workflow-terminal rect,
+.gately-site .lesson-bit rect {
+  fill: var(--background);
+  stroke: var(--signal);
+  stroke-width: 1.5;
+}
+.gately-site .workflow-terminal text,
+.gately-site .lesson-bit text {
+  text-anchor: middle;
+  fill: currentColor;
+  font:
+    17px "Geist Mono",
+    monospace;
+}
+.gately-site .workflow-terminal .workflow-terminal-label {
+  font-size: 11px;
+  fill: var(--muted-foreground);
+}
+.gately-site .workflow p {
+  font-size: 14px;
+  margin-top: 12px;
+  max-width: 290px;
+}
+.gately-site .faq-section {
+  display: grid;
+  grid-template-columns: 0.8fr 1.2fr;
+  gap: 80px;
+}
+.gately-site .faq-heading h2 {
+  font-size: 32px;
+}
+.gately-site .faq-heading p {
+  margin-top: 15px;
+}
+.gately-site .faq-list details {
+  border-bottom: 1px solid var(--border);
+}
+.gately-site .faq-list summary {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 25px;
+  padding: 22px 0;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 500;
+}
+.gately-site .faq-list summary::-webkit-details-marker {
+  display: none;
+}
+.gately-site .faq-list summary .icon {
+  width: 17px;
+  height: 17px;
+}
+.gately-site .faq-list details[open] summary .icon {
+  transform: rotate(45deg);
+}
+.gately-site .faq-list details p {
+  font-size: 14px;
+  padding: 0 30px 22px 0;
+  line-height: 1.7;
+}
+.gately-site .closing {
+  padding: 65px 70px;
+  position: relative;
+  background: var(--action);
+  color: var(--primary-foreground);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 55px;
+  border-radius: 10px;
+  margin-bottom: 50px;
+}
+.gately-site .closing a:focus {
+  outline-color: var(--primary-foreground);
+}
+.gately-site .closing h2 {
+  font-size: 40px;
+}
+.gately-site .closing p {
+  color: var(--primary-foreground);
+  margin-top: 16px;
+  font-size: 16px;
+}
+.gately-site .closing .actions {
+  margin-top: 27px;
+}
+.gately-site .cta-note {
+  display: block;
+  margin-top: 22px;
+  font-size: 12px;
+}
+.gately-site .cta-circuit {
+  width: 290px;
+  flex: none;
+  fill: none;
+  stroke: var(--primary-foreground);
+  stroke-width: 1.5;
+  opacity: 0.7;
+}
+.gately-site .footer {
+  max-width: 1160px;
+  width: calc(100% - 80px);
+  margin: auto;
+  padding: 25px 0 34px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+.gately-site .footer .brand {
+  font-size: 20px;
+}
+.gately-site .footer .brand img {
+  width: 24px;
+  height: 24px;
+}
+.gately-site .footer p {
+  font-size: 13px;
+}
+.gately-site .footer nav {
+  margin-left: auto;
+  display: flex;
+  gap: 24px;
+  font-size: 12px;
+  color: var(--muted-foreground);
+}
+.gately-site .footer nav a:last-child {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+.gately-site .footer nav .icon {
+  width: 14px;
+  height: 14px;
+}
+.gately-site .copyright {
+  flex-basis: 100%;
+  font-size: 11px;
+  color: var(--muted-foreground);
+}
+.gately-site .files-visual {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 13px;
+  overflow: hidden;
+}
+.gately-site .file-heading {
+  padding: 18px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  border-bottom: 1px solid var(--border);
+  font-weight: 500;
+}
+.gately-site .file-heading span {
+  margin-left: auto;
+  font-size: 11px;
+  color: var(--muted-foreground);
+  font-weight: 400;
+}
+.gately-site .file-row {
+  padding: 17px 22px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 13px;
+}
+.gately-site .file-row.active {
+  background: var(--blue-wash);
+  color: var(--blue-ink);
+}
+.gately-site .file-row span {
+  margin-left: auto;
+  color: var(--muted-foreground);
+  font-size: 11px;
+}
+.gately-site .file-row .icon {
+  width: 17px;
+}
+.gately-site .file-transfer {
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  padding: 24px 15px;
+  font-size: 12px;
+}
+.gately-site .file-transfer .icon {
+  width: 16px;
+  color: var(--muted-foreground);
+}
+.gately-site .file-chip {
+  font-family: "Geist Mono", monospace;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 4px 8px;
+}
+.gately-site .subcopy {
+  font-size: 14px;
+}
+@media (min-width: 1600px) {
+  .gately-site .wrap,
+  .gately-site .nav-inner,
+  .gately-site .footer {
+    max-width: 1240px;
+  }
+}
+@media (max-width: 1023px) {
+  .gately-site .wrap,
+  .gately-site .nav-inner,
+  .gately-site .footer {
+    width: calc(100% - 48px);
+  }
+  .gately-site .navigation {
+    gap: 19px;
+  }
+  .gately-site .nav-inner {
+    gap: 18px;
+  }
+  .gately-site .section {
+    padding-block: 65px;
+  }
+  .gately-site .faq-section {
+    gap: 35px;
+  }
+  .gately-site .closing {
+    padding: 45px;
+  }
+  .gately-site .cta-circuit {
+    width: 220px;
+  }
+}
+@media (max-width: 767px) {
+  html:has(.gately-site) {
+    scroll-padding-top: 80px;
+  }
+  .gately-site .wrap,
+  .gately-site .nav-inner,
+  .gately-site .footer {
+    width: calc(100% - 36px);
+  }
+  .gately-site .nav-inner {
+    height: 60px;
+    gap: 10px;
+  }
+  .gately-site .brand {
+    font-size: 21px;
+  }
+  .gately-site .brand img {
+    width: 25px;
+    height: 25px;
+  }
+  .gately-site .nav-actions {
+    gap: 3px;
+  }
+  .gately-site .nav-actions > .button {
+    font-size: 12px;
+    padding: 9px 12px;
+  }
+  .gately-site .nav-actions > .button .icon {
+    display: none;
+  }
+  .gately-site .icon-button {
+    width: 38px;
+    height: 40px;
+  }
+  .gately-site .menu-toggle {
+    display: grid;
+  }
+  .gately-site .navigation {
+    display: none;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 100%;
+    padding: 18px;
+    background: var(--background);
+    border-bottom: 1px solid var(--border);
+    box-shadow: 0 12px 22px oklch(0 0 0 / 0.05);
+    margin: 0;
+    gap: 0;
+  }
+  .gately-site .navigation.open {
+    display: flex;
+    flex-direction: column;
+  }
+  .gately-site .navigation a {
+    padding: 12px 8px;
+  }
+  .gately-site .section {
+    padding-block: 52px;
+  }
+  .gately-site .section-head {
+    margin-bottom: 28px;
+  }
+  .gately-site .section-head p {
+    font-size: 16px;
+  }
+  .gately-site h1 {
+    font-size: 37px;
+  }
+  .gately-site h2 {
+    font-size: 29px;
+  }
+  .gately-site .button {
+    font-size: 13px;
+    padding: 12px 16px;
+  }
+  .gately-site .circuit-canvas {
+    padding: 13px 0;
+  }
+
+  .gately-site .circuit-svg {
+    max-height: 320px;
+  }
+  .gately-site .circuit-svg .terminal-label {
+    font-size: 23px;
+  }
+  .gately-site .circuit-svg .gate-name {
+    font-size: 17px;
+  }
+  .gately-site .circuit-svg .diagram-label {
+    font-size: 21px;
+  }
+  .gately-site .panel-top {
+    padding: 14px;
+    font-size: 12px;
+  }
+  .gately-site .workflow {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+  .gately-site .workflow figure {
+    display: block;
+  }
+  .gately-site .workflow-demo {
+    margin-bottom: 18px;
+  }
+  .gately-site .workflow-demo svg {
+    max-height: 220px;
+  }
+  .gately-site .workflow h3 {
+    font-size: 19px;
+  }
+  .gately-site .workflow p {
+    font-size: 13px;
+    margin-top: 8px;
+  }
+  .gately-site .gate-shelf {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 22px 8px;
+  }
+  .gately-site .gate-shelf svg {
+    width: 54px;
+  }
+  .gately-site .faq-section {
+    grid-template-columns: 1fr;
+    gap: 22px;
+  }
+  .gately-site .faq-heading h2 {
+    font-size: 29px;
+  }
+  .gately-site .faq-list summary {
+    font-size: 14px;
+    padding: 20px 0;
+  }
+  .gately-site .closing {
+    padding: 35px 25px;
+    display: block;
+    margin-bottom: 25px;
+  }
+  .gately-site .closing h2 {
+    font-size: 32px;
+  }
+  .gately-site .closing p {
+    font-size: 14px;
+  }
+  .gately-site .closing .actions {
+    gap: 10px;
+  }
+  .gately-site .cta-circuit {
+    display: none;
+  }
+  .gately-site .footer {
+    gap: 18px;
+    padding-top: 22px;
+  }
+  .gately-site .footer > p {
+    flex-basis: 60%;
+    font-size: 12px;
+  }
+  .gately-site .footer nav {
+    flex-basis: 100%;
+    margin: 0;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  .gately-site .file-row {
+    padding: 15px;
+  }
+  .gately-site .file-heading {
+    padding: 15px;
+  }
+  .gately-site .caption {
+    font-size: 11px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  html:has(.gately-site) {
+    scroll-behavior: auto;
+  }
+  .gately-site .button {
+    transition: none;
+  }
+  .gately-site .workflow-demo .placing-gate,
+  .gately-site .workflow-demo .workflow-cursor,
+  .gately-site .workflow-demo .connecting-wire {
+    transition: none;
+    animation: none;
+  }
+  .gately-site .workflow-demo .workflow-cursor {
+    opacity: 0;
+  }
+}
+.gately-site .studio-hero {
+  padding-top: 62px;
+}
+.gately-site .studio-intro {
+  text-align: center;
+  max-width: 740px;
+  margin: 0 auto 38px;
+}
+.gately-site .studio-intro h1 {
+  font-size: 52px;
+}
+.gately-site .studio-intro h1 span {
+  color: var(--blue-ink);
+}
+.gately-site .studio-intro p {
+  max-width: 580px;
+  margin: 19px auto 25px;
+  font-size: 17px;
+}
+.gately-site .studio-intro .actions {
+  justify-content: center;
+}
+.gately-site .studio-window {
+  box-shadow: 0 18px 42px oklch(0 0 0 / 0.045);
+}
+.gately-site .studio-workspace {
+  display: grid;
+  grid-template-columns: 190px 1fr 190px;
+}
+.gately-site .tool-tray {
+  padding: 23px 17px;
+  border-right: 1px solid var(--border);
+  background: var(--muted);
+}
+.gately-site .tool-tray h3 {
+  font-size: 13px;
+  letter-spacing: 0;
+  font-weight: 550;
+}
+.gately-site .tool-tray > p {
+  font-size: 11px;
+  margin: 7px 0 18px;
+}
+.gately-site .tool-tray .gate-shelf {
+  grid-template-columns: repeat(2, 1fr);
+  padding: 0;
+  gap: 16px 8px;
+}
+.gately-site .tool-tray .gate-shelf svg {
+  width: 49px;
+  height: 37px;
+  margin-bottom: 4px;
+}
+.gately-site .tool-tray .gate-shelf span {
+  font-size: 10px;
+}
+.gately-site .studio-workspace .circuit-svg {
+  height: auto;
+  max-height: none;
+}
+.gately-site .circuit-note {
+  padding: 27px 20px;
+  border-left: 1px solid var(--border);
+  background: var(--muted);
+}
+.gately-site .circuit-note .mono {
+  font-size: 12px;
+  color: var(--blue-ink);
+}
+.gately-site .circuit-note h3 {
+  font-size: 19px;
+  margin: 20px 0 12px;
+}
+.gately-site .circuit-note p {
+  font-size: 12px;
+}
+.gately-site .note-equation {
+  white-space: nowrap;
+  font-family: "Geist Mono", monospace;
+  font-size: 19px;
+  margin: 26px 0 13px;
+}
+.gately-site .circuit-note small {
+  font-size: 11px;
+  color: var(--muted-foreground);
+}
+.gately-site .studio-workflow {
+  border-bottom: 1px solid var(--border);
+}
+.gately-site .studio-features {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 70px;
+}
+.gately-site .studio-features > article {
+  min-width: 0;
+}
+.gately-site .studio-features h2 {
+  font-size: 32px;
+  margin: 26px 0 14px;
+  max-width: 400px;
+}
+.gately-site .studio-features p {
+  font-size: 15px;
+  max-width: 420px;
+}
+.gately-site .studio-features .text-link {
+  margin-top: 23px;
+}
+.gately-site .learning-preview {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 24px;
+  background: var(--blue-wash);
+  min-height: 235px;
+}
+.gately-site .learning-preview .small-title {
+  font-size: 12px;
+  color: var(--blue-ink);
+}
+.gately-site .lesson-example {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 14px;
+  margin: 20px 0 16px;
+}
+.gately-site .lesson-example svg {
+  display: block;
+  width: 100%;
+}
+.gately-site .lesson-truth-table {
+  border-collapse: collapse;
+  font:
+    12px "Geist Mono",
+    monospace;
+  text-align: center;
+}
+.gately-site .lesson-truth-table th,
+.gately-site .lesson-truth-table td {
+  padding: 6px 9px;
+}
+.gately-site .lesson-truth-table th {
+  color: var(--muted-foreground);
+  border-bottom: 1px solid var(--border);
+  font-weight: 500;
+}
+.gately-site .lesson-truth-table .current {
+  background: var(--background);
+  color: var(--blue-ink);
+}
+.gately-site .learning-preview .subcopy {
+  font-size: 12px;
+}
+.gately-site .open-note {
+  padding: 27px 0;
+  border-block: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+.gately-site .open-note p {
+  max-width: 650px;
+  font-size: 14px;
+}
+.gately-site .open-note strong {
+  color: var(--foreground);
+  font-weight: 550;
+}
+.gately-site .studio-cta {
+  margin-top: 10px;
+}
+@media (max-width: 1023px) {
+  .gately-site .studio-workspace {
+    grid-template-columns: 150px 1fr;
+  }
+  .gately-site .circuit-note {
+    display: none;
+  }
+  .gately-site .studio-features {
+    gap: 35px;
+  }
+  .gately-site .lesson-example {
+    grid-template-columns: 1fr;
+  }
+  .gately-site .lesson-example svg {
+    max-width: 300px;
+    margin-inline: auto;
+  }
+  .gately-site .lesson-truth-table {
+    width: 100%;
+  }
+  .gately-site .studio-intro h1 {
+    font-size: 46px;
+  }
+}
+@media (max-width: 767px) {
+  .gately-site .studio-hero {
+    padding-top: 40px;
+  }
+  .gately-site .studio-intro {
+    text-align: left;
+    margin-bottom: 30px;
+  }
+  .gately-site .studio-intro h1 {
+    font-size: 37px;
+  }
+  .gately-site .studio-intro p {
+    font-size: 15px;
+    margin: 17px 0 24px;
+  }
+  .gately-site .studio-intro .actions {
+    justify-content: flex-start;
+  }
+  .gately-site .studio-workspace {
+    display: block;
+  }
+  .gately-site .tool-tray {
+    display: none;
+  }
+  .gately-site .studio-window .panel-top > span {
+    font-size: 11px;
+  }
+  .gately-site .studio-features {
+    grid-template-columns: 1fr;
+    gap: 45px;
+  }
+  .gately-site .studio-features h2 {
+    font-size: 28px;
+  }
+  .gately-site .learning-preview {
+    min-height: 225px;
+    padding: 20px 15px;
+  }
+  .gately-site .lesson-example {
+    gap: 8px;
+  }
+  .gately-site .lesson-truth-table th,
+  .gately-site .lesson-truth-table td {
+    padding: 6px;
+  }
+  .gately-site .open-note {
+    display: block;
+  }
+  .gately-site .open-note .text-link {
+    margin-top: 15px;
+  }
+}
+
+.gately-site {
+  width: 100%;
+}
+.dark .gately-site {
+  --action: var(--chart-3);
+}
+.gately-site .icon {
+  width: 20px;
+  height: 20px;
+}
+.gately-site .circuit-widget {
+  min-width: 0;
+}
+.gately-site section[id] {
+  scroll-margin-top: 32px;
+}
+.gately-site .closing {
+  overflow: hidden;
+  background-image:
+    linear-gradient(to right, color-mix(in srgb, var(--primary-foreground) 7.5%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in srgb, var(--primary-foreground) 7.5%, transparent) 1px, transparent 1px);
+  background-size: 4rem 4rem;
+}
+.gately-site .closing .white:hover {
+  background: color-mix(in srgb, var(--primary-foreground) 90%, var(--action));
+  color: var(--chart-4);
+}
+.gately-site .closing .outline-white:hover {
+  color: var(--primary-foreground);
+}
+.gately-site .footer nav a:last-child {
+  display: block;
+}
+@media (max-width: 767px) {
+  .gately-site .icon-button {
+    width: 40px;
+    min-height: 44px;
+  }
+  .gately-site .nav-inner {
+    gap: 6px;
+  }
+
+  .gately-site .file-transfer {
+    gap: 12px;
+  }
+}
+@media (max-width: 359px) {
+  .gately-site .workflow h3 {
+    font-size: 18px;
+  }
+  .gately-site .nav-actions > .button {
+    padding: 9px 10px;
+  }
+  .gately-site .nav-actions {
+    gap: 0;
+  }
+}
+
+.gately-site .navigation a[aria-current="page"] {
+  color: var(--blue-ink);
+}
+.gately-site .studio-workspace .circuit-canvas {
+  display: grid;
+  place-items: center;
+  min-height: 480px;
+  height: 100%;
+  padding: 32px;
+}
+.gately-site .circuit-board {
+  position: relative;
+  width: 100%;
+  max-width: 660px;
+}
+.gately-site .circuit-input {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  width: clamp(44px, 8.846%, 58px);
+  min-height: 44px;
+  aspect-ratio: 1;
+  padding: 0;
+  border: 2px solid var(--signal);
+  border-radius: 6px;
+  background: var(--card);
+  color: var(--foreground);
+  font:
+    550 22px "Geist Mono",
+    monospace;
+  transform: translate(-50%, -50%);
+  transition: background-color 140ms;
+}
+.gately-site .circuit-input:hover {
+  background: var(--muted);
+}
+.gately-site .circuit-input-label {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%);
+  color: var(--foreground);
+  font:
+    16px "Geist Mono",
+    monospace;
+  pointer-events: none;
+}
+.gately-site .circuit-input.high {
+  background: var(--blue-wash);
+}
+.gately-site .circuit-input:active {
+  transform: translate(-50%, -50%);
+}
+@media (max-width: 1023px) {
+  .gately-site .studio-workspace .circuit-canvas {
+    min-height: 420px;
+    padding: 24px;
+  }
+}
+@media (max-width: 767px) {
+  .gately-site .studio-workspace .circuit-canvas {
+    min-height: 300px;
+    padding: 24px 12px;
+  }
+  .gately-site .circuit-input {
+    font-size: 20px;
+  }
+}

@@ -1,50 +1,32 @@
-import { Button } from "@gately/ui/components/ui/button";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Github } from "lucide-react";
 
 export function CTA() {
   return (
-    <section className="w-full py-20 md:py-32 bg-gradient-to-br from-primary to-primary/80 text-primary-foreground relative overflow-hidden isolate">
-      <div className="absolute inset-0 -z-10 bg-[linear-gradient(to_right,rgba(from_var(--primary-foreground)_r_g_b_/_0.075)_1px,transparent_1px),linear-gradient(to_bottom,rgba(from_var(--primary-foreground)_r_g_b_/_0.075)_1px,transparent_1px)] bg-[size:4rem_4rem]"></div>
-      <div className="absolute -top-24 -left-24 w-64 h-64 bg-foreground/15 rounded-full blur-3xl animate-pulse"></div>
-      <div
-        className="absolute -bottom-24 -right-24 w-64 h-64 bg-foreground/15 rounded-full blur-3xl animate-pulse"
-        style={{ animationDelay: "1.5s" }}
-      ></div>
-
-      <div className="container mx-auto px-4 md:px-6 relative">
-        <div className="flex flex-col items-center justify-center space-y-6 text-center">
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight">
-            Ready to Build Smarter Circuits?
-          </h2>
-          <p className="mx-auto max-w-[700px] text-primary-foreground/80 md:text-xl">
-            Start designing logic circuits visually with Gately - fast, intuitive, and perfect for learning or
-            prototyping.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 mt-4">
-            <Button
-              size="lg"
-              variant="secondary"
-              className="rounded-full h-12 px-8 text-base cursor-pointer shadow-md hover:shadow-lg transition-all duration-300 hover:translate-y-[-2px]"
-              asChild
-            >
-              <a href="https://app.gately.dev">
-                Try It Now
-                <ArrowRight className="ml-2 size-4" />
-              </a>
-            </Button>
-            <a href="https://github.com/jakmaz/gately" target="_blank" rel="noopener noreferrer">
-              <Button
-                size="lg"
-                variant="outline"
-                className="rounded-full bg-transparent h-12 px-8 text-base transition-all duration-300 hover:translate-y-[-2px]"
-              >
-                View on GitHub
-              </Button>
-            </a>
-          </div>
-          <p className="text-sm text-primary-foreground/80 mt-4">No login. No limits. Free and open source.</p>
+    <section className="closing studio-cta" aria-labelledby="cta-title">
+      <div>
+        <h2 id="cta-title">
+          Ready to build
+          <br />
+          smarter circuits?
+        </h2>
+        <p>Start with a gate. See where it takes you.</p>
+        <div className="actions">
+          <a className="button white" href="https://app.gately.dev">
+            Open Editor <ArrowRight className="icon" aria-hidden="true" />
+          </a>
+          <a className="button outline-white" href="https://github.com/jakmaz/gately">
+            View on GitHub <Github className="icon" aria-hidden="true" />
+          </a>
         </div>
+        <span className="cta-note">Free and open source. No account required.</span>
       </div>
+      <svg className="cta-circuit" viewBox="0 0 360 210" aria-hidden="true">
+        <path d="M48 55H110V78H165 M48 155H110V122H165 M235 100H312" />
+        <rect x="6" y="34" width="42" height="42" rx="6" />
+        <rect x="6" y="134" width="42" height="42" rx="6" />
+        <path d="M165 62H197a38 38 0 0 1 0 76H165Z" />
+        <rect x="312" y="79" width="42" height="42" rx="6" />
+      </svg>
     </section>
   );
 }

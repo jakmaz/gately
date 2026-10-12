@@ -1,96 +1,38 @@
-import { Badge } from "@gately/ui/components/ui/badge";
-import { Button } from "@gately/ui/components/ui/button";
-import { Card, CardContent } from "@gately/ui/components/ui/card";
-import { ArrowRight, Check } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { MiniPreview } from "./mini-preview";
 
 export function Hero() {
   return (
-    <section className="relative isolate container mx-auto w-full py-14 lg:py-40">
-      <div className="relative z-10 px-4 md:px-6">
-        <div className="grid items-center gap-8 lg:grid-cols-2">
-          {/* Left Column - Text Content */}
-          <div className="mx-auto sm:text-left text-center">
-            <div className="flex justify-center sm:justify-start opacity-0 animate-[fade-up_0.5s_ease-out_forwards]">
-              <Badge
-                className="mb-4 rounded-full px-4 py-1.5 text-sm font-medium shadow-sm transition-none"
-                variant="secondary"
-              >
-                <span className="text-primary mr-1">✦</span> Visual Logic Editor
-              </Badge>
-            </div>
-            <h1 className="from-foreground via-foreground/90 to-foreground/70 mb-6 bg-linear-to-r bg-clip-text text-4xl font-bold tracking-tight text-transparent md:text-5xl lg:text-6xl opacity-0 animate-[fade-up_0.5s_ease-out_forwards] [animation-delay:150ms]">
-              Design Logic
-              <br />
-              <span className="-ml-2 font-serif text-muted-foreground italic">Visually</span> with{" "}
-              <span className="text-primary">gately</span>
-            </h1>
-            <p className="text-muted-foreground mb-8 text-lg leading-relaxed md:text-xl opacity-0 animate-[fade-up_0.5s_ease-out_forwards] [animation-delay:300ms]">
-              Build logic circuits with a drag-and-drop interface. Real-time feedback.
-            </p>
-            <div className="flex flex-col gap-4 sm:flex-row opacity-0 animate-[fade-up_0.5s_ease-out_forwards] [animation-delay:450ms]">
-              <Button
-                size="lg"
-                className="h-12 w-full sm:w-1/2 cursor-pointer rounded-full text-base shadow-md transition-transform duration-300 hover:-translate-y-0.5 hover:shadow-lg"
-                asChild
-              >
-                <a href="https://app.gately.dev">
-                  Open Editor
-                  <ArrowRight className="ml-2 size-4" />
-                </a>
-              </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                className="h-12 w-full sm:w-1/2 cursor-pointer rounded-full text-base shadow-sm transition-transform duration-300 hover:-translate-y-0.5 hover:bg-muted/50 border-primary/20 hover:border-primary/50"
-                asChild
-              >
-                <a href="/learn/first-circuit">
-                  Interactive Course
-                  <ArrowRight className="ml-2 size-4 text-primary" />
-                </a>
-              </Button>
-            </div>
-            <div className="mt-8 flex flex-wrap sm:justify-start justify-center items-center gap-6 opacity-0 animate-[fade-up_0.5s_ease-out_forwards] [animation-delay:600ms]">
-              <div className="hidden sm:flex text-muted-foreground items-center gap-2 text-sm">
-                <Check className="text-primary size-5" />
-                <span>Drag & Drop Interface</span>
-              </div>
-              <div className="text-muted-foreground flex items-center gap-2 text-sm">
-                <Check className="text-primary size-5" />
-                <span>Live Simulation</span>
-              </div>
-              <div className="text-muted-foreground flex items-center gap-2 text-sm">
-                <Check className="text-primary size-5" />
-                <span>No signup required</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Right Column - Preview Card */}
-          <div className="relative opacity-0 animate-[fade-up_0.8s_ease-out_forwards] [animation-delay:300ms]">
-            <Card className="p-0 border-border/40 from-background to-background/95 relative overflow-hidden rounded-2xl bg-linear-to-b shadow-xl backdrop-blur">
-              <CardContent className="p-0">
-                <div className="flex items-center justify-between border-b p-4">
-                  <div className="flex items-center gap-3">
-                    <div className="flex gap-2">
-                      <div className="size-3 rounded-full bg-red-500"></div>
-                      <div className="size-3 rounded-full bg-yellow-500"></div>
-                      <div className="size-3 rounded-full bg-green-500"></div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="space-y-6 p-2 md:p-6">
-                  <MiniPreview />
-                </div>
-              </CardContent>
-            </Card>
-          </div>
+    <section className="studio-hero wrap" aria-labelledby="hero-title">
+      <div className="studio-intro">
+        <p className="eyebrow">Free, open-source logic circuit editor</p>
+        <h1 id="hero-title">
+          Build a circuit.
+          <br />
+          <span>See the logic.</span>
+        </h1>
+        <p>Drag gates onto a canvas, connect them, and watch your circuit respond. Digital logic, made tangible.</p>
+        <div className="actions">
+          <a className="button primary" href="https://app.gately.dev">
+            Open Editor <ArrowRight className="icon" aria-hidden="true" />
+          </a>
+          <a className="button secondary" href="/learn/first-circuit">
+            Build your first circuit <ArrowRight className="icon" aria-hidden="true" />
+          </a>
         </div>
       </div>
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_90%_30%,var(--muted),transparent_35%)] blur-3xl"></div>
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_10%_70%,var(--muted),transparent_10%)] blur-3xl"></div>
+      <MiniPreview />
+      <div className="caption">
+        <span>Click inputs A and B. The sum and carry update together.</span>
+        <span className="legend">
+          <span>
+            <i aria-hidden="true" />0 · Low
+          </span>
+          <span>
+            <i className="high" aria-hidden="true" />1 · High
+          </span>
+        </span>
+      </div>
     </section>
   );
 }

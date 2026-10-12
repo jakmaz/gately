@@ -1,0 +1,428 @@
+.gately-site.gately-learn .nav-inner,
+.gately-site.gately-learn .footer,
+.gately-learn .learn-shell {
+  width: calc(100% - 64px);
+  max-width: 1480px;
+}
+.gately-learn .learn-shell {
+  display: grid;
+  grid-template-columns: 208px minmax(0, 1fr) 176px;
+  align-items: start;
+  gap: 32px;
+  margin: 44px auto 80px;
+}
+.gately-learn .learn-sidebar,
+.gately-learn .learn-toc {
+  position: sticky;
+  top: 28px;
+  max-height: calc(100dvh - 56px);
+  overflow-y: auto;
+  scrollbar-width: thin;
+  padding: 4px 8px 12px 10px;
+}
+.gately-learn .learn-home {
+  display: inline-block;
+  color: var(--foreground);
+  font-size: 21px;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+}
+.gately-learn .learn-sidebar-description {
+  font-size: 12px;
+  margin: 3px 0 28px;
+}
+.gately-learn .learn-lesson-group + .learn-lesson-group {
+  margin-top: 24px;
+}
+.gately-learn .learn-lesson-group h2,
+.gately-learn .learn-toc h2 {
+  margin: 0 0 10px;
+  font-size: 12px;
+  line-height: 1.5;
+  font-weight: 600;
+  letter-spacing: 0;
+}
+.gately-learn .learn-lesson-nav ul,
+.gately-learn .learn-toc ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.gately-learn .learn-lesson-nav :where(li) + li {
+  margin-top: 2px;
+}
+.gately-learn .learn-lesson-nav a {
+  display: block;
+  margin-left: -10px;
+  padding: 8px 10px;
+  border-radius: 6px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--muted-foreground);
+  transition: background-color 140ms;
+}
+.gately-learn .learn-lesson-nav a:hover {
+  color: var(--foreground);
+  background: var(--muted);
+}
+.gately-learn .learn-lesson-nav a[aria-current="page"] {
+  background: var(--blue-wash);
+  color: var(--blue-ink);
+  font-weight: 550;
+}
+.gately-learn .learn-content {
+  min-width: 0;
+}
+.gately-learn .learn-article {
+  padding: 42px 48px 48px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+.gately-learn .learn-article-header {
+  padding-bottom: 30px;
+  margin-bottom: 32px;
+  border-bottom: 1px solid var(--border);
+}
+.gately-learn .learn-breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin-bottom: 20px;
+  font-size: 12px;
+  color: var(--muted-foreground);
+}
+.gately-learn .learn-breadcrumb a {
+  color: var(--blue-ink);
+}
+.gately-learn .learn-article-header h1 {
+  font-size: clamp(28px, 2.7vw, 38px);
+  line-height: 1.18;
+  font-weight: 580;
+  letter-spacing: -0.04em;
+  text-wrap: balance;
+}
+.gately-learn .learn-article-header > p {
+  max-width: 60ch;
+  margin-top: 14px;
+  font-size: 16px;
+  line-height: 1.65;
+}
+.gately-learn .markdown-body {
+  font-size: 16px;
+  line-height: 1.8;
+  overflow-wrap: anywhere;
+}
+.gately-learn .markdown-body > :first-child {
+  margin-top: 0;
+}
+.gately-learn .markdown-body h2 {
+  margin: 44px 0 16px;
+  font-size: 24px;
+  line-height: 1.3;
+  font-weight: 580;
+  letter-spacing: -0.03em;
+}
+.gately-learn .markdown-body h3 {
+  margin: 30px 0 12px;
+  font-size: 19px;
+  line-height: 1.4;
+  font-weight: 580;
+  letter-spacing: -0.02em;
+}
+.gately-learn .markdown-body :is(h2, h3, h4) {
+  scroll-margin-top: 28px;
+}
+.gately-learn .markdown-body p {
+  margin: 14px 0;
+  font-size: inherit;
+  line-height: inherit;
+}
+.gately-learn .markdown-body > :is(p, ul, ol, blockquote) {
+  max-width: 72ch;
+}
+.gately-learn .markdown-body :is(ul, ol) {
+  margin: 16px 0 20px;
+  padding-left: 24px;
+  list-style-position: outside;
+  font-size: inherit;
+  line-height: 1.75;
+  color: var(--muted-foreground);
+}
+.gately-learn .markdown-body ul {
+  list-style-type: disc;
+}
+.gately-learn .markdown-body ol {
+  list-style-type: decimal;
+}
+.gately-learn .markdown-body li {
+  margin: 7px 0;
+  padding-left: 3px;
+}
+.gately-learn .markdown-body li > p {
+  display: block;
+}
+.gately-learn .markdown-body strong {
+  font-weight: 600;
+  color: var(--foreground);
+}
+.gately-learn .markdown-body a {
+  color: var(--blue-ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.gately-learn .markdown-body :not(pre) > code {
+  background: var(--muted);
+  color: var(--foreground);
+  padding: 2px 5px;
+  border-radius: 4px;
+  font:
+    0.85em "Geist Mono",
+    monospace;
+}
+.gately-learn .markdown-body pre {
+  max-width: 100%;
+  margin: 24px 0;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  box-shadow: none;
+  font-family: "Geist Mono", monospace;
+}
+.gately-learn .markdown-body blockquote {
+  margin: 24px 0;
+  padding-left: 20px;
+  border-left: 2px solid var(--primary);
+  font-style: normal;
+}
+.gately-learn .markdown-body table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+.gately-learn .markdown-body :is(th, td) {
+  padding: 12px 16px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+.gately-learn .markdown-body th {
+  background: var(--muted);
+  font-weight: 550;
+  text-transform: none;
+  color: var(--foreground);
+}
+.gately-learn .learn-toc a {
+  display: block;
+  padding: 5px 0;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--muted-foreground);
+}
+.gately-learn .learn-toc a:hover {
+  color: var(--blue-ink);
+}
+.gately-learn .learn-toc-nested {
+  padding-left: 12px;
+}
+.gately-learn .learn-pagination {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 24px;
+}
+.gately-learn .learn-pagination a {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 18px 20px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  transition: background-color 140ms;
+}
+.gately-learn .learn-pagination a:hover {
+  background: var(--muted);
+}
+.gately-learn .learn-pagination a > span {
+  color: var(--muted-foreground);
+  font-size: 12px;
+}
+.gately-learn .learn-pagination strong {
+  font-size: 14px;
+  line-height: 1.5;
+  font-weight: 550;
+  color: var(--blue-ink);
+}
+.gately-learn .learn-next {
+  grid-column: 2;
+  text-align: right;
+}
+.gately-learn .learn-mobile-menu {
+  display: none;
+}
+.gately-learn .markdown-body > div:has(.learn-simulator) {
+  height: auto;
+  margin: 28px 0;
+  border-radius: 8px;
+  box-shadow: none;
+}
+.gately-learn .learn-simulator {
+  --color-success: var(--signal-high);
+  --color-primary: var(--signal-low);
+  font-size: 13px;
+}
+.gately-learn .lesson-canvas-scroll {
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+.gately-learn .lesson-canvas {
+  background: var(--background);
+}
+.gately-learn .lesson-terminal {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  color: var(--signal-low);
+}
+.gately-learn .lesson-terminal.is-high {
+  color: var(--signal-high);
+}
+.gately-learn .lesson-terminal :is(button, output) {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 2px solid currentColor;
+  border-radius: 6px;
+  background: var(--card);
+  color: inherit;
+  font:
+    550 24px "Geist Mono",
+    monospace;
+}
+.gately-learn .lesson-terminal button:hover {
+  background: var(--muted);
+}
+.gately-learn .lesson-terminal-label {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 10px);
+  transform: translateX(-50%);
+  white-space: nowrap;
+  color: var(--foreground);
+  font:
+    14px "Geist Mono",
+    monospace;
+}
+.gately-learn .lesson-terminal .react-flow__handle {
+  width: 6px;
+  height: 6px;
+  border: 0;
+  background: currentColor;
+}
+.gately-learn .learn-simulator .react-flow__node:not(.react-flow__node-toggleNode) {
+  pointer-events: none;
+}
+.gately-learn .lesson-canvas-caption {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px 20px;
+  padding: 12px 16px;
+  border-top: 1px solid var(--border);
+  background: var(--card);
+  color: var(--muted-foreground);
+  font-size: 12px;
+}
+.gately-learn .lesson-canvas-caption output {
+  color: var(--foreground);
+  font-family: "Geist Mono", monospace;
+}
+@media (max-width: 1279px) {
+  .gately-learn .learn-shell {
+    grid-template-columns: 208px minmax(0, 1fr);
+    gap: 28px;
+  }
+  .gately-learn .learn-toc {
+    display: none;
+  }
+  .gately-learn .learn-article {
+    padding: 32px;
+  }
+}
+@media (max-width: 899px) {
+  .gately-site.gately-learn .nav-inner,
+  .gately-site.gately-learn .footer,
+  .gately-learn .learn-shell {
+    width: calc(100% - 40px);
+  }
+  .gately-learn .learn-shell {
+    display: block;
+    margin-top: 24px;
+    margin-bottom: 48px;
+  }
+  .gately-learn .learn-sidebar {
+    display: none;
+  }
+  .gately-learn .learn-mobile-menu {
+    display: block;
+    margin-bottom: 18px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+  }
+  .gately-learn .learn-mobile-menu summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 48px;
+    padding: 12px 16px;
+    font-size: 14px;
+    cursor: pointer;
+    list-style: none;
+  }
+  .gately-learn .learn-mobile-menu summary::-webkit-details-marker {
+    display: none;
+  }
+  .gately-learn .learn-mobile-menu[open] summary svg {
+    transform: rotate(180deg);
+  }
+  .gately-learn .learn-mobile-menu .learn-lesson-nav {
+    padding: 12px 26px 24px;
+    border-top: 1px solid var(--border);
+  }
+  .gately-learn .learn-lesson-nav a {
+    min-height: 44px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+}
+@media (max-width: 599px) {
+  .gately-site.gately-learn .nav-inner,
+  .gately-site.gately-learn .footer,
+  .gately-learn .learn-shell {
+    width: calc(100% - 32px);
+  }
+  .gately-learn .learn-article {
+    padding: 26px 20px 30px;
+  }
+  .gately-learn .learn-article-header {
+    padding-bottom: 24px;
+    margin-bottom: 26px;
+  }
+  .gately-learn .learn-article-header h1 {
+    font-size: 28px;
+  }
+  .gately-learn .markdown-body {
+    font-size: 15px;
+  }
+  .gately-learn .markdown-body h2 {
+    font-size: 22px;
+  }
+  .gately-learn .learn-pagination {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+  }
+  .gately-learn .learn-next {
+    grid-column: 1;
+    text-align: left;
+  }
+}

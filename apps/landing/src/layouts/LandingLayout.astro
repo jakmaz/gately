@@ -1,24 +1,30 @@
 ---
 import { Header } from "../components/Header";
 import { Footer } from "../components/home/footer";
+import { PageFooter } from "../components/home/page-footer";
+import { PageHeader } from "../components/home/page-header";
 import BaseLayout from "./BaseLayout.astro";
+import "../styles/home.css";
 
 interface Props {
   title?: string;
   description?: string;
+  home?: boolean;
+  learn?: boolean;
 }
 
-const { title, description } = Astro.props;
+const { title, description, home = false, learn = false } = Astro.props;
+const modern = home || learn;
 ---
 
 <BaseLayout title={title} description={description}>
-  <div class="flex min-h-dvh justify-items-center items-center flex-col bg-background text-foreground">
-    <div transition:persist="header" class="w-full relative z-50">
-      <Header client:load />
+  <div class:list={["flex min-h-dvh justify-items-center items-center flex-col bg-background text-foreground", { "gately-site": modern, "gately-home": home, "gately-learn": learn }]}>
+    <div transition:persist={learn ? "learn-header" : home ? "home-header" : "header"} class="w-full relative z-50">
+      {modern ? <PageHeader learn={learn} client:load /> : <Header client:load />}
     </div>
-    <main class="flex-1 w-full">
+    <main id="main" class="flex-1 w-full" tabindex="-1">
       <slot />
     </main>
-    <Footer client:load />
+    {modern ? <PageFooter /> : <Footer client:load />}
   </div>
 </BaseLayout>
