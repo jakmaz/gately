@@ -4,7 +4,7 @@ import { memo } from "react";
 import { type GateGeometry, GateRenderer, type LogicGateProps } from "./base/index";
 
 export const BUFF_GEOMETRY: GateGeometry = {
-  bodyPath: "M16 12L68 40L16 68Z",
+  bodyPath: "M16 18Q16 12 22 15L64 36Q72 40 64 44L22 65Q16 68 16 62Z",
   ports: [
     {
       id: "input-0",

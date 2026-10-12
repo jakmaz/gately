@@ -4,7 +4,7 @@ import { memo } from "react";
 import { type GateGeometry, GateRenderer, type LogicGateProps } from "./base/index";
 
 export const XNOR3_GEOMETRY: GateGeometry = {
-  bodyPath: "M16 12C38 12 56 20 64 40C56 60 38 68 16 68Q32 40 16 12Z",
+  bodyPath: "M22 12C40 12 54 25 62 35Q66 40 62 45C54 55 40 68 22 68Q16 68 19 62Q30 40 19 18Q16 12 22 12Z",
   extraPath: "M6 12Q22 40 6 68",
   bubble: {
     cx: 68,

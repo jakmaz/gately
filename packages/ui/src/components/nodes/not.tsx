@@ -4,7 +4,7 @@ import { memo } from "react";
 import { type GateGeometry, GateRenderer, type LogicGateProps } from "./base/index";
 
 export const NOT_GEOMETRY: GateGeometry = {
-  bodyPath: "M16 12L60 40L16 68Z",
+  bodyPath: "M16 18Q16 12 22 15.5L56 35.33Q64 40 56 44.67L22 64.5Q16 68 16 62Z",
   bubble: {
     cx: 64,
     cy: 40,

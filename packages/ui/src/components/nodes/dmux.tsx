@@ -4,7 +4,7 @@ import { memo } from "react";
 import { type GateGeometry, GateRenderer, type LogicGateProps } from "./base/index";
 
 export const DMUX_GEOMETRY: GateGeometry = {
-  bodyPath: "M16 24L64 12V68L16 56Z",
+  bodyPath: "M16 30Q16 24 22 22.5L58 13.5Q64 12 64 18V62Q64 68 58 66.5L22 57.5Q16 56 16 50Z",
   ports: [
     {
       id: "input-0",
