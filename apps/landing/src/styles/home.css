@@ -1047,6 +1047,9 @@ html:has(.gately-site) {
 }
 .gately-site .studio-features > article {
   min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 .gately-site .studio-features h2 {
   font-size: 32px;
@@ -1058,52 +1061,171 @@ html:has(.gately-site) {
   max-width: 420px;
 }
 .gately-site .studio-features .text-link {
-  margin-top: 23px;
+  margin-top: auto;
+  padding-top: 23px;
+}
+.gately-site .learning-preview,
+.gately-site .studio-features .files-visual {
+  width: 100%;
+  height: 288px;
+  flex: none;
+  display: flex;
+  flex-direction: column;
 }
 .gately-site .learning-preview {
   border: 1px solid var(--border);
   border-radius: 8px;
-  padding: 24px;
-  background: var(--blue-wash);
-  min-height: 235px;
+  overflow: hidden;
+  background: var(--card);
 }
-.gately-site .learning-preview .small-title {
-  font-size: 12px;
-  color: var(--blue-ink);
+.gately-site .lesson-preview-heading,
+.gately-site .studio-features .file-heading {
+  padding: 16px 18px;
+  font-size: 13px;
+}
+.gately-site .lesson-preview-heading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid var(--border);
+}
+.gately-site .lesson-preview-heading strong {
+  font-weight: 500;
+}
+.gately-site .lesson-preview-heading > span {
+  margin-left: auto;
+  font-size: 11px;
+  color: var(--muted-foreground);
+}
+.gately-site .studio-features .file-transfer {
+  flex: 1;
 }
 .gately-site .lesson-example {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  flex: 1;
+  min-height: 0;
+}
+.gately-site .lesson-circuit-pane {
+  min-width: 0;
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 14px;
-  margin: 20px 0 16px;
+  justify-content: center;
+}
+.gately-site .lesson-circuit-board {
+  position: relative;
+  width: 100%;
+  max-width: 264px;
+  aspect-ratio: 290 / 160;
+  flex: none;
 }
 .gately-site .lesson-example svg {
   display: block;
   width: 100%;
 }
+.gately-site .lesson-circuit-board .lesson-bit text {
+  font-size: 20px;
+}
+.gately-site .lesson-output-label {
+  text-anchor: middle;
+  fill: var(--muted-foreground);
+  font:
+    14px "Geist Mono",
+    monospace;
+}
+.gately-site .lesson-input {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: 12.42%;
+  aspect-ratio: 1;
+  min-width: 44px;
+  min-height: 44px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  background: var(--card);
+  border: 1.5px solid var(--signal);
+  border-radius: 5px;
+  font:
+    16px "Geist Mono",
+    monospace;
+}
+.gately-site .lesson-input:hover {
+  background: var(--muted);
+}
+.gately-site .lesson-input:active {
+  transform: translate(-50%, -50%);
+}
+.gately-site .lesson-input-label {
+  position: absolute;
+  right: calc(100% + 8px);
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--muted-foreground);
+  font-size: 11px;
+}
+.gately-site .studio-features .lesson-input-hint {
+  font-size: 11px;
+  margin-top: 8px;
+}
+.gately-site .lesson-table-pane {
+  min-width: 0;
+  border-left: 1px solid var(--border);
+  padding: 12px 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.gately-site .lesson-table-title,
+.gately-site .lesson-table-frame {
+  width: 100%;
+  max-width: 260px;
+}
+.gately-site .lesson-table-title {
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.4;
+  margin-bottom: 8px;
+}
+.gately-site .lesson-table-frame {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+}
 .gately-site .lesson-truth-table {
+  width: 100%;
+  table-layout: fixed;
   border-collapse: collapse;
   font:
-    12px "Geist Mono",
+    14px / 1.3 "Geist Mono",
     monospace;
   text-align: center;
 }
 .gately-site .lesson-truth-table th,
 .gately-site .lesson-truth-table td {
-  padding: 6px 9px;
+  padding: 5px 8px;
+  border-bottom: 1px solid var(--border);
+}
+.gately-site .lesson-truth-table th + th,
+.gately-site .lesson-truth-table td + td {
+  border-left: 1px solid var(--border);
 }
 .gately-site .lesson-truth-table th {
+  background: var(--muted);
   color: var(--muted-foreground);
-  border-bottom: 1px solid var(--border);
+  font-size: 12px;
   font-weight: 500;
 }
-.gately-site .lesson-truth-table .current {
-  background: var(--background);
-  color: var(--blue-ink);
+.gately-site .lesson-truth-table tr:last-child td {
+  border-bottom: 0;
 }
-.gately-site .learning-preview .subcopy {
-  font-size: 12px;
+.gately-site .lesson-truth-table .current {
+  background: var(--blue-wash);
+  color: var(--blue-ink);
+  font-weight: 500;
 }
 .gately-site .open-note {
   padding: 27px 0;
@@ -1132,17 +1254,8 @@ html:has(.gately-site) {
     display: none;
   }
   .gately-site .studio-features {
-    gap: 35px;
-  }
-  .gately-site .lesson-example {
     grid-template-columns: 1fr;
-  }
-  .gately-site .lesson-example svg {
-    max-width: 300px;
-    margin-inline: auto;
-  }
-  .gately-site .lesson-truth-table {
-    width: 100%;
+    gap: 35px;
   }
   .gately-site .studio-intro h1 {
     font-size: 46px;
@@ -1182,22 +1295,35 @@ html:has(.gately-site) {
   .gately-site .studio-features h2 {
     font-size: 28px;
   }
-  .gately-site .learning-preview {
-    min-height: 225px;
-    padding: 20px 15px;
-  }
-  .gately-site .lesson-example {
-    gap: 8px;
-  }
-  .gately-site .lesson-truth-table th,
-  .gately-site .lesson-truth-table td {
-    padding: 6px;
-  }
   .gately-site .open-note {
     display: block;
   }
   .gately-site .open-note .text-link {
     margin-top: 15px;
+  }
+}
+
+@media (max-width: 599px) {
+  .gately-site .learning-preview {
+    height: auto;
+  }
+  .gately-site .studio-features .files-visual {
+    height: auto;
+    min-height: 240px;
+  }
+  .gately-site .lesson-example {
+    grid-template-columns: 1fr;
+  }
+  .gately-site .lesson-circuit-pane {
+    padding: 20px;
+  }
+  .gately-site .lesson-circuit-board {
+    max-width: 280px;
+  }
+  .gately-site .lesson-table-pane {
+    border-left: 0;
+    border-top: 1px solid var(--border);
+    padding: 16px 20px;
   }
 }
 
