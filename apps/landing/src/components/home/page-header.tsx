@@ -7,7 +7,6 @@ export function PageHeader({ learn = false }: { learn?: boolean }) {
   const navLinks = [
     { label: "Explore", href: learn ? "/#explore" : "#explore" },
     { label: "Learn", href: "/learn/first-circuit" },
-    { label: "FAQ", href: learn ? "/#faq" : "#faq" },
     { label: "GitHub", href: "https://github.com/jakmaz/gately" },
   ];
   const [menuOpen, setMenuOpen] = useState(false);

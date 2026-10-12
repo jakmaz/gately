@@ -1,4 +1,7 @@
+"use client";
+
 import { Plus } from "lucide-react";
+import { useId, useState } from "react";
 
 export const faqs = [
   {
@@ -28,6 +31,33 @@ export const faqs = [
   },
 ];
 
+function FAQItem({ question, answer }: (typeof faqs)[number]) {
+  const [open, setOpen] = useState(false);
+  const answerId = useId();
+
+  return (
+    <div className="faq-item" data-open={open}>
+      <h3>
+        <button
+          type="button"
+          className="faq-toggle"
+          aria-expanded={open}
+          aria-controls={answerId}
+          onClick={() => setOpen((previous) => !previous)}
+        >
+          {question}
+          <Plus className="icon" aria-hidden="true" />
+        </button>
+      </h3>
+      <div id={answerId} className="faq-answer" aria-hidden={!open} inert={!open}>
+        <div className="faq-answer-inner">
+          <p>{answer}</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export function FAQ() {
   return (
     <section id="faq" className="section faq-section" aria-labelledby="faq-title">
@@ -36,14 +66,8 @@ export function FAQ() {
         <p>Before you open your first canvas.</p>
       </div>
       <div className="faq-list">
-        {faqs.map(({ question, answer }) => (
-          <details key={question}>
-            <summary>
-              {question}
-              <Plus className="icon" aria-hidden="true" />
-            </summary>
-            <p>{answer}</p>
-          </details>
+        {faqs.map((faq) => (
+          <FAQItem key={faq.question} {...faq} />
         ))}
       </div>
     </section>

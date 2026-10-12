@@ -556,11 +556,22 @@ html:has(.gately-site) {
 .gately-site .faq-heading p {
   margin-top: 15px;
 }
-.gately-site .faq-list details {
+.gately-site .faq-list {
+  --acc-expand: 250ms;
+  --acc-collapse: 250ms;
+  --acc-ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+.gately-site .faq-item {
   border-bottom: 1px solid var(--border);
 }
-.gately-site .faq-list summary {
-  list-style: none;
+.gately-site .faq-item h3 {
+  font: inherit;
+  letter-spacing: normal;
+}
+.gately-site .faq-toggle {
+  width: 100%;
+  border: 0;
+  background: transparent;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -569,18 +580,40 @@ html:has(.gately-site) {
   cursor: pointer;
   font-size: 15px;
   font-weight: 500;
+  text-align: left;
 }
-.gately-site .faq-list summary::-webkit-details-marker {
-  display: none;
+.gately-site .faq-toggle:active {
+  transform: none;
 }
-.gately-site .faq-list summary .icon {
+.gately-site .faq-toggle .icon {
   width: 17px;
   height: 17px;
+  transition: transform var(--acc-collapse) var(--acc-ease);
 }
-.gately-site .faq-list details[open] summary .icon {
+.gately-site .faq-item[data-open="true"] .faq-toggle .icon {
   transform: rotate(45deg);
+  transition-duration: var(--acc-expand);
 }
-.gately-site .faq-list details p {
+.gately-site .faq-answer {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows var(--acc-collapse) var(--acc-ease);
+}
+.gately-site .faq-item[data-open="true"] .faq-answer {
+  grid-template-rows: 1fr;
+  transition-duration: var(--acc-expand);
+}
+.gately-site .faq-answer-inner {
+  min-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity var(--acc-collapse) var(--acc-ease);
+}
+.gately-site .faq-item[data-open="true"] .faq-answer-inner {
+  opacity: 1;
+  transition-duration: var(--acc-expand);
+}
+.gately-site .faq-answer p {
   font-size: 14px;
   padding: 0 30px 22px 0;
   line-height: 1.7;
@@ -889,7 +922,7 @@ html:has(.gately-site) {
   .gately-site .faq-heading h2 {
     font-size: 29px;
   }
-  .gately-site .faq-list summary {
+  .gately-site .faq-toggle {
     font-size: 14px;
     padding: 20px 0;
   }
@@ -939,6 +972,11 @@ html:has(.gately-site) {
     scroll-behavior: auto;
   }
   .gately-site .button {
+    transition: none;
+  }
+  .gately-site .faq-answer,
+  .gately-site .faq-answer-inner,
+  .gately-site .faq-toggle .icon {
     transition: none;
   }
   .gately-site .workflow-demo .placing-gate,
