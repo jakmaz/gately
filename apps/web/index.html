@@ -27,16 +27,6 @@
       }
     </style>
     
-    <!-- Theme script - runs BEFORE page renders to prevent flash -->
-    <script>
-      (() => {
-        const theme = localStorage.getItem('theme') || 'dark';
-        const resolved = theme === 'system' 
-          ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
-          : theme;
-        document.documentElement.classList.add(resolved);
-      })();
-    </script>
   </head>
   <body>
     <div id="root"></div>

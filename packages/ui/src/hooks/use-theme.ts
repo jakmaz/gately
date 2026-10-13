@@ -1,11 +1,10 @@
 import { createContext, useContext } from "react";
-
-type Theme = "light" | "dark" | "system";
+import type { ResolvedTheme, Theme } from "../theme";
 
 interface ThemeContextType {
   theme: Theme;
   setTheme: (theme: Theme) => void;
-  resolvedTheme: "light" | "dark";
+  resolvedTheme: ResolvedTheme;
 }
 
 // Create a context that can be provided by the app

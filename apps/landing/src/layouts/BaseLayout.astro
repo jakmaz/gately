@@ -1,5 +1,6 @@
 ---
 import { ClientRouter } from "astro:transitions";
+import { themeInitScript } from "@gately/ui/theme";
 import "@gately/ui/globals.css";
 import "../styles/astro-scan.css";
 import "@xyflow/react/dist/style.css";
@@ -62,24 +63,12 @@ const ogImage = new URL(image, Astro.site).href;
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
     
-    <!-- Theme script - runs BEFORE page renders to prevent flash -->
+    <script is:inline set:html={themeInitScript} />
     <script is:inline>
-      const applyTheme = () => {
-        const theme = localStorage.getItem('theme') || 'dark';
-        const resolved = theme === 'system' 
-          ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
-          : theme;
-        document.documentElement.classList.remove('light', 'dark');
-        document.documentElement.classList.add(resolved);
-      };
-
-      // Apply initially
-      applyTheme();
-
-      // Ensure the theme is preserved during the view transition swap
-      // By mutating the new document BEFORE it's swapped in, we prevent any CSS transition flashes
+      // Preserve the applied theme while Astro swaps pages.
       document.addEventListener('astro:before-swap', (ev) => {
         ev.newDocument.documentElement.className = document.documentElement.className;
+        ev.newDocument.documentElement.style.colorScheme = document.documentElement.style.colorScheme;
       });
     </script>
   </head>

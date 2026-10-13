@@ -8,6 +8,7 @@
     "./components/nodes/base/constants": "./src/components/nodes/base/constants.ts",
     "./components/*": "./src/components/*.tsx",
     "./hooks/*": "./src/hooks/*.ts",
+    "./theme": "./src/theme.ts",
     "./globals.css": "./src/styles/globals.css",
     "./node-types": "./src/node-types.ts",
     "./package.json": "./package.json"

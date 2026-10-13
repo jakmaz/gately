@@ -38,7 +38,6 @@ import {
 } from "../ui/dialog";
 import { Input } from "../ui/input";
 import { InfoDialog } from "./info-dialog";
-import { ThemeToggle } from "./theme-toggle";
 
 interface FileExplorerProps {
   isCollapsed: boolean;
@@ -472,8 +471,7 @@ export function FileExplorer({ isCollapsed }: FileExplorerProps) {
         </ContextMenuContent>
       </ContextMenu>
 
-      <div className="py-2 px-4 mt-auto flex justify-between w-64">
-        <ThemeToggle />
+      <div className="py-2 px-4 mt-auto flex justify-end w-64">
         <InfoDialog />
       </div>
 
