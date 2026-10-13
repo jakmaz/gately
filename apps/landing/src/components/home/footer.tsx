@@ -13,7 +13,7 @@ export function Footer() {
           <span className="text-xs">&copy; {new Date().getFullYear()} Gately</span>
         </div>
         <div className="flex flex-col items-start gap-2 text-sm text-muted-foreground sm:items-end">
-          <a href="mailto:contact@jakmaz.com" className="hover:text-foreground transition-colors">
+          <a href="mailto:hello@gately.dev" className="hover:text-foreground transition-colors">
             Contact
           </a>
           <a href="/privacy" className="hover:text-foreground transition-colors">
