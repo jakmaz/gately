@@ -1,8 +1,9 @@
 "use client";
 
 import { Logo } from "@gately/ui/components/Logo";
-import { ArrowRight, Menu, Moon, Sun, X } from "lucide-react";
+import { ArrowRight, Menu, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { ThemePicker } from "../theme-picker";
 
 export function PageHeader({ learn = false }: { learn?: boolean }) {
   const navLinks = [
@@ -11,13 +12,8 @@ export function PageHeader({ learn = false }: { learn?: boolean }) {
     { label: "GitHub", href: "https://github.com/jakmaz/gately" },
   ];
   const [menuOpen, setMenuOpen] = useState(false);
-  const [dark, setDark] = useState(true);
   const menuButton = useRef<HTMLButtonElement>(null);
   const header = useRef<HTMLElement>(null);
-
-  useEffect(() => {
-    setDark(document.documentElement.classList.contains("dark"));
-  }, []);
 
   useEffect(() => {
     if (!menuOpen) return;
@@ -43,18 +39,6 @@ export function PageHeader({ learn = false }: { learn?: boolean }) {
     };
   }, [menuOpen]);
 
-  function toggleTheme() {
-    const nextDark = !document.documentElement.classList.contains("dark");
-    document.documentElement.classList.toggle("dark", nextDark);
-    document.documentElement.classList.toggle("light", !nextDark);
-    setDark(nextDark);
-    try {
-      localStorage.setItem("theme", nextDark ? "dark" : "light");
-    } catch {
-      // The theme still works when browser storage is unavailable.
-    }
-  }
-
   return (
     <>
       <a className="skip" href="#main">
@@ -79,15 +63,7 @@ export function PageHeader({ learn = false }: { learn?: boolean }) {
             ))}
           </nav>
           <div className="nav-actions">
-            <button
-              className="theme-toggle icon-button"
-              type="button"
-              onClick={toggleTheme}
-              aria-label={dark ? "Switch to light theme" : "Switch to dark theme"}
-            >
-              <Sun className="icon sun" aria-hidden="true" />
-              <Moon className="icon moon" aria-hidden="true" />
-            </button>
+            <ThemePicker className="theme-picker icon-button" />
             <a className="button primary" href="https://app.gately.dev">
               Open Editor <ArrowRight className="icon" aria-hidden="true" />
             </a>

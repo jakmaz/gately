@@ -7,7 +7,7 @@ import { Button } from "../ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from "../ui/dialog";
 import { Label } from "../ui/label";
 import { Switch } from "../ui/switch";
-import { ThemeToggle } from "./theme-toggle";
+import { ThemePicker } from "./theme-picker";
 
 type TabId = "appearance" | "connections" | "canvas" | "debug" | "hotkeys";
 
@@ -124,7 +124,7 @@ export function SettingsDialog() {
               {activeTab === "appearance" && (
                 <div className="flex flex-col">
                   <SettingRow title="Theme" description="Choose your preferred color scheme">
-                    <ThemeToggle />
+                    <ThemePicker />
                   </SettingRow>
                   <SettingRow title="Show Node Labels" description="Display labels on all nodes">
                     <Switch

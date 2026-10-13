@@ -7,7 +7,7 @@ import { Skeleton } from "../ui/skeleton";
 import { Controls } from "./controls";
 import { ImportExportButtons } from "./import-export";
 import { SettingsDialog } from "./settings-dialog";
-import { ThemeToggle } from "./theme-toggle";
+import { ThemePicker } from "./theme-picker";
 
 interface HeaderProps {
   onToggleSidebar: () => void;
@@ -42,7 +42,7 @@ export function Header({ onToggleSidebar }: HeaderProps) {
       <div className="flex items-center gap-2">
         <ImportExportButtons />
         {/* <ShareDialog /> */}
-        <ThemeToggle />
+        <ThemePicker />
         <SettingsDialog />
       </div>
     </div>

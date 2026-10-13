@@ -210,26 +210,16 @@ html:has(.gately-site) {
 .gately-site .icon-button:hover {
   background: var(--secondary);
 }
-.gately-site .theme-toggle {
+.gately-site .theme-picker {
   color: var(--muted-foreground);
 }
-.gately-site .theme-toggle:hover {
+.gately-site .theme-picker:hover {
   color: var(--foreground);
 }
-.gately-site .theme-toggle .icon {
-  display: block;
+.gately-site .theme-picker .icon {
   width: 16px;
   height: 16px;
   stroke-width: 1.5;
-}
-.gately-site .theme-toggle .sun {
-  display: none;
-}
-.dark .gately-site .theme-toggle .sun {
-  display: block;
-}
-.dark .gately-site .theme-toggle .moon {
-  display: none;
 }
 .gately-site .site-header {
   border-bottom: 1px solid var(--border);

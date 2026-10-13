@@ -5,7 +5,7 @@ import { Logo } from "@gately/ui/components/Logo";
 import { Button, buttonVariants } from "@gately/ui/components/ui/button";
 import { ChevronRight, Github, Menu, X } from "lucide-react";
 import { useState } from "react";
-import { ThemeToggle } from "./ThemeToggle";
+import { ThemePicker } from "./theme-picker";
 
 const navLinks = [
   { label: "Home", href: "/" },
@@ -50,7 +50,7 @@ export function Header() {
             <Github />
           </a>
 
-          <ThemeToggle />
+          <ThemePicker />
 
           <a
             href="https://app.gately.dev"
@@ -64,7 +64,7 @@ export function Header() {
           </a>
         </div>
         <div className="flex items-center gap-4 md:hidden">
-          <ThemeToggle />
+          <ThemePicker />
           <Button variant="ghost" size="icon" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
             {mobileMenuOpen ? <X className="size-5" /> : <Menu className="size-5" />}
             <span className="sr-only">Toggle menu</span>
