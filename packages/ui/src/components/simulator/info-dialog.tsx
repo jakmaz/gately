@@ -1,6 +1,6 @@
 import { version } from "@gately/ui/package.json";
 import { Info } from "lucide-react";
-import { Button } from "../ui/button";
+import { Button, buttonVariants } from "../ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
 
 export function InfoDialog() {
@@ -41,16 +41,18 @@ export function InfoDialog() {
           </div>
         </div>
 
-        <div className="mt-4 flex justify-center">
-          <Button
-            variant="outline"
-            className="w-full"
-            render={
-              <a href="https://gately.roadwiseapp.com" target="_blank" rel="noopener noreferrer">
-                Suggest features and provide feedback here!
-              </a>
-            }
-          />
+        <div className="mt-4 flex flex-col items-center gap-2">
+          <a
+            href="https://gately.roadwiseapp.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={buttonVariants({ variant: "outline", className: "w-full" })}
+          >
+            Suggest features and provide feedback here!
+          </a>
+          <a href="mailto:hello@gately.dev" className={buttonVariants({ variant: "link" })}>
+            Contact
+          </a>
         </div>
       </DialogContent>
     </Dialog>

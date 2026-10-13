@@ -11,7 +11,7 @@ export function PageFooter() {
       <nav aria-label="Footer navigation">
         <a href="https://github.com/jakmaz/gately">Source code</a>
         <a href="/privacy">Privacy</a>
-        <a href="mailto:contact@jakmaz.com">Contact</a>
+        <a href="mailto:hello@gately.dev">Contact</a>
       </nav>
       <span className="copyright">© {new Date().getFullYear()} Gately</span>
     </footer>
