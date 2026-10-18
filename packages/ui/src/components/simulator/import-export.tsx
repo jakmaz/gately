@@ -4,6 +4,7 @@ import { useReactFlow } from "@xyflow/react";
 import { Download, Upload } from "lucide-react";
 import { nanoid } from "nanoid";
 import { useRef } from "react";
+import { toast } from "sonner";
 import { simulateCircuit } from "../../hooks/simulator-utils";
 import { useExport } from "../../hooks/use-export";
 import { useFileSystem } from "../../hooks/use-file-system";
@@ -61,7 +62,12 @@ export function ImportExportButtons() {
       };
 
       // Add to file system and switch to it
-      createItem(null, newFile); // Add to root level
+      const error = createItem(null, newFile);
+      if (error) {
+        toast.error(error);
+        event.target.value = "";
+        return;
+      }
       switchToFile(newFileId);
 
       // Update the React Flow canvas with imported data

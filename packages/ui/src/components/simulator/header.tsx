@@ -1,5 +1,5 @@
 import { Menu } from "lucide-react";
-import { useFileSystem } from "../../hooks/use-file-system";
+import { findFileById, useFileSystem } from "../../hooks/use-file-system";
 import { useHasMounted } from "../../hooks/use-has-mounted";
 import { Logo } from "../Logo";
 import { Button } from "../ui/button";
@@ -14,9 +14,10 @@ interface HeaderProps {
 }
 
 export function Header({ onToggleSidebar }: HeaderProps) {
-  const { getCurrentFile } = useFileSystem();
+  const currentFile = useFileSystem((state) =>
+    state.currentFileId ? findFileById(state.fileTree, state.currentFileId) : undefined,
+  );
   const hasMounted = useHasMounted();
-  const currentFile = getCurrentFile();
 
   return (
     <div className="h-14 border-b bg-card flex items-center justify-between px-4">
@@ -31,7 +32,9 @@ export function Header({ onToggleSidebar }: HeaderProps) {
         </a>
 
         {hasMounted ? (
-          <span className="mt-0.5">{currentFile?.name || "No file selected"}</span>
+          <span className="mt-0.5 max-w-64 truncate" title={currentFile?.name}>
+            {currentFile?.name || "No file selected"}
+          </span>
         ) : (
           <Skeleton className="h-7 w-30 bg-muted-foreground/10" />
         )}

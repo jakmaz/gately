@@ -1,4 +1,7 @@
+import type { GateNodeProps } from "@gately/core/types";
+import { type Edge, type Node, useReactFlow } from "@xyflow/react";
 import {
+  Check,
   ChevronRight,
   ChevronsDown,
   ChevronsUp,
@@ -11,14 +14,21 @@ import {
   FolderOpen,
   FolderPlus,
   MoreVertical,
-  Plus,
   Share,
   Trash2,
+  X,
 } from "lucide-react";
-import { AnimatePresence, LayoutGroup, motion } from "motion/react";
-import { useState } from "react";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { nanoid } from "nanoid";
+import { useEffect, useId, useRef, useState } from "react";
 import { toast } from "sonner";
-import { type FileNode, useFileSystem } from "../../hooks/use-file-system";
+import {
+  type FileNode,
+  findFileById,
+  findParentId,
+  MAX_ITEM_NAME_LENGTH,
+  useFileSystem,
+} from "../../hooks/use-file-system";
 import { Button } from "../ui/button";
 import {
   ContextMenu,
@@ -27,15 +37,7 @@ import {
   ContextMenuSeparator,
   ContextMenuTrigger,
 } from "../ui/context-menu";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "../ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "../ui/dialog";
 import { Input } from "../ui/input";
 import { InfoDialog } from "./info-dialog";
 
@@ -43,18 +45,139 @@ interface FileExplorerProps {
   isCollapsed: boolean;
 }
 
-export function FileExplorer({ isCollapsed }: FileExplorerProps) {
-  const { fileTree, createItem, updateFileTree, currentFileId, switchToFile, renameItem, moveItem, deleteItem } =
-    useFileSystem();
+interface NewItem {
+  id: string;
+  type: FileNode["type"];
+  parentId: string | null;
+}
 
-  const [newItemDialog, setNewItemDialog] = useState(false);
+function NameEditor({
+  label,
+  value,
+  error,
+  onChange,
+  onSave,
+  onCancel,
+}: {
+  label: string;
+  value: string;
+  error: string | null;
+  onChange: (value: string) => void;
+  onSave: () => boolean;
+  onCancel: () => void;
+}) {
+  const inputRef = useRef<HTMLInputElement>(null);
+  const finished = useRef(false);
+  const errorId = useId();
+  const validationError =
+    error ?? (value.trim().length > MAX_ITEM_NAME_LENGTH ? `Use ${MAX_ITEM_NAME_LENGTH} characters or fewer.` : null);
+
+  useEffect(() => {
+    const frame = requestAnimationFrame(() => {
+      inputRef.current?.focus();
+      inputRef.current?.select();
+      inputRef.current?.scrollIntoView({ block: "nearest" });
+    });
+    return () => cancelAnimationFrame(frame);
+  }, []);
+
+  const save = () => {
+    if (!finished.current) finished.current = onSave();
+  };
+
+  const cancel = () => {
+    finished.current = true;
+    onCancel();
+  };
+
+  return (
+    <form
+      className="min-w-0 flex-1"
+      onSubmit={(event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        save();
+      }}
+      onBlur={(event) => {
+        if (event.currentTarget.contains(event.relatedTarget)) return;
+        if (value.trim()) save();
+        else cancel();
+      }}
+      onKeyDown={(event) => {
+        event.stopPropagation();
+        if (event.nativeEvent.isComposing) {
+          if (event.key === "Enter") event.preventDefault();
+          return;
+        }
+        if (event.key === "Escape") {
+          event.preventDefault();
+          cancel();
+        }
+      }}
+    >
+      <div className="flex items-center gap-1">
+        <Input
+          ref={inputRef}
+          aria-label={label}
+          placeholder={label}
+          aria-invalid={Boolean(validationError)}
+          aria-describedby={validationError ? errorId : undefined}
+          value={value}
+          onChange={(event) => onChange(event.target.value)}
+          className="h-6 rounded-sm px-1 text-sm"
+          enterKeyHint="done"
+        />
+        <Button type="submit" variant="ghost" size="icon-xs" aria-label="Save name">
+          <Check />
+        </Button>
+        <Button type="button" variant="ghost" size="icon-xs" aria-label="Cancel naming" onClick={cancel}>
+          <X />
+        </Button>
+      </div>
+      {validationError && (
+        <p id={errorId} role="alert" className="mt-1 text-xs text-destructive">
+          {validationError}
+        </p>
+      )}
+    </form>
+  );
+}
+
+export function FileExplorer({ isCollapsed }: FileExplorerProps) {
+  const reactFlow = useReactFlow<Node<GateNodeProps>, Edge>();
+  const reduceMotion = useReducedMotion();
+  const treeTransition = { duration: reduceMotion ? 0 : 0.25, ease: [0.22, 1, 0.36, 1] as const };
+  const {
+    fileTree,
+    createItem,
+    updateFileTree,
+    updateFileContent,
+    currentFileId,
+    switchToFile,
+    renameItem,
+    moveItem,
+    deleteItem,
+  } = useFileSystem();
+
+  const [newItem, setNewItem] = useState<NewItem | null>(null);
   const [newItemName, setNewItemName] = useState("");
-  const [newItemType, setNewItemType] = useState<"file" | "directory">("file");
-  const [targetParentId, setTargetParentId] = useState<string | null>(null);
+  const [nameError, setNameError] = useState<string | null>(null);
+  const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
   const [editingItemId, setEditingItemId] = useState<string | null>(null);
   const [editingName, setEditingName] = useState("");
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [itemToDelete, setItemToDelete] = useState<FileNode | null>(null);
+
+  useEffect(() => {
+    setSelectedItemId(currentFileId);
+  }, [currentFileId]);
+
+  const openFile = (fileId: string) => {
+    if (currentFileId && currentFileId !== fileId) {
+      updateFileContent(currentFileId, { nodes: reactFlow.getNodes(), edges: reactFlow.getEdges() });
+    }
+    switchToFile(fileId);
+  };
 
   const toggleDirectory = (id: string) => {
     updateFileTree((tree) => {
@@ -74,59 +197,83 @@ export function FileExplorer({ isCollapsed }: FileExplorerProps) {
   };
 
   const createNewItem = () => {
-    if (!newItemName.trim()) {
-      toast.error("Please enter a name");
-      return;
+    if (!newItem) return false;
+
+    const item: FileNode = {
+      id: nanoid(),
+      name: newItemName.trim(),
+      type: newItem.type,
+      ...(newItem.type === "directory" ? { children: [], isOpen: true } : { data: { nodes: [], edges: [] } }),
+    };
+    const error = createItem(newItem.parentId, item);
+    if (error) {
+      setNameError(error);
+      return false;
     }
 
-    const newItem: FileNode = {
-      id: Date.now().toString(),
-      name: newItemName,
-      type: newItemType,
-      children: newItemType === "directory" ? [] : undefined,
-      isOpen: newItemType === "directory" ? false : undefined,
-    };
-
-    createItem(targetParentId, newItem);
-
-    setNewItemDialog(false);
+    setNewItem(null);
     setNewItemName("");
-    setTargetParentId(null);
-    toast.success(`${newItemType === "file" ? "File" : "Directory"} created successfully`);
+    setNameError(null);
+    setSelectedItemId(item.id);
+    if (item.type === "file") openFile(item.id);
+    return true;
   };
 
   const handleRename = (item: FileNode) => {
+    setNewItem(null);
+    setNameError(null);
     setEditingItemId(item.id);
     setEditingName(item.name);
   };
 
   const handleDuplicate = (item: FileNode) => {
-    const findParentId = (tree: FileNode[], targetId: string, currentParentId: string | null = null): string | null => {
-      for (const node of tree) {
-        if (node.id === targetId) return currentParentId;
-        if (node.children) {
-          const found = findParentId(node.children, targetId, node.id);
-          if (found !== null) return found;
-        }
-      }
-      return null;
-    };
-
     const parentId = findParentId(fileTree, item.id);
-    const duplicatedItem: FileNode = {
-      ...item,
-      id: Date.now().toString(),
-      name: `${item.name} (Copy)`,
+    const siblings = parentId === null ? fileTree : (findFileById(fileTree, parentId)?.children ?? []);
+    const getCopyName = (number: number) => {
+      const suffix = number === 1 ? " (Copy)" : ` (Copy ${number})`;
+      return `${item.name.slice(0, MAX_ITEM_NAME_LENGTH - suffix.length).trimEnd()}${suffix}`;
     };
-    createItem(parentId, duplicatedItem);
-    toast.success(`${item.type === "file" ? "File" : "Directory"} duplicated successfully`);
+    let copyNumber = 1;
+    let copyName = getCopyName(copyNumber);
+    while (siblings.some((sibling) => sibling.name.toLowerCase() === copyName.toLowerCase())) {
+      copyName = getCopyName(++copyNumber);
+    }
+    const copyItem = (node: FileNode): FileNode => ({
+      ...node,
+      id: nanoid(),
+      data: node.data ? structuredClone(node.data) : undefined,
+      children: node.children?.map(copyItem),
+    });
+    const error = createItem(parentId, { ...copyItem(item), name: copyName });
+    if (error) toast.error(error);
+    else toast.success(`${item.type === "file" ? "File" : "Folder"} duplicated`);
   };
 
-  const openNewItemDialog = (type: "file" | "directory", parentId: string | null = null) => {
-    setNewItemType(type);
-    setTargetParentId(parentId);
-    setNewItemDialog(true);
+  const startNewItem = (type: FileNode["type"], parentId: string | null = null) => {
+    setEditingItemId(null);
+    setNameError(null);
+    setNewItemName("");
+    setNewItem({ id: nanoid(), type, parentId });
+    if (parentId !== null) {
+      updateFileTree((tree) => {
+        const revealParent = (items: FileNode[]): FileNode[] =>
+          items.map((item) => ({
+            ...item,
+            isOpen:
+              item.id === parentId || (item.children && findFileById(item.children, parentId)) ? true : item.isOpen,
+            children: item.children ? revealParent(item.children) : undefined,
+          }));
+        return revealParent(tree);
+      });
+    }
   };
+
+  const selectedItem = findFileById(fileTree, selectedItemId ?? currentFileId ?? "");
+  const creationParentId = selectedItem
+    ? selectedItem.type === "directory"
+      ? selectedItem.id
+      : findParentId(fileTree, selectedItem.id)
+    : null;
 
   const expandAll = () => {
     updateFileTree((tree) => {
@@ -176,14 +323,16 @@ export function FileExplorer({ isCollapsed }: FileExplorerProps) {
   };
 
   const saveRename = () => {
-    if (!editingItemId || !editingName.trim()) {
-      toast.error("Please enter a valid name");
-      return;
+    if (!editingItemId) return false;
+    const error = renameItem(editingItemId, editingName);
+    if (error) {
+      setNameError(error);
+      return false;
     }
-    renameItem(editingItemId, editingName.trim());
     setEditingItemId(null);
     setEditingName("");
-    toast.success("Item renamed successfully");
+    setNameError(null);
+    return true;
   };
 
   const handleDragStart = (e: React.DragEvent<HTMLDivElement>, item: FileNode) => {
@@ -223,71 +372,86 @@ export function FileExplorer({ isCollapsed }: FileExplorerProps) {
   };
 
   const renderFileItem = (item: FileNode, depth = 0) => {
-    const isSelected = currentFileId === item.id;
+    const isSelected = (selectedItemId ?? currentFileId) === item.id;
     const isEditing = editingItemId === item.id;
+    const icon =
+      item.type === "directory" ? (
+        <>
+          <motion.span className="shrink-0" animate={{ rotate: item.isOpen ? 90 : 0 }} transition={treeTransition}>
+            <ChevronRight className="size-4" />
+          </motion.span>
+          {item.isOpen ? <FolderOpen className="size-4" /> : <Folder className="size-4" />}
+        </>
+      ) : (
+        <>
+          <span className="w-4 shrink-0" />
+          <File className="size-4" />
+        </>
+      );
 
     return (
-      <div key={item.id}>
+      <motion.div
+        key={item.id}
+        initial={{ height: 0, opacity: 0 }}
+        animate={{ height: "auto", opacity: 1 }}
+        exit={{ height: 0, opacity: 0 }}
+        transition={treeTransition}
+        className="overflow-hidden"
+      >
         <ContextMenu>
           <ContextMenuTrigger
             render={
               <div
-                className={`flex items-center gap-2 px-2 py-1 rounded cursor-pointer transition-colors group ${isSelected ? "bg-primary/30" : " hover:bg-primary/10 "}`}
+                className={`flex min-h-8 items-center gap-2 px-2 rounded cursor-pointer transition-none group [&_svg]:shrink-0 ${isEditing ? "py-1" : "h-8"} ${isSelected ? "bg-primary/15" : "hover:bg-foreground/5"}`}
                 style={{ paddingLeft: `${8 + depth * 16}px` }}
-                onClick={() => {
-                  if (item.type === "directory") {
-                    toggleDirectory(item.id);
-                  } else {
-                    switchToFile(item.id);
-                  }
-                }}
-                draggable
+                draggable={!isEditing}
                 onDragStart={(e) => handleDragStart(e, item)}
                 onDragOver={handleDragOver}
                 onDrop={(e) => handleDrop(e, item.type === "directory" ? item.id : null)}
               />
             }
           >
-            {item.type === "directory" ? (
-              <>
-                <motion.div animate={{ rotate: item.isOpen ? 90 : 0 }} transition={{ duration: 0.15 }}>
-                  <ChevronRight className="h-4 w-4" />
-                </motion.div>
-                <motion.div animate={{ scale: item.isOpen ? 1.1 : 1 }} transition={{ duration: 0.15 }}>
-                  {item.isOpen ? <FolderOpen className="h-4 w-4" /> : <Folder className="h-4 w-4" />}
-                </motion.div>
-              </>
-            ) : (
-              <>
-                <div className="w-4" /> {/* Spacer for alignment */}
-                <File className="h-4 w-4" />
-              </>
-            )}
-
             {isEditing ? (
-              <Input
-                value={editingName}
-                onChange={(e) => setEditingName(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") saveRename();
-                  if (e.key === "Escape") setEditingItemId(null);
-                }}
-                onClick={(e) => e.stopPropagation()}
-                className="h-6 text-sm"
-                autoFocus
-              />
+              <>
+                {icon}
+                <NameEditor
+                  label={`Rename ${item.name}`}
+                  value={editingName}
+                  error={nameError}
+                  onChange={(value) => {
+                    setEditingName(value);
+                    setNameError(null);
+                  }}
+                  onSave={saveRename}
+                  onCancel={() => setEditingItemId(null)}
+                />
+              </>
             ) : (
-              <span className="text-sm truncate flex-1">{item.name}</span>
+              <button
+                type="button"
+                className="flex h-8 min-w-0 flex-1 items-center gap-2 text-left outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring"
+                aria-expanded={item.type === "directory" ? Boolean(item.isOpen) : undefined}
+                aria-current={currentFileId === item.id ? "page" : undefined}
+                onClick={() => {
+                  setSelectedItemId(item.id);
+                  if (item.type === "directory") toggleDirectory(item.id);
+                  else openFile(item.id);
+                }}
+              >
+                {icon}
+                <span className="truncate text-sm">{item.name}</span>
+              </button>
             )}
 
             <Button
               variant="link"
               size="sm"
-              className="h-6 w-6 p-0 cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity"
+              aria-label={`Actions for ${item.name}`}
+              className={`h-6 w-6 shrink-0 p-0 cursor-pointer opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 ${isEditing ? "hidden" : ""}`}
               onClick={(e) => {
                 e.stopPropagation();
                 // Programmatically trigger context menu on this item
-                const trigger = e.currentTarget.closest('[data-slot="context-menu-trigger"]') as HTMLElement;
+                const trigger = e.currentTarget.closest<HTMLElement>('[data-slot="context-menu-trigger"]');
                 if (trigger) {
                   const event = new MouseEvent("contextmenu", {
                     bubbles: true,
@@ -302,7 +466,7 @@ export function FileExplorer({ isCollapsed }: FileExplorerProps) {
               <MoreVertical className="h-4 w-4 text-muted-foreground" />
             </Button>
           </ContextMenuTrigger>
-          <ContextMenuContent>
+          <ContextMenuContent finalFocus={newItem || editingItemId ? false : undefined}>
             {item.type === "file" ? (
               <>
                 <ContextMenuItem onClick={() => handleRename(item)}>
@@ -332,11 +496,11 @@ export function FileExplorer({ isCollapsed }: FileExplorerProps) {
               </>
             ) : (
               <>
-                <ContextMenuItem onClick={() => openNewItemDialog("file", item.id)}>
+                <ContextMenuItem onClick={() => startNewItem("file", item.id)}>
                   <FilePlus className="h-4 w-4 mr-2" />
                   New File
                 </ContextMenuItem>
-                <ContextMenuItem onClick={() => openNewItemDialog("directory", item.id)}>
+                <ContextMenuItem onClick={() => startNewItem("directory", item.id)}>
                   <FolderPlus className="h-4 w-4 mr-2" />
                   New Folder
                 </ContextMenuItem>
@@ -362,11 +526,52 @@ export function FileExplorer({ isCollapsed }: FileExplorerProps) {
           </ContextMenuContent>
         </ContextMenu>
 
-        {item.type === "directory" && item.isOpen && item.children && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.15 }}>
-            {item.children.map((child) => renderFileItem(child, depth + 1))}
-          </motion.div>
+        <AnimatePresence initial={false}>
+          {item.type === "directory" && item.isOpen && (
+            <motion.div
+              key="children"
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={treeTransition}
+              className="overflow-hidden"
+            >
+              <AnimatePresence initial={false}>
+                {item.children?.map((child) => renderFileItem(child, depth + 1))}
+              </AnimatePresence>
+              {newItem?.parentId === item.id && renderNewItem(depth + 1)}
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.div>
+    );
+  };
+
+  const renderNewItem = (depth: number) => {
+    if (!newItem) return null;
+    return (
+      <div
+        key={newItem.id}
+        className="flex min-h-8 items-start gap-2 py-1 pr-1"
+        style={{ paddingLeft: `${8 + depth * 16}px` }}
+      >
+        <span className="w-4 shrink-0" />
+        {newItem.type === "file" ? (
+          <File className="mt-1 size-4 shrink-0" />
+        ) : (
+          <Folder className="mt-1 size-4 shrink-0" />
         )}
+        <NameEditor
+          label={newItem.type === "file" ? "File name" : "Folder name"}
+          value={newItemName}
+          error={nameError}
+          onChange={(value) => {
+            setNewItemName(value);
+            setNameError(null);
+          }}
+          onSave={createNewItem}
+          onCancel={() => setNewItem(null)}
+        />
       </div>
     );
   };
@@ -376,86 +581,51 @@ export function FileExplorer({ isCollapsed }: FileExplorerProps) {
     <motion.div
       initial={false}
       animate={{ width: isCollapsed ? 0 : 256 }}
-      transition={{ type: "spring", stiffness: 300, damping: 30 }}
-      className="border-r bg-card flex flex-col h-full overflow-hidden"
+      transition={reduceMotion ? { duration: 0 } : { type: "spring", stiffness: 300, damping: 30 }}
+      className="border-r bg-card flex shrink-0 flex-col h-full overflow-hidden [&_button]:transition-none [&_input]:transition-none"
     >
       <div className="p-3 border-b w-64">
         <div className="flex items-center justify-between">
           <h3 className="font-semibold text-sm">Files</h3>
           <div className="flex gap-1">
-            <Button variant="ghost" size="sm" className="p-1">
-              <Download className="h-4 w-4" />
+            <Button
+              variant="ghost"
+              size="icon-sm"
+              aria-label="New file"
+              title="New file"
+              onClick={() => startNewItem("file", creationParentId)}
+            >
+              <FilePlus />
             </Button>
-            <Dialog open={newItemDialog} onOpenChange={setNewItemDialog}>
-              <DialogTrigger render={<Button variant="ghost" size="sm" className="p-1" />}>
-                <Plus className="h-4 w-4" />
-              </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>Create New Item</DialogTitle>
-                  <DialogDescription>Create a new file or directory in your workspace.</DialogDescription>
-                </DialogHeader>
-                <div className="space-y-4">
-                  <div className="flex gap-2">
-                    <Button
-                      variant={newItemType === "file" ? "default" : "outline"}
-                      size="sm"
-                      onClick={() => setNewItemType("file")}
-                    >
-                      File
-                    </Button>
-                    <Button
-                      variant={newItemType === "directory" ? "default" : "outline"}
-                      size="sm"
-                      onClick={() => setNewItemType("directory")}
-                    >
-                      Directory
-                    </Button>
-                  </div>
-                  <Input
-                    placeholder={`Enter ${newItemType} name`}
-                    value={newItemName}
-                    onChange={(e) => setNewItemName(e.target.value)}
-                    onKeyDown={(e) => e.key === "Enter" && createNewItem()}
-                  />
-                </div>
-                <DialogFooter>
-                  <Button variant="outline" onClick={() => setNewItemDialog(false)}>
-                    Cancel
-                  </Button>
-                  <Button onClick={createNewItem}>Create</Button>
-                </DialogFooter>
-              </DialogContent>
-            </Dialog>
+            <Button
+              variant="ghost"
+              size="icon-sm"
+              aria-label="New folder"
+              title="New folder"
+              onClick={() => startNewItem("directory", creationParentId)}
+            >
+              <FolderPlus />
+            </Button>
           </div>
         </div>
       </div>
 
       <ContextMenu>
         <ContextMenuTrigger render={<div className="flex-1 overflow-auto p-2 w-64" />}>
-          <LayoutGroup>
-            <AnimatePresence>
-              {fileTree.map((item) => (
-                <motion.div
-                  key={item.id}
-                  layout
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  {renderFileItem(item)}
-                </motion.div>
-              ))}
-            </AnimatePresence>
-          </LayoutGroup>
+          <AnimatePresence initial={false}>{fileTree.map((item) => renderFileItem(item))}</AnimatePresence>
+          {newItem?.parentId === null && renderNewItem(0)}
+          {fileTree.length === 0 && !newItem && (
+            <p className="px-2 py-6 text-center text-sm text-muted-foreground">
+              Create a file or folder to get started.
+            </p>
+          )}
         </ContextMenuTrigger>
-        <ContextMenuContent>
-          <ContextMenuItem onClick={() => openNewItemDialog("file")}>
+        <ContextMenuContent finalFocus={newItem ? false : undefined}>
+          <ContextMenuItem onClick={() => startNewItem("file")}>
             <FilePlus className="h-4 w-4 mr-2" />
             New File
           </ContextMenuItem>
-          <ContextMenuItem onClick={() => openNewItemDialog("directory")}>
+          <ContextMenuItem onClick={() => startNewItem("directory")}>
             <FolderPlus className="h-4 w-4 mr-2" />
             New Folder
           </ContextMenuItem>
