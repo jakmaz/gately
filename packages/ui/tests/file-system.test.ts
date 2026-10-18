@@ -108,3 +108,51 @@ describe("renaming", () => {
     assert.equal(useFileSystem.getState().fileTree[0].name, "Adder");
   });
 });
+
+describe("deletion", () => {
+  it("removes a nested file without mutating the previous tree or changing another active file", () => {
+    const fileTree: FileNode[] = [
+      {
+        id: "folder",
+        name: "Circuits",
+        type: "directory",
+        children: [
+          { id: "deleted", name: "Adder", type: "file" },
+          { id: "active", name: "Decoder", type: "file", data: { nodes: [], edges: [] } },
+        ],
+      },
+    ];
+    useFileSystem.setState({ fileTree, currentFileId: "active" });
+    useFileSystem.getState().deleteItem("deleted");
+    assert.deepEqual(useFileSystem.getState().fileTree[0].children, [fileTree[0].children?.[1]]);
+    assert.equal(fileTree[0].children?.length, 2);
+    assert.equal(useFileSystem.getState().currentFileId, "active");
+    assert.deepEqual(useFileSystem.getState().getCurrentFile()?.data, { nodes: [], edges: [] });
+  });
+
+  it("clears the active selection when deleting the current file or an ancestor folder", () => {
+    for (const deletedId of ["active", "nested", "folder"]) {
+      useFileSystem.setState({
+        fileTree: [
+          {
+            id: "folder",
+            name: "Circuits",
+            type: "directory",
+            children: [
+              {
+                id: "nested",
+                name: "Arithmetic",
+                type: "directory",
+                children: [{ id: "active", name: "Adder", type: "file" }],
+              },
+            ],
+          },
+        ],
+        currentFileId: "active",
+      });
+      useFileSystem.getState().deleteItem(deletedId);
+      assert.equal(useFileSystem.getState().currentFileId, null);
+      assert.equal(useFileSystem.getState().getCurrentFile(), undefined);
+    }
+  });
+});

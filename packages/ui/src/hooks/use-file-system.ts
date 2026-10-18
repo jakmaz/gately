@@ -134,8 +134,7 @@ export const useFileSystem = create<FileSystemState>()(
         const updatedTree = removeItemFromTree(fileTree, itemId);
         set({
           fileTree: updatedTree,
-          // If we deleted the current file, clear the current file selection
-          currentFileId: currentFileId === itemId ? null : currentFileId,
+          currentFileId: currentFileId && findFileById(updatedTree, currentFileId) ? currentFileId : null,
         });
       },
     }),
@@ -257,15 +256,9 @@ function renameItemInTree(tree: FileNode[], itemId: string, newName: string): Fi
 }
 
 function removeItemFromTree(tree: FileNode[], itemId: string): FileNode[] {
-  return tree.filter((node) => {
-    if (node.id === itemId) {
-      return false;
-    }
-    if (node.children) {
-      node.children = removeItemFromTree(node.children, itemId);
-    }
-    return true;
-  });
+  return tree
+    .filter((node) => node.id !== itemId)
+    .map((node) => (node.children ? { ...node, children: removeItemFromTree(node.children, itemId) } : node));
 }
 
 function findFirstFile(tree: FileNode[]): FileNode | undefined {

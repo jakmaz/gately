@@ -36,9 +36,9 @@ import {
   ContextMenuSeparator,
   ContextMenuTrigger,
 } from "../ui/context-menu";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "../ui/dialog";
 import { Input } from "../ui/input";
 import { toast } from "../ui/toast";
+import { DeleteItemConfirmation } from "./delete-item-confirmation";
 import { InfoDialog } from "./info-dialog";
 
 interface FileExplorerProps {
@@ -167,6 +167,13 @@ export function FileExplorer({ isCollapsed }: FileExplorerProps) {
   const [editingName, setEditingName] = useState("");
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [itemToDelete, setItemToDelete] = useState<FileNode | null>(null);
+  const itemRows = useRef(new Map<string, HTMLElement>());
+  const deleteAnchorRef = useRef<HTMLElement | null>(null);
+  const newFileRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    if (isCollapsed) setDeleteDialogOpen(false);
+  }, [isCollapsed]);
 
   useEffect(() => {
     setSelectedItemId(currentFileId);
@@ -359,6 +366,7 @@ export function FileExplorer({ isCollapsed }: FileExplorerProps) {
   };
 
   const handleDelete = (item: FileNode) => {
+    deleteAnchorRef.current = itemRows.current.get(item.id) ?? null;
     setItemToDelete(item);
     setDeleteDialogOpen(true);
   };
@@ -367,11 +375,6 @@ export function FileExplorer({ isCollapsed }: FileExplorerProps) {
     if (!itemToDelete) return;
     deleteItem(itemToDelete.id);
     setDeleteDialogOpen(false);
-    setItemToDelete(null);
-    toast.add({
-      type: "success",
-      title: `${itemToDelete.type === "file" ? "File" : "Directory"} deleted successfully`,
-    });
   };
 
   const renderFileItem = (item: FileNode, depth = 0) => {
@@ -403,6 +406,10 @@ export function FileExplorer({ isCollapsed }: FileExplorerProps) {
       >
         <ContextMenu>
           <ContextMenuTrigger
+            ref={(element) => {
+              if (element) itemRows.current.set(item.id, element);
+              else itemRows.current.delete(item.id);
+            }}
             render={
               <div
                 className={`flex min-h-8 items-center gap-2 px-2 rounded cursor-pointer transition-none group [&_svg]:shrink-0 ${isEditing ? "py-1" : "h-8"} ${isSelected ? "bg-primary/15" : "hover:bg-foreground/5"}`}
@@ -469,7 +476,7 @@ export function FileExplorer({ isCollapsed }: FileExplorerProps) {
               <MoreVertical className="h-4 w-4 text-muted-foreground" />
             </Button>
           </ContextMenuTrigger>
-          <ContextMenuContent finalFocus={newItem || editingItemId ? false : undefined}>
+          <ContextMenuContent finalFocus={newItem || editingItemId || deleteDialogOpen ? false : undefined}>
             {item.type === "file" ? (
               <>
                 <ContextMenuItem onClick={() => handleRename(item)}>
@@ -592,6 +599,7 @@ export function FileExplorer({ isCollapsed }: FileExplorerProps) {
           <h3 className="font-semibold text-sm">Files</h3>
           <div className="flex gap-1">
             <Button
+              ref={newFileRef}
               variant="ghost"
               size="icon-sm"
               aria-label="New file"
@@ -648,24 +656,24 @@ export function FileExplorer({ isCollapsed }: FileExplorerProps) {
         <InfoDialog />
       </div>
 
-      <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Delete {itemToDelete?.type === "file" ? "File" : "Directory"}</DialogTitle>
-            <DialogDescription>
-              Are you sure you want to delete {itemToDelete?.name}? This action cannot be undone.
-            </DialogDescription>
-          </DialogHeader>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setDeleteDialogOpen(false)}>
-              Cancel
-            </Button>
-            <Button variant="destructive" onClick={confirmDelete}>
-              Delete
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      <DeleteItemConfirmation
+        item={itemToDelete}
+        anchor={deleteAnchorRef}
+        open={deleteDialogOpen}
+        onOpenChange={setDeleteDialogOpen}
+        onOpenChangeComplete={(open) => {
+          if (!open) setItemToDelete(null);
+        }}
+        onConfirm={confirmDelete}
+        returnFocus={() => {
+          if (isCollapsed) return false;
+          const row =
+            itemToDelete && findFileById(fileTree, itemToDelete.id)
+              ? deleteAnchorRef.current
+              : [...itemRows.current].find(([id]) => findFileById(fileTree, id))?.[1];
+          return row?.querySelector<HTMLButtonElement>("button") ?? newFileRef.current;
+        }}
+      />
     </motion.div>
   );
 }
