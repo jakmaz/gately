@@ -4,12 +4,12 @@ import { useReactFlow } from "@xyflow/react";
 import { Download, Upload } from "lucide-react";
 import { nanoid } from "nanoid";
 import { useRef } from "react";
-import { toast } from "sonner";
 import { simulateCircuit } from "../../hooks/simulator-utils";
 import { useExport } from "../../hooks/use-export";
 import { useFileSystem } from "../../hooks/use-file-system";
 import { useSettingsStore } from "../../hooks/use-settings-store";
 import { Button } from "../ui/button";
+import { toast } from "../ui/toast";
 
 export function ImportExportButtons() {
   const reactFlow = useReactFlow();
@@ -64,7 +64,7 @@ export function ImportExportButtons() {
       // Add to file system and switch to it
       const error = createItem(null, newFile);
       if (error) {
-        toast.error(error);
+        toast.add({ type: "error", title: error });
         event.target.value = "";
         return;
       }

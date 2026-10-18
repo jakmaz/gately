@@ -1,5 +1,4 @@
 import { LogicGateSimulator } from "@gately/ui/components/simulator/simulator";
-import { Toaster } from "sonner";
 import { ThemeProvider } from "./providers/theme-provider";
 
 export function App() {
@@ -14,7 +13,6 @@ export function App() {
         <main className="min-h-screen bg-background">
           <LogicGateSimulator />
         </main>
-        <Toaster />
       </div>
     </ThemeProvider>
   );

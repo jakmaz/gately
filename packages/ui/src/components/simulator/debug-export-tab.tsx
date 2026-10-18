@@ -3,12 +3,12 @@
 import type { GateNodeProps } from "@gately/core/types";
 import { useReactFlow } from "@xyflow/react";
 import { Copy, Download } from "lucide-react";
-import { toast } from "sonner";
 import { useDebugData } from "../../hooks/use-debug-data";
 import { useExport } from "../../hooks/use-export";
 import { useFileSystem } from "../../hooks/use-file-system";
 import { Button } from "../ui/button";
 import { ScrollArea } from "../ui/scroll-area";
+import { toast } from "../ui/toast";
 
 export function ExportTab() {
   const reactFlow = useReactFlow();
@@ -53,10 +53,10 @@ export function ExportTab() {
     navigator.clipboard
       .writeText(JSON.stringify(debugData, null, 2))
       .then(() => {
-        toast.success("Debug data copied to clipboard");
+        toast.add({ type: "success", title: "Debug data copied to clipboard" });
       })
       .catch(() => {
-        toast.error("Failed to copy debug data");
+        toast.add({ type: "error", title: "Failed to copy debug data" });
       });
   };
 

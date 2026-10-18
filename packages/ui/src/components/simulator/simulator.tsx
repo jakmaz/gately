@@ -3,6 +3,7 @@
 import { ReactFlowProvider } from "@xyflow/react";
 import { useState } from "react";
 import "@xyflow/react/dist/style.css";
+import { Toaster } from "../ui/toast";
 import { DebugPanel } from "./debug-panel";
 import { FileExplorer } from "./file-explorer";
 import { Header } from "./header";
@@ -21,6 +22,7 @@ export function LogicGateSimulator() {
           <DebugPanel />
         </div>
       </ReactFlowProvider>
+      <Toaster />
     </div>
   );
 }

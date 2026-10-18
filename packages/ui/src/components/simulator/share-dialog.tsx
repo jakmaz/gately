@@ -1,10 +1,10 @@
 import { Copy, Share } from "lucide-react";
 import { useState } from "react";
-import { toast } from "sonner";
 import { Button } from "../ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "../ui/dialog";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
+import { toast } from "../ui/toast";
 
 export function ShareDialog() {
   const [shareDialogOpen, setShareDialogOpen] = useState(false);
@@ -20,7 +20,7 @@ export function ShareDialog() {
 
   const copyShareUrl = () => {
     navigator.clipboard.writeText(shareUrl);
-    toast.success("Share URL copied to clipboard");
+    toast.add({ type: "success", title: "Share URL copied to clipboard" });
     setShareDialogOpen(false);
   };
 

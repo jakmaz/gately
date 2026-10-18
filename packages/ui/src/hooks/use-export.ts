@@ -6,8 +6,8 @@ import {
   validateCircuit,
 } from "@gately/core/export";
 import type { Edge, Node } from "@xyflow/react";
-import { toast } from "sonner";
 import { create } from "zustand";
+import { toast } from "../components/ui/toast";
 
 interface ExportData {
   nodes: Node[];
@@ -50,10 +50,10 @@ export const useExport = create<ExportState>((set, get) => ({
       const filename = `${data.fileName || "circuit"}.json`;
       downloadJSON(portableCircuit, filename);
 
-      toast.success(`Exported "${filename}" successfully`);
+      toast.add({ type: "success", title: `Exported "${filename}" successfully` });
     } catch (error) {
       console.error("Export failed:", error);
-      toast.error("Failed to export circuit");
+      toast.add({ type: "error", title: "Failed to export circuit" });
     } finally {
       set({ isExporting: false });
     }
@@ -68,7 +68,7 @@ export const useExport = create<ExportState>((set, get) => ({
       return result;
     } catch (error) {
       console.error("Import failed:", error);
-      toast.error(`Failed to import "${file.name}"`);
+      toast.add({ type: "error", title: `Failed to import "${file.name}"` });
       return null;
     } finally {
       set({ isImporting: false });
@@ -85,14 +85,14 @@ export const useExport = create<ExportState>((set, get) => ({
 
       if (!validation.valid) {
         const errorMsg = `Invalid circuit file: ${validation.errors.join(", ")}`;
-        toast.error(errorMsg);
+        toast.add({ type: "error", title: errorMsg });
         return null;
       }
 
       // Show warnings if any
       if (validation.warnings.length > 0) {
         validation.warnings.forEach((warning) => {
-          toast.warning(warning);
+          toast.add({ type: "warning", title: warning });
         });
       }
 
@@ -101,7 +101,7 @@ export const useExport = create<ExportState>((set, get) => ({
 
       const finalFileName = fileName || portableCircuit.metadata?.name || "imported-circuit";
 
-      toast.success(`Imported "${finalFileName}" successfully`);
+      toast.add({ type: "success", title: `Imported "${finalFileName}" successfully` });
 
       return {
         success: true,
@@ -111,7 +111,7 @@ export const useExport = create<ExportState>((set, get) => ({
       };
     } catch (error) {
       console.error("JSON parsing failed:", error);
-      toast.error("Invalid JSON format");
+      toast.add({ type: "error", title: "Invalid JSON format" });
       return null;
     }
   },

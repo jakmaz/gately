@@ -21,7 +21,6 @@ import {
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { nanoid } from "nanoid";
 import { useEffect, useId, useRef, useState } from "react";
-import { toast } from "sonner";
 import {
   type FileNode,
   findFileById,
@@ -39,6 +38,7 @@ import {
 } from "../ui/context-menu";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "../ui/dialog";
 import { Input } from "../ui/input";
+import { toast } from "../ui/toast";
 import { InfoDialog } from "./info-dialog";
 
 interface FileExplorerProps {
@@ -245,8 +245,8 @@ export function FileExplorer({ isCollapsed }: FileExplorerProps) {
       children: node.children?.map(copyItem),
     });
     const error = createItem(parentId, { ...copyItem(item), name: copyName });
-    if (error) toast.error(error);
-    else toast.success(`${item.type === "file" ? "File" : "Folder"} duplicated`);
+    if (error) toast.add({ type: "error", title: error });
+    else toast.add({ type: "success", title: `${item.type === "file" ? "File" : "Folder"} duplicated` });
   };
 
   const startNewItem = (type: FileNode["type"], parentId: string | null = null) => {
@@ -286,7 +286,7 @@ export function FileExplorer({ isCollapsed }: FileExplorerProps) {
       };
       return expandAllItems(tree);
     });
-    toast.success("All folders expanded");
+    toast.add({ type: "success", title: "All folders expanded" });
   };
 
   const collapseAll = () => {
@@ -300,14 +300,14 @@ export function FileExplorer({ isCollapsed }: FileExplorerProps) {
       };
       return collapseAllItems(tree);
     });
-    toast.success("All folders collapsed");
+    toast.add({ type: "success", title: "All folders collapsed" });
   };
 
   const handleExportFile = (item: FileNode) => {
     if (item.type !== "file") return;
     const fileData = item.data;
     if (!fileData) {
-      toast.error("File is empty");
+      toast.add({ type: "error", title: "File is empty" });
       return;
     }
     const blob = new Blob([JSON.stringify(fileData, null, 2)], { type: "application/json" });
@@ -319,7 +319,7 @@ export function FileExplorer({ isCollapsed }: FileExplorerProps) {
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
-    toast.success(`Exported ${item.name}`);
+    toast.add({ type: "success", title: `Exported ${item.name}` });
   };
 
   const saveRename = () => {
@@ -351,10 +351,10 @@ export function FileExplorer({ isCollapsed }: FileExplorerProps) {
       const data = JSON.parse(e.dataTransfer.getData("application/json"));
       if (data.id === targetId) return; // Don't move to self
       moveItem(data.id, targetId);
-      toast.success("Item moved successfully");
+      toast.add({ type: "success", title: "Item moved successfully" });
     } catch (e) {
       console.error(e);
-      toast.error("Failed to move item");
+      toast.add({ type: "error", title: "Failed to move item" });
     }
   };
 
@@ -368,7 +368,10 @@ export function FileExplorer({ isCollapsed }: FileExplorerProps) {
     deleteItem(itemToDelete.id);
     setDeleteDialogOpen(false);
     setItemToDelete(null);
-    toast.success(`${itemToDelete.type === "file" ? "File" : "Directory"} deleted successfully`);
+    toast.add({
+      type: "success",
+      title: `${itemToDelete.type === "file" ? "File" : "Directory"} deleted successfully`,
+    });
   };
 
   const renderFileItem = (item: FileNode, depth = 0) => {
